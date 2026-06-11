@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — IELTS Academic Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@300;400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#1a1a2e;--ink2:#4a4a6a;--ink3:#8888aa;
+    --paper:#faf9f7;--paper2:#f2f0ec;--paper3:#e8e5df;
+    --blue:#002f5f;--blue2:#1a5fa8;--gold:#c8a84b;
+    --green:#2e7d4f;--red:#c0392b;--border:rgba(0,0,0,0.12);
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--paper2);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink)}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--paper3) 1px,transparent 1px),linear-gradient(90deg,var(--paper3) 1px,transparent 1px);background-size:32px 32px;opacity:0.5;pointer-events:none;z-index:0}
+  .card{position:relative;z-index:1;width:420px;background:var(--paper);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.08)}
+  .card-header{background:var(--blue);padding:28px 32px 24px;text-align:center;border-bottom:3px solid var(--gold)}
+  .card-logo{font-family:'Source Serif 4',serif;font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:0.02em;margin-bottom:4px}
+  .card-logo span{color:var(--gold)}
+  .card-sub{font-size:0.75rem;color:rgba(255,255,255,0.55);letter-spacing:0.1em;text-transform:uppercase;font-weight:600}
+  .card-body{padding:28px 32px}
+  .step{animation:fadeIn 0.2s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .step-label{font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
+  .step-title{font-family:'Source Serif 4',serif;font-size:1.15rem;font-weight:600;color:var(--blue);margin-bottom:4px}
+  .step-desc{font-size:0.83rem;color:var(--ink3);margin-bottom:20px;line-height:1.5}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:5px}
+  .field input,.field select{width:100%;padding:9px 13px;border:1px solid var(--paper3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--ink);background:#fff;transition:all 0.15s}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--blue2);background:#f5f9ff;box-shadow:0 0 0 3px rgba(26,95,168,0.08)}
+  .field input:disabled{background:var(--paper2);color:var(--ink3)}
+  .field select{cursor:pointer}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .error-msg{font-size:0.78rem;color:var(--red);font-weight:600;margin-bottom:10px;display:none;padding:8px 12px;background:#fff5f5;border:1px solid #f5b8b8;border-radius:6px}
+  .error-msg.show{display:block}
+  .success-msg{font-size:0.78rem;color:var(--green);font-weight:600;margin-bottom:10px;display:none;padding:8px 12px;background:#f5fbf7;border:1px solid #a8dbb8;border-radius:6px}
+  .success-msg.show{display:block}
+  .btn-primary{width:100%;padding:11px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.15s;letter-spacing:0.02em;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn-primary:hover{background:var(--blue2)}
+  .btn-primary:active{transform:scale(0.98)}
+  .btn-primary:disabled{background:var(--ink3);cursor:not-allowed;transform:none}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--ink3);cursor:pointer;margin-bottom:14px;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0}
+  .back-link:hover{color:var(--blue)}
+  .back-link::before{content:'←'}
+  .admin-badge{display:inline-block;margin-bottom:12px;background:rgba(200,168,75,0.12);border:1px solid rgba(200,168,75,0.35);color:#7a5f1a;border-radius:6px;padding:4px 12px;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
+  .welcome-badge{background:#f0f5ff;border:1px solid #c0d0f0;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:0.85rem;color:var(--blue)}
+  .welcome-badge b{display:block;font-size:1rem;margin-bottom:2px}
+  .footer-note{text-align:center;font-size:0.75rem;color:var(--ink3);padding:14px 32px;border-top:1px solid var(--border);background:var(--paper2)}
+  .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;display:none}
+  .spinner.show{display:block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .pw-wrap{position:relative}
+  .pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink3);font-size:0.8rem;padding:0}
+  .pw-toggle:hover{color:var(--blue)}
+  .pw-strength{height:3px;border-radius:2px;margin-top:5px;transition:all 0.3s;background:var(--paper3)}
+  .pw-strength.weak{background:var(--red);width:33%}
+  .pw-strength.fair{background:var(--gold);width:66%}
+  .pw-strength.strong{background:var(--green);width:100%}
+  .sheets-note{font-size:0.75rem;color:var(--ink3);text-align:center;margin-top:10px;padding:8px;background:var(--paper2);border-radius:6px;line-height:1.5}
+  .hidden{display:none!important}
+
+  /* CONFIG WARNING */
+  .config-warn{background:#fff9e6;border:1px solid #f5d87a;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:0.82rem;color:#7a5f1a;line-height:1.6;display:none}
+  .config-warn.show{display:block}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-logo">IELTS <span>Academic</span></div>
+    <div class="card-sub">Simulation Test Platform</div>
+  </div>
+  <div class="card-body">
+
+    <!-- STEP 0: Setup warning if no Apps Script URL -->
+    <div id="setup-warn" class="config-warn">
+      ⚠️ <b>Apps Script URL not configured.</b> Open this file in a text editor and set <code>APPS_SCRIPT_URL</code> at the top of the &lt;script&gt;. See the setup guide (<code>SETUP_GUIDE.txt</code>).
+    </div>
+
+    <!-- STEP 1: Candidate Number -->
+    <div id="step1" class="step">
+      <div class="step-label">Step 1</div>
+      <div class="step-title">Welcome</div>
+      <div class="step-desc">Enter your candidate number to continue.</div>
+      <div class="field">
+        <label for="candidateNum">Candidate Number</label>
+        <input type="text" id="candidateNum" placeholder="e.g. 2024-0081" autofocus>
+      </div>
+      <div class="error-msg" id="err1"></div>
+      <button class="btn-primary" id="btn1" onclick="handleStep1()">
+        <span id="btn1-txt">Continue →</span>
+        <div class="spinner" id="spin1"></div>
+      </button>
+      <div class="sheets-note">Your details are securely stored in Google Sheets.</div>
+    </div>
+
+    <!-- STEP ADMIN -->
+    <div id="step-admin" class="step hidden">
+      <button class="back-link" onclick="goTo('step-admin','step1')">Back</button>
+      <div class="admin-badge">Admin Access</div>
+      <div class="step-title">Administrator Login</div>
+      <div class="step-desc">Enter admin password to access the control panel.</div>
+      <div class="field">
+        <label for="adminPass">Password</label>
+        <input type="password" id="adminPass" placeholder="Enter password">
+      </div>
+      <div class="error-msg" id="err-admin"></div>
+      <button class="btn-primary" onclick="verifyAdmin()">Sign In →</button>
+    </div>
+
+    <!-- STEP 2a: RETURNING candidate — password login -->
+    <div id="step-login" class="step hidden">
+      <button class="back-link" onclick="goTo('step-login','step1')">Back</button>
+      <div class="step-label">Welcome Back</div>
+      <div class="welcome-badge" id="welcome-badge">
+        <b id="welcome-name">Loading...</b>
+        <span id="welcome-id" style="color:var(--ink3);font-size:0.78rem"></span>
+      </div>
+      <div class="step-desc">Enter your password to continue.</div>
+      <div class="field">
+        <label for="loginPass">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="loginPass" placeholder="Enter your password">
+          <button class="pw-toggle" onclick="togglePw('loginPass',this)" type="button">Show</button>
+        </div>
+      </div>
+      <div class="error-msg" id="err-login"></div>
+      <button class="btn-primary" id="btn-login" onclick="handleLogin()">
+        <span id="btn-login-txt">Sign In →</span>
+        <div class="spinner" id="spin-login"></div>
+      </button>
+    </div>
+
+    <!-- STEP 2b: NEW candidate — fill details + create password -->
+    <div id="step-register" class="step hidden">
+      <button class="back-link" onclick="goTo('step-register','step1')">Back</button>
+      <div class="step-label">New Candidate — Registration</div>
+      <div class="step-title">Personal Details</div>
+      <div class="step-desc">Fill in your details and create a password. You'll use these to log in next time.</div>
+      <div class="field">
+        <label>Candidate Number</label>
+        <input type="text" id="disp-id" disabled>
+      </div>
+      <div class="field">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="e.g. Santos, Maria">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob">
+        </div>
+        <div class="field">
+          <label for="gender">Gender</label>
+          <select id="gender">
+            <option value="">Select...</option>
+            <option>Male</option><option>Female</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="nationality">Nationality</label>
+        <select id="nationality"><option value="">Select country...</option></select>
+      </div>
+      <div class="field">
+        <label for="newPass">Create Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="newPass" placeholder="At least 6 characters" oninput="checkStrength(this)">
+          <button class="pw-toggle" onclick="togglePw('newPass',this)" type="button">Show</button>
+        </div>
+        <div class="pw-strength" id="pw-strength"></div>
+      </div>
+      <div class="field">
+        <label for="confirmPass">Confirm Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="confirmPass" placeholder="Re-enter password">
+          <button class="pw-toggle" onclick="togglePw('confirmPass',this)" type="button">Show</button>
+        </div>
+      </div>
+      <div class="error-msg" id="err-register"></div>
+      <div class="success-msg" id="suc-register"></div>
+      <button class="btn-primary" id="btn-register" onclick="handleRegister()">
+        <span id="btn-register-txt">Register & Start Test →</span>
+        <div class="spinner" id="spin-register"></div>
+      </button>
+      <div style="text-align:center;margin-top:12px">
+        <button onclick="switchToLogin()" style="background:none;border:none;color:var(--blue2);font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline">
+          Already registered? Enter password instead
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">Do not close or refresh this window during the test.</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  CONFIG — paste your Apps Script Web App URL here
+// ══════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyarOzwfnraI3bR_HGD1E147tPGkBd_u9Uoeg4_hz9PLwnHMLWAgJMBuBrWo_6tEKc/exec';
+
+const ADMIN_PASSWORD = 'admin1234';
+const COUNTRIES = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+
+window.onload = () => {
+  // Populate countries
+  const sel = document.getElementById('nationality');
+  COUNTRIES.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
+  // Warn if URL not configured
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    document.getElementById('setup-warn').classList.add('show');
+  }
+};
+
+// ══════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════
+function goTo(hideId, showId) {
+  document.getElementById(hideId).classList.add('hidden');
+  document.getElementById(showId).classList.remove('hidden');
+}
+function showErr(id, msg) { const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); }
+function hideErr(id) { document.getElementById(id).classList.remove('show'); }
+function showSuc(id, msg) { const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); }
+function setLoading(btnId, spinId, txtId, loading, label='Continue →') {
+  document.getElementById(btnId).disabled = loading;
+  document.getElementById(spinId).classList.toggle('show', loading);
+  document.getElementById(txtId).textContent = loading ? 'Please wait...' : label;
+}
+function togglePw(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? 'Hide' : 'Show';
+}
+function checkStrength(inp) {
+  const v = inp.value;
+  const bar = document.getElementById('pw-strength');
+  if (!v) { bar.className='pw-strength'; return; }
+  if (v.length < 6) bar.className='pw-strength weak';
+  else if (v.length < 10 || !/[0-9]/.test(v)) bar.className='pw-strength fair';
+  else bar.className='pw-strength strong';
+}
+
+// ══════════════════════════════════════════════
+// SHEETS CALLER — uses JSONP to bypass CORS
+// ══════════════════════════════════════════════
+function callSheets(payload) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
+    const timeout = setTimeout(() => {
+      delete window[cbName];
+      reject(new Error('Request timed out'));
+    }, 15000);
+
+    window[cbName] = (data) => {
+      clearTimeout(timeout);
+      delete window[cbName];
+      resolve(data);
+    };
+
+    const params = new URLSearchParams({ ...payload, callback: cbName });
+    const script = document.createElement('script');
+    script.src = APPS_SCRIPT_URL + '?' + params.toString();
+    script.onerror = () => {
+      clearTimeout(timeout);
+      delete window[cbName];
+      reject(new Error('Network error'));
+    };
+    document.head.appendChild(script);
+    setTimeout(() => { try { document.head.removeChild(script); } catch(e){} }, 20000);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  STEP 1 — Check candidate ID
+// ══════════════════════════════════════════════
+async function handleStep1() {
+  const id = document.getElementById('candidateNum').value.trim();
+  hideErr('err1');
+  if (!id) { showErr('err1','Please enter your candidate number.'); return; }
+
+  if (id.toLowerCase() === 'superadmin') {
+    goTo('step1','step-admin');
+    setTimeout(()=>document.getElementById('adminPass').focus(),50);
+    return;
+  }
+
+  setLoading('btn1','spin1','btn1-txt',true);
+
+  try {
+    const data = await callSheets({ action:'checkCandidate', candidateID: id });
+
+    if (data.exists) {
+      // Returning candidate — go to password screen
+      document.getElementById('welcome-name').textContent = data.name;
+      document.getElementById('welcome-id').textContent = 'ID: ' + id;
+      sessionStorage.setItem('pendingID', id);
+      sessionStorage.setItem('pendingName', data.name);
+      goTo('step1','step-login');
+      setTimeout(()=>document.getElementById('loginPass').focus(),50);
+    } else {
+      // New candidate — go to register
+      sessionStorage.setItem('pendingID', id);
+      document.getElementById('disp-id').value = id;
+      goTo('step1','step-register');
+      setTimeout(()=>document.getElementById('fullName').focus(),50);
+    }
+
+  } catch(e) {
+    // Connection failed — still let them proceed to register
+    // handleRegister will catch "already registered" and redirect to login
+    sessionStorage.setItem('pendingID', id);
+    document.getElementById('disp-id').value = id;
+    showErr('err1','⚠️ Could not verify ID — proceeding to registration. If you already registered, your password will be requested.');
+    setTimeout(()=>{
+      hideErr('err1');
+      goTo('step1','step-register');
+      setTimeout(()=>document.getElementById('fullName').focus(),50);
+    }, 2000);
+
+  } finally {
+    setLoading('btn1','spin1','btn1-txt',false,'Continue →');
+  }
+}
+
+function switchToLogin() {
+  const id = sessionStorage.getItem('pendingID') || '';
+  const name = document.getElementById('fullName').value.trim() || id;
+  document.getElementById('welcome-name').textContent = name;
+  document.getElementById('welcome-id').textContent = 'ID: ' + id;
+  goTo('step-register', 'step-login');
+  setTimeout(()=>document.getElementById('loginPass').focus(), 50);
+}
+
+// ══════════════════════════════════════════════
+//  ADMIN LOGIN
+// ══════════════════════════════════════════════
+function verifyAdmin() {
+  const pass = document.getElementById('adminPass').value;
+  hideErr('err-admin');
+  if (pass === ADMIN_PASSWORD) {
+    sessionStorage.setItem('userRole','Admin');
+    sessionStorage.setItem('candidateName','SYSTEM ADMIN');
+    sessionStorage.setItem('candidateID','000000');
+    window.location.href = 'admin.html';
+  } else {
+    showErr('err-admin','Incorrect password.');
+    document.getElementById('adminPass').value='';
+    document.getElementById('adminPass').focus();
+  }
+}
+
+// ══════════════════════════════════════════════
+//  RETURNING CANDIDATE LOGIN
+// ══════════════════════════════════════════════
+async function handleLogin() {
+  const id   = sessionStorage.getItem('pendingID');
+  const pass = document.getElementById('loginPass').value;
+  hideErr('err-login');
+  if (!pass) { showErr('err-login','Please enter your password.'); return; }
+
+  setLoading('btn-login','spin-login','btn-login-txt',true,'Sign In →');
+
+  try {
+    const data = await callSheets({ action:'loginCandidate', candidateID:id, password:pass });
+    if (data.success) {
+      sessionStorage.setItem('userRole','Candidate');
+      sessionStorage.setItem('candidateName', data.fullName);
+      sessionStorage.setItem('candidateID',   data.candidateID);
+      sessionStorage.setItem('candidateData', JSON.stringify(data));
+      window.location.href = 'profile.html';
+    } else {
+      showErr('err-login', data.message || 'Login failed.');
+    }
+  } catch(e) {
+    showErr('err-login','Cannot connect to server.');
+  } finally {
+    setLoading('btn-login','spin-login','btn-login-txt',false,'Sign In →');
+  }
+}
+
+// ══════════════════════════════════════════════
+//  NEW CANDIDATE REGISTER
+// ══════════════════════════════════════════════
+async function handleRegister() {
+  const id      = sessionStorage.getItem('pendingID');
+  const name    = document.getElementById('fullName').value.trim();
+  const dob     = document.getElementById('dob').value;
+  const gender  = document.getElementById('gender').value;
+  const nat     = document.getElementById('nationality').value;
+  const pass    = document.getElementById('newPass').value;
+  const confirm = document.getElementById('confirmPass').value;
+
+  hideErr('err-register');
+
+  if (!name||!dob||!gender||!nat) { showErr('err-register','Please fill in all fields.'); return; }
+  if (pass.length < 6)            { showErr('err-register','Password must be at least 6 characters.'); return; }
+  if (pass !== confirm)           { showErr('err-register','Passwords do not match.'); return; }
+
+  setLoading('btn-register','spin-register','btn-register-txt',true,'Register & Start Test →');
+
+  try {
+    const data = await callSheets({
+      action: 'registerCandidate',
+      candidateID: id, fullName: name,
+      dob, gender, nationality: nat, password: pass
+    });
+
+    if (data.success) {
+      showSuc('suc-register','✅ Registered! Redirecting to your profile...');
+      sessionStorage.setItem('userRole','Candidate');
+      sessionStorage.setItem('candidateName', name);
+      sessionStorage.setItem('candidateID',   id);
+      sessionStorage.setItem('candidateData', JSON.stringify({ candidateID:id, fullName:name, dob, gender, nationality:nat }));
+      setTimeout(()=>{ window.location.href='profile.html'; }, 1200);
+
+    } else if (data.message && data.message.toLowerCase().includes('already registered')) {
+      // ID already exists — switch to login screen instead
+      document.getElementById('welcome-name').textContent = name || id;
+      document.getElementById('welcome-id').textContent = 'ID: ' + id;
+      sessionStorage.setItem('pendingName', name);
+      hideErr('err-register');
+      goTo('step-register','step-login');
+      document.getElementById('err-login').textContent = '⚠️ This ID is already registered. Please enter your password.';
+      document.getElementById('err-login').classList.add('show');
+      setTimeout(()=>document.getElementById('loginPass').focus(),50);
+
+    } else {
+      showErr('err-register', data.message || 'Registration failed.');
+    }
+  } catch(e) {
+    showErr('err-register','Cannot connect to server.');
+  } finally {
+    setLoading('btn-register','spin-register','btn-register-txt',false,'Register & Start Test →');
+  }
+}
+
+// Enter key support
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (!document.getElementById('step1').classList.contains('hidden'))         handleStep1();
+  else if (!document.getElementById('step-login').classList.contains('hidden'))    handleLogin();
+  else if (!document.getElementById('step-register').classList.contains('hidden')) handleRegister();
+  else if (!document.getElementById('step-admin').classList.contains('hidden'))    verifyAdmin();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+═══════════════════════════════════════════════════════════════
+  IELTS Simulation — GitHub Pages Setup Guide
+═══════════════════════════════════════════════════════════════
+
+STEP 1 — Create GitHub Account
+────────────────────────────────
+1. Go to https://github.com
+2. Sign up for a free account
+3. Verify your email
+
+STEP 2 — Create Repository
+────────────────────────────
+1. Click the "+" icon → "New repository"
+2. Repository name: ielts-sim  (or any name you want)
+3. Set to PUBLIC (required for GitHub Pages free hosting)
+4. Check "Add a README file"
+5. Click "Create repository"
+
+STEP 3 — Upload Your Files
+────────────────────────────
+1. In your repository, click "Add file" → "Upload files"
+2. Upload ALL these files:
+   • index.html
+   • simulation.html
+   • admin.html
+   • profile.html
+3. Commit message: "Initial upload"
+4. Click "Commit changes"
+
+STEP 4 — Enable GitHub Pages
+──────────────────────────────
+1. Go to your repository → Settings
+2. Left sidebar → "Pages"
+3. Under "Source" → select "Deploy from a branch"
+4. Branch: main | Folder: / (root)
+5. Click Save
+6. Wait 2-3 minutes
+7. Your site URL will appear:
+   https://YOUR-USERNAME.github.io/ielts-sim/
+
+STEP 5 — Create configs/ folder
+─────────────────────────────────
+1. In your repository, click "Add file" → "Create new file"
+2. Name it: configs/README.md
+3. Content: "Test configuration files"
+4. Commit changes
+This creates the configs/ folder.
+
+STEP 6 — Upload Config JSON (per test set)
+────────────────────────────────────────────
+After creating a test set in admin panel:
+1. Admin panel → Publish → Download Config JSON
+2. Name the file descriptively:
+   e.g. "mock_test_1_jan2025.json"
+3. In GitHub repository → configs/ folder
+4. Click "Add file" → "Upload files"
+5. Upload the JSON file
+6. Commit changes
+7. Get the RAW URL of the file:
+   - Click the file → Click "Raw" button
+   - Copy the URL (looks like):
+     https://raw.githubusercontent.com/YOUR-USERNAME/ielts-sim/main/configs/mock_test_1_jan2025.json
+
+STEP 7 — Link Config to Test Set in Admin
+───────────────────────────────────────────
+1. Admin panel → Test Sets
+2. Create/Edit the test set
+3. Paste the RAW GitHub URL in "Config URL" field
+4. Set status to "Active"
+5. Save
+
+STEP 8 — Test
+──────────────
+1. Open https://YOUR-USERNAME.github.io/ielts-sim/
+2. Login as a candidate
+3. Config should auto-load from GitHub
+
+═══════════════════════════════════════════════════════════════
+  UPDATING QUESTIONS (for new test sets)
+═══════════════════════════════════════════════════════════════
+
+1. Admin panel → make changes
+2. Admin panel → Publish → Download Config JSON
+3. Upload to GitHub → configs/ folder (new filename)
+4. Admin panel → Test Sets → Create new set with new URL
+5. Set new set as Active
+
+IMPORTANT: Never replace an old config file if candidates
+already took that test — their scores reference the old set.
+Always upload a NEW file with a new name.
+
+═══════════════════════════════════════════════════════════════
+  FOLDER STRUCTURE IN GITHUB
+═══════════════════════════════════════════════════════════════
+
+ielts-sim/
+├── index.html
+├── simulation.html
+├── admin.html
+├── profile.html
+└── configs/
+    ├── mock_test_1_jan2025.json    ← Test Set 1
+    ├── mock_test_2_feb2025.json    ← Test Set 2
+    └── mock_test_3_mar2025.json    ← Test Set 3 (active)
+
+═══════════════════════════════════════════════════════════════
+  YOUR LINKS
+═══════════════════════════════════════════════════════════════
+
+Candidates:  https://YOUR-USERNAME.github.io/ielts-sim/
+Admin:       https://YOUR-USERNAME.github.io/ielts-sim/admin.html
+Profile:     https://YOUR-USERNAME.github.io/ielts-sim/profile.html
+
+═══════════════════════════════════════════════════════════════

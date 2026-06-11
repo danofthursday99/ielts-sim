@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Academic Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#1a1a2e;--ink2:#4a4a6a;--ink3:#8888aa;
+    --paper:#faf9f7;--paper2:#f2f0ec;--paper3:#e8e5df;
+    --blue:#002f5f;--blue2:#1a5fa8;--gold:#c8a84b;
+    --green:#2e7d4f;--red:#c0392b;--border:rgba(0,0,0,0.1);
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+  .hdr{background:var(--blue);color:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
+  .hdr-logo{font-family:'Source Serif 4',serif;font-size:1.1rem;font-weight:600}.hdr-logo span{color:var(--gold)}
+  .hdr-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:3px 10px;font-size:0.75rem;color:rgba(255,255,255,0.8)}
+  .hdr-left{display:flex;align-items:center;gap:14px}
+  .candidate-info{font-size:0.8rem;color:rgba(255,255,255,0.7);display:flex;gap:16px}.candidate-info b{color:#fff}
+  .timer{background:#fff;color:var(--red);border-radius:6px;padding:6px 16px;font-family:monospace;font-size:1.1rem;font-weight:700;letter-spacing:0.05em}
+  .timer.warn{background:var(--red);color:#fff;animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.85}}
+  .main{display:flex;flex:1;overflow:hidden}
+  .panel-left{flex:1;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;background:var(--paper)}
+  .panel-right{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#fff}
+  .right-tab-bar{background:var(--blue);border-bottom:3px solid var(--gold);display:flex;flex-shrink:0}
+  .rtab{padding:10px 24px;border:none;background:transparent;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;position:relative;transition:color 0.2s}
+  .rtab:hover{color:rgba(255,255,255,0.9)}.rtab.active{color:#fff}
+  .rtab.active::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:3px;background:var(--gold)}
+  .inner-tabs{background:var(--paper2);border-bottom:1px solid var(--border);display:flex;padding:0 16px;flex-shrink:0}
+  .inner-tab{padding:9px 16px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:600;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s}
+  .inner-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+  .scroll{flex:1;overflow-y:auto;padding:24px}
+  .scroll::-webkit-scrollbar{width:4px}.scroll::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:2px}
+  .audio-card{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:32px 24px;text-align:center;max-width:440px;margin:0 auto}
+  .audio-label{font-family:'Source Serif 4',serif;font-size:0.9rem;color:var(--ink2);margin-bottom:20px}
+  .audio-img{max-width:100%;max-height:160px;border-radius:8px;margin-bottom:16px;display:none}
+  .play-ring{width:72px;height:72px;border-radius:50%;border:2px solid var(--blue);background:transparent;color:var(--blue);font-size:1.8rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all 0.2s}
+  .play-ring:hover:not(:disabled){background:var(--blue);color:#fff;transform:scale(1.05)}
+  .play-ring:disabled{border-color:var(--border);color:var(--ink3);cursor:not-allowed}
+  .audio-status{margin-top:14px;font-size:0.82rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:0.08em}
+  .progress-bar{width:100%;height:3px;background:var(--paper3);border-radius:2px;margin-top:16px;overflow:hidden}
+  .progress-fill{height:100%;background:var(--blue2);width:0%;transition:width 0.3s}
+  .passage{font-family:'Source Serif 4',serif;font-size:0.95rem;line-height:1.9;color:var(--ink);padding-bottom:40px}
+  .passage h2{font-size:1.15rem;font-weight:600;margin-bottom:14px;color:var(--blue);padding-bottom:10px;border-bottom:1px solid var(--border)}
+  .passage p{margin-bottom:14px}
+  .prompt-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:16px}
+  .prompt-card h3{font-family:'Source Serif 4',serif;font-size:1rem;font-weight:600;color:var(--blue);margin-bottom:10px}
+  .prompt-card p{font-size:0.88rem;line-height:1.7;color:var(--ink2)}
+  .q-section-label{font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--paper3)}
+  .q-block{margin-bottom:12px;padding:13px 15px;border-radius:8px;background:var(--paper);border:1px solid var(--border);transition:border-color 0.2s}
+  .q-block:focus-within{border-color:var(--blue2);background:#fdfcff}
+  .q-num{display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:0.72rem;font-weight:700;text-align:center;line-height:22px;margin-right:8px;flex-shrink:0}
+  .q-text{font-size:0.88rem;color:var(--ink);line-height:1.5;display:flex;align-items:flex-start;margin-bottom:8px}
+  .q-input{width:100%;padding:7px 12px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--ink);background:#fff;transition:all 0.15s}
+  .q-input:focus{outline:none;border-color:var(--blue2);background:#f5f9ff}
+  .q-input.filled{border-color:var(--green);background:#f5fbf7}
+  .mc-opts{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+  .mc-opt{display:flex;align-items:center;gap:10px;padding:7px 12px;border:1px solid var(--paper3);border-radius:6px;cursor:pointer;font-size:0.86rem;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+  .mc-opt:hover{background:var(--paper);border-color:var(--blue2)}
+  .mc-opt.sel{background:#f0f5ff;border-color:var(--blue2);color:var(--blue)}
+  .mc-opt input{accent-color:var(--blue)}
+  .writing-wrap{display:flex;flex-direction:column;height:100%;padding:20px;gap:12px}
+  .writing-textarea{flex:1;resize:none;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'Source Serif 4',serif;font-size:0.98rem;line-height:1.8;color:var(--ink);background:#fff;transition:border-color 0.2s;width:100%}
+  .writing-textarea:focus{outline:none;border-color:var(--blue2)}
+  .wc-badge{font-size:0.8rem;font-weight:600;color:var(--ink3)}.wc-badge b{color:var(--ink)}
+  .wc-progress{width:140px;height:4px;background:var(--paper3);border-radius:2px;overflow:hidden}
+  .wc-fill{height:100%;background:var(--blue2);transition:width 0.3s;border-radius:2px}
+  .nav-footer{background:var(--blue);padding:8px 16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0}
+  .nav-lbl{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-right:4px}
+  .nav-sq{width:26px;height:26px;border-radius:4px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:0.7rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s}
+  .nav-sq.done{background:var(--green);border-color:var(--green);color:#fff}
+  .section-header{font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+  .instructions-box{margin-top:20px;padding:14px 16px;background:var(--paper2);border-radius:8px;font-size:0.82rem;color:var(--ink3);line-height:1.6;border:1px solid var(--border)}
+  .fc-image-wrap{margin-bottom:16px;text-align:center}
+  .fc-image-wrap img{max-width:100%;border-radius:8px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+  .fc-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .fc-input-row{display:flex;align-items:center;gap:8px}
+  .fc-input-row .q-num{flex-shrink:0}
+  .fc-input-row input{flex:1;padding:7px 10px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--ink);background:#fff;transition:all 0.15s}
+  .fc-input-row input:focus{outline:none;border-color:var(--blue2);background:#f5f9ff}
+  .fc-input-row input.filled{border-color:var(--green);background:#f5fbf7}
+  .submit-btn{margin:0 16px 16px;padding:11px;background:var(--green);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;width:calc(100% - 32px);transition:all 0.15s}
+  .submit-btn:hover{opacity:0.9}
+  .hidden{display:none!important}
+  .content-pre{white-space:pre-wrap;font-family:inherit}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-logo">IELTS <span>Academic</span></div>
+    <div class="hdr-badge" id="hdr-badge">Simulation Test</div>
+  </div>
+  <div class="candidate-info">
+    <span>Candidate: <b id="disp-name">Guest</b></span>
+    <span>ID: <b id="disp-id">N/A</b></span>
+    <button onclick="window.location.href='profile.html'" style="padding:4px 12px;border:1px solid rgba(255,255,255,0.3);border-radius:5px;color:rgba(255,255,255,0.85);background:transparent;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">👤 My Profile</button>
+  </div>
+  <div class="timer" id="timer">2:45:00</div>
+</div>
+
+<div class="main">
+  <!-- LEFT PANEL -->
+  <div class="panel-left">
+    <!-- LISTENING -->
+    <div id="L-left" class="scroll">
+      <div class="audio-card">
+        <div class="audio-label" id="L-section-label">Section Audio</div>
+        <img id="audio-img" class="audio-img" src="" alt="">
+        <br>
+        <button class="play-ring" id="play-btn" disabled onclick="playAudio()">&#9654;</button>
+        <div class="audio-status" id="audio-status">Loading...</div>
+        <div class="progress-bar"><div class="progress-fill" id="audio-prog"></div></div>
+        <audio id="audio-el" onended="onAudioEnd()" ontimeupdate="updateProgress()"></audio>
+        <div id="audio-url-wrap" style="display:none;margin-top:10px;width:100%"></div>
+        <div style="margin-top:14px;font-size:0.78rem;color:var(--ink3);text-align:center">
+          Use the section tabs on the right to navigate.
+        </div>
+      </div>
+      <div class="instructions-box"><b style="color:var(--ink2)">Instructions:</b> You will hear each recording once only. Write no more than three words and/or a number for each answer.</div>
+    </div>
+    <!-- READING -->
+    <div id="R-left" class="hidden" style="display:flex;flex-direction:column;height:100%">
+      <div class="inner-tabs">
+        <button class="inner-tab active" id="lp1" onclick="syncPassage(1)">Passage 1</button>
+        <button class="inner-tab" id="lp2" onclick="syncPassage(2)">Passage 2</button>
+        <button class="inner-tab" id="lp3" onclick="syncPassage(3)">Passage 3</button>
+      </div>
+      <div class="scroll" style="background:white;line-height:1.8">
+        <div id="pass1" class="passage">Loading...</div>
+        <div id="pass2" class="passage hidden">Loading...</div>
+        <div id="pass3" class="passage hidden">Loading...</div>
+      </div>
+    </div>
+    <!-- WRITING -->
+    <div id="W-left" class="hidden scroll" style="background:white">
+      <div id="w-prompt-1" class="prompt-card">
+        <h3>Writing Task 1</h3>
+        <div id="prompt-text-1" class="content-pre" style="font-size:0.88rem;line-height:1.7;color:var(--ink2)">Loading...</div>
+        <img id="W-img-1" style="max-width:100%;max-height:220px;margin-top:12px;border-radius:8px;display:none">
+      </div>
+      <div id="w-prompt-2" class="prompt-card hidden">
+        <h3>Writing Task 2</h3>
+        <div id="prompt-text-2" class="content-pre" style="font-size:0.88rem;line-height:1.7;color:var(--ink2)">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="panel-right">
+    <div class="right-tab-bar">
+      <button class="rtab active" id="tab-L" onclick="switchSection('L')">Listening</button>
+      <button class="rtab" id="tab-R" onclick="switchSection('R')">Reading</button>
+      <button class="rtab" id="tab-W" onclick="switchSection('W')">Writing</button>
+    </div>
+    <!-- LISTENING QS -->
+    <div id="L-right" style="display:flex;flex-direction:column;height:100%;overflow:hidden">
+      <div class="inner-tabs" id="L-sec-tabs">
+        <button class="inner-tab active" id="lst1" onclick="switchLSection(1)">Sec 1</button>
+        <button class="inner-tab" id="lst2" onclick="switchLSection(2)">Sec 2</button>
+        <button class="inner-tab" id="lst3" onclick="switchLSection(3)">Sec 3</button>
+        <button class="inner-tab" id="lst4" onclick="switchLSection(4)">Sec 4</button>
+      </div>
+      <div class="scroll">
+        <div class="section-header" id="L-q-head">Questions 1–10</div>
+        <div id="L-qs"></div>
+      </div>
+    </div>
+    <!-- READING QS -->
+    <div id="R-right" class="hidden" style="display:flex;flex-direction:column;height:100%;overflow:hidden">
+      <div class="inner-tabs">
+        <button class="inner-tab active" id="rp1" onclick="syncPassage(1)">Q 1–13</button>
+        <button class="inner-tab" id="rp2" onclick="syncPassage(2)">Q 14–26</button>
+        <button class="inner-tab" id="rp3" onclick="syncPassage(3)">Q 27–40</button>
+      </div>
+      <div class="scroll">
+        <div class="section-header" id="r-q-head">Questions 1–13</div>
+        <div id="R-qs"></div>
+      </div>
+    </div>
+    <!-- WRITING -->
+    <div id="W-right" class="hidden writing-wrap">
+      <div class="inner-tabs" style="margin:-20px -20px 0;padding:0 16px">
+        <button class="inner-tab active" id="wt1-tab" onclick="switchWriting(1)">Task 1</button>
+        <button class="inner-tab" id="wt2-tab" onclick="switchWriting(2)">Task 2</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+        <div class="section-header" style="margin:0">Your Response</div>
+        <div class="wc-badge">Words: <b id="wc">0</b> / <span id="wc-min">150</span></div>
+      </div>
+      <textarea class="writing-textarea" id="w-textarea" placeholder="Begin writing your response here..." oninput="updateWC()"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="wc-badge" style="font-size:0.75rem;color:var(--ink3)">Review before finishing</div>
+        <div class="wc-progress"><div class="wc-fill" id="wc-bar"></div></div>
+      </div>
+    </div>
+    <!-- SUBMIT -->
+    <button class="submit-btn" id="submit-btn" onclick="submitTest()" style="display:none">Submit &amp; Save Answers</button>
+  </div>
+</div>
+
+<div class="nav-footer">
+  <span class="nav-lbl">Progress</span>
+  <div id="nav-squares" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+</div>
+
+<script>
+let cur='L', curLSec=1;
+let audioPlayed=[false,false,false,false];
+let writingVals={1:'',2:''};
+let curWriting=1;
+let answered={L:{},R:{}};
+let lAnswers={}, rAnswers={};
+let timeLeft=9900;
+let config={};
+let activeTestSet={ setID:'', setName:'' };
+
+// Load config from localStorage (set by admin)
+// ══════════════════════════════════════
+// CONFIG LOADER — tries Google Drive first, falls back to localStorage
+// ══════════════════════════════════════
+async function loadConfig() {
+  // Step 1: Load cached config from localStorage (instant)
+  const local = localStorage.getItem('ielts_admin_config');
+  if (local) { try { config = JSON.parse(local); } catch(e){ config={}; } }
+
+  // Step 2: Check if there's a Drive URL to fetch fresh config from
+  const driveURL = (config && config._driveURL)
+    || localStorage.getItem('ielts_drive_url')
+    || '';
+
+  if (!driveURL) return; // No Drive URL set — use cached config
+
+  try {
+    showLoadingOverlay('Loading latest test configuration...');
+    const fresh = await fetchDriveConfig(driveURL);
+    if (fresh) {
+      config = fresh;
+      localStorage.setItem('ielts_admin_config', JSON.stringify(config));
+      if (config._driveURL) localStorage.setItem('ielts_drive_url', config._driveURL);
+    }
+  } catch(e) {
+    console.warn('Drive fetch failed, using cached config:', e.message);
+  } finally {
+    hideLoadingOverlay();
+  }
+}
+
+function convertDriveURL(url) {
+  if (!url) return '';
+  if (url.includes('export=download') || url.includes('uc?id=')) return url;
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+  return url;
+}
+
+async function fetchDriveConfig(url) {
+  const fetchURL = convertDriveURL(url);
+  // Try direct fetch
+  try {
+    const res = await fetch(fetchURL, { cache:'no-cache' });
+    if (res.ok) { const t = await res.text(); return JSON.parse(t); }
+  } catch(e) { /* CORS blocked — try proxy */ }
+
+  // Fallback: use Apps Script as a CORS proxy
+  return new Promise((resolve, reject) => {
+    const cb = 'cfg_' + Date.now();
+    const t  = setTimeout(() => { delete window[cb]; reject(new Error('Proxy timeout')); }, 12000);
+    window[cb] = (d) => {
+      clearTimeout(t); delete window[cb];
+      d && d.success ? resolve(d.config) : reject(new Error((d && d.message) || 'Proxy failed'));
+    };
+    const s   = document.createElement('script');
+    s.src     = APPS_SCRIPT_URL + '?' + new URLSearchParams({ action:'getConfig', configURL: fetchURL, callback: cb });
+    s.onerror = () => { clearTimeout(t); delete window[cb]; reject(new Error('Proxy error')); };
+    document.head.appendChild(s);
+    setTimeout(() => { try { document.head.removeChild(s); } catch(e){} }, 15000);
+  });
+}
+
+function showLoadingOverlay(msg) {
+  let ov = document.getElementById('load-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'load-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,47,95,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:"DM Sans",sans-serif;gap:14px';
+    ov.innerHTML = `
+      <div style="width:44px;height:44px;border:3px solid rgba(255,255,255,0.25);border-top-color:#c8a84b;border-radius:50%;animation:spin 0.7s linear infinite"></div>
+      <div style="font-family:'Source Serif 4',serif;font-size:1.3rem;font-weight:600;color:#c8a84b">IELTS Academic</div>
+      <div id="load-msg" style="font-size:0.85rem;opacity:0.75;letter-spacing:0.03em"></div>
+      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>`;
+    document.body.appendChild(ov);
+  }
+  document.getElementById('load-msg').textContent = msg;
+  ov.style.display = 'flex';
+}
+function hideLoadingOverlay() {
+  const ov = document.getElementById('load-overlay');
+  if (ov) ov.style.display = 'none';
+}
+
+function initUser() {
+  // Try candidateData object first (most complete), fallback to individual keys
+  let name = sessionStorage.getItem('candidateName') || '';
+  let id   = sessionStorage.getItem('candidateID')   || '';
+  const raw = sessionStorage.getItem('candidateData');
+  if (raw) {
+    try {
+      const cd = JSON.parse(raw);
+      name = cd.fullName    || name;
+      id   = cd.candidateID || id;
+      // Re-set to ensure consistency
+      sessionStorage.setItem('candidateName', name);
+      sessionStorage.setItem('candidateID',   id);
+    } catch(e) {}
+  }
+  document.getElementById('disp-name').innerText = name || 'Guest';
+  document.getElementById('disp-id').innerText   = id   || 'N/A';
+}
+
+const timerEl = document.getElementById('timer');
+setInterval(()=>{
+  if(timeLeft<=0)return; timeLeft--;
+  let h=Math.floor(timeLeft/3600),m=Math.floor((timeLeft%3600)/60),s=timeLeft%60;
+  timerEl.innerText=`${h}:${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+  if(timeLeft<=600)timerEl.className='timer warn';
+},1000);
+
+function switchSection(s) {
+  cur=s;
+  ['L','R','W'].forEach(x=>document.getElementById('tab-'+x).classList.toggle('active',x===s));
+  document.getElementById('L-left').classList.toggle('hidden',s!=='L');
+  document.getElementById('R-left').classList.toggle('hidden',s!=='R');
+  document.getElementById('W-left').classList.toggle('hidden',s!=='W');
+  document.getElementById('L-right').classList.toggle('hidden',s!=='L');
+  document.getElementById('R-right').classList.toggle('hidden',s!=='R');
+  document.getElementById('W-right').classList.toggle('hidden',s!=='W');
+  document.getElementById('submit-btn').style.display = s==='W' ? 'block' : 'none';
+  buildNav(s);
+  if(s==='R')syncPassage(1);
+  if(s==='W')switchWriting(curWriting,true);
+}
+
+function switchLSection(n) {
+  curLSec=n;
+  for(let i=1;i<=4;i++) document.getElementById('lst'+i).classList.toggle('active',i===n);
+  const ranges=['1–10','11–20','21–30','31–40'];
+  document.getElementById('L-q-head').innerText='Questions '+ranges[n-1];
+  buildLQs(n);
+  const sec=config.listening&&config.listening.sections&&config.listening.sections[n-1];
+  const el=document.getElementById('audio-el');
+  const btn=document.getElementById('play-btn');
+  const status=document.getElementById('audio-status');
+  const img=document.getElementById('audio-img');
+  const urlWrap=document.getElementById('audio-url-wrap');
+  document.getElementById('L-section-label').innerText=`Section ${n} Audio`;
+  if(sec&&(sec.audioData||sec.audioURL)){
+    if(sec.audioURL){
+      el.src=''; btn.disabled=true;
+      if(urlWrap){ urlWrap.innerHTML=buildAudioURLPlayer(sec.audioURL); urlWrap.style.display='block'; }
+      status.innerText='';
+    } else {
+      if(urlWrap){ urlWrap.innerHTML=''; urlWrap.style.display='none'; }
+      el.src=sec.audioData;
+      btn.disabled=audioPlayed[n-1];
+      status.innerText=audioPlayed[n-1]?'Recording finished':'Ready to play';
+    }
+    document.getElementById('audio-prog').style.width='0%';
+    if(sec.imgData){ img.src=sec.imgData; img.style.display='block'; } else img.style.display='none';
+  } else {
+    if(urlWrap){ urlWrap.innerHTML=''; urlWrap.style.display='none'; }
+    el.src=''; btn.disabled=true; status.innerText='No audio for this section';
+    img.style.display='none';
+  }
+}
+
+function syncPassage(n){
+  for(let i=1;i<=3;i++){
+    document.getElementById('pass'+i).classList.toggle('hidden',i!==n);
+    const lp=document.getElementById('lp'+i);if(lp)lp.classList.toggle('active',i===n);
+    const rp=document.getElementById('rp'+i);if(rp)rp.classList.toggle('active',i===n);
+  }
+  const ranges=['1–13','14–26','27–40'];
+  document.getElementById('r-q-head').innerText='Questions '+ranges[n-1];
+  document.querySelectorAll('.r-q-group').forEach((g,i)=>g.classList.toggle('hidden',i!==n-1));
+}
+
+function markQ(sec,n,el){
+  const val=el.type==='radio'?el.checked:el.value.trim()!=='';
+  answered[sec][n]=val;
+  const rawVal=el.type==='radio'?(el.checked?el.value:''):(el.value.trim());
+  if(sec==='L')lAnswers[n]=rawVal; else rAnswers[n]=rawVal;
+  if(el.type==='text')el.classList.toggle('filled',val);
+  if(el.type==='radio'){
+    document.querySelectorAll(`[name="${el.name}"]`).forEach(r=>r.closest('.mc-opt').classList.remove('sel'));
+    if(el.checked)el.closest('.mc-opt').classList.add('sel');
+  }
+  buildNav(cur);
+}
+
+function buildNav(s){
+  const wrap=document.getElementById('nav-squares');
+  wrap.innerHTML='';
+  if(s==='W')return;
+  const ans=answered[s]||{};
+  for(let i=1;i<=40;i++){
+    const d=document.createElement('div');
+    d.className='nav-sq'+(ans[i]?' done':'');
+    d.innerText=i; wrap.appendChild(d);
+  }
+}
+
+function playAudio(){
+  if(audioPlayed[curLSec-1])return;
+  document.getElementById('audio-el').play();
+  document.getElementById('play-btn').disabled=true;
+  document.getElementById('audio-status').innerText='Playing — listen carefully';
+  audioPlayed[curLSec-1]=true;
+}
+function onAudioEnd(){document.getElementById('audio-status').innerText='Recording finished';}
+function updateProgress(){
+  const el=document.getElementById('audio-el');
+  if(!el.duration)return;
+  document.getElementById('audio-prog').style.width=((el.currentTime/el.duration)*100)+'%';
+}
+
+function switchWriting(n,skipSave){
+  if(!skipSave)writingVals[curWriting]=document.getElementById('w-textarea').value;
+  curWriting=n;
+  document.getElementById('wt1-tab').classList.toggle('active',n===1);
+  document.getElementById('wt2-tab').classList.toggle('active',n===2);
+  document.getElementById('w-prompt-1').classList.toggle('hidden',n!==1);
+  document.getElementById('w-prompt-2').classList.toggle('hidden',n!==2);
+  document.getElementById('w-textarea').value=writingVals[n];
+  const minWords=(config.writing&&config.writing.tasks&&config.writing.tasks[n]&&config.writing.tasks[n].minWords)||(n===1?150:250);
+  document.getElementById('wc-min').innerText=minWords;
+  updateWC();
+}
+function updateWC(){
+  const txt=document.getElementById('w-textarea').value.trim();
+  const wc=txt?txt.split(/\s+/).length:0;
+  document.getElementById('wc').innerText=wc;
+  const min=parseInt(document.getElementById('wc-min').innerText)||150;
+  const bar=document.getElementById('wc-bar');
+  bar.style.width=Math.min((wc/min)*100,100)+'%';
+  bar.style.background=wc>=min?'var(--green)':'var(--blue2)';
+}
+
+// Build Q from config
+function getQs(sec) {
+  if(sec==='L')return(config.listening&&config.listening.questions)||{};
+  return(config.reading&&config.reading.questions)||{};
+}
+
+function buildQBlock(sec,n){
+  const qs=getQs(sec);
+  const q=qs[n]||{text:'Question '+n,type:'short',options:['','',''],answer:''};
+  let inner='';
+  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  if(q.type==='mc'){
+    const opts=q.options||['','',''];
+    inner='<div class="mc-opts">'+['A','B','C'].map((l,i)=>
+      `<label class="mc-opt"><input type="radio" name="q${sec}${n}" value="${l}" onchange="markQ('${sec}',${n},this)"> <span>${l} &nbsp; ${escH(opts[i]||'Option '+l)}</span></label>`
+    ).join('')+'</div>';
+
+  } else if(q.type==='cl'){
+    const numOpts=q.clCount||5;
+    const numPick=q.clPick||2;
+    const opts=q.options||[];
+    inner=`<div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px">Choose <b>${numPick}</b> letter(s).</div>
+    <div class="mc-opts">`;
+    for(let i=0;i<numOpts;i++){
+      const letter=letters[i];
+      inner+=`<label class="mc-opt"><input type="checkbox" name="qcl${sec}${n}" value="${letter}" onchange="markCLQ('${sec}',${n},this,${numPick})"> <span>${letter} &nbsp; ${escH(opts[i]||'Option '+letter)}</span></label>`;
+    }
+    inner+=`</div>`;
+
+  } else if(q.type==='tfng'){
+    inner='<div class="mc-opts"><div style="display:flex;gap:8px;margin-top:6px">'+
+      ['TRUE','FALSE','NOT GIVEN'].map(v=>
+        `<label style="display:flex;align-items:center;gap:4px;font-size:0.82rem;cursor:pointer"><input type="radio" name="q${sec}${n}" value="${v}" onchange="markQ('${sec}',${n},this)"> ${v}</label>`
+      ).join('')+'</div></div>';
+
+  } else {
+    inner=`<input class="q-input" type="text" placeholder="Write answer..." oninput="markQ('${sec}',${n},this)">`;
+  }
+  return `<div class="q-block"><div class="q-text"><span class="q-num">${n}</span>${escH(q.text||'Question '+n)}</div>${inner}</div>`;
+}
+
+function markCLQ(sec,n,el,maxPick){
+  const checked=[...document.querySelectorAll(`[name="qcl${sec}${n}"]:checked`)];
+  // Enforce max pick
+  if(checked.length>maxPick){ el.checked=false; return; }
+  const val=checked.map(c=>c.value).join(', ');
+  answered[sec][n]=checked.length>0;
+  if(sec==='L')lAnswers[n]=val; else rAnswers[n]=val;
+  buildNav(cur);
+}
+
+function buildLQs(n){
+  const c=document.getElementById('L-qs');
+  const from=[1,11,21,31][n-1], to=[10,20,30,40][n-1];
+  const labels=['Section 1 — Questions 1–10','Section 2 — Questions 11–20','Section 3 — Questions 21–30','Section 4 — Questions 31–40'];
+  const sec=config.listening&&config.listening.sections&&config.listening.sections[n-1];
+  let html=`<div class="q-section-label">${labels[n-1]}</div>`;
+
+  if(sec&&sec.formCompletion&&sec.fcImgData){
+    const fcFrom=sec.fcFrom||from, fcTo=sec.fcTo||to;
+    html+=`<div class="fc-image-wrap"><img src="${sec.fcImgData}" alt="Form worksheet"></div>`;
+    html+=`<div style="font-size:0.82rem;color:var(--ink3);margin-bottom:10px">Fill in the blanks numbered <b>${fcFrom}–${fcTo}</b> as you listen.</div>`;
+    html+=`<div class="fc-inputs">`;
+    for(let i=fcFrom;i<=fcTo;i++){
+      html+=`<div class="fc-input-row"><span class="q-num">${i}</span><input type="text" placeholder="..." oninput="markFCQ('L',${i},this)"></div>`;
+    }
+    html+=`</div>`;
+    // Extra questions added by admin
+    const extraKey='L-extra-'+from;
+    const extras=(config._extraQuestions&&config._extraQuestions[extraKey])||[];
+    if(extras.length){
+      html+=`<div class="q-section-label" style="margin-top:20px">Additional Questions</div>`;
+      extras.forEach((eq,i)=>{
+        // Render as virtual question number 'extra-n-i'
+        const fakeQ={...eq};
+        html+=buildExtraQBlock('L',extraKey,i,fakeQ);
+      });
+    }
+  } else {
+    for(let i=from;i<=to;i++) html+=buildQBlock('L',i);
+    // Extra questions even in normal mode
+    const extraKey='L-extra-'+from;
+    const extras=(config._extraQuestions&&config._extraQuestions[extraKey])||[];
+    if(extras.length){
+      html+=`<div class="q-section-label" style="margin-top:16px">Additional Questions</div>`;
+      extras.forEach((eq,i)=>{ html+=buildExtraQBlock('L',extraKey,i,eq); });
+    }
+  }
+  c.innerHTML=html;
+}
+
+function buildExtraQBlock(sec,key,idx,eq){
+  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numOpts=eq.clCount||5;
+  const numPick=eq.clPick||2;
+  const opts=eq.options||[];
+  let inner='';
+  if(eq.type==='mc'){
+    inner='<div class="mc-opts">'+['A','B','C'].map((l,i)=>
+      `<label class="mc-opt"><input type="radio" name="extra-${key}-${idx}" value="${l}" onchange="markExtraQ('${sec}','${key}',${idx},this.value)"> <span>${l} &nbsp; ${escH(opts[i]||'Option '+l)}</span></label>`
+    ).join('')+'</div>';
+  } else if(eq.type==='cl'){
+    inner=`<div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px">Choose <b>${numPick}</b> letter(s).</div><div class="mc-opts">`;
+    for(let i=0;i<numOpts;i++){
+      inner+=`<label class="mc-opt"><input type="checkbox" name="extra-cl-${key}-${idx}" value="${letters[i]}" onchange="markExtraCL('${sec}','${key}',${idx},this,${numPick})"> <span>${letters[i]} &nbsp; ${escH(opts[i]||'Option '+letters[i])}</span></label>`;
+    }
+    inner+=`</div>`;
+  } else if(eq.type==='tfng'){
+    inner='<div class="mc-opts"><div style="display:flex;gap:8px;margin-top:6px">'+
+      ['TRUE','FALSE','NOT GIVEN'].map(v=>`<label style="display:flex;align-items:center;gap:4px;font-size:0.82rem;cursor:pointer"><input type="radio" name="extra-${key}-${idx}" value="${v}" onchange="markExtraQ('${sec}','${key}',${idx},this.value)"> ${v}</label>`).join('')+'</div></div>';
+  } else {
+    inner=`<input class="q-input" type="text" placeholder="Write answer..." oninput="markExtraQ('${sec}','${key}',${idx},this.value)">`;
+  }
+  return `<div class="q-block"><div class="q-text"><span class="q-num" style="background:var(--gold)">+</span>${escH(eq.text||'Extra Question')}</div>${inner}</div>`;
+}
+
+function markExtraQ(sec,key,idx,val){
+  if(!window._extraAnswers)window._extraAnswers={};
+  if(!window._extraAnswers[sec])window._extraAnswers[sec]={};
+  window._extraAnswers[sec][key+'_'+idx]=val;
+}
+function markExtraCL(sec,key,idx,el,maxPick){
+  const checked=[...document.querySelectorAll(`[name="extra-cl-${key}-${idx}"]:checked`)];
+  if(checked.length>maxPick){el.checked=false;return;}
+  markExtraQ(sec,key,idx,checked.map(c=>c.value).join(', '));
+}
+
+function markFCQ(sec,n,el){
+  const val=el.value.trim();
+  answered[sec][n]=val!=='';
+  if(sec==='L')lAnswers[n]=val; else rAnswers[n]=val;
+  el.classList.toggle('filled',val!=='');
+  buildNav(cur);
+}
+
+function buildRQs(){
+  const c=document.getElementById('R-qs');
+  const groups=[{p:1,from:1,to:13},{p:2,from:14,to:26},{p:3,from:27,to:40}];
+  const labels=['Passage 1 — Questions 1–13','Passage 2 — Questions 14–26','Passage 3 — Questions 27–40'];
+  let html='';
+  groups.forEach((g,gi)=>{
+    const pfc=config.reading&&config.reading.passages_fc&&config.reading.passages_fc[g.p];
+    const extraKey='R-extra-'+g.from;
+    const extras=(config._extraQuestions&&config._extraQuestions[extraKey])||[];
+    html+=`<div class="r-q-group${gi>0?' hidden':''}">`;
+    html+=`<div class="q-section-label">${labels[gi]}</div>`;
+    if(pfc&&pfc.formCompletion&&pfc.fcImgData){
+      const fcFrom=pfc.fcFrom||g.from, fcTo=pfc.fcTo||g.to;
+      html+=`<div class="fc-image-wrap"><img src="${pfc.fcImgData}" alt="Form worksheet"></div>`;
+      html+=`<div style="font-size:0.82rem;color:var(--ink3);margin-bottom:10px">Fill in the blanks numbered <b>${fcFrom}–${fcTo}</b>.</div>`;
+      html+=`<div class="fc-inputs">`;
+      for(let i=fcFrom;i<=fcTo;i++){
+        html+=`<div class="fc-input-row"><span class="q-num">${i}</span><input type="text" placeholder="..." oninput="markFCQ('R',${i},this)"></div>`;
+      }
+      html+=`</div>`;
+    } else {
+      for(let i=g.from;i<=g.to;i++) html+=buildQBlock('R',i);
+    }
+    if(extras.length){
+      html+=`<div class="q-section-label" style="margin-top:16px">Additional Questions</div>`;
+      extras.forEach((eq,i)=>{ html+=buildExtraQBlock('R',extraKey,i,eq); });
+    }
+    html+='</div>';
+  });
+  c.innerHTML=html;
+}
+
+function loadPassages(){
+  [1,2,3].forEach(i=>{
+    const el=document.getElementById('pass'+i);
+    const text=config.reading&&config.reading.passages&&config.reading.passages[i];
+    el.innerHTML=text?`<h2>Passage ${i}</h2><p>${escH(text).replace(/\n\n/g,'</p><p>')}</p>`:`<p style="color:var(--ink3)">No passage loaded for Passage ${i}.</p>`;
+  });
+}
+
+function loadWritingPrompts(){
+  [1,2].forEach(i=>{
+    const t=config.writing&&config.writing.tasks&&config.writing.tasks[i];
+    document.getElementById('prompt-text-'+i).textContent=(t&&t.prompt)||'No prompt loaded.';
+    const img=document.getElementById('W-img-'+i);
+    if(t&&t.imgData){img.src=t.imgData;img.style.display='block';}
+    else img.style.display='none';
+  });
+}
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyarOzwfnraI3bR_HGD1E147tPGkBd_u9Uoeg4_hz9PLwnHMLWAgJMBuBrWo_6tEKc/exec';
+
+function callSheets(payload) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
+    const timeout = setTimeout(() => { delete window[cbName]; reject(new Error('Timeout')); }, 15000);
+    window[cbName] = (data) => { clearTimeout(timeout); delete window[cbName]; resolve(data); };
+    const params = new URLSearchParams({ ...payload, callback: cbName });
+    const script = document.createElement('script');
+    script.src = APPS_SCRIPT_URL + '?' + params.toString();
+    script.onerror = () => { clearTimeout(timeout); delete window[cbName]; reject(new Error('Network error')); };
+    document.head.appendChild(script);
+    setTimeout(() => { try { document.head.removeChild(script); } catch(e){} }, 20000);
+  });
+}
+
+function scoreToBand(score){
+  if(score>=39)return 9.0; if(score>=37)return 8.5; if(score>=35)return 8.0;
+  if(score>=33)return 7.5; if(score>=30)return 7.0; if(score>=27)return 6.5;
+  if(score>=23)return 6.0; if(score>=20)return 5.5; if(score>=16)return 5.0;
+  if(score>=13)return 4.5; if(score>=10)return 4.0; return 3.5;
+}
+
+function autoCheckScore(){
+  const answerKey = config.answerKey || {L:{},R:{}};
+  let lScore=0, rScore=0;
+  for(let i=1;i<=40;i++){
+    const key=(answerKey.L[i]||'').toString().trim().toLowerCase();
+    const given=(lAnswers[i]||'').toString().trim().toLowerCase();
+    if(key&&given===key)lScore++;
+  }
+  for(let i=1;i<=40;i++){
+    const key=(answerKey.R[i]||'').toString().trim().toLowerCase();
+    const given=(rAnswers[i]||'').toString().trim().toLowerCase();
+    if(key&&given===key)rScore++;
+  }
+  return {lScore,rScore,lBand:scoreToBand(lScore),rBand:scoreToBand(rScore)};
+}
+
+async function submitTest(){
+  if(!confirm('Submit your answers? Your scores will be saved to Google Sheets.'))return;
+  writingVals[curWriting]=document.getElementById('w-textarea').value;
+
+  const candidateData=JSON.parse(sessionStorage.getItem('candidateData')||'{}');
+  const scores = autoCheckScore();
+  const wc1 = (writingVals[1]||'').trim().split(/\s+/).filter(Boolean).length;
+  const wc2 = (writingVals[2]||'').trim().split(/\s+/).filter(Boolean).length;
+
+  const submission={
+    ...candidateData,
+    submitTime: new Date().toISOString(),
+    listening: lAnswers,
+    reading: rAnswers,
+    writing: { task1: writingVals[1], task2: writingVals[2] },
+    scores
+  };
+
+  // Download JSON backup
+  const blob=new Blob([JSON.stringify(submission,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`response_${candidateData.candidateID||'unknown'}_${Date.now()}.json`;a.click();
+
+  // Save to Google Sheets
+  const btn=document.getElementById('submit-btn');
+  btn.textContent='Saving...'; btn.disabled=true;
+  try {
+    await callSheets({
+      action:'saveScore',
+      candidateID:   candidateData.candidateID||'',
+      fullName:      candidateData.fullName||sessionStorage.getItem('candidateName')||'',
+      testSetID:     activeTestSet.setID   || '',
+      testSetName:   activeTestSet.setName || '',
+      listeningScore:scores.lScore, listeningBand:scores.lBand,
+      readingScore:  scores.rScore, readingBand:  scores.rBand,
+      writingTask1WC:wc1, writingTask2WC:wc2,
+      writingTask1:  (writingVals[1]||'').substring(0,300),
+      writingTask2:  (writingVals[2]||'').substring(0,300)
+    });
+    alert(`✅ Test submitted!\n\nListening: ${scores.lScore}/40 (Band ${scores.lBand})\nReading: ${scores.rScore}/40 (Band ${scores.rBand})\n\nScores saved to Google Sheets.`);
+  } catch(e){
+    alert(`✅ Answers downloaded.\n\nListening: ${scores.lScore}/40 (Band ${scores.lBand})\nReading: ${scores.rScore}/40 (Band ${scores.rBand})\n\n(Google Sheets save failed — JSON backup downloaded.)`);
+  } finally {
+    btn.textContent='Submitted ✓'; btn.disabled=true;
+  }
+}
+
+function buildAudioURLPlayer(url){
+  if(!url) return '';
+  if(url.includes('youtube.com')||url.includes('youtu.be')){
+    let embedURL=url;
+    if(url.includes('watch?v=')) embedURL=url.replace('watch?v=','embed/').split('&')[0];
+    else if(url.includes('youtu.be/')) embedURL='https://www.youtube.com/embed/'+url.split('youtu.be/')[1].split('?')[0];
+    return `<iframe src="${embedURL}" style="width:100%;height:180px;border:none;border-radius:8px" allowfullscreen></iframe>`;
+  }
+  return `<audio controls src="${url}" style="width:100%;border-radius:6px" controlsList="nodownload"></audio>`;
+}
+
+function escH(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+window.onload = async () => {
+  const hasSession = sessionStorage.getItem('candidateName') || sessionStorage.getItem('candidateData');
+  if(!hasSession){ window.location.href='index.html'; return; }
+  await loadConfig();
+  // Fetch active test set info
+  try {
+    const d = await callSheets({ action:'getActiveSet' });
+    if (d.success && d.set) {
+      activeTestSet = { setID: d.set.setID, setName: d.set.setName };
+      document.getElementById('hdr-badge').textContent = d.set.setName;
+    }
+  } catch(e) { console.warn('Could not fetch active set:', e); }
+  initUser();
+  buildLQs(1);
+  buildRQs();
+  loadPassages();
+  loadWritingPrompts();
+  switchLSection(1);
+  switchSection('L');
+};
+</script>
+</body>
+</html>
