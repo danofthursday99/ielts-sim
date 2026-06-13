@@ -61,21 +61,66 @@
   .field textarea{min-height:100px;line-height:1.6}
   .field input[type=file]{font-size:0.83rem;color:var(--ink2)}
 
-  /* Q EDITOR */
-  .q-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;position:relative}
-  .q-item-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  /* Q CARDS (new modal-based system) */
   .q-num-badge{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .q-type-sel{padding:4px 8px;border:1px solid var(--paper3);border-radius:5px;font-size:0.78rem;font-family:'DM Sans',sans-serif;color:var(--ink2);background:var(--paper)}
-  .q-text-input{width:100%;padding:7px 11px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.86rem;color:var(--ink);background:#fff}
-  .q-text-input:focus{outline:none;border-color:var(--blue2)}
-  .q-answer-input{width:100%;padding:6px 11px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--green);background:#f5fbf7;margin-top:8px;font-weight:600}
-  .q-answer-input:focus{outline:none;border-color:var(--green)}
-  .q-mc-opts{margin-top:8px;display:flex;flex-direction:column;gap:6px}
-  .mc-opt-row{display:flex;align-items:center;gap:8px}
-  .mc-opt-row input[type=text]{flex:1;padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-size:0.83rem;font-family:'DM Sans',sans-serif}
-  .mc-opt-row input[type=text]:focus{outline:none;border-color:var(--blue2)}
-  .mc-correct{width:18px;height:18px;accent-color:var(--green);cursor:pointer}
-  .mc-opt-label{font-size:0.75rem;color:var(--ink3);width:16px}
+  .q-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;position:relative}
+  .q-card-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .q-type-badge{background:#e8f0ff;color:var(--blue);border:1px solid #c0d0f0;border-radius:5px;padding:2px 9px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase}
+  .q-card-text{font-size:0.86rem;color:var(--ink);margin-bottom:6px;line-height:1.5}
+  .q-card-ans{display:inline-block;background:#f5fbf7;border:1px solid #a8dbb8;color:var(--green);border-radius:5px;padding:2px 10px;font-size:0.78rem;font-weight:600;margin-top:4px}
+  .q-card-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
+  .q-card-opt{font-size:0.82rem;color:var(--ink2);margin:2px 0;display:flex;align-items:center;gap:6px}
+  .q-card-opt::before{content:'';width:10px;height:10px;border:1.5px solid #888;border-radius:50%;display:inline-block;flex-shrink:0}
+  .q-card-empty{text-align:center;padding:36px 16px;color:var(--ink3);font-size:0.85rem;border:2px dashed var(--paper3);border-radius:10px;margin-bottom:10px}
+  .q-card-empty span{display:block;font-size:1.6rem;margin-bottom:8px}
+  .btn-add-q-modal{display:flex;align-items:center;gap:7px;padding:8px 18px;border:1px dashed var(--blue2);border-radius:8px;font-size:0.83rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:14px;transition:all 0.15s}
+  .btn-add-q-modal:hover{background:#f0f5ff}
+  .match-preview-box{border:1px solid #ccc;border-radius:7px;padding:8px 12px;background:#fafafa;margin-bottom:6px;font-size:0.82rem}
+  .match-preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 14px;font-size:0.8rem}
+  .match-item-line{display:flex;align-items:center;gap:8px;font-size:0.82rem;margin:2px 0}
+  .match-item-blank{border-bottom:1px solid #555;min-width:30px;text-align:center;font-weight:700;font-size:0.8rem;color:var(--green);display:inline-block}
+
+  /* MODAL */
+  .qm-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;justify-content:center;align-items:center;z-index:200}
+  .qm-overlay.open{display:flex}
+  .qm-box{background:#fff;width:580px;max-width:96vw;max-height:92vh;overflow-y:auto;border-radius:16px;border:2px solid #333;padding:26px;position:relative}
+  .qm-box::-webkit-scrollbar{width:4px}
+  .qm-box::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:2px}
+  .qm-close{position:absolute;top:14px;right:18px;font-size:22px;cursor:pointer;font-weight:bold;background:none;border:none;color:var(--ink2);line-height:1}
+  .qm-title{font-family:'Source Serif 4',serif;font-size:1.05rem;font-weight:600;color:var(--blue);margin-bottom:18px}
+  .qm-field{margin-bottom:12px}
+  .qm-field label{display:block;font-size:0.77rem;font-weight:600;color:var(--ink2);margin-bottom:4px}
+  .qm-field input[type=text],.qm-field input[type=number],.qm-field select,.qm-field textarea{width:100%;padding:8px 11px;border:1px solid var(--paper3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.87rem;color:var(--ink);background:#fff;box-sizing:border-box}
+  .qm-field input:focus,.qm-field select:focus,.qm-field textarea:focus{outline:none;border-color:var(--blue2)}
+  .qm-field textarea{min-height:52px;resize:vertical;line-height:1.5}
+  .qm-divider{border:none;border-top:1px solid var(--paper3);margin:14px 0}
+  .qm-section-label{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin:10px 0 6px}
+  .qm-opt-row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+  .qm-opt-ltr{font-weight:700;color:var(--blue);font-size:0.78rem;width:16px;flex-shrink:0}
+  .qm-opt-row input[type=text]{flex:1;padding:6px 9px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem}
+  .qm-opt-row input[type=text]:focus{outline:none;border-color:var(--blue2)}
+  .qm-opt-row input[type=checkbox],.qm-opt-row input[type=radio]{width:15px;height:15px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+  .qm-del-opt{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.9rem;padding:0;line-height:1;flex-shrink:0}
+  .qm-del-opt:hover{color:var(--red)}
+  .qm-add-opt{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1px dashed var(--blue2);border-radius:6px;font-size:0.78rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px}
+  .qm-add-opt:hover{background:#f0f5ff}
+  .qm-range-row{display:flex;align-items:center;gap:7px;font-size:0.82rem;color:var(--ink2);flex-wrap:wrap}
+  .qm-range-row input{width:55px!important;text-align:center;padding:5px 7px!important}
+  .qm-ans-field{background:#f5fbf7;border-color:#a8dbb8!important;color:var(--green)!important;font-weight:600}
+  .qm-match-choice-row{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+  .qm-match-ltr{font-weight:700;color:var(--blue);width:16px;font-size:0.78rem;flex-shrink:0}
+  .qm-match-item-row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+  .qm-match-num{font-size:0.78rem;font-weight:700;color:var(--blue);width:20px;flex-shrink:0}
+  .qm-match-item-row .item-lbl{flex:1;padding:6px 9px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem}
+  .qm-match-item-row .item-ans{width:55px;padding:6px 7px;border:1px solid var(--paper3);border-radius:6px;font-size:0.84rem;text-align:center;font-weight:700;color:var(--green)}
+  .qm-save-btn{width:100%;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:16px;font-size:0.9rem;font-family:'DM Sans',sans-serif}
+  .qm-save-btn:hover{opacity:0.9}
+  .ct2-pick-row{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:0.82rem;color:var(--ink2)}
+  .ct2-pick-row input{width:50px!important;text-align:center;padding:4px 7px!important}
+  .fc-blank-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .fc-blank-qnum{font-weight:700;color:var(--blue);font-size:0.8rem;width:32px;flex-shrink:0}
+  .fc-blank-row input{flex:1;padding:6px 9px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem}
+  .fc-blank-row .fc-ans{width:140px!important;flex:none;color:var(--green);font-weight:600;background:#f5fbf7;border-color:#a8dbb8!important}
   .section-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
   .sec-tab{padding:6px 14px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;font-weight:600;cursor:pointer;background:var(--paper);color:var(--ink2);transition:all 0.15s}
   .sec-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
@@ -161,7 +206,26 @@
   .cl-answer-row label{font-size:0.78rem;font-weight:600;color:var(--ink2)}
   .cl-answer-row input{padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--green);font-weight:600;width:120px}
 
-  /* EXTRA QUESTIONS in FC */
+  /* AUDIO SLOT */
+  .audio-slot{background:var(--paper2);border:2px dashed var(--paper3);border-radius:8px;padding:16px;text-align:center;margin-bottom:10px}
+  .audio-slot.loaded{border-color:var(--green);background:#f5fbf7}
+  .audio-slot p{font-size:0.83rem;color:var(--ink3);margin-bottom:8px}
+  .audio-slot audio{width:100%;margin-top:8px}
+
+  /* FORM COMPLETION */
+  .fc-toggle{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:10px 14px;background:var(--paper2);border-radius:8px;border:1px solid var(--border)}
+  .fc-toggle label{font-size:0.83rem;font-weight:600;color:var(--ink2);cursor:pointer}
+  .fc-toggle input[type=checkbox]{accent-color:var(--blue);width:16px;height:16px;cursor:pointer}
+  .fc-panel{background:#f0f5ff;border:1px solid #c0d0f0;border-radius:10px;padding:16px;margin-bottom:16px}
+  .fc-panel-title{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue2);margin-bottom:12px}
+  .fc-img-preview{max-width:100%;max-height:200px;border-radius:8px;margin-top:8px;display:none}
+  .fc-q-range{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:0.83rem;color:var(--ink2);flex-wrap:wrap}
+  .fc-q-range input{width:60px;padding:5px 8px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;text-align:center}
+  .fc-answers{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .fc-answer-row{display:flex;align-items:center;gap:8px}
+  .fc-answer-row label{font-size:0.78rem;font-weight:700;color:var(--blue);width:28px;flex-shrink:0}
+  .fc-answer-row input{flex:1;padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--green);font-weight:600}
+  .fc-answer-row input:focus{outline:none;border-color:var(--green)}
   .extra-qs-section{margin-top:14px;border-top:1px dashed var(--paper3);padding-top:14px}
   .extra-qs-title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
   .btn-add-q{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px dashed var(--blue2);border-radius:7px;font-size:0.82rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;transition:all 0.15s}
@@ -281,7 +345,10 @@
             <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
             <div class="fc-answers" id="rfc-answers-1"></div>
           </div>
-          <div id="R-qs-1"></div>
+          <div id="R-qs-1">
+            <button class="btn-add-q-modal" onclick="qmOpen('R',1)">+ Add Question</button>
+            <div id="qlist-R-1" class="qlist"></div>
+          </div>
         </div>
       </div>
       <div id="R-pass-2" class="r-pass hidden">
@@ -302,7 +369,10 @@
             <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
             <div class="fc-answers" id="rfc-answers-2"></div>
           </div>
-          <div id="R-qs-2"></div>
+          <div id="R-qs-2">
+            <button class="btn-add-q-modal" onclick="qmOpen('R',2)">+ Add Question</button>
+            <div id="qlist-R-2" class="qlist"></div>
+          </div>
         </div>
       </div>
       <div id="R-pass-3" class="r-pass hidden">
@@ -323,7 +393,10 @@
             <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
             <div class="fc-answers" id="rfc-answers-3"></div>
           </div>
-          <div id="R-qs-3"></div>
+          <div id="R-qs-3">
+            <button class="btn-add-q-modal" onclick="qmOpen('R',3)">+ Add Question</button>
+            <div id="qlist-R-3" class="qlist"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -692,6 +765,42 @@
   </div>
 </div>
 
+<!-- QUESTION MODAL -->
+<div class="qm-overlay" id="qm-overlay">
+  <div class="qm-box">
+    <button class="qm-close" onclick="qmClose()">×</button>
+    <div class="qm-title" id="qm-title">Add Question</div>
+
+    <div class="qm-field">
+      <label>Part / Group label (e.g. Part 1)</label>
+      <input type="text" id="qm-part" placeholder="Part 1">
+    </div>
+    <div class="qm-field">
+      <label>Instruction text</label>
+      <textarea id="qm-instr" placeholder="e.g. Complete the notes below. Write ONE WORD AND/OR A NUMBER for each answer."></textarea>
+    </div>
+
+    <hr class="qm-divider">
+
+    <div class="qm-field">
+      <label>Question Type</label>
+      <select id="qm-type" onchange="qmTypeChange()">
+        <option value="">— select type —</option>
+        <option value="fc">Form Completion (fill in the blank)</option>
+        <option value="mc">Multiple Choice (choose one)</option>
+        <option value="ct2">Choose TWO (multi-select)</option>
+        <option value="match">Matching</option>
+        <option value="short">Short Answer</option>
+        <option value="tfng">True / False / Not Given</option>
+      </select>
+    </div>
+
+    <div id="qm-type-area"></div>
+
+    <button class="qm-save-btn" onclick="qmSave()">SAVE QUESTION</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -858,7 +967,26 @@ window.onload = () => {
   }
   const saved = localStorage.getItem('ielts_admin_config');
   if (saved) { try { config = JSON.parse(saved); } catch(e){} }
-  buildAllQEditors();
+
+  // Build Section 1 HTML first (it's the default active tab)
+  // Other sections are built lazily when tab is clicked
+  const sec1Container = document.getElementById('L-sec-1');
+  if (sec1Container && !sec1Container.innerHTML.trim()) {
+    const sec = config.listening.sections[0];
+    sec1Container.innerHTML = buildLSecHTML(1);
+    // Restore audio state
+    if (sec.audioURL) { switchAudioSrc(1,'url'); document.getElementById('audio-url-input-1').value = sec.audioURL; document.getElementById('audio-url-preview-1').innerHTML = buildURLPreview(sec.audioURL); }
+    if (sec.audioName) { document.getElementById('L-audio-name-1').textContent='🎵 '+sec.audioName; document.getElementById('L-audio-slot-1').classList.add('loaded'); }
+    if (sec.audioData) { const el=document.getElementById('L-audio-el-1'); el.src=sec.audioData; el.classList.remove('hidden'); }
+    if (sec.imgData)   { const img=document.getElementById('L-img-1'); img.src=sec.imgData; img.style.display='block'; }
+    // FC state
+    if (sec.formCompletion) { document.getElementById('fc-chk-1').checked=true; document.getElementById('fc-panel-1').classList.remove('hidden'); }
+    if (sec.fcImgData) { const pr=document.getElementById('fc-img-preview-1'); pr.src=sec.fcImgData; pr.style.display='block'; }
+    if (sec.fcFrom) document.getElementById('fc-from-1').value = sec.fcFrom;
+    if (sec.fcTo)   document.getElementById('fc-to-1').value   = sec.fcTo;
+    if (sec.formCompletion) buildFCAnswers(1);
+  }
+
   buildAnswerKeyGrids();
   loadConfigToUI();
   initDrivePanel();
@@ -878,7 +1006,7 @@ function loadConfigToUI() {
   populateQEditors();
   // Answer key
   populateAnswerKey();
-  // Audio/FC state restored inside buildAllQEditors
+  // Audio/FC state restored in buildAllQEditors (now part of populateQEditors)
   restoreReadingFC();
 }
 
@@ -890,326 +1018,22 @@ function showPanel(id) {
   document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.getElementById('sb-'+id).classList.add('active');
-  // When switching to Reading panel, rebuild the active passage Q editor
+  // When switching to Reading panel, re-render the active passage Q list
   if (id === 'p-reading') {
     const activeBtn = document.querySelector('#p-reading .sec-tab.active');
     const n = activeBtn ? ([...document.querySelectorAll('#p-reading .sec-tab')].indexOf(activeBtn) + 1) : 1;
-    const ranges = [{from:1,to:13},{from:14,to:26},{from:27,to:40}][n-1];
-    buildQEditor('R-qs-'+n, 'R', ranges.from, ranges.to);
+    qmRenderList('R', n);
     restoreReadingFC();
   }
 }
-function showLSec(n, btn) {
-  document.querySelectorAll('.l-sec').forEach(s=>s.classList.add('hidden'));
-  const container = document.getElementById('L-sec-'+n);
-  container.classList.remove('hidden');
-  btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  // Build if empty
-  if (!container.innerHTML.trim()) {
-    const s = [{n:1,from:1,to:10},{n:2,from:11,to:20},{n:3,from:21,to:30},{n:4,from:31,to:40}][n-1];
-    const sec = config.listening.sections[n-1];
-    container.innerHTML = buildLSecHTML(n);
-    document.getElementById('fc-chk-'+n).checked = !!sec.formCompletion;
-    document.getElementById('fc-panel-'+n).classList.toggle('hidden', !sec.formCompletion);
-    document.getElementById('fc-from-'+n).value = sec.fcFrom || s.from;
-    document.getElementById('fc-to-'+n).value = sec.fcTo || s.to;
-    if (sec.fcImgData) { const pr=document.getElementById('fc-img-preview-'+n); pr.src=sec.fcImgData; pr.style.display='block'; }
-    if (sec.audioName) { document.getElementById('L-audio-name-'+n).textContent='🎵 '+sec.audioName; document.getElementById('L-audio-slot-'+n).classList.add('loaded'); }
-    if (sec.audioData) { const el=document.getElementById('L-audio-el-'+n); el.src=sec.audioData; el.classList.remove('hidden'); }
-    if (sec.imgData) { const img=document.getElementById('L-img-'+n); img.src=sec.imgData; img.style.display='block'; }
-    buildFCAnswers(n);
-    buildQEditor('L-qs-'+n,'L',s.from,s.to);
-    document.getElementById('L-qs-'+n).classList.toggle('hidden', !!sec.formCompletion);
-  }
-}
-function showRPass(n, btn) {
-  document.querySelectorAll('.r-pass').forEach(s=>s.classList.add('hidden'));
-  document.getElementById('R-pass-'+n).classList.remove('hidden');
-  btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  // Always rebuild Q editor for this passage to ensure it's populated
-  const ranges = [{from:1,to:13},{from:14,to:26},{from:27,to:40}][n-1];
-  const pfc = config.reading.passages_fc && config.reading.passages_fc[n];
-  buildQEditor('R-qs-'+n, 'R', ranges.from, ranges.to);
-  // Re-apply FC state
-  const chk = document.getElementById('rfc-chk-'+n);
-  if (chk && pfc) {
-    chk.checked = !!pfc.formCompletion;
-    document.getElementById('rfc-panel-'+n).classList.toggle('hidden', !pfc.formCompletion);
-    document.getElementById('R-qs-'+n).classList.toggle('hidden', !!pfc.formCompletion);
-    if (pfc.fcImgData) { const pr=document.getElementById('rfc-img-'+n); pr.src=pfc.fcImgData; pr.style.display='block'; }
-    if (pfc.fcFrom) document.getElementById('rfc-from-'+n).value = pfc.fcFrom;
-    if (pfc.fcTo)   document.getElementById('rfc-to-'+n).value   = pfc.fcTo;
-    if (pfc.formCompletion) buildRFCAnswers(n);
-  }
-}
-function showAKTab(t, btn) {
-  document.querySelectorAll('.ak-tab').forEach(s=>s.classList.add('hidden'));
-  document.getElementById('AK-'+t).classList.remove('hidden');
-  btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
 // ═══════════════════════════════════════
-// QUESTION EDITOR BUILDER
+// BUILD LISTENING SECTION HTML
 // ═══════════════════════════════════════
-function buildQEditor(containerId, sec, from, to) {
-  const c = document.getElementById(containerId);
-  if (!c) return;
-  c.innerHTML = '';
-  for (let n = from; n <= to; n++) {
-    const q = (config[sec === 'L' ? 'listening' : 'reading'].questions[n]) || { text:'', type:'short', options:['','',''], answer:'' };
-    const div = document.createElement('div');
-    div.className = 'q-item';
-    div.id = `qedit-${sec}-${n}`;
-    div.innerHTML = `
-      <div class="q-item-header">
-        <div class="q-num-badge">${n}</div>
-        <select class="q-type-sel" onchange="changeQType('${sec}',${n},this.value)">
-          <option value="short"  ${q.type==='short' ?'selected':''}>Short Answer</option>
-          <option value="mc"     ${q.type==='mc'    ?'selected':''}>Multiple Choice (A/B/C)</option>
-          <option value="cl"     ${q.type==='cl'    ?'selected':''}>Choose Letters (A–Z)</option>
-          <option value="tfng"   ${q.type==='tfng'  ?'selected':''}>True / False / NG</option>
-        </select>
-      </div>
-      <input class="q-text-input" type="text" placeholder="Question ${n} text..." value="${escH(q.text)}" oninput="saveQText('${sec}',${n},this.value)">
-      <div id="qtype-area-${sec}-${n}">${buildQTypeArea(sec, n, q)}</div>
-    `;
-    c.appendChild(div);
-  }
-
-  // Add extra questions button (always visible, used when FC is active)
-  const extraKey = sec + '-extra-' + from + '-' + to;
-  const extraQs  = config._extraQuestions && config._extraQuestions[extraKey] ? config._extraQuestions[extraKey] : [];
-  const extraDiv = document.createElement('div');
-  extraDiv.className = 'extra-qs-section';
-  extraDiv.id = `extra-section-${sec}-${from}`;
-  extraDiv.innerHTML = `
-    <div class="extra-qs-title">Additional Questions (shown alongside FC image)</div>
-    <div id="extra-qs-${sec}-${from}">
-      ${extraQs.map((eq,i) => buildExtraQItem(sec, from, i, eq)).join('')}
-    </div>
-    <button class="btn-add-q" onclick="addExtraQ('${sec}',${from},${to})">+ Add Question</button>
-  `;
-  c.appendChild(extraDiv);
-}
-
-function buildQTypeArea(sec, n, q) {
-  if (q.type === 'short') {
-    return `<input class="q-answer-input" type="text" placeholder="Correct answer..." value="${escH(q.answer||'')}" oninput="saveQAnswer('${sec}',${n},this.value)" title="Answer Key">`;
-
-  } else if (q.type === 'mc') {
-    const opts = q.options || ['','',''];
-    const correct = q.answer || '';
-    let html = '<div class="q-mc-opts">';
-    ['A','B','C'].forEach((letter,i) => {
-      html += `<div class="mc-opt-row">
-        <span class="mc-opt-label">${letter}</span>
-        <input type="text" placeholder="Option ${letter}..." value="${escH(opts[i]||'')}" oninput="saveMCOpt('${sec}',${n},${i},this.value)">
-        <input type="checkbox" class="mc-correct" title="Correct answer" ${correct===letter?'checked':''} onchange="saveMCAnswer('${sec}',${n},'${letter}',this.checked)">
-      </div>`;
-    });
-    html += '</div>';
-    return html;
-
-  } else if (q.type === 'cl') {
-    // Choose Letters — editable number of options, A-Z
-    const numOpts  = q.clCount || 5;
-    const opts     = q.options || [];
-    const correct  = q.answer  || '';   // e.g. "A, C"
-    const numPick  = q.clPick  || 2;
-    const letters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    let html = `<div class="cl-settings">
-      <label>Number of options:</label>
-      <input type="number" min="2" max="26" value="${numOpts}" onchange="updateCLCount('${sec}',${n},this.value)" style="width:60px;padding:4px 8px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem">
-      <label style="margin-left:8px">Candidates choose:</label>
-      <input type="number" min="1" max="10" value="${numPick}" onchange="updateCLPick('${sec}',${n},this.value)" style="width:50px;padding:4px 8px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem">
-      <span style="font-size:0.78rem;color:var(--ink3)">letter(s)</span>
-    </div>
-    <div class="cl-options-wrap" id="cl-opts-${sec}-${n}">`;
-    for (let i = 0; i < numOpts; i++) {
-      const letter = letters[i];
-      html += `<div class="cl-opt-row">
-        <span class="cl-opt-letter">${letter}</span>
-        <input class="cl-opt-input" type="text" placeholder="Option ${letter}..." value="${escH(opts[i]||'')}" oninput="saveCLOpt('${sec}',${n},${i},this.value)">
-      </div>`;
-    }
-    html += `</div>
-    <div class="cl-answer-row">
-      <label>Correct answer(s):</label>
-      <input type="text" value="${escH(correct)}" placeholder="e.g. A, C" oninput="saveQAnswer('${sec}',${n},this.value)" style="padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--green);font-weight:600;width:120px">
-      <span style="font-size:0.75rem;color:var(--ink3)">Separate with commas</span>
-    </div>`;
-    return html;
-
-  } else if (q.type === 'tfng') {
-    const correct = q.answer || '';
-    return `<div class="q-mc-opts"><div style="display:flex;gap:8px;margin-top:6px">
-      ${['TRUE','FALSE','NOT GIVEN'].map(v=>`<label style="display:flex;align-items:center;gap:4px;font-size:0.82rem;cursor:pointer"><input type="radio" name="tfng-${sec}-${n}" value="${v}" ${correct===v?'checked':''} onchange="saveQAnswer('${sec}',${n},this.value)"> ${v}</label>`).join('')}
-    </div></div>`;
-  }
-  return '';
-}
-
-function changeQType(sec, n, type) {
-  const store = sec==='L' ? config.listening.questions : config.reading.questions;
-  if (!store[n]) store[n] = { text:'', type:'short', options:['','',''], answer:'', clCount:5, clPick:2 };
-  store[n].type   = type;
-  store[n].answer = '';
-  if (type==='cl') { store[n].clCount=store[n].clCount||5; store[n].clPick=store[n].clPick||2; }
-  document.getElementById(`qtype-area-${sec}-${n}`).innerHTML = buildQTypeArea(sec, n, store[n]);
-}
-function saveQText(sec, n, val) {
-  const store = sec==='L' ? config.listening.questions : config.reading.questions;
-  if (!store[n]) store[n]={text:'',type:'short',options:['','',''],answer:''};
-  store[n].text = val;
-}
-function saveQAnswer(sec, n, val) {
-  const store = sec==='L' ? config.listening.questions : config.reading.questions;
-  if (!store[n]) store[n]={text:'',type:'short',options:['','',''],answer:''};
-  store[n].answer = val;
-  // Sync to answer key
-  config.answerKey[sec][n] = val;
-  const akInput = document.getElementById(`ak-${sec}-${n}`);
-  if (akInput) akInput.value = val;
-}
-function saveMCOpt(sec, n, i, val) {
-  const store = sec==='L' ? config.listening.questions : config.reading.questions;
-  if (!store[n]) store[n]={text:'',type:'mc',options:['','',''],answer:''};
-  if (!store[n].options) store[n].options=['','',''];
-  store[n].options[i] = val;
-}
-function saveMCAnswer(sec, n, letter, checked) {
-  if (!checked) return;
-  const store = sec==='L' ? config.listening.questions : config.reading.questions;
-  if (!store[n]) store[n]={text:'',type:'mc',options:['','',''],answer:''};
-  store[n].answer = letter;
-  config.answerKey[sec][n] = letter;
-  const akInput = document.getElementById(`ak-${sec}-${n}`);
-  if (akInput) akInput.value = letter;
-}
-
-// ── CHOOSE LETTERS helpers ──
-function updateCLCount(sec, n, val) {
-  const store = sec==='L' ? config.listening.questions : config.reading.questions;
-  if (!store[n]) store[n]={text:'',type:'cl',options:[],answer:'',clCount:5,clPick:2};
-  store[n].clCount = Math.min(26, Math.max(2, parseInt(val)||5));
-  // Rebuild just the type area
-  document.getElementById(`qtype-area-${sec}-${n}`).innerHTML = buildQTypeArea(sec, n, store[n]);
-}
-function updateCLPick(sec, n, val) {
-  const store = sec==='L' ? config.listening.questions : config.reading.questions;
-  if (!store[n]) store[n]={text:'',type:'cl',options:[],answer:'',clCount:5,clPick:2};
-  store[n].clPick = Math.max(1, parseInt(val)||2);
-}
-function saveCLOpt(sec, n, i, val) {
-  const store = sec==='L' ? config.listening.questions : config.reading.questions;
-  if (!store[n]) store[n]={text:'',type:'cl',options:[],answer:'',clCount:5,clPick:2};
-  if (!store[n].options) store[n].options=[];
-  store[n].options[i] = val;
-}
-
-// ── EXTRA QUESTIONS (shown alongside FC image) ──
-function getExtraKey(sec, from) { return sec+'-extra-'+from; }
-
-function addExtraQ(sec, from, to) {
-  if (!config._extraQuestions) config._extraQuestions = {};
-  const key = getExtraKey(sec, from);
-  if (!config._extraQuestions[key]) config._extraQuestions[key] = [];
-  const idx = config._extraQuestions[key].length;
-  config._extraQuestions[key].push({ text:'', type:'short', options:['','',''], answer:'', clCount:5, clPick:2 });
-  const wrap = document.getElementById(`extra-qs-${sec}-${from}`);
-  const div  = document.createElement('div');
-  div.innerHTML = buildExtraQItem(sec, from, idx, config._extraQuestions[key][idx]);
-  wrap.appendChild(div.firstElementChild);
-}
-
-function removeExtraQ(sec, from, idx) {
-  if (!config._extraQuestions) return;
-  const key = getExtraKey(sec, from);
-  if (!config._extraQuestions[key]) return;
-  config._extraQuestions[key].splice(idx, 1);
-  // Rebuild whole extra section
-  const wrap = document.getElementById(`extra-qs-${sec}-${from}`);
-  wrap.innerHTML = config._extraQuestions[key].map((eq,i) => buildExtraQItem(sec, from, i, eq)).join('');
-}
-
-function buildExtraQItem(sec, from, idx, eq) {
-  eq = eq || {text:'',type:'short',options:['','',''],answer:'',clCount:5,clPick:2};
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const numOpts = eq.clCount||5;
-  let typeArea = '';
-  if (eq.type==='short') {
-    typeArea = `<input class="q-answer-input" type="text" placeholder="Correct answer..." value="${escH(eq.answer||'')}" oninput="saveExtraQAnswer('${sec}',${from},${idx},this.value)">`;
-  } else if (eq.type==='mc') {
-    const opts=eq.options||['','',''];
-    typeArea='<div class="q-mc-opts">'+['A','B','C'].map((l,i)=>`<div class="mc-opt-row"><span class="mc-opt-label">${l}</span><input type="text" placeholder="Option ${l}..." value="${escH(opts[i]||'')}" oninput="saveExtraQMCOpt('${sec}',${from},${idx},${i},this.value)"><input type="checkbox" class="mc-correct" ${eq.answer===l?'checked':''} onchange="saveExtraQMCAnswer('${sec}',${from},${idx},'${l}',this.checked)"></div>`).join('')+'</div>';
-  } else if (eq.type==='cl') {
-    typeArea=`<div class="cl-settings"><label>Options:</label><input type="number" min="2" max="26" value="${numOpts}" onchange="updateExtraCLCount('${sec}',${from},${idx},this.value)" style="width:55px;padding:4px 7px;border:1px solid var(--paper3);border-radius:5px;font-size:0.82rem"><label style="margin-left:6px">Choose:</label><input type="number" min="1" max="10" value="${eq.clPick||2}" onchange="saveExtraQField('${sec}',${from},${idx},'clPick',this.value)" style="width:46px;padding:4px 7px;border:1px solid var(--paper3);border-radius:5px;font-size:0.82rem"></div><div class="cl-options-wrap">${Array.from({length:numOpts},(_,i)=>`<div class="cl-opt-row"><span class="cl-opt-letter">${letters[i]}</span><input class="cl-opt-input" type="text" placeholder="Option ${letters[i]}..." value="${escH((eq.options||[])[i]||'')}" oninput="saveExtraQMCOpt('${sec}',${from},${idx},${i},this.value)"></div>`).join('')}</div><div class="cl-answer-row"><label>Answer:</label><input type="text" value="${escH(eq.answer||'')}" placeholder="e.g. A, C" oninput="saveExtraQAnswer('${sec}',${from},${idx},this.value)" style="padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-size:0.83rem;color:var(--green);font-weight:600;width:110px"><span style="font-size:0.75rem;color:var(--ink3)">comma-separated</span></div>`;
-  } else if (eq.type==='tfng') {
-    typeArea=`<div style="display:flex;gap:8px;margin-top:6px">${['TRUE','FALSE','NOT GIVEN'].map(v=>`<label style="display:flex;align-items:center;gap:4px;font-size:0.82rem;cursor:pointer"><input type="radio" name="extra-tfng-${sec}-${from}-${idx}" value="${v}" ${eq.answer===v?'checked':''} onchange="saveExtraQAnswer('${sec}',${from},${idx},this.value)"> ${v}</label>`).join('')}</div>`;
-  }
-  return `<div class="extra-q-item" id="extra-qi-${sec}-${from}-${idx}">
-    <button class="extra-q-remove" onclick="removeExtraQ('${sec}',${from},${idx})" title="Remove">✕</button>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <div class="q-num-badge" style="background:var(--gold);color:var(--blue)">+</div>
-      <select class="q-type-sel" onchange="changeExtraQType('${sec}',${from},${idx},this.value)">
-        <option value="short" ${eq.type==='short'?'selected':''}>Short Answer</option>
-        <option value="mc"    ${eq.type==='mc'   ?'selected':''}>Multiple Choice (A/B/C)</option>
-        <option value="cl"    ${eq.type==='cl'   ?'selected':''}>Choose Letters (A–Z)</option>
-        <option value="tfng"  ${eq.type==='tfng' ?'selected':''}>True / False / NG</option>
-      </select>
-    </div>
-    <input class="q-text-input" type="text" placeholder="Question text..." value="${escH(eq.text||'')}" oninput="saveExtraQField('${sec}',${from},${idx},'text',this.value)">
-    <div id="extra-type-area-${sec}-${from}-${idx}">${typeArea}</div>
-  </div>`;
-}
-
-function saveExtraQField(sec, from, idx, field, val) {
-  if (!config._extraQuestions) return;
-  const key = getExtraKey(sec, from);
-  if (!config._extraQuestions[key]||!config._extraQuestions[key][idx]) return;
-  config._extraQuestions[key][idx][field] = field==='clCount'||field==='clPick' ? parseInt(val)||2 : val;
-}
-function saveExtraQAnswer(sec, from, idx, val) { saveExtraQField(sec,from,idx,'answer',val); }
-function saveExtraQMCOpt(sec, from, idx, i, val) {
-  if (!config._extraQuestions) return;
-  const key=getExtraKey(sec,from);
-  if (!config._extraQuestions[key]||!config._extraQuestions[key][idx]) return;
-  if (!config._extraQuestions[key][idx].options) config._extraQuestions[key][idx].options=[];
-  config._extraQuestions[key][idx].options[i]=val;
-}
-function saveExtraQMCAnswer(sec, from, idx, letter, checked) {
-  if (!checked) return;
-  saveExtraQField(sec,from,idx,'answer',letter);
-  document.querySelectorAll(`[name="extra-mc-${sec}-${from}-${idx}"]`).forEach(r=>r.closest('.mc-opt-row')&&r.closest('.mc-opt-row').querySelector('.mc-correct')&&(r.closest('.mc-opt-row').querySelector('.mc-correct').checked=false));
-}
-function updateExtraCLCount(sec, from, idx, val) {
-  if (!config._extraQuestions) return;
-  const key=getExtraKey(sec,from);
-  if (!config._extraQuestions[key]||!config._extraQuestions[key][idx]) return;
-  config._extraQuestions[key][idx].clCount=Math.min(26,Math.max(2,parseInt(val)||5));
-  document.getElementById(`extra-type-area-${sec}-${from}-${idx}`).outerHTML = `<div id="extra-type-area-${sec}-${from}-${idx}">${buildExtraQItem(sec,from,idx,config._extraQuestions[key][idx]).match(/<div id="extra-type-area[^>]+>([\s\S]*)<\/div>\s*<\/div>$/)?.[1]||''}</div>`;
-  // Simpler: just rebuild the whole item
-  const wrap=document.getElementById(`extra-qi-${sec}-${from}-${idx}`);
-  if(wrap){ const tmp=document.createElement('div'); tmp.innerHTML=buildExtraQItem(sec,from,idx,config._extraQuestions[key][idx]); wrap.replaceWith(tmp.firstElementChild); }
-}
-function changeExtraQType(sec, from, idx, type) {
-  if (!config._extraQuestions) return;
-  const key=getExtraKey(sec,from);
-  if (!config._extraQuestions[key]||!config._extraQuestions[key][idx]) return;
-  config._extraQuestions[key][idx].type=type;
-  config._extraQuestions[key][idx].answer='';
-  const wrap=document.getElementById(`extra-qi-${sec}-${from}-${idx}`);
-  if(wrap){ const tmp=document.createElement('div'); tmp.innerHTML=buildExtraQItem(sec,from,idx,config._extraQuestions[key][idx]); wrap.replaceWith(tmp.firstElementChild); }
-}
-
-// Build per-section HTML (audio + optional img + form-completion toggle + q editor)
 function buildLSecHTML(n) {
   const ranges = ['1–10','11–20','21–30','31–40'];
-  const from = [1,11,21,31][n-1], to = [10,20,30,40][n-1];
-  const sec  = config.listening.sections[n-1] || {};
+  const from   = [1,11,21,31][n-1];
+  const to     = [10,20,30,40][n-1];
+  const sec    = config.listening.sections[n-1] || {};
   const urlVal = escH(sec.audioURL||'');
   const hasURL = !!sec.audioURL;
   return `
@@ -1219,6 +1043,8 @@ function buildLSecHTML(n) {
         <button class="sec-tab ${!hasURL?'active':''}" id="audio-src-file-${n}" onclick="switchAudioSrc(${n},'file')" style="font-size:0.78rem;padding:5px 12px">📁 Upload File</button>
         <button class="sec-tab ${hasURL?'active':''}"  id="audio-src-url-${n}"  onclick="switchAudioSrc(${n},'url')"  style="font-size:0.78rem;padding:5px 12px">🔗 Paste URL</button>
       </div>
+
+      <!-- FILE UPLOAD -->
       <div id="audio-file-panel-${n}" ${hasURL?'style="display:none"':''}>
         <div class="audio-slot" id="L-audio-slot-${n}">
           <p id="L-audio-name-${n}">No audio loaded</p>
@@ -1226,35 +1052,44 @@ function buildLSecHTML(n) {
           <audio id="L-audio-el-${n}" controls class="hidden"></audio>
         </div>
       </div>
+
+      <!-- PASTE URL -->
       <div id="audio-url-panel-${n}" ${!hasURL?'style="display:none"':''}>
         <div class="field" style="margin-bottom:6px">
-          <label>Audio / Video URL</label>
+          <label>Audio / Video URL (YouTube, Google Drive, direct MP3)</label>
           <input type="text" id="audio-url-input-${n}"
-            placeholder="Google Drive, YouTube embed, Dropbox direct link..."
+            placeholder="https://www.youtube.com/embed/VIDEO_ID or direct audio URL"
             value="${urlVal}"
             oninput="saveAudioURL(${n},this.value)"
             style="font-family:monospace;font-size:0.82rem">
         </div>
-        <div style="font-size:0.73rem;color:var(--ink3);margin-bottom:8px;line-height:1.7;padding:8px;background:var(--paper2);border-radius:6px">
+        <div style="font-size:0.73rem;color:var(--ink3);margin-bottom:8px;padding:8px;background:var(--paper2);border-radius:6px;line-height:1.7">
+          💡 <b>YouTube (unlisted):</b> use <code>https://www.youtube.com/embed/VIDEO_ID</code><br>
           💡 <b>Google Drive:</b> share → "Anyone with link" → copy link<br>
-          💡 <b>YouTube:</b> use <code>https://www.youtube.com/embed/VIDEO_ID</code><br>
-          💡 <b>Dropbox:</b> change <code>dl=0</code> → <code>dl=1</code>
+          💡 <b>Direct MP3:</b> paste the direct .mp3 URL
         </div>
         <div id="audio-url-preview-${n}">${hasURL ? buildURLPreview(sec.audioURL) : ''}</div>
         <button class="btn btn-ghost" style="font-size:0.78rem;margin-top:8px" onclick="previewAudioURL(${n})">▶ Preview URL</button>
       </div>
+
+      <!-- SECTION IMAGE -->
       <div class="field" style="margin-top:12px">
         <label>Section Image (optional — map/diagram)</label>
         <input type="file" accept="image/*" onchange="loadSectionImg(${n},this)">
         <img id="L-img-${n}" style="max-width:100%;max-height:150px;margin-top:8px;border-radius:6px;display:none">
       </div>
     </div>
+
     <div class="card">
       <div class="card-title">Questions ${ranges[n-1]}</div>
+
+      <!-- FORM COMPLETION TOGGLE -->
       <div class="fc-toggle">
         <input type="checkbox" id="fc-chk-${n}" onchange="toggleFC(${n},this.checked)">
-        <label for="fc-chk-${n}">📋 Use Form / Note Completion layout</label>
+        <label for="fc-chk-${n}">📋 Use Form / Note Completion layout (image with numbered blanks)</label>
       </div>
+
+      <!-- FC SETTINGS -->
       <div id="fc-panel-${n}" class="fc-panel hidden">
         <div class="fc-panel-title">Form Completion Settings</div>
         <div class="field">
@@ -1265,12 +1100,18 @@ function buildLSecHTML(n) {
         <div class="fc-q-range">
           <span>Blanks cover question numbers:</span>
           <input type="number" id="fc-from-${n}" value="${from}" min="1" max="40" onchange="updateFCAnswers(${n})"> to
-          <input type="number" id="fc-to-${n}" value="${to}" min="1" max="40" onchange="updateFCAnswers(${n})">
+          <input type="number" id="fc-to-${n}"   value="${to}"   min="1" max="40" onchange="updateFCAnswers(${n})">
+          <button class="btn btn-ghost" style="padding:4px 10px;font-size:0.78rem" onclick="buildFCAnswers(${n})">Apply</button>
         </div>
         <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
         <div class="fc-answers" id="fc-answers-${n}"></div>
       </div>
-      <div id="L-qs-${n}"></div>
+
+      <!-- QUESTION LIST (modal-based) -->
+      <div id="L-qs-${n}">
+        <div id="qlist-L-${n}"></div>
+        <button class="btn-add-q-modal" onclick="qmOpen('L',${n},null)">+ Add Question</button>
+      </div>
     </div>`;
 }
 
@@ -1307,50 +1148,9 @@ function previewAudioURL(n) {
   toast('Preview updated');
 }
 
-function buildAllQEditors() {
-  const secData = [
-    {n:1,from:1,to:10},{n:2,from:11,to:20},{n:3,from:21,to:30},{n:4,from:31,to:40}
-  ];
-  secData.forEach(s => {
-    const container = document.getElementById('L-sec-'+s.n);
-    container.innerHTML = buildLSecHTML(s.n);
-    const sec = config.listening.sections[s.n-1];
-    // Restore FC state
-    const chk = document.getElementById('fc-chk-'+s.n);
-    if (chk) {
-      chk.checked = !!sec.formCompletion;
-      document.getElementById('fc-panel-'+s.n).classList.toggle('hidden', !sec.formCompletion);
-      if (sec.fcImgData) {
-        const pr = document.getElementById('fc-img-preview-'+s.n);
-        pr.src = sec.fcImgData; pr.style.display='block';
-      }
-      document.getElementById('fc-from-'+s.n).value = sec.fcFrom || s.from;
-      document.getElementById('fc-to-'+s.n).value = sec.fcTo || s.to;
-      buildFCAnswers(s.n);
-    }
-    // Restore audio
-    if (sec.audioName) {
-      document.getElementById('L-audio-name-'+s.n).textContent = '🎵 '+sec.audioName;
-      document.getElementById('L-audio-slot-'+s.n).classList.add('loaded');
-      if (sec.audioData) {
-        const el = document.getElementById('L-audio-el-'+s.n);
-        el.src=sec.audioData; el.classList.remove('hidden');
-      }
-    }
-    if (sec.imgData) {
-      const img = document.getElementById('L-img-'+s.n);
-      img.src=sec.imgData; img.style.display='block';
-    }
-    // Build regular q editor (hidden when FC active)
-    buildQEditor('L-qs-'+s.n,'L',s.from,s.to);
-    document.getElementById('L-qs-'+s.n).classList.toggle('hidden', !!sec.formCompletion);
-  });
-}
-
 function toggleFC(n, enabled) {
   config.listening.sections[n-1].formCompletion = enabled;
   document.getElementById('fc-panel-'+n).classList.toggle('hidden', !enabled);
-  document.getElementById('L-qs-'+n).classList.toggle('hidden', enabled);
   if (enabled) buildFCAnswers(n);
 }
 
@@ -1381,7 +1181,7 @@ function buildFCAnswers(n) {
   if (!wrap) return;
   wrap.innerHTML = '';
   for (let i=from; i<=to; i++) {
-    const val = config.answerKey.L[i]||'';
+    const val = config.answerKey.L[i] || '';
     const row = document.createElement('div');
     row.className = 'fc-answer-row';
     row.innerHTML = `<label>${i}</label><input type="text" placeholder="Answer..." value="${escH(val)}" oninput="saveFCAnswer(${n},${i},this.value)">`;
@@ -1391,19 +1191,526 @@ function buildFCAnswers(n) {
 
 function saveFCAnswer(n, qNum, val) {
   config.answerKey.L[qNum] = val;
-  if (!config.listening.questions[qNum]) config.listening.questions[qNum]={text:'Blank '+qNum,type:'fc',answer:''};
-  config.listening.questions[qNum].answer = val;
-  config.listening.questions[qNum].type = 'fc';
+  config.listening.sections[n-1][`fcAnswer_${qNum}`] = val;
   const akInput = document.getElementById('ak-L-'+qNum);
   if (akInput) akInput.value = val;
 }
 
-function populateQEditors() {
-  // Listening sections — rebuild all 4
-  buildAllQEditors();
-  // Reading — rebuild passage 1 only (others rebuilt on tab click)
-  buildQEditor('R-qs-1','R',1,13);
+// ═══════════════════════════════════════
+function showLSec(n, btn) {
+  document.querySelectorAll('.l-sec').forEach(s=>s.classList.add('hidden'));
+  const container = document.getElementById('L-sec-'+n);
+  container.classList.remove('hidden');
+  btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const s   = [{n:1,from:1,to:10},{n:2,from:11,to:20},{n:3,from:21,to:30},{n:4,from:31,to:40}][n-1];
+  const sec = config.listening.sections[n-1];
+
+  // Always rebuild the HTML shell (cheap, ensures containers exist)
+  container.innerHTML = buildLSecHTML(n);
+
+  // Restore audio state
+  if (sec.audioURL) {
+    switchAudioSrc(n,'url');
+    document.getElementById('audio-url-input-'+n).value = sec.audioURL;
+    document.getElementById('audio-url-preview-'+n).innerHTML = buildURLPreview(sec.audioURL);
+  }
+  if (sec.audioName) { document.getElementById('L-audio-name-'+n).textContent='🎵 '+sec.audioName; document.getElementById('L-audio-slot-'+n).classList.add('loaded'); }
+  if (sec.audioData) { const el=document.getElementById('L-audio-el-'+n); el.src=sec.audioData; el.classList.remove('hidden'); }
+  if (sec.imgData)   { const img=document.getElementById('L-img-'+n); img.src=sec.imgData; img.style.display='block'; }
+
+  // Restore FC state
+  document.getElementById('fc-chk-'+n).checked = !!sec.formCompletion;
+  document.getElementById('fc-panel-'+n).classList.toggle('hidden', !sec.formCompletion);
+  document.getElementById('fc-from-'+n).value = sec.fcFrom || s.from;
+  document.getElementById('fc-to-'+n).value   = sec.fcTo   || s.to;
+  if (sec.fcImgData) { const pr=document.getElementById('fc-img-preview-'+n); pr.src=sec.fcImgData; pr.style.display='block'; }
+  if (sec.formCompletion) buildFCAnswers(n);
+
+  // Always render question list
+  qmRenderList('L', n);
 }
+function showRPass(n, btn) {
+  document.querySelectorAll('.r-pass').forEach(s=>s.classList.add('hidden'));
+  document.getElementById('R-pass-'+n).classList.remove('hidden');
+  btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  // Re-render Q list for this passage
+  const pfc = config.reading.passages_fc && config.reading.passages_fc[n];
+  qmRenderList('R', n);
+  // Re-apply FC state
+  const chk = document.getElementById('rfc-chk-'+n);
+  if (chk && pfc) {
+    chk.checked = !!pfc.formCompletion;
+    document.getElementById('rfc-panel-'+n).classList.toggle('hidden', !pfc.formCompletion);
+    document.getElementById('R-qs-'+n).classList.toggle('hidden', !!pfc.formCompletion);
+    if (pfc.fcImgData) { const pr=document.getElementById('rfc-img-'+n); pr.src=pfc.fcImgData; pr.style.display='block'; }
+    if (pfc.fcFrom) document.getElementById('rfc-from-'+n).value = pfc.fcFrom;
+    if (pfc.fcTo)   document.getElementById('rfc-to-'+n).value   = pfc.fcTo;
+    if (pfc.formCompletion) buildRFCAnswers(n);
+  }
+}
+function showAKTab(t, btn) {
+  document.querySelectorAll('.ak-tab').forEach(s=>s.classList.add('hidden'));
+  document.getElementById('AK-'+t).classList.remove('hidden');
+  btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+
+// ═══════════════════════════════════════
+// QUESTION STORE — modal-based, per section/passage
+// config.listening.qBlocks[n]  = [{type,part,instr,...}, ...]
+// config.reading.qBlocks[n]    = [{type,part,instr,...}, ...]
+// ═══════════════════════════════════════
+const LTRS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+function getQBlocks(sec, n) {
+  if (sec === 'L') {
+    if (!config.listening.qBlocks) config.listening.qBlocks = {};
+    if (!config.listening.qBlocks[n]) config.listening.qBlocks[n] = [];
+    return config.listening.qBlocks[n];
+  } else {
+    if (!config.reading.qBlocks) config.reading.qBlocks = {};
+    if (!config.reading.qBlocks[n]) config.reading.qBlocks[n] = [];
+    return config.reading.qBlocks[n];
+  }
+}
+
+// ── MODAL STATE ──
+let _qmSec = 'L', _qmSecN = 1, _qmEditIdx = null;
+
+function qmOpen(sec, n, editIdx) {
+  editIdx = (editIdx !== undefined) ? editIdx : null;
+  _qmSec = sec; _qmSecN = n; _qmEditIdx = editIdx;
+  document.getElementById('qm-title').textContent = editIdx !== null ? 'Edit Question' : 'Add Question';
+  if (editIdx !== null) {
+    const q = getQBlocks(sec, n)[editIdx];
+    document.getElementById('qm-part').value  = q.part  || '';
+    document.getElementById('qm-instr').value = q.instr || '';
+    document.getElementById('qm-type').value  = q.type  || '';
+    qmTypeChange(q);
+  } else {
+    document.getElementById('qm-part').value  = '';
+    document.getElementById('qm-instr').value = '';
+    document.getElementById('qm-type').value  = '';
+    document.getElementById('qm-type-area').innerHTML = '';
+  }
+  document.getElementById('qm-overlay').classList.add('open');
+}
+function qmClose() {
+  document.getElementById('qm-overlay').classList.remove('open');
+  _qmEditIdx = null;
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('qm-overlay').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('qm-overlay')) qmClose();
+  });
+});
+
+// ── TYPE CHANGE ──
+function qmTypeChange(existing) {
+  existing = existing || null;
+  const type = document.getElementById('qm-type').value;
+  const area = document.getElementById('qm-type-area');
+  area.innerHTML = '';
+  if (!type) return;
+  const q = existing || {};
+
+  if (type === 'fc') {
+    const from   = q.fcFrom || 1;
+    const to     = q.fcTo   || 1;
+    const blanks = q.blanks || [{label:'',answer:''}];
+    area.innerHTML = `
+      <div class="qm-field">
+        <label>Question number range for this block</label>
+        <div class="qm-range-row">
+          Q <input type="number" id="qm-fc-from" min="1" max="99" value="${from}" oninput="qmRebuildFCBlanks()">
+          to Q <input type="number" id="qm-fc-to" min="1" max="99" value="${to}" oninput="qmRebuildFCBlanks()">
+        </div>
+      </div>
+      <div class="qm-section-label">Blanks — label &amp; correct answer</div>
+      <div id="qm-fc-blanks"></div>`;
+    qmRebuildFCBlanks(blanks);
+
+  } else if (type === 'mc') {
+    const opts   = q.options || ['','',''];
+    const answer = q.answer  || '';
+    let html = `
+      <div class="qm-field">
+        <label>Question number</label>
+        <input type="number" id="qm-mc-qnum" min="1" max="99" value="${q.qNum||''}" placeholder="e.g. 11">
+      </div>
+      <div class="qm-field">
+        <label>Question text</label>
+        <textarea id="qm-mc-qtext" placeholder="What does the speaker say about...?">${escH(q.qText||'')}</textarea>
+      </div>
+      <div class="qm-section-label">Options — tick the correct one</div>
+      <div id="qm-mc-opts">`;
+    opts.forEach((o, i) => { html += qmMCOptRow(i, o, answer === LTRS[i]); });
+    html += `</div><button class="qm-add-opt" onclick="qmAddMCOpt()">+ Add Option</button>`;
+    area.innerHTML = html;
+
+  } else if (type === 'ct2') {
+    const pick    = q.pick    || 2;
+    const opts    = q.options || ['','','','',''];
+    const answers = q.answers || [];
+    let html = `
+      <div class="qm-field">
+        <label>Question numbers (e.g. Q14 and Q15)</label>
+        <div class="qm-range-row">
+          Q <input type="number" id="qm-ct2-qfrom" min="1" max="99" value="${q.qFrom||''}" placeholder="14">
+          &amp; Q <input type="number" id="qm-ct2-qto" min="1" max="99" value="${q.qTo||''}" placeholder="15">
+        </div>
+      </div>
+      <div class="qm-field">
+        <label>Question / prompt text</label>
+        <textarea id="qm-ct2-qtext" placeholder="Which TWO of the following...?">${escH(q.qText||'')}</textarea>
+      </div>
+      <div class="ct2-pick-row">
+        <span>Candidates must choose</span>
+        <input type="number" id="qm-ct2-pick" min="1" max="10" value="${pick}">
+        <span>answer(s)</span>
+      </div>
+      <div class="qm-section-label">Options — tick all correct answers</div>
+      <div id="qm-ct2-opts">`;
+    opts.forEach((o, i) => { html += qmCT2OptRow(i, o, answers.includes(LTRS[i])); });
+    html += `</div><button class="qm-add-opt" onclick="qmAddCT2Opt()">+ Add Option</button>`;
+    area.innerHTML = html;
+
+  } else if (type === 'match') {
+    const choices = q.matchChoices || ['','','','',''];
+    const items   = q.matchItems   || [{num:'',label:'',answer:''}];
+    let html = `
+      <div class="qm-field">
+        <label>Shared prompt / context (optional)</label>
+        <textarea id="qm-match-prompt" placeholder="What does the speaker say about each of the following...">${escH(q.matchPrompt||'')}</textarea>
+      </div>
+      <div class="qm-section-label">Choice Box (A, B, C… shown to candidates)</div>
+      <div id="qm-match-choices">`;
+    choices.forEach((c, i) => { html += qmMatchChoiceRow(i, c); });
+    html += `</div><button class="qm-add-opt" onclick="qmAddMatchChoice()">+ Add Choice</button>
+      <div class="qm-section-label" style="margin-top:12px">Items to Match — Q number, label &amp; correct letter</div>
+      <div id="qm-match-items">`;
+    items.forEach((it, i) => { html += qmMatchItemRow(i, it); });
+    html += `</div><button class="qm-add-opt" onclick="qmAddMatchItem()">+ Add Item</button>`;
+    area.innerHTML = html;
+
+  } else if (type === 'short') {
+    area.innerHTML = `
+      <div class="qm-field">
+        <label>Question number</label>
+        <input type="number" id="qm-short-qnum" min="1" max="99" value="${q.qNum||''}" placeholder="e.g. 5">
+      </div>
+      <div class="qm-field">
+        <label>Question / stem text</label>
+        <textarea id="qm-short-qtext" placeholder="Question text...">${escH(q.qText||'')}</textarea>
+      </div>
+      <div class="qm-field">
+        <label>Correct Answer</label>
+        <input type="text" id="qm-short-ans" class="qm-ans-field" placeholder="e.g. library" value="${escH(q.answer||'')}">
+      </div>`;
+
+  } else if (type === 'tfng') {
+    const ans = q.answer || '';
+    area.innerHTML = `
+      <div class="qm-field">
+        <label>Question number</label>
+        <input type="number" id="qm-tfng-qnum" min="1" max="99" value="${q.qNum||''}" placeholder="e.g. 7">
+      </div>
+      <div class="qm-field">
+        <label>Statement text</label>
+        <textarea id="qm-tfng-qtext" placeholder="Statement...">${escH(q.qText||'')}</textarea>
+      </div>
+      <div class="qm-section-label">Correct Answer</div>
+      <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
+        ${['TRUE','FALSE','NOT GIVEN'].map(v=>`<label style="display:flex;align-items:center;gap:5px;font-size:0.84rem;cursor:pointer;padding:6px 12px;border:1px solid var(--paper3);border-radius:7px;background:${ans===v?'#f0fff4':'#fff'}"><input type="radio" name="qm-tfng" value="${v}" ${ans===v?'checked':''} style="accent-color:var(--green)"> ${v}</label>`).join('')}
+      </div>`;
+  }
+}
+
+// ── ROW BUILDERS ──
+function qmMCOptRow(i, val, correct) {
+  return `<div class="qm-opt-row" id="qm-mc-opt-${i}">
+    <span class="qm-opt-ltr">${LTRS[i]}</span>
+    <input type="text" class="qm-mc-val" placeholder="Option ${LTRS[i]}..." value="${escH(val)}" oninput="qmSyncMCLabels()">
+    <input type="checkbox" class="qm-mc-chk" ${correct?'checked':''} onchange="qmMCOnlyOne(this,${i})">
+    <button class="qm-del-opt" onclick="qmRemoveMCOpt(${i})">x</button>
+  </div>`;
+}
+function qmAddMCOpt() {
+  const wrap = document.getElementById('qm-mc-opts');
+  const i = wrap.querySelectorAll('.qm-opt-row').length;
+  const d = document.createElement('div'); d.innerHTML = qmMCOptRow(i,'',false);
+  wrap.appendChild(d.firstElementChild); qmSyncMCLabels();
+}
+function qmRemoveMCOpt(i) {
+  const rows = [...document.querySelectorAll('#qm-mc-opts .qm-opt-row')];
+  if (rows.length <= 2) return; rows[i] && rows[i].remove(); qmSyncMCLabels();
+}
+function qmSyncMCLabels() {
+  document.querySelectorAll('#qm-mc-opts .qm-opt-row').forEach((r,i)=>{
+    r.id=`qm-mc-opt-${i}`; r.querySelector('.qm-opt-ltr').textContent=LTRS[i];
+  });
+}
+function qmMCOnlyOne(el, i) {
+  document.querySelectorAll('#qm-mc-opts .qm-mc-chk').forEach((c,j)=>{ if(j!==i) c.checked=false; });
+}
+
+function qmCT2OptRow(i, val, correct) {
+  return `<div class="qm-opt-row" id="qm-ct2-opt-${i}">
+    <span class="qm-opt-ltr">${LTRS[i]}</span>
+    <input type="text" class="qm-ct2-val" placeholder="Option ${LTRS[i]}..." value="${escH(val)}" oninput="qmSyncCT2Labels()">
+    <input type="checkbox" class="qm-ct2-chk" ${correct?'checked':''}>
+    <button class="qm-del-opt" onclick="qmRemoveCT2Opt(${i})">x</button>
+  </div>`;
+}
+function qmAddCT2Opt() {
+  const wrap = document.getElementById('qm-ct2-opts');
+  const i = wrap.querySelectorAll('.qm-opt-row').length;
+  const d = document.createElement('div'); d.innerHTML = qmCT2OptRow(i,'',false);
+  wrap.appendChild(d.firstElementChild); qmSyncCT2Labels();
+}
+function qmRemoveCT2Opt(i) {
+  const rows=[...document.querySelectorAll('#qm-ct2-opts .qm-opt-row')];
+  if(rows.length<=2)return; rows[i]&&rows[i].remove(); qmSyncCT2Labels();
+}
+function qmSyncCT2Labels() {
+  document.querySelectorAll('#qm-ct2-opts .qm-opt-row').forEach((r,i)=>{
+    r.id=`qm-ct2-opt-${i}`; r.querySelector('.qm-opt-ltr').textContent=LTRS[i];
+  });
+}
+
+function qmMatchChoiceRow(i, val) {
+  return `<div class="qm-match-choice-row" id="qm-mc-ch-${i}">
+    <span class="qm-match-ltr">${LTRS[i]}</span>
+    <input type="text" class="qm-mc-choice-val" placeholder="Choice ${LTRS[i]}..." value="${escH(val)}" style="flex:1;padding:6px 9px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem">
+    <button class="qm-del-opt" onclick="qmRemoveMatchChoice(${i})">x</button>
+  </div>`;
+}
+function qmAddMatchChoice() {
+  const wrap=document.getElementById('qm-match-choices');
+  const i=wrap.querySelectorAll('.qm-match-choice-row').length;
+  const d=document.createElement('div'); d.innerHTML=qmMatchChoiceRow(i,'');
+  wrap.appendChild(d.firstElementChild); qmSyncChoiceLetters();
+}
+function qmRemoveMatchChoice(i) {
+  const rows=[...document.querySelectorAll('#qm-match-choices .qm-match-choice-row')];
+  if(rows.length<=2)return; rows[i]&&rows[i].remove(); qmSyncChoiceLetters();
+}
+function qmSyncChoiceLetters() {
+  document.querySelectorAll('#qm-match-choices .qm-match-choice-row').forEach((r,i)=>{
+    r.id=`qm-mc-ch-${i}`; r.querySelector('.qm-match-ltr').textContent=LTRS[i];
+  });
+}
+function qmMatchItemRow(i, item) {
+  return `<div class="qm-match-item-row" id="qm-mi-${i}">
+    <span class="qm-match-num">Q</span>
+    <input type="number" class="item-qnum" style="width:54px;padding:6px 7px;border:1px solid var(--paper3);border-radius:6px;font-size:0.84rem;text-align:center" min="1" max="99" placeholder="No." value="${escH(item.num||'')}">
+    <input type="text" class="item-lbl" placeholder="e.g. Fundraising..." value="${escH(item.label||'')}">
+    <input type="text" class="item-ans" maxlength="2" placeholder="A" value="${escH(item.answer||'')}">
+    <button class="qm-del-opt" onclick="qmRemoveMatchItem(${i})">x</button>
+  </div>`;
+}
+function qmAddMatchItem() {
+  const wrap=document.getElementById('qm-match-items');
+  const i=wrap.querySelectorAll('.qm-match-item-row').length;
+  const d=document.createElement('div'); d.innerHTML=qmMatchItemRow(i,{});
+  wrap.appendChild(d.firstElementChild);
+}
+function qmRemoveMatchItem(i) {
+  const rows=[...document.querySelectorAll('#qm-match-items .qm-match-item-row')];
+  if(rows.length<=1)return; rows[i]&&rows[i].remove();
+}
+
+function qmRebuildFCBlanks(existing) {
+  existing = existing || null;
+  const fromEl = document.getElementById('qm-fc-from');
+  const toEl   = document.getElementById('qm-fc-to');
+  if (!fromEl || !toEl) return;
+  const from = parseInt(fromEl.value)||1;
+  const to   = parseInt(toEl.value)||1;
+  const wrap = document.getElementById('qm-fc-blanks'); if(!wrap) return;
+  const cur  = existing || [...wrap.querySelectorAll('.fc-blank-row')].map(r=>({
+    label:  r.querySelector('.fc-lbl-in').value,
+    answer: r.querySelector('.fc-ans-in').value
+  }));
+  wrap.innerHTML='';
+  for (let i=from; i<=to; i++) {
+    const b = cur[i-from] || {label:'',answer:''};
+    const row = document.createElement('div'); row.className='fc-blank-row';
+    row.innerHTML=`<span class="fc-blank-qnum">Q${i}</span>
+      <input type="text" class="fc-lbl-in" placeholder="Label / hint (optional)" value="${escH(b.label||'')}">
+      <input type="text" class="fc-ans-in fc-ans" placeholder="Answer" value="${escH(b.answer||'')}">`;
+    wrap.appendChild(row);
+  }
+}
+
+// ── SAVE ──
+function qmSave() {
+  const type  = document.getElementById('qm-type').value;
+  const part  = document.getElementById('qm-part').value.trim();
+  const instr = document.getElementById('qm-instr').value.trim();
+  if (!type) { alert('Please select a question type.'); return; }
+
+  let q = { type, part, instr };
+
+  if (type === 'fc') {
+    const from   = parseInt(document.getElementById('qm-fc-from').value)||1;
+    const to     = parseInt(document.getElementById('qm-fc-to').value)||from;
+    const blanks = [...document.querySelectorAll('#qm-fc-blanks .fc-blank-row')].map((r,i)=>({
+      num:    from+i,
+      label:  r.querySelector('.fc-lbl-in').value.trim(),
+      answer: r.querySelector('.fc-ans-in').value.trim()
+    }));
+    Object.assign(q, {fcFrom:from,fcTo:to,blanks});
+    blanks.forEach(b => {
+      config.answerKey[_qmSec][b.num] = b.answer;
+      const el = document.getElementById('ak-'+_qmSec+'-'+b.num);
+      if(el) el.value = b.answer;
+    });
+
+  } else if (type === 'mc') {
+    const qNum  = parseInt(document.getElementById('qm-mc-qnum').value)||null;
+    const qText = document.getElementById('qm-mc-qtext').value.trim();
+    const opts  = [...document.querySelectorAll('#qm-mc-opts .qm-mc-val')].map(i=>i.value.trim());
+    const ci    = [...document.querySelectorAll('#qm-mc-opts .qm-mc-chk')].findIndex(c=>c.checked);
+    const answer= ci>=0 ? LTRS[ci] : '';
+    Object.assign(q, {qNum,qText,options:opts,answer});
+    if(qNum && answer){ config.answerKey[_qmSec][qNum]=answer; const el=document.getElementById('ak-'+_qmSec+'-'+qNum); if(el)el.value=answer; }
+
+  } else if (type === 'ct2') {
+    const qFrom   = parseInt(document.getElementById('qm-ct2-qfrom').value)||null;
+    const qTo     = parseInt(document.getElementById('qm-ct2-qto').value)||null;
+    const qText   = document.getElementById('qm-ct2-qtext').value.trim();
+    const pick    = parseInt(document.getElementById('qm-ct2-pick').value)||2;
+    const opts    = [...document.querySelectorAll('#qm-ct2-opts .qm-ct2-val')].map(i=>i.value.trim());
+    const answers = [...document.querySelectorAll('#qm-ct2-opts .qm-ct2-chk')].map((c,i)=>c.checked?LTRS[i]:null).filter(Boolean);
+    Object.assign(q, {qFrom,qTo,qText,pick,options:opts,answers});
+
+  } else if (type === 'match') {
+    const matchPrompt  = document.getElementById('qm-match-prompt').value.trim();
+    const matchChoices = [...document.querySelectorAll('#qm-match-choices .qm-mc-choice-val')].map(i=>i.value.trim());
+    const matchItems   = [...document.querySelectorAll('#qm-match-items .qm-match-item-row')].map(r=>({
+      num:    r.querySelector('.item-qnum').value.trim(),
+      label:  r.querySelector('.item-lbl').value.trim(),
+      answer: r.querySelector('.item-ans').value.trim().toUpperCase()
+    }));
+    Object.assign(q, {matchPrompt,matchChoices,matchItems});
+    matchItems.forEach(it=>{
+      if(it.num && it.answer){ config.answerKey[_qmSec][it.num]=it.answer; const el=document.getElementById('ak-'+_qmSec+'-'+it.num); if(el)el.value=it.answer; }
+    });
+
+  } else if (type === 'short') {
+    const qNum  = parseInt(document.getElementById('qm-short-qnum').value)||null;
+    const qText = document.getElementById('qm-short-qtext').value.trim();
+    const answer= document.getElementById('qm-short-ans').value.trim();
+    Object.assign(q, {qNum,qText,answer});
+    if(qNum && answer){ config.answerKey[_qmSec][qNum]=answer; const el=document.getElementById('ak-'+_qmSec+'-'+qNum); if(el)el.value=answer; }
+
+  } else if (type === 'tfng') {
+    const qNum  = parseInt(document.getElementById('qm-tfng-qnum').value)||null;
+    const qText = document.getElementById('qm-tfng-qtext').value.trim();
+    const chk   = document.querySelector('input[name="qm-tfng"]:checked');
+    const answer= chk ? chk.value : '';
+    Object.assign(q, {qNum,qText,answer});
+    if(qNum && answer){ config.answerKey[_qmSec][qNum]=answer; const el=document.getElementById('ak-'+_qmSec+'-'+qNum); if(el)el.value=answer; }
+  }
+
+  const blocks = getQBlocks(_qmSec, _qmSecN);
+  if (_qmEditIdx !== null) blocks[_qmEditIdx] = q; else blocks.push(q);
+  qmClose();
+  qmRenderList(_qmSec, _qmSecN);
+  toast('Question saved!');
+}
+
+// ── RENDER CARDS ──
+function qmRenderList(sec, n) {
+  const listId = 'qlist-'+sec+'-'+n;
+  const wrap = document.getElementById(listId);
+  if (!wrap) return;
+  const blocks = getQBlocks(sec, n);
+  const typeLbl = {fc:'Form Completion',mc:'Multiple Choice',ct2:'Choose TWO',match:'Matching',short:'Short Answer',tfng:'T/F/NG'};
+
+  if (!blocks.length) {
+    wrap.innerHTML = '<div class="q-card-empty"><span>📝</span>No questions yet. Click <b>+ Add Question</b> to get started.</div>';
+    return;
+  }
+  wrap.innerHTML = '';
+  blocks.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = qmCardHTML(q, i, sec, n);
+    wrap.appendChild(card);
+  });
+}
+
+function qmCardHTML(q, i, sec, n) {
+  const typeLbl = {fc:'Form Completion',mc:'Multiple Choice',ct2:'Choose TWO',match:'Matching',short:'Short Answer',tfng:'T/F/NG'};
+  const badge   = '<span class="q-type-badge">'+( typeLbl[q.type]||q.type )+'</span>';
+  const partTag = q.part ? '<span style="font-size:0.73rem;color:var(--ink3)">'+escH(q.part)+'</span>' : '';
+  const instr   = q.instr ? '<div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;font-style:italic">'+escH(q.instr)+'</div>' : '';
+  let body = '';
+
+  if (q.type === 'fc') {
+    body = '<div style="font-size:0.8rem;color:var(--ink2);margin-bottom:4px">Q'+q.fcFrom+'&ndash;Q'+q.fcTo+'</div>';
+    (q.blanks||[]).forEach(function(b){
+      body += '<div style="margin:3px 0;font-size:0.83rem"><b>Q'+b.num+'</b> '+escH(b.label||'')+' <span style="border-bottom:1px dotted #888;display:inline-block;min-width:80px;text-align:center;font-size:0.8rem;color:var(--ink3)">'+(escH(b.answer)||'___')+'</span> <span class="q-card-ans">'+escH(b.answer)+'</span></div>';
+    });
+  } else if (q.type === 'mc') {
+    body = '<div style="font-size:0.82rem;font-weight:700;color:var(--blue);margin-bottom:4px">Q'+(q.qNum||'?')+'</div>';
+    body += '<div class="q-card-text">'+escH(q.qText||'')+'</div>';
+    (q.options||[]).forEach(function(o,j){ body += '<div class="q-card-opt">'+LTRS[j]+'. '+escH(o)+'</div>'; });
+    if(q.answer) body += '<span class="q-card-ans">&#10003; '+q.answer+'</span>';
+  } else if (q.type === 'ct2') {
+    body = '<div style="font-size:0.8rem;color:var(--ink3);margin-bottom:4px">Q'+(q.qFrom||'?')+' &amp; Q'+(q.qTo||'?')+' &mdash; Choose '+(q.pick||2)+'</div>';
+    body += '<div class="q-card-text">'+escH(q.qText||'')+'</div>';
+    (q.options||[]).forEach(function(o,j){ body += '<div class="q-card-opt">'+LTRS[j]+'. '+escH(o)+'</div>'; });
+    if((q.answers||[]).length) body += '<span class="q-card-ans">&#10003; '+q.answers.join(', ')+'</span>';
+  } else if (q.type === 'match') {
+    if(q.matchPrompt) body += '<div class="q-card-text">'+escH(q.matchPrompt)+'</div>';
+    body += '<div class="match-preview-box"><div class="match-preview-grid">';
+    (q.matchChoices||[]).forEach(function(c,j){ body += '<div><b>'+LTRS[j]+'</b> '+escH(c)+'</div>'; });
+    body += '</div></div>';
+    (q.matchItems||[]).forEach(function(it){ body += '<div class="match-item-line"><b>Q'+(it.num||'?')+'</b> '+escH(it.label||'')+' <span class="match-item-blank">'+(escH(it.answer)||'_')+'</span></div>'; });
+  } else if (q.type === 'short') {
+    body = '<div style="font-size:0.82rem;font-weight:700;color:var(--blue);margin-bottom:4px">Q'+(q.qNum||'?')+'</div>';
+    body += '<div class="q-card-text">'+escH(q.qText||'')+'</div>';
+    if(q.answer) body += '<span class="q-card-ans">&#10003; '+escH(q.answer)+'</span>';
+  } else if (q.type === 'tfng') {
+    body = '<div style="font-size:0.82rem;font-weight:700;color:var(--blue);margin-bottom:4px">Q'+(q.qNum||'?')+'</div>';
+    body += '<div class="q-card-text">'+escH(q.qText||'')+'</div>';
+    if(q.answer) body += '<span class="q-card-ans">&#10003; '+escH(q.answer)+'</span>';
+  }
+
+  return '<div class="q-card-header"><div class="q-num-badge">'+(i+1)+'</div>'+badge+' '+partTag+'</div>'+
+    instr+body+
+    '<div class="q-card-actions">'+
+    '<button class="btn btn-green" style="padding:4px 12px;font-size:0.75rem" onclick="qmOpen(\''+sec+'\','+n+','+i+')">Edit</button>'+
+    '<button class="btn btn-ghost" style="padding:4px 12px;font-size:0.75rem" onclick="qmDup(\''+sec+'\','+n+','+i+')">Duplicate</button>'+
+    '<button class="btn btn-red"   style="padding:4px 12px;font-size:0.75rem" onclick="qmRemove(\''+sec+'\','+n+','+i+')">Remove</button>'+
+    '</div>';
+}
+
+function qmDup(sec, n, i) {
+  const blocks = getQBlocks(sec, n);
+  blocks.push(JSON.parse(JSON.stringify(blocks[i])));
+  qmRenderList(sec, n); toast('Duplicated!');
+}
+function qmRemove(sec, n, i) {
+  if (!confirm('Remove this question?')) return;
+  getQBlocks(sec, n).splice(i, 1);
+  qmRenderList(sec, n);
+}
+
+function populateQEditors() {
+  // Only render Section 1 (others built lazily on tab click)
+  qmRenderList('L', 1);
+  // Reading passage 1 (active by default)
+  [1,2,3].forEach(function(n){ qmRenderList('R', n); });
+}
+
 
 // ═══════════════════════════════════════
 // ANSWER KEY
@@ -1486,24 +1793,21 @@ function collectConfig() {
   config.writing.tasks[2].minWords = parseInt(document.getElementById('W-min-2').value)||250;
 
   // Collect question text inputs from DOM for both L and R
-  // (type/answer already saved live via oninput handlers,
-  //  but question TEXT inputs need to be swept here in case user typed without triggering save)
+  // (qBlocks are already saved live via qmSave; just ensure answerKey is synced)
   ['L','R'].forEach(sec => {
-    const store = sec==='L' ? config.listening.questions : config.reading.questions;
-    for (let n = 1; n <= 40; n++) {
-      const textEl = document.querySelector(`#qedit-${sec}-${n} .q-text-input`);
-      if (textEl) {
-        if (!store[n]) store[n] = { text:'', type:'short', options:['','',''], answer:'' };
-        store[n].text = textEl.value;
-      }
-      // Also sweep short-answer answer inputs
-      const ansEl = document.querySelector(`#qedit-${sec}-${n} .q-answer-input`);
-      if (ansEl) {
-        if (!store[n]) store[n] = { text:'', type:'short', options:['','',''], answer:'' };
-        store[n].answer = ansEl.value;
-        config.answerKey[sec][n] = ansEl.value;
-      }
-    }
+    const blocks_store = sec==='L' ? config.listening.qBlocks : config.reading.qBlocks;
+    if (!blocks_store) return;
+    Object.keys(blocks_store).forEach(n => {
+      (blocks_store[n]||[]).forEach(q => {
+        if (q.type==='fc') {
+          (q.blanks||[]).forEach(b => { if(b.num && b.answer) config.answerKey[sec][b.num]=b.answer; });
+        } else if (q.type==='mc'||q.type==='short'||q.type==='tfng') {
+          if(q.qNum && q.answer) config.answerKey[sec][q.qNum]=q.answer;
+        } else if (q.type==='match') {
+          (q.matchItems||[]).forEach(it => { if(it.num && it.answer) config.answerKey[sec][it.num]=it.answer; });
+        }
+      });
+    });
   });
 
   // Audio URL — sweep from DOM inputs
@@ -1611,7 +1915,6 @@ function loadConfig(input) {
     try {
       config = JSON.parse(e.target.result);
       localStorage.setItem('ielts_admin_config', JSON.stringify(config));
-      buildAllQEditors();
       buildAnswerKeyGrids();
       loadConfigToUI();
       toast('✅ Config loaded successfully!');
