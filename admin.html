@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — IELTS Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#1a1a2e;--ink2:#4a4a6a;--ink3:#8888aa;
+    --paper:#faf9f7;--paper2:#f2f0ec;--paper3:#e8e5df;
+    --blue:#002f5f;--blue2:#1a5fa8;--gold:#c8a84b;
+    --green:#2e7d4f;--red:#c0392b;--border:rgba(0,0,0,0.1);
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+  /* HEADER */
+  .hdr{background:var(--blue);color:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;border-bottom:3px solid var(--gold)}
+  .hdr-logo{font-family:'Source Serif 4',serif;font-size:1.1rem;font-weight:600}
+  .hdr-logo span{color:var(--gold)}
+  .admin-badge{background:rgba(200,168,75,0.2);border:1px solid var(--gold);color:var(--gold);border-radius:4px;padding:3px 10px;font-size:0.75rem;font-weight:700;letter-spacing:0.08em}
+  .hdr-right{display:flex;gap:10px;align-items:center}
+  .btn-hdr{padding:6px 16px;border-radius:6px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all 0.15s}
+  .btn-save-all{background:var(--green);color:#fff}
+  .btn-save-all:hover{opacity:0.9}
+  .btn-load{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)}
+  .btn-load:hover{background:rgba(255,255,255,0.25)}
+  .btn-logout{background:var(--red);color:#fff}
+  .btn-logout:hover{opacity:0.9}
+
+  /* LAYOUT */
+  .main{display:flex;flex:1;overflow:hidden}
+  .sidebar{width:220px;background:var(--blue);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+  .sb-section{padding:16px 12px 8px;font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+  .sb-btn{display:flex;align-items:center;gap:10px;padding:10px 16px;border:none;background:transparent;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;width:100%;text-align:left;transition:all 0.15s;border-left:3px solid transparent}
+  .sb-btn:hover{background:rgba(255,255,255,0.08);color:#fff}
+  .sb-btn.active{background:rgba(255,255,255,0.12);color:#fff;border-left-color:var(--gold)}
+  .sb-icon{font-size:1rem;width:20px;text-align:center}
+
+  /* CONTENT */
+  .content{flex:1;overflow-y:auto;padding:28px}
+  .content::-webkit-scrollbar{width:4px}
+  .content::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:2px}
+  .panel{display:none}
+  .panel.active{display:block}
+
+  .panel-title{font-family:'Source Serif 4',serif;font-size:1.3rem;font-weight:600;color:var(--blue);margin-bottom:4px}
+  .panel-desc{font-size:0.83rem;color:var(--ink3);margin-bottom:24px}
+
+  /* CARDS */
+  .card{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:20px}
+  .card-title{font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--paper3)}
+
+  /* FORM FIELDS */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:5px}
+  .field input[type=text],.field textarea,.field select{width:100%;padding:8px 12px;border:1px solid var(--paper3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--ink);background:#fff;transition:all 0.15s;resize:vertical}
+  .field input[type=text]:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--blue2);background:#f5f9ff}
+  .field textarea{min-height:100px;line-height:1.6}
+  .field input[type=file]{font-size:0.83rem;color:var(--ink2)}
+
+  /* Q CARDS (new modal-based system) */
+  .q-num-badge{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .q-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;position:relative}
+  .q-card-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .q-type-badge{background:#e8f0ff;color:var(--blue);border:1px solid #c0d0f0;border-radius:5px;padding:2px 9px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase}
+  .q-card-text{font-size:0.86rem;color:var(--ink);margin-bottom:6px;line-height:1.5}
+  .q-card-ans{display:inline-block;background:#f5fbf7;border:1px solid #a8dbb8;color:var(--green);border-radius:5px;padding:2px 10px;font-size:0.78rem;font-weight:600;margin-top:4px}
+  .q-card-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
+  .q-card-opt{font-size:0.82rem;color:var(--ink2);margin:2px 0;display:flex;align-items:center;gap:6px}
+  .q-card-opt::before{content:'';width:10px;height:10px;border:1.5px solid #888;border-radius:50%;display:inline-block;flex-shrink:0}
+  .q-card-empty{text-align:center;padding:36px 16px;color:var(--ink3);font-size:0.85rem;border:2px dashed var(--paper3);border-radius:10px;margin-bottom:10px}
+  .q-card-empty span{display:block;font-size:1.6rem;margin-bottom:8px}
+  .btn-add-q-modal{display:flex;align-items:center;gap:7px;padding:8px 18px;border:1px dashed var(--blue2);border-radius:8px;font-size:0.83rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:14px;transition:all 0.15s}
+  .btn-add-q-modal:hover{background:#f0f5ff}
+  .match-preview-box{border:1px solid #ccc;border-radius:7px;padding:8px 12px;background:#fafafa;margin-bottom:6px;font-size:0.82rem}
+  .match-preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 14px;font-size:0.8rem}
+  .match-item-line{display:flex;align-items:center;gap:8px;font-size:0.82rem;margin:2px 0}
+  .match-item-blank{border-bottom:1px solid #555;min-width:30px;text-align:center;font-weight:700;font-size:0.8rem;color:var(--green);display:inline-block}
+
+  /* MODAL */
+  .qm-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;justify-content:center;align-items:center;z-index:200}
+  .qm-overlay.open{display:flex}
+  .qm-box{background:#fff;width:580px;max-width:96vw;max-height:92vh;overflow-y:auto;border-radius:16px;border:2px solid #333;padding:26px;position:relative}
+  .qm-box::-webkit-scrollbar{width:4px}
+  .qm-box::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:2px}
+  .qm-close{position:absolute;top:14px;right:18px;font-size:22px;cursor:pointer;font-weight:bold;background:none;border:none;color:var(--ink2);line-height:1}
+  .qm-title{font-family:'Source Serif 4',serif;font-size:1.05rem;font-weight:600;color:var(--blue);margin-bottom:18px}
+  .qm-field{margin-bottom:12px}
+  .qm-field label{display:block;font-size:0.77rem;font-weight:600;color:var(--ink2);margin-bottom:4px}
+  .qm-field input[type=text],.qm-field input[type=number],.qm-field select,.qm-field textarea{width:100%;padding:8px 11px;border:1px solid var(--paper3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.87rem;color:var(--ink);background:#fff;box-sizing:border-box}
+  .qm-field input:focus,.qm-field select:focus,.qm-field textarea:focus{outline:none;border-color:var(--blue2)}
+  .qm-field textarea{min-height:52px;resize:vertical;line-height:1.5}
+  .qm-divider{border:none;border-top:1px solid var(--paper3);margin:14px 0}
+  .qm-section-label{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin:10px 0 6px}
+  .qm-opt-row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+  .qm-opt-ltr{font-weight:700;color:var(--blue);font-size:0.78rem;width:16px;flex-shrink:0}
+  .qm-opt-row input[type=text]{flex:1;padding:6px 9px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem}
+  .qm-opt-row input[type=text]:focus{outline:none;border-color:var(--blue2)}
+  .qm-opt-row input[type=checkbox],.qm-opt-row input[type=radio]{width:15px;height:15px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+  .qm-del-opt{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.9rem;padding:0;line-height:1;flex-shrink:0}
+  .qm-del-opt:hover{color:var(--red)}
+  .qm-add-opt{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1px dashed var(--blue2);border-radius:6px;font-size:0.78rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px}
+  .qm-add-opt:hover{background:#f0f5ff}
+  .qm-range-row{display:flex;align-items:center;gap:7px;font-size:0.82rem;color:var(--ink2);flex-wrap:wrap}
+  .qm-range-row input{width:55px!important;text-align:center;padding:5px 7px!important}
+  .qm-ans-field{background:#f5fbf7;border-color:#a8dbb8!important;color:var(--green)!important;font-weight:600}
+  .qm-match-choice-row{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+  .qm-match-ltr{font-weight:700;color:var(--blue);width:16px;font-size:0.78rem;flex-shrink:0}
+  .qm-match-item-row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+  .qm-match-num{font-size:0.78rem;font-weight:700;color:var(--blue);width:20px;flex-shrink:0}
+  .qm-match-item-row .item-lbl{flex:1;padding:6px 9px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem}
+  .qm-match-item-row .item-ans{width:55px;padding:6px 7px;border:1px solid var(--paper3);border-radius:6px;font-size:0.84rem;text-align:center;font-weight:700;color:var(--green)}
+  .qm-save-btn{width:100%;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:16px;font-size:0.9rem;font-family:'DM Sans',sans-serif}
+  .qm-save-btn:hover{opacity:0.9}
+  .ct2-pick-row{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:0.82rem;color:var(--ink2)}
+  .ct2-pick-row input{width:50px!important;text-align:center;padding:4px 7px!important}
+  .fc-blank-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .fc-blank-qnum{font-weight:700;color:var(--blue);font-size:0.8rem;width:32px;flex-shrink:0}
+  .fc-blank-row input{flex:1;padding:6px 9px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem}
+  .fc-blank-row .fc-ans{width:140px!important;flex:none;color:var(--green);font-weight:600;background:#f5fbf7;border-color:#a8dbb8!important}
+  .section-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .sec-tab{padding:6px 14px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;font-weight:600;cursor:pointer;background:var(--paper);color:var(--ink2);transition:all 0.15s}
+  .sec-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+  /* BUTTONS */
+  .btn{padding:8px 18px;border-radius:7px;font-size:0.83rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all 0.15s}
+  .btn-blue{background:var(--blue);color:#fff} .btn-blue:hover{background:var(--blue2)}
+  .btn-green{background:var(--green);color:#fff} .btn-green:hover{opacity:0.9}
+  .btn-red{background:var(--red);color:#fff} .btn-red:hover{opacity:0.9}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink2)} .btn-ghost:hover{background:var(--paper2)}
+  .btn-gold{background:var(--gold);color:#fff} .btn-gold:hover{opacity:0.9}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+  /* PASSAGE EDITOR */
+  .passage-textarea{width:100%;min-height:300px;padding:14px;border:1px solid var(--paper3);border-radius:8px;font-family:'Source Serif 4',serif;font-size:0.93rem;line-height:1.8;color:var(--ink);background:#fff;resize:vertical}
+  .passage-textarea:focus{outline:none;border-color:var(--blue2)}
+
+  /* AUDIO */
+  .audio-slot{background:var(--paper2);border:2px dashed var(--paper3);border-radius:8px;padding:20px;text-align:center;margin-bottom:10px}
+  .audio-slot.loaded{border-color:var(--green);background:#f5fbf7}
+  .audio-slot p{font-size:0.83rem;color:var(--ink3);margin-bottom:8px}
+  .audio-slot audio{width:100%;margin-top:8px}
+
+  /* CHECKER */
+  .checker-result{padding:12px 16px;border-radius:8px;margin-bottom:10px;font-size:0.85rem}
+  .checker-correct{background:#f0faf4;border:1px solid #a8dbb8;color:var(--green)}
+  .checker-wrong{background:#fff5f5;border:1px solid #f5b8b8;color:var(--red)}
+  .checker-score{font-family:'Source Serif 4',serif;font-size:2rem;font-weight:600;color:var(--blue);text-align:center;padding:20px 0}
+  .checker-band{font-size:0.9rem;color:var(--ink2);text-align:center;margin-top:-10px;margin-bottom:20px}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;padding:12px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;z-index:9999;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none}
+  .toast.show{opacity:1;transform:translateY(0)}
+
+  /* SHEETS TABLE */
+  .sheets-table{width:100%;border-collapse:collapse;font-size:0.83rem}
+  .sheets-table th{background:var(--blue);color:#fff;padding:9px 12px;text-align:left;font-weight:600;font-size:0.75rem;letter-spacing:0.05em;white-space:nowrap}
+  .sheets-table td{padding:9px 12px;border-bottom:1px solid var(--paper3);color:var(--ink2);vertical-align:middle}
+  .sheets-table tr:hover td{background:var(--paper2)}
+  .sheets-table tr:last-child td{border-bottom:none}
+  .band-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-weight:700;font-size:0.78rem;background:var(--paper2);color:var(--blue)}
+  .band-high{background:#e8f5e9;color:#2e7d4f}
+  .band-mid{background:#fff9e6;color:#7a5f1a}
+  .band-low{background:#fff0f0;color:#c0392b}
+  .tbl-empty{text-align:center;padding:40px;color:var(--ink3);font-size:0.88rem}
+  .refresh-btn{padding:6px 14px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;font-weight:600;color:var(--ink2);background:var(--paper);cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px}
+  .refresh-btn:hover{background:var(--paper2)}
+  .sheets-status{font-size:0.8rem;color:var(--ink3);margin-left:10px}
+  .sheets-status.ok{color:var(--green)}
+  .sheets-status.err{color:var(--red)}
+  .delete-btn{padding:3px 8px;border:1px solid #f5b8b8;border-radius:4px;font-size:0.75rem;font-weight:600;color:var(--red);background:#fff5f5;cursor:pointer;font-family:'DM Sans',sans-serif}
+  .delete-btn:hover{background:#ffe0e0}
+
+  .hidden{display:none!important}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+  /* FORM COMPLETION */
+  .fc-toggle{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:10px 14px;background:var(--paper2);border-radius:8px;border:1px solid var(--border)}
+  .fc-toggle label{font-size:0.83rem;font-weight:600;color:var(--ink2);cursor:pointer}
+  .fc-toggle input[type=checkbox]{accent-color:var(--blue);width:16px;height:16px;cursor:pointer}
+  .fc-panel{background:#f0f5ff;border:1px solid #c0d0f0;border-radius:10px;padding:16px;margin-bottom:16px}
+  .fc-panel-title{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue2);margin-bottom:12px}
+  .fc-img-preview{max-width:100%;max-height:200px;border-radius:8px;margin-top:8px;display:none}
+  .fc-q-range{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:0.83rem;color:var(--ink2)}
+  .fc-q-range input{width:60px;padding:5px 8px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;text-align:center}
+  .fc-answers{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .fc-answer-row{display:flex;align-items:center;gap:8px}
+  .fc-answer-row label{font-size:0.78rem;font-weight:700;color:var(--blue);width:28px;flex-shrink:0}
+  .fc-answer-row input{flex:1;padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--green);font-weight:600}
+  .fc-answer-row input:focus{outline:none;border-color:var(--green)}
+
+  /* CHOOSE LETTERS */
+  .cl-settings{margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .cl-settings label{font-size:0.78rem;font-weight:600;color:var(--ink2)}
+  .cl-settings input[type=number]{width:60px;padding:4px 8px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem}
+  .cl-options-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;padding:10px;background:var(--paper2);border-radius:7px}
+  .cl-opt-row{display:flex;align-items:center;gap:6px}
+  .cl-opt-letter{font-size:0.75rem;font-weight:700;color:var(--blue);width:18px;flex-shrink:0}
+  .cl-opt-input{width:140px;padding:4px 8px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.82rem}
+  .cl-opt-input:focus{outline:none;border-color:var(--blue2)}
+  .cl-correct-chk{accent-color:var(--green);cursor:pointer}
+  .cl-answer-row{display:flex;align-items:center;gap:6px;margin-top:8px}
+  .cl-answer-row label{font-size:0.78rem;font-weight:600;color:var(--ink2)}
+  .cl-answer-row input{padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--green);font-weight:600;width:120px}
+
+  /* AUDIO SLOT */
+  .audio-slot{background:var(--paper2);border:2px dashed var(--paper3);border-radius:8px;padding:16px;text-align:center;margin-bottom:10px}
+  .audio-slot.loaded{border-color:var(--green);background:#f5fbf7}
+  .audio-slot p{font-size:0.83rem;color:var(--ink3);margin-bottom:8px}
+  .audio-slot audio{width:100%;margin-top:8px}
+
+  /* FORM COMPLETION */
+  .fc-toggle{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:10px 14px;background:var(--paper2);border-radius:8px;border:1px solid var(--border)}
+  .fc-toggle label{font-size:0.83rem;font-weight:600;color:var(--ink2);cursor:pointer}
+  .fc-toggle input[type=checkbox]{accent-color:var(--blue);width:16px;height:16px;cursor:pointer}
+  .fc-panel{background:#f0f5ff;border:1px solid #c0d0f0;border-radius:10px;padding:16px;margin-bottom:16px}
+  .fc-panel-title{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue2);margin-bottom:12px}
+  .fc-img-preview{max-width:100%;max-height:200px;border-radius:8px;margin-top:8px;display:none}
+  .fc-q-range{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:0.83rem;color:var(--ink2);flex-wrap:wrap}
+  .fc-q-range input{width:60px;padding:5px 8px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;text-align:center}
+  .fc-answers{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .fc-answer-row{display:flex;align-items:center;gap:8px}
+  .fc-answer-row label{font-size:0.78rem;font-weight:700;color:var(--blue);width:28px;flex-shrink:0}
+  .fc-answer-row input{flex:1;padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--green);font-weight:600}
+  .fc-answer-row input:focus{outline:none;border-color:var(--green)}
+  .extra-qs-section{margin-top:14px;border-top:1px dashed var(--paper3);padding-top:14px}
+  .extra-qs-title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+  .btn-add-q{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px dashed var(--blue2);border-radius:7px;font-size:0.82rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;transition:all 0.15s}
+  .btn-add-q:hover{background:#f0f5ff}
+  .extra-q-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;position:relative}
+  .extra-q-remove{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--ink3);cursor:pointer;font-size:1rem;padding:0;line-height:1}
+  .extra-q-remove:hover{color:var(--red)}
+
+  /* CHOOSE TWO / MULTI-SELECT TYPE */
+  .ct-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+  .ct-count-wrap{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--ink2)}
+  .ct-count-wrap input{width:50px;padding:4px 8px;border:1px solid var(--paper3);border-radius:5px;font-size:0.82rem;text-align:center;font-family:'DM Sans',sans-serif}
+  .ct-opts-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;margin-top:6px}
+  .ct-opt-row{display:flex;align-items:center;gap:6px}
+  .ct-opt-row .mc-opt-label{width:20px;flex-shrink:0;font-weight:700;color:var(--blue);font-size:0.78rem}
+  .ct-opt-row input[type=text]{flex:1;padding:5px 9px;border:1px solid var(--paper3);border-radius:5px;font-size:0.82rem;font-family:'DM Sans',sans-serif}
+  .ct-opt-row input[type=text]:focus{outline:none;border-color:var(--blue2)}
+  .ct-opt-row input[type=checkbox]{accent-color:var(--green);width:15px;height:15px;cursor:pointer}
+  .ct-correct-hint{font-size:0.72rem;color:var(--ink3);margin-top:4px}
+  .add-opt-btn{padding:4px 10px;border:1px dashed var(--blue2);border-radius:5px;font-size:0.75rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:6px}
+  .add-opt-btn:hover{background:#f0f5ff}
+  .del-opt-btn{width:20px;height:20px;border:none;background:none;color:var(--ink3);cursor:pointer;font-size:0.9rem;padding:0;line-height:1;flex-shrink:0}
+  .del-opt-btn:hover{color:var(--red)}
+
+  /* ADD EXTRA QUESTION (below FC) */
+  .extra-qs-wrap{margin-top:16px;border-top:1px dashed var(--paper3);padding-top:14px}
+  .extra-qs-title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+  .add-extra-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border:1px dashed var(--blue2);border-radius:7px;font-size:0.82rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;width:100%;justify-content:center}
+  .add-extra-btn:hover{background:#f0f5ff}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div class="hdr-logo">IELTS <span>Academic</span></div>
+    <div class="admin-badge">Admin Panel</div>
+  </div>
+  <div class="hdr-right">
+    <input type="file" id="f-load-config" class="hidden" accept=".json" onchange="loadConfig(this)">
+    <button class="btn-hdr btn-load" onclick="document.getElementById('f-load-config').click()">📂 Load Config</button>
+    <button class="btn-hdr" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)" onclick="showPanel('p-drive')">☁️ Drive Link</button>
+    <button class="btn-hdr btn-save-all" onclick="saveAllConfig()">💾 Save Config</button>
+    <button class="btn-hdr btn-logout" onclick="if(confirm('Logout?')){window.location.href='index.html'}">Logout</button>
+  </div>
+</div>
+
+<div class="main">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-section">Test Content</div>
+    <button class="sb-btn active" onclick="showPanel('p-listening')" id="sb-p-listening"><span class="sb-icon">🎧</span> Listening</button>
+    <button class="sb-btn" onclick="showPanel('p-reading')"   id="sb-p-reading"><span class="sb-icon">📖</span> Reading</button>
+    <button class="sb-btn" onclick="showPanel('p-writing')"   id="sb-p-writing"><span class="sb-icon">✍️</span> Writing</button>
+    <div class="sb-section">Answers</div>
+    <button class="sb-btn" onclick="showPanel('p-answerkey')" id="sb-p-answerkey"><span class="sb-icon">🗝️</span> Answer Key</button>
+    <button class="sb-btn" onclick="showPanel('p-checker')"   id="sb-p-checker"><span class="sb-icon">✅</span> Checker</button>
+    <div class="sb-section">Grading</div>
+    <button class="sb-btn" onclick="showPanel('p-grading')"   id="sb-p-grading"><span class="sb-icon">✏️</span> Grade Writing</button>
+    <div class="sb-section">Candidates</div>
+    <button class="sb-btn" onclick="showPanel('p-candidates')" id="sb-p-candidates"><span class="sb-icon">👥</span> Candidates</button>
+    <button class="sb-btn" onclick="showPanel('p-scores')"    id="sb-p-scores"><span class="sb-icon">📊</span> Scores</button>
+    <div class="sb-section">Publish</div>
+    <button class="sb-btn" onclick="showPanel('p-testsets')"  id="sb-p-testsets"><span class="sb-icon">📚</span> Test Sets</button>
+    <button class="sb-btn" onclick="showPanel('p-publish')"   id="sb-p-publish"><span class="sb-icon">🚀</span> Publish</button>
+    <div class="sb-section">Config</div>
+    <button class="sb-btn" onclick="showPanel('p-settings')"  id="sb-p-settings"><span class="sb-icon">⚙️</span> Settings</button>
+    <button class="sb-btn" onclick="showPanel('p-export')"    id="sb-p-export"><span class="sb-icon">📄</span> PDF Export</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- LISTENING PANEL -->
+    <div id="p-listening" class="panel active">
+      <div class="panel-title">Listening Section</div>
+      <div class="panel-desc">Upload audio files and manage questions for each section.</div>
+
+      <div class="section-tabs">
+        <button class="sec-tab active" onclick="showLSec(1,this)">Section 1 (Q1–10)</button>
+        <button class="sec-tab" onclick="showLSec(2,this)">Section 2 (Q11–20)</button>
+        <button class="sec-tab" onclick="showLSec(3,this)">Section 3 (Q21–30)</button>
+        <button class="sec-tab" onclick="showLSec(4,this)">Section 4 (Q31–40)</button>
+      </div>
+
+      <div id="L-sec-1" class="l-sec"></div>
+      <div id="L-sec-2" class="l-sec hidden"></div>
+      <div id="L-sec-3" class="l-sec hidden"></div>
+      <div id="L-sec-4" class="l-sec hidden"></div>
+    </div>
+
+    <!-- READING PANEL -->
+    <div id="p-reading" class="panel">
+      <div class="panel-title">Reading Section</div>
+      <div class="panel-desc">Edit reading passages and their questions. You can also use Form/Note Completion layout per passage.</div>
+      <div class="section-tabs">
+        <button class="sec-tab active" onclick="showRPass(1,this)">Passage 1 (Q1–13)</button>
+        <button class="sec-tab" onclick="showRPass(2,this)">Passage 2 (Q14–26)</button>
+        <button class="sec-tab" onclick="showRPass(3,this)">Passage 3 (Q27–40)</button>
+      </div>
+      <div id="R-pass-1" class="r-pass">
+        <div class="card"><div class="card-title">Passage 1 Text</div><textarea class="passage-textarea" id="R-text-1" placeholder="Paste or type the reading passage here..."></textarea></div>
+        <div class="card">
+          <div class="card-title">Questions 1–13</div>
+          <div class="fc-toggle">
+            <input type="checkbox" id="rfc-chk-1" onchange="toggleRFC(1,this.checked)">
+            <label for="rfc-chk-1">📋 Use Form / Note Completion layout for this passage</label>
+          </div>
+          <div id="rfc-panel-1" class="fc-panel hidden">
+            <div class="fc-panel-title">Form Completion Settings — Passage 1</div>
+            <div class="field"><label>Upload Worksheet Image</label><input type="file" accept="image/*" onchange="loadRFCImg(1,this)"><img id="rfc-img-1" class="fc-img-preview"></div>
+            <div class="fc-q-range"><span>Blanks cover question numbers:</span>
+              <input type="number" id="rfc-from-1" value="1" min="1" max="40" onchange="updateRFCAnswers(1)"> to
+              <input type="number" id="rfc-to-1" value="13" min="1" max="40" onchange="updateRFCAnswers(1)">
+            </div>
+            <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
+            <div class="fc-answers" id="rfc-answers-1"></div>
+          </div>
+          <div id="R-qs-1">
+            <button class="btn-add-q-modal" onclick="qmOpen('R',1)">+ Add Question</button>
+            <div id="qlist-R-1" class="qlist"></div>
+          </div>
+        </div>
+      </div>
+      <div id="R-pass-2" class="r-pass hidden">
+        <div class="card"><div class="card-title">Passage 2 Text</div><textarea class="passage-textarea" id="R-text-2" placeholder="Paste or type the reading passage here..."></textarea></div>
+        <div class="card">
+          <div class="card-title">Questions 14–26</div>
+          <div class="fc-toggle">
+            <input type="checkbox" id="rfc-chk-2" onchange="toggleRFC(2,this.checked)">
+            <label for="rfc-chk-2">📋 Use Form / Note Completion layout for this passage</label>
+          </div>
+          <div id="rfc-panel-2" class="fc-panel hidden">
+            <div class="fc-panel-title">Form Completion Settings — Passage 2</div>
+            <div class="field"><label>Upload Worksheet Image</label><input type="file" accept="image/*" onchange="loadRFCImg(2,this)"><img id="rfc-img-2" class="fc-img-preview"></div>
+            <div class="fc-q-range"><span>Blanks cover question numbers:</span>
+              <input type="number" id="rfc-from-2" value="14" min="1" max="40" onchange="updateRFCAnswers(2)"> to
+              <input type="number" id="rfc-to-2" value="26" min="1" max="40" onchange="updateRFCAnswers(2)">
+            </div>
+            <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
+            <div class="fc-answers" id="rfc-answers-2"></div>
+          </div>
+          <div id="R-qs-2">
+            <button class="btn-add-q-modal" onclick="qmOpen('R',2)">+ Add Question</button>
+            <div id="qlist-R-2" class="qlist"></div>
+          </div>
+        </div>
+      </div>
+      <div id="R-pass-3" class="r-pass hidden">
+        <div class="card"><div class="card-title">Passage 3 Text</div><textarea class="passage-textarea" id="R-text-3" placeholder="Paste or type the reading passage here..."></textarea></div>
+        <div class="card">
+          <div class="card-title">Questions 27–40</div>
+          <div class="fc-toggle">
+            <input type="checkbox" id="rfc-chk-3" onchange="toggleRFC(3,this.checked)">
+            <label for="rfc-chk-3">📋 Use Form / Note Completion layout for this passage</label>
+          </div>
+          <div id="rfc-panel-3" class="fc-panel hidden">
+            <div class="fc-panel-title">Form Completion Settings — Passage 3</div>
+            <div class="field"><label>Upload Worksheet Image</label><input type="file" accept="image/*" onchange="loadRFCImg(3,this)"><img id="rfc-img-3" class="fc-img-preview"></div>
+            <div class="fc-q-range"><span>Blanks cover question numbers:</span>
+              <input type="number" id="rfc-from-3" value="27" min="1" max="40" onchange="updateRFCAnswers(3)"> to
+              <input type="number" id="rfc-to-3" value="40" min="1" max="40" onchange="updateRFCAnswers(3)">
+            </div>
+            <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
+            <div class="fc-answers" id="rfc-answers-3"></div>
+          </div>
+          <div id="R-qs-3">
+            <button class="btn-add-q-modal" onclick="qmOpen('R',3)">+ Add Question</button>
+            <div id="qlist-R-3" class="qlist"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WRITING PANEL -->
+    <div id="p-writing" class="panel">
+      <div class="panel-title">Writing Section</div>
+      <div class="panel-desc">Set task prompts and upload chart/diagram images.</div>
+      <div class="card">
+        <div class="card-title">Task 1 — Report</div>
+        <div class="field"><label>Task Prompt</label><textarea id="W-prompt-1" placeholder="The chart below shows..." style="min-height:80px"></textarea></div>
+        <div class="field"><label>Chart / Diagram Image</label><input type="file" accept="image/*" onchange="loadWritingImg(1,this)"><img id="W-img-1" style="max-width:100%;max-height:200px;margin-top:8px;border-radius:8px;display:none"></div>
+        <div class="field"><label>Minimum Word Count</label><input type="text" id="W-min-1" value="150"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Task 2 — Essay</div>
+        <div class="field"><label>Task Prompt</label><textarea id="W-prompt-2" placeholder="Some people believe that..." style="min-height:80px"></textarea></div>
+        <div class="field"><label>Minimum Word Count</label><input type="text" id="W-min-2" value="250"></div>
+      </div>
+    </div>
+
+    <!-- ANSWER KEY PANEL -->
+    <div id="p-answerkey" class="panel">
+      <div class="panel-title">Answer Key</div>
+      <div class="panel-desc">Set correct answers for Listening and Reading. This is used by the auto-checker.</div>
+      <div class="section-tabs">
+        <button class="sec-tab active" onclick="showAKTab('L',this)">Listening (1–40)</button>
+        <button class="sec-tab" onclick="showAKTab('R',this)">Reading (1–40)</button>
+      </div>
+      <div id="AK-L" class="ak-tab">
+        <div class="card"><div class="card-title">Listening Answer Key</div><div id="AK-L-grid" class="row2"></div></div>
+      </div>
+      <div id="AK-R" class="ak-tab hidden">
+        <div class="card"><div class="card-title">Reading Answer Key</div><div id="AK-R-grid" class="row2"></div></div>
+      </div>
+    </div>
+
+    <!-- CHECKER PANEL -->
+    <div id="p-checker" class="panel">
+      <div class="panel-title">Answer Checker</div>
+      <div class="panel-desc">Load a candidate's JSON response file and check against the answer key.</div>
+      <div class="card">
+        <div class="card-title">Load Candidate Responses</div>
+        <div class="field"><label>Candidate Response File (.json)</label><input type="file" accept=".json" onchange="loadCandidateResponses(this)"></div>
+        <div id="checker-candidate-info" class="hidden" style="background:var(--paper2);border-radius:8px;padding:12px;margin-top:8px;font-size:0.85rem;color:var(--ink2)"></div>
+        <div class="btn-row"><button class="btn btn-blue" onclick="runChecker()">Run Checker</button></div>
+      </div>
+      <div id="checker-output" class="hidden">
+        <div class="card">
+          <div class="card-title">Results</div>
+          <div id="checker-score-display"></div>
+          <div id="checker-details-L"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Reading Results</div>
+          <div id="checker-details-R"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-gold" onclick="exportCheckerPDF()">📄 Save Results as PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPORT PANEL -->
+    <!-- GOOGLE DRIVE CONFIG PANEL -->
+    <div id="p-drive" class="panel">
+      <div class="panel-title">☁️ Google Drive Config</div>
+      <div class="panel-desc">Upload your config to Google Drive so all candidates auto-load the latest questions, audio, and passages — no matter what device they use.</div>
+
+      <div class="card">
+        <div class="card-title">Step 1 — Save & Upload Config</div>
+        <div style="background:var(--paper2);border-radius:8px;padding:14px;font-size:0.83rem;color:var(--ink2);line-height:1.9;margin-bottom:14px">
+          <b style="color:var(--blue)">1.</b> Click <b>💾 Save Config</b> (top right) — downloads <code>ielts_config.json</code><br>
+          <b style="color:var(--blue)">2.</b> Go to <a href="https://drive.google.com" target="_blank" style="color:var(--blue2)">drive.google.com</a> → Upload the file<br>
+          <b style="color:var(--blue)">3.</b> Right-click the file → <b>Share</b> → <b>Anyone with the link</b> → <b>Viewer</b><br>
+          <b style="color:var(--blue)">4.</b> Click <b>Copy link</b> — paste it below
+        </div>
+        <div class="field">
+          <label>Google Drive Share Link</label>
+          <input type="text" id="drive-url-input"
+            placeholder="https://drive.google.com/file/d/XXXX/view?usp=sharing"
+            oninput="saveDriveURL(this.value)"
+            style="font-family:monospace;font-size:0.82rem">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-blue" onclick="convertAndSaveDriveURL()">🔗 Convert & Save URL</button>
+          <button class="btn btn-ghost" onclick="testDriveURL()">🧪 Test Connection</button>
+        </div>
+        <div id="drive-status" style="margin-top:10px;font-size:0.82rem;display:none;padding:10px 14px;border-radius:7px"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Step 2 — Active Config URL</div>
+        <div style="font-size:0.82rem;color:var(--ink2);margin-bottom:10px;line-height:1.6">
+          This is the URL that <b>simulation.html</b> and <b>profile.html</b> will fetch the config from. Copy this and set it in those files if needed, or it is saved automatically.
+        </div>
+        <div style="background:#000;border-radius:6px;padding:10px 14px;font-family:monospace;font-size:0.75rem;color:#4caf50;word-break:break-all;min-height:36px" id="drive-active-url">
+          No Drive URL saved yet.
+        </div>
+        <div class="btn-row" style="margin-top:10px">
+          <button class="btn btn-gold" onclick="saveAllConfig()">💾 Save Config to Drive</button>
+          <button class="btn btn-ghost" onclick="copyDriveURL()">📋 Copy URL</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">How It Works</div>
+        <div style="font-size:0.82rem;color:var(--ink2);line-height:1.9">
+          <b style="color:var(--blue)">Without Drive:</b> Config stays in browser localStorage — only works on the admin's computer.<br>
+          <b style="color:var(--blue)">With Drive:</b> Config is fetched fresh from Google Drive every time a candidate opens the test — works on <b>any device, any browser</b>.<br><br>
+          <b>⚠️ Important:</b> Every time you change questions, audio URLs, or passages — re-save the config and re-upload to Google Drive (replace the old file). The URL stays the same.
+        </div>
+      </div>
+    </div>
+
+    <div id="p-export" class="panel">
+      <div class="panel-title">Save to PDF</div>
+      <div class="panel-desc">Export the question paper or answer sheet as a printable PDF.</div>
+      <div class="card">
+        <div class="card-title">Export Options</div>
+        <div class="field">
+          <label>Test Name / Title</label>
+          <input type="text" id="pdf-title" value="IELTS Academic Simulation Test">
+        </div>
+        <div class="field">
+          <label>Subtitle / Date</label>
+          <input type="text" id="pdf-subtitle" value="">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-blue" onclick="exportQuestionPDF()">📄 Export Question Paper</button>
+          <button class="btn btn-green" onclick="exportAnswerSheetPDF()">📄 Export Answer Sheet</button>
+          <button class="btn btn-gold" onclick="exportAnswerKeyPDF()">🗝️ Export Answer Key</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CANDIDATES PANEL -->
+    <div id="p-candidates" class="panel">
+      <div class="panel-title">Registered Candidates</div>
+      <div class="panel-desc">Live list of all registered candidates from Google Sheets.</div>
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="card-title" style="margin:0">Candidates List</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="sheets-status" id="cand-status"></span>
+            <button class="refresh-btn" onclick="loadCandidates()">🔄 Refresh</button>
+          </div>
+        </div>
+        <div id="cand-table-wrap">
+          <div class="tbl-empty">Click Refresh to load candidates from Google Sheets.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCORES PANEL -->
+    <div id="p-scores" class="panel">
+      <div class="panel-title">Test Scores</div>
+      <div class="panel-desc">Live scores of all submitted tests from Google Sheets.</div>
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="card-title" style="margin:0">Scores List</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="sheets-status" id="scores-status"></span>
+            <button class="refresh-btn" onclick="loadScores()">🔄 Refresh</button>
+            <button class="btn btn-gold" onclick="exportScoresPDF()" style="padding:6px 14px;font-size:0.8rem">📄 Export PDF</button>
+          </div>
+        </div>
+        <div id="scores-table-wrap">
+          <div class="tbl-empty">Click Refresh to load scores from Google Sheets.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRADE WRITING PANEL -->
+    <div id="p-grading" class="panel">
+      <div class="panel-title">Grade Writing</div>
+      <div class="panel-desc">Input Writing bands for submitted tests. Overall band is auto-calculated.</div>
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="card-title" style="margin:0">Ungraded Submissions</div>
+          <button class="refresh-btn" onclick="loadUngraded()">🔄 Refresh</button>
+        </div>
+        <div id="ungraded-wrap"><div class="tbl-empty">Click Refresh to load submissions.</div></div>
+      </div>
+      <!-- Grade Form -->
+      <div class="card" id="grade-form-card" style="display:none">
+        <div class="card-title">Grade Submission</div>
+        <div id="grade-candidate-info" style="background:var(--paper2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:0.85rem;color:var(--ink2)"></div>
+        <div id="writing-texts-wrap" style="margin-bottom:16px"></div>
+        <div class="row2">
+          <div class="field">
+            <label>Writing Task 1 Band (1–9)</label>
+            <select id="grade-w1">
+              <option value="">Select...</option>
+              ${[9,8.5,8,7.5,7,6.5,6,5.5,5,4.5,4,3.5,3,2.5,2,1.5,1].map(b=>`<option value="${b}">${b}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label>Writing Task 2 Band (1–9)</label>
+            <select id="grade-w2">
+              <option value="">Select...</option>
+              ${[9,8.5,8,7.5,7,6.5,6,5.5,5,4.5,4,3.5,3,2.5,2,1.5,1].map(b=>`<option value="${b}">${b}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label>Speaking Band (optional)</label>
+            <select id="grade-s">
+              <option value="">N/A</option>
+              ${[9,8.5,8,7.5,7,6.5,6,5.5,5,4.5,4,3.5,3,2.5,2,1.5,1].map(b=>`<option value="${b}">${b}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label>Graded By</label>
+            <input type="text" id="grade-by" value="Admin" placeholder="Examiner name">
+          </div>
+        </div>
+        <div class="field">
+          <label>Examiner Notes (optional)</label>
+          <textarea id="grade-notes" placeholder="Feedback for candidate..." style="min-height:60px"></textarea>
+        </div>
+        <div id="grade-preview" style="background:var(--paper2);border-radius:8px;padding:12px;margin-bottom:12px;font-size:0.85rem;display:none">
+          <b>Estimated Overall Band:</b> <span id="grade-overall" style="font-size:1.2rem;color:var(--blue);font-family:'Source Serif 4',serif;font-weight:600"></span>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-green" onclick="submitGrade()">✅ Save Grade</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('grade-form-card').style.display='none'">Cancel</button>
+        </div>
+        <input type="hidden" id="grade-sub-id">
+      </div>
+    </div>
+
+    <!-- TEST SETS PANEL -->
+    <div id="p-testsets" class="panel">
+      <div class="panel-title">Test Sets</div>
+      <div class="panel-desc">Manage questionnaire sets. Each set links to a config JSON on GitHub.</div>
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="card-title" style="margin:0">All Test Sets</div>
+          <div style="display:flex;gap:8px">
+            <button class="refresh-btn" onclick="loadTestSets()">🔄 Refresh</button>
+            <button class="btn btn-blue" style="padding:6px 14px;font-size:0.8rem" onclick="showNewSetForm()">+ New Set</button>
+          </div>
+        </div>
+        <div id="testsets-wrap"><div class="tbl-empty">Click Refresh to load test sets.</div></div>
+      </div>
+      <!-- New/Edit Set Form -->
+      <div class="card" id="set-form-card" style="display:none">
+        <div class="card-title" id="set-form-title">New Test Set</div>
+        <div class="row2">
+          <div class="field">
+            <label>Set Name</label>
+            <input type="text" id="set-name" placeholder="e.g. Mock Test 1 — January 2025">
+          </div>
+          <div class="field">
+            <label>Description (optional)</label>
+            <input type="text" id="set-desc" placeholder="e.g. Academic module, 40 questions">
+          </div>
+        </div>
+        <div class="field">
+          <label>Config URL (GitHub raw URL)</label>
+          <input type="text" id="set-url" placeholder="https://raw.githubusercontent.com/...">
+          <div style="font-size:0.75rem;color:var(--ink3);margin-top:4px">
+            Get this from GitHub: open the JSON file → click "Raw" → copy URL
+          </div>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="set-status">
+            <option value="Active">Active</option>
+            <option value="Archived">Archived</option>
+          </select>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-blue" onclick="saveTestSetForm()">💾 Save Set</button>
+          <button class="btn btn-green" onclick="activateSetForm()" id="activate-btn">⚡ Set as Active</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('set-form-card').style.display='none'">Cancel</button>
+        </div>
+        <input type="hidden" id="set-id">
+      </div>
+    </div>
+
+    <!-- PUBLISH PANEL -->
+    <div id="p-publish" class="panel">
+      <div class="panel-title">Publish to GitHub</div>
+      <div class="panel-desc">Generate config JSON and upload to GitHub Pages for candidates to access.</div>
+      <div class="card">
+        <div class="card-title">Step 1 — Set Test Set Name</div>
+        <div class="field">
+          <label>Test Set Name (will be shown to candidates)</label>
+          <input type="text" id="pub-set-name" placeholder="e.g. Mock Test 1 — January 2025">
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <input type="text" id="pub-set-desc" placeholder="e.g. IELTS Academic simulation">
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Step 2 — Download Config JSON</div>
+        <p style="font-size:0.85rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">
+          This downloads a JSON file containing all questions, passages, answer key, and settings.
+          <b>Audio is NOT included</b> — YouTube URLs are stored in the config.
+        </p>
+        <button class="btn btn-blue" onclick="downloadConfigForGitHub()">⬇ Download Config JSON</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Step 3 — Upload to GitHub</div>
+        <ol style="font-size:0.85rem;color:var(--ink2);line-height:2;padding-left:20px">
+          <li>Go to your GitHub repository</li>
+          <li>Open <code>configs/</code> folder</li>
+          <li>Click <b>Add file → Upload files</b></li>
+          <li>Upload the downloaded JSON file</li>
+          <li>Commit changes</li>
+          <li>Click the file → Click <b>Raw</b> → Copy the URL</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-title">Step 4 — Paste Raw URL & Save Test Set</div>
+        <div class="field">
+          <label>GitHub Raw URL</label>
+          <input type="text" id="pub-github-url" placeholder="https://raw.githubusercontent.com/username/ielts-sim/main/configs/...json">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-green" onclick="savePublishedSet()">💾 Save as Test Set & Activate</button>
+          <button class="btn btn-ghost" onclick="testConfigURL()">🧪 Test URL</button>
+        </div>
+        <div id="pub-test-result" style="margin-top:10px;font-size:0.82rem"></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PANEL -->
+    <div id="p-settings" class="panel">
+      <div class="panel-title">Settings</div>
+      <div class="panel-desc">Institution info shown on TRF and throughout the system.</div>
+      <div class="card">
+        <div class="card-title">Institution Details</div>
+        <div class="field">
+          <label>Institution Name</label>
+          <input type="text" id="inst-name" placeholder="e.g. IELTS Preparation Center">
+        </div>
+        <div class="field">
+          <label>Institution Address</label>
+          <input type="text" id="inst-addr" placeholder="e.g. Cebu City, Philippines">
+        </div>
+        <div class="field">
+          <label>TRF Footer Note</label>
+          <textarea id="trf-note" style="min-height:60px" placeholder="e.g. This is a simulation result for preparation purposes only."></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-blue" onclick="saveSettingsForm()">💾 Save Settings</button>
+        </div>
+        <div id="settings-status" style="margin-top:8px;font-size:0.82rem;color:var(--green);display:none">✅ Settings saved!</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Apps Script URL</div>
+        <div class="field">
+          <label>Web App URL</label>
+          <input type="text" id="apps-script-url-input" value="https://script.google.com/macros/s/AKfycbyarOzwfnraI3bR_HGD1E147tPGkBd_u9Uoeg4_hz9PLwnHMLWAgJMBuBrWo_6tEKc/exec">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" onclick="testConnection()">🧪 Test Connection</button>
+        </div>
+        <div id="conn-status" style="margin-top:8px;font-size:0.82rem"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- QUESTION MODAL -->
+<div class="qm-overlay" id="qm-overlay">
+  <div class="qm-box">
+    <button class="qm-close" onclick="qmClose()">×</button>
+    <div class="qm-title" id="qm-title">Add Question</div>
+
+    <div class="qm-field">
+      <label>Part / Group label (e.g. Part 1)</label>
+      <input type="text" id="qm-part" placeholder="Part 1">
+    </div>
+    <div class="qm-field">
+      <label>Instruction text</label>
+      <textarea id="qm-instr" placeholder="e.g. Complete the notes below. Write ONE WORD AND/OR A NUMBER for each answer."></textarea>
+    </div>
+
+    <hr class="qm-divider">
+
+    <div class="qm-field">
+      <label>Question Type</label>
+      <select id="qm-type" onchange="qmTypeChange()">
+        <option value="">— select type —</option>
+        <option value="fc">Form Completion (fill in the blank)</option>
+        <option value="mc">Multiple Choice (choose one)</option>
+        <option value="ct2">Choose TWO (multi-select)</option>
+        <option value="match">Matching</option>
+        <option value="short">Short Answer</option>
+        <option value="tfng">True / False / Not Given</option>
+      </select>
+    </div>
+
+    <div id="qm-type-area"></div>
+
+    <button class="qm-save-btn" onclick="qmSave()">SAVE QUESTION</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// APPS SCRIPT
+// ═══════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyarOzwfnraI3bR_HGD1E147tPGkBd_u9Uoeg4_hz9PLwnHMLWAgJMBuBrWo_6tEKc/exec';
+
+function callSheets(payload) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
+    const timeout = setTimeout(() => { delete window[cbName]; reject(new Error('Timeout')); }, 15000);
+    window[cbName] = (data) => { clearTimeout(timeout); delete window[cbName]; resolve(data); };
+    const params = new URLSearchParams({ ...payload, callback: cbName });
+    const script = document.createElement('script');
+    script.src = APPS_SCRIPT_URL + '?' + params.toString();
+    script.onerror = () => { clearTimeout(timeout); delete window[cbName]; reject(new Error('Network error')); };
+    document.head.appendChild(script);
+    setTimeout(() => { try { document.head.removeChild(script); } catch(e){} }, 20000);
+  });
+}
+
+// ═══════════════════════════════════════
+// CANDIDATES — load from Sheets
+// ═══════════════════════════════════════
+async function loadCandidates() {
+  const wrap = document.getElementById('cand-table-wrap');
+  const status = document.getElementById('cand-status');
+  wrap.innerHTML = '<div class="tbl-empty">⏳ Loading...</div>';
+  status.className = 'sheets-status';
+  status.textContent = 'Fetching...';
+  try {
+    const data = await callSheets({ action: 'getCandidates' });
+    if (!data.success) throw new Error(data.message || 'Failed');
+    const rows = data.rows || [];
+    status.className = 'sheets-status ok';
+    status.textContent = `✅ ${rows.length} candidates`;
+    if (!rows.length) { wrap.innerHTML = '<div class="tbl-empty">No candidates registered yet.</div>'; return; }
+    let html = `<div style="overflow-x:auto"><table class="sheets-table">
+      <thead><tr>
+        <th>Candidate ID</th><th>Full Name</th><th>Date of Birth</th>
+        <th>Gender</th><th>Nationality</th><th>Registered</th><th>Last Login</th>
+      </tr></thead><tbody>`;
+    rows.forEach(r => {
+      html += `<tr>
+        <td><b>${escH(r[0])}</b></td>
+        <td>${escH(r[1])}</td>
+        <td>${escH(r[2])}</td>
+        <td>${escH(r[3])}</td>
+        <td>${escH(r[4])}</td>
+        <td style="font-size:0.78rem;color:var(--ink3)">${formatDate(r[6])}</td>
+        <td style="font-size:0.78rem;color:var(--ink3)">${formatDate(r[7])}</td>
+      </tr>`;
+    });
+    html += '</tbody></table></div>';
+    wrap.innerHTML = html;
+  } catch(e) {
+    status.className = 'sheets-status err';
+    status.textContent = '❌ Error';
+    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}<br><br>Make sure Code.gs is updated and redeployed.</div>`;
+  }
+}
+
+// ═══════════════════════════════════════
+// SCORES — load from Sheets
+// ═══════════════════════════════════════
+async function loadScores() {
+  const wrap = document.getElementById('scores-table-wrap');
+  const status = document.getElementById('scores-status');
+  wrap.innerHTML = '<div class="tbl-empty">⏳ Loading...</div>';
+  status.className = 'sheets-status';
+  status.textContent = 'Fetching...';
+  try {
+    const data = await callSheets({ action: 'getScores' });
+    if (!data.success) throw new Error(data.message || 'Failed');
+    const rows = data.rows || [];
+    status.className = 'sheets-status ok';
+    status.textContent = `✅ ${rows.length} submissions`;
+    if (!rows.length) { wrap.innerHTML = '<div class="tbl-empty">No scores submitted yet.</div>'; return; }
+    let html = `<div style="overflow-x:auto"><table class="sheets-table" id="scores-tbl">
+      <thead><tr>
+        <th>Date</th><th>Candidate ID</th><th>Full Name</th>
+        <th>Listening</th><th>L Band</th>
+        <th>Reading</th><th>R Band</th>
+        <th>W1 WC</th><th>W2 WC</th>
+      </tr></thead><tbody>`;
+    rows.forEach(r => {
+      const lBand = parseFloat(r[4])||0;
+      const rBand = parseFloat(r[6])||0;
+      const bandClass = b => b>=7?'band-high':b>=5.5?'band-mid':'band-low';
+      html += `<tr>
+        <td style="font-size:0.78rem;white-space:nowrap">${formatDate(r[0])}</td>
+        <td><b>${escH(r[1])}</b></td>
+        <td>${escH(r[2])}</td>
+        <td style="text-align:center"><b>${escH(String(r[3]))}</b>/40</td>
+        <td><span class="band-badge ${bandClass(lBand)}">${lBand}</span></td>
+        <td style="text-align:center"><b>${escH(String(r[5]))}</b>/40</td>
+        <td><span class="band-badge ${bandClass(rBand)}">${rBand}</span></td>
+        <td style="text-align:center">${escH(String(r[7]))}</td>
+        <td style="text-align:center">${escH(String(r[8]))}</td>
+      </tr>`;
+    });
+    html += '</tbody></table></div>';
+    wrap.innerHTML = html;
+  } catch(e) {
+    status.className = 'sheets-status err';
+    status.textContent = '❌ Error';
+    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}<br><br>Make sure Code.gs is updated and redeployed.</div>`;
+  }
+}
+
+function formatDate(val) {
+  if (!val) return '—';
+  try { return new Date(val).toLocaleString('en-PH',{dateStyle:'medium',timeStyle:'short'}); }
+  catch(e){ return String(val); }
+}
+
+function exportScoresPDF() {
+  const tbl = document.getElementById('scores-tbl');
+  if (!tbl) { alert('Load scores first.'); return; }
+  const title = document.getElementById('pdf-title')?.value || 'IELTS Simulation Scores';
+  openPrintWindow(`<h1>${escH(title)} — Scores</h1>${tbl.outerHTML}`);
+}
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let config = {
+  listening: {
+    sections: [
+      { from:1, to:10, audioName:'', audioData:'', imgData:'', formCompletion:false, fcImgData:'', fcFrom:1, fcTo:10 },
+      { from:11, to:20, audioName:'', audioData:'', imgData:'', formCompletion:false, fcImgData:'', fcFrom:11, fcTo:20 },
+      { from:21, to:30, audioName:'', audioData:'', imgData:'', formCompletion:false, fcImgData:'', fcFrom:21, fcTo:30 },
+      { from:31, to:40, audioName:'', audioData:'', imgData:'', formCompletion:false, fcImgData:'', fcFrom:31, fcTo:40 },
+    ],
+    questions: {} // {1:{text:'',type:'short',options:[],answer:''}, ...}
+  },
+  reading: {
+    passages: { 1:'', 2:'', 3:'' },
+    passages_fc: {
+      1:{ formCompletion:false, fcImgData:'', fcFrom:1,  fcTo:13 },
+      2:{ formCompletion:false, fcImgData:'', fcFrom:14, fcTo:26 },
+      3:{ formCompletion:false, fcImgData:'', fcFrom:27, fcTo:40 }
+    },
+    questions: {}
+  },
+  writing: {
+    tasks: {
+      1: { prompt:'', imgData:'', minWords:150 },
+      2: { prompt:'', imgData:'', minWords:250 }
+    }
+  },
+  answerKey: { L:{}, R:{} }
+};
+
+let candidateResponses = null;
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+window.onload = () => {
+  if (sessionStorage.getItem('userRole') !== 'Admin') {
+    window.location.href = 'index.html'; return;
+  }
+  const saved = localStorage.getItem('ielts_admin_config');
+  if (saved) { try { config = JSON.parse(saved); } catch(e){} }
+
+  // Build Section 1 HTML first (it's the default active tab)
+  // Other sections are built lazily when tab is clicked
+  const sec1Container = document.getElementById('L-sec-1');
+  if (sec1Container && !sec1Container.innerHTML.trim()) {
+    const sec = config.listening.sections[0];
+    sec1Container.innerHTML = buildLSecHTML(1);
+    // Restore audio state
+    if (sec.audioURL) { switchAudioSrc(1,'url'); document.getElementById('audio-url-input-1').value = sec.audioURL; document.getElementById('audio-url-preview-1').innerHTML = buildURLPreview(sec.audioURL); }
+    if (sec.audioName) { document.getElementById('L-audio-name-1').textContent='🎵 '+sec.audioName; document.getElementById('L-audio-slot-1').classList.add('loaded'); }
+    if (sec.audioData) { const el=document.getElementById('L-audio-el-1'); el.src=sec.audioData; el.classList.remove('hidden'); }
+    if (sec.imgData)   { const img=document.getElementById('L-img-1'); img.src=sec.imgData; img.style.display='block'; }
+    // FC state
+    if (sec.formCompletion) { document.getElementById('fc-chk-1').checked=true; document.getElementById('fc-panel-1').classList.remove('hidden'); }
+    if (sec.fcImgData) { const pr=document.getElementById('fc-img-preview-1'); pr.src=sec.fcImgData; pr.style.display='block'; }
+    if (sec.fcFrom) document.getElementById('fc-from-1').value = sec.fcFrom;
+    if (sec.fcTo)   document.getElementById('fc-to-1').value   = sec.fcTo;
+    if (sec.formCompletion) buildFCAnswers(1);
+  }
+
+  buildAnswerKeyGrids();
+  loadConfigToUI();
+  initDrivePanel();
+};
+
+function loadConfigToUI() {
+  // Writing
+  document.getElementById('W-prompt-1').value = config.writing.tasks[1].prompt || '';
+  document.getElementById('W-prompt-2').value = config.writing.tasks[2].prompt || '';
+  document.getElementById('W-min-1').value = config.writing.tasks[1].minWords || 150;
+  document.getElementById('W-min-2').value = config.writing.tasks[2].minWords || 250;
+  // Reading passages
+  [1,2,3].forEach(i => {
+    document.getElementById('R-text-'+i).value = config.reading.passages[i] || '';
+  });
+  // Q values
+  populateQEditors();
+  // Answer key
+  populateAnswerKey();
+  // Audio/FC state restored in buildAllQEditors (now part of populateQEditors)
+  restoreReadingFC();
+}
+
+// ═══════════════════════════════════════
+// PANEL NAVIGATION
+// ═══════════════════════════════════════
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('sb-'+id).classList.add('active');
+  // When switching to Reading panel, re-render the active passage Q list
+  if (id === 'p-reading') {
+    const activeBtn = document.querySelector('#p-reading .sec-tab.active');
+    const n = activeBtn ? ([...document.querySelectorAll('#p-reading .sec-tab')].indexOf(activeBtn) + 1) : 1;
+    qmRenderList('R', n);
+    restoreReadingFC();
+  }
+}
+// ═══════════════════════════════════════
+// BUILD LISTENING SECTION HTML
+// ═══════════════════════════════════════
+function buildLSecHTML(n) {
+  const ranges = ['1–10','11–20','21–30','31–40'];
+  const from   = [1,11,21,31][n-1];
+  const to     = [10,20,30,40][n-1];
+  const sec    = config.listening.sections[n-1] || {};
+  const urlVal = escH(sec.audioURL||'');
+  const hasURL = !!sec.audioURL;
+  return `
+    <div class="card">
+      <div class="card-title">Audio — Section ${n}</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <button class="sec-tab ${!hasURL?'active':''}" id="audio-src-file-${n}" onclick="switchAudioSrc(${n},'file')" style="font-size:0.78rem;padding:5px 12px">📁 Upload File</button>
+        <button class="sec-tab ${hasURL?'active':''}"  id="audio-src-url-${n}"  onclick="switchAudioSrc(${n},'url')"  style="font-size:0.78rem;padding:5px 12px">🔗 Paste URL</button>
+      </div>
+
+      <!-- FILE UPLOAD -->
+      <div id="audio-file-panel-${n}" ${hasURL?'style="display:none"':''}>
+        <div class="audio-slot" id="L-audio-slot-${n}">
+          <p id="L-audio-name-${n}">No audio loaded</p>
+          <input type="file" accept="audio/*" onchange="loadSectionAudio(${n},this)" style="font-size:0.83rem">
+          <audio id="L-audio-el-${n}" controls class="hidden"></audio>
+        </div>
+      </div>
+
+      <!-- PASTE URL -->
+      <div id="audio-url-panel-${n}" ${!hasURL?'style="display:none"':''}>
+        <div class="field" style="margin-bottom:6px">
+          <label>Audio / Video URL (YouTube, Google Drive, direct MP3)</label>
+          <input type="text" id="audio-url-input-${n}"
+            placeholder="https://www.youtube.com/embed/VIDEO_ID or direct audio URL"
+            value="${urlVal}"
+            oninput="saveAudioURL(${n},this.value)"
+            style="font-family:monospace;font-size:0.82rem">
+        </div>
+        <div style="font-size:0.73rem;color:var(--ink3);margin-bottom:8px;padding:8px;background:var(--paper2);border-radius:6px;line-height:1.7">
+          💡 <b>YouTube (unlisted):</b> use <code>https://www.youtube.com/embed/VIDEO_ID</code><br>
+          💡 <b>Google Drive:</b> share → "Anyone with link" → copy link<br>
+          💡 <b>Direct MP3:</b> paste the direct .mp3 URL
+        </div>
+        <div id="audio-url-preview-${n}">${hasURL ? buildURLPreview(sec.audioURL) : ''}</div>
+        <button class="btn btn-ghost" style="font-size:0.78rem;margin-top:8px" onclick="previewAudioURL(${n})">▶ Preview URL</button>
+      </div>
+
+      <!-- SECTION IMAGE -->
+      <div class="field" style="margin-top:12px">
+        <label>Section Image (optional — map/diagram)</label>
+        <input type="file" accept="image/*" onchange="loadSectionImg(${n},this)">
+        <img id="L-img-${n}" style="max-width:100%;max-height:150px;margin-top:8px;border-radius:6px;display:none">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Questions ${ranges[n-1]}</div>
+
+      <!-- FORM COMPLETION TOGGLE -->
+      <div class="fc-toggle">
+        <input type="checkbox" id="fc-chk-${n}" onchange="toggleFC(${n},this.checked)">
+        <label for="fc-chk-${n}">📋 Use Form / Note Completion layout (image with numbered blanks)</label>
+      </div>
+
+      <!-- FC SETTINGS -->
+      <div id="fc-panel-${n}" class="fc-panel hidden">
+        <div class="fc-panel-title">Form Completion Settings</div>
+        <div class="field">
+          <label>Upload Worksheet Image</label>
+          <input type="file" accept="image/*" onchange="loadFCImg(${n},this)">
+          <img id="fc-img-preview-${n}" class="fc-img-preview">
+        </div>
+        <div class="fc-q-range">
+          <span>Blanks cover question numbers:</span>
+          <input type="number" id="fc-from-${n}" value="${from}" min="1" max="40" onchange="updateFCAnswers(${n})"> to
+          <input type="number" id="fc-to-${n}"   value="${to}"   min="1" max="40" onchange="updateFCAnswers(${n})">
+          <button class="btn btn-ghost" style="padding:4px 10px;font-size:0.78rem" onclick="buildFCAnswers(${n})">Apply</button>
+        </div>
+        <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
+        <div class="fc-answers" id="fc-answers-${n}"></div>
+      </div>
+
+      <!-- QUESTION LIST (modal-based) -->
+      <div id="L-qs-${n}">
+        <div id="qlist-L-${n}"></div>
+        <button class="btn-add-q-modal" onclick="qmOpen('L',${n},null)">+ Add Question</button>
+      </div>
+    </div>`;
+}
+
+function buildURLPreview(url) {
+  if (!url) return '';
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    let embedURL = url;
+    if (url.includes('watch?v=')) embedURL = url.replace('watch?v=','embed/').split('&')[0];
+    else if (url.includes('youtu.be/')) embedURL = 'https://www.youtube.com/embed/'+url.split('youtu.be/')[1].split('?')[0];
+    return `<iframe src="${escH(embedURL)}" style="width:100%;height:160px;border:none;border-radius:7px" allowfullscreen></iframe>`;
+  }
+  return `<audio controls src="${escH(url)}" style="width:100%;margin-top:4px;border-radius:6px"></audio>`;
+}
+
+function switchAudioSrc(n, mode) {
+  const isURL = mode==='url';
+  document.getElementById('audio-file-panel-'+n).style.display = isURL ? 'none' : '';
+  document.getElementById('audio-url-panel-'+n).style.display  = isURL ? '' : 'none';
+  document.getElementById('audio-src-file-'+n).classList.toggle('active', !isURL);
+  document.getElementById('audio-src-url-'+n).classList.toggle('active',   isURL);
+  if (!isURL) config.listening.sections[n-1].audioURL = '';
+}
+
+function saveAudioURL(n, val) {
+  config.listening.sections[n-1].audioURL = val.trim();
+}
+
+function previewAudioURL(n) {
+  const url  = document.getElementById('audio-url-input-'+n).value.trim();
+  const wrap = document.getElementById('audio-url-preview-'+n);
+  if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">Please enter a URL first.</span>'; return; }
+  config.listening.sections[n-1].audioURL = url;
+  wrap.innerHTML = buildURLPreview(url);
+  toast('Preview updated');
+}
+
+function toggleFC(n, enabled) {
+  config.listening.sections[n-1].formCompletion = enabled;
+  document.getElementById('fc-panel-'+n).classList.toggle('hidden', !enabled);
+  if (enabled) buildFCAnswers(n);
+}
+
+function loadFCImg(n, input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    config.listening.sections[n-1].fcImgData = e.target.result;
+    const pr = document.getElementById('fc-img-preview-'+n);
+    pr.src = e.target.result; pr.style.display = 'block';
+    toast('Form image loaded');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function updateFCAnswers(n) {
+  const from = parseInt(document.getElementById('fc-from-'+n).value)||1;
+  const to   = parseInt(document.getElementById('fc-to-'+n).value)||10;
+  config.listening.sections[n-1].fcFrom = from;
+  config.listening.sections[n-1].fcTo   = to;
+  buildFCAnswers(n);
+}
+
+function buildFCAnswers(n) {
+  const from = parseInt(document.getElementById('fc-from-'+n).value)||config.listening.sections[n-1].fcFrom||1;
+  const to   = parseInt(document.getElementById('fc-to-'+n).value)||config.listening.sections[n-1].fcTo||10;
+  const wrap = document.getElementById('fc-answers-'+n);
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  for (let i=from; i<=to; i++) {
+    const val = config.answerKey.L[i] || '';
+    const row = document.createElement('div');
+    row.className = 'fc-answer-row';
+    row.innerHTML = `<label>${i}</label><input type="text" placeholder="Answer..." value="${escH(val)}" oninput="saveFCAnswer(${n},${i},this.value)">`;
+    wrap.appendChild(row);
+  }
+}
+
+function saveFCAnswer(n, qNum, val) {
+  config.answerKey.L[qNum] = val;
+  config.listening.sections[n-1][`fcAnswer_${qNum}`] = val;
+  const akInput = document.getElementById('ak-L-'+qNum);
+  if (akInput) akInput.value = val;
+}
+
+// ═══════════════════════════════════════
+function showLSec(n, btn) {
+  document.querySelectorAll('.l-sec').forEach(s=>s.classList.add('hidden'));
+  const container = document.getElementById('L-sec-'+n);
+  container.classList.remove('hidden');
+  btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const s   = [{n:1,from:1,to:10},{n:2,from:11,to:20},{n:3,from:21,to:30},{n:4,from:31,to:40}][n-1];
+  const sec = config.listening.sections[n-1];
+
+  // Always rebuild the HTML shell (cheap, ensures containers exist)
+  container.innerHTML = buildLSecHTML(n);
+
+  // Restore audio state
+  if (sec.audioURL) {
+    switchAudioSrc(n,'url');
+    document.getElementById('audio-url-input-'+n).value = sec.audioURL;
+    document.getElementById('audio-url-preview-'+n).innerHTML = buildURLPreview(sec.audioURL);
+  }
+  if (sec.audioName) { document.getElementById('L-audio-name-'+n).textContent='🎵 '+sec.audioName; document.getElementById('L-audio-slot-'+n).classList.add('loaded'); }
+  if (sec.audioData) { const el=document.getElementById('L-audio-el-'+n); el.src=sec.audioData; el.classList.remove('hidden'); }
+  if (sec.imgData)   { const img=document.getElementById('L-img-'+n); img.src=sec.imgData; img.style.display='block'; }
+
+  // Restore FC state
+  document.getElementById('fc-chk-'+n).checked = !!sec.formCompletion;
+  document.getElementById('fc-panel-'+n).classList.toggle('hidden', !sec.formCompletion);
+  document.getElementById('fc-from-'+n).value = sec.fcFrom || s.from;
+  document.getElementById('fc-to-'+n).value   = sec.fcTo   || s.to;
+  if (sec.fcImgData) { const pr=document.getElementById('fc-img-preview-'+n); pr.src=sec.fcImgData; pr.style.display='block'; }
+  if (sec.formCompletion) buildFCAnswers(n);
+
+  // Always render question list
+  qmRenderList('L', n);
+}
+function showRPass(n, btn) {
+  document.querySelectorAll('.r-pass').forEach(s=>s.classList.add('hidden'));
+  document.getElementById('R-pass-'+n).classList.remove('hidden');
+  btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  // Re-render Q list for this passage
+  const pfc = config.reading.passages_fc && config.reading.passages_fc[n];
+  qmRenderList('R', n);
+  // Re-apply FC state
+  const chk = document.getElementById('rfc-chk-'+n);
+  if (chk && pfc) {
+    chk.checked = !!pfc.formCompletion;
+    document.getElementById('rfc-panel-'+n).classList.toggle('hidden', !pfc.formCompletion);
+    document.getElementById('R-qs-'+n).classList.toggle('hidden', !!pfc.formCompletion);
+    if (pfc.fcImgData) { const pr=document.getElementById('rfc-img-'+n); pr.src=pfc.fcImgData; pr.style.display='block'; }
+    if (pfc.fcFrom) document.getElementById('rfc-from-'+n).value = pfc.fcFrom;
+    if (pfc.fcTo)   document.getElementById('rfc-to-'+n).value   = pfc.fcTo;
+    if (pfc.formCompletion) buildRFCAnswers(n);
+  }
+}
+function showAKTab(t, btn) {
+  document.querySelectorAll('.ak-tab').forEach(s=>s.classList.add('hidden'));
+  document.getElementById('AK-'+t).classList.remove('hidden');
+  btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+
+// ═══════════════════════════════════════
+// QUESTION STORE — modal-based, per section/passage
+// config.listening.qBlocks[n]  = [{type,part,instr,...}, ...]
+// config.reading.qBlocks[n]    = [{type,part,instr,...}, ...]
+// ═══════════════════════════════════════
+const LTRS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+function getQBlocks(sec, n) {
+  if (sec === 'L') {
+    if (!config.listening.qBlocks) config.listening.qBlocks = {};
+    if (!config.listening.qBlocks[n]) config.listening.qBlocks[n] = [];
+    return config.listening.qBlocks[n];
+  } else {
+    if (!config.reading.qBlocks) config.reading.qBlocks = {};
+    if (!config.reading.qBlocks[n]) config.reading.qBlocks[n] = [];
+    return config.reading.qBlocks[n];
+  }
+}
+
+// ── MODAL STATE ──
+let _qmSec = 'L', _qmSecN = 1, _qmEditIdx = null;
+
+function qmOpen(sec, n, editIdx) {
+  editIdx = (editIdx !== undefined) ? editIdx : null;
+  _qmSec = sec; _qmSecN = n; _qmEditIdx = editIdx;
+  document.getElementById('qm-title').textContent = editIdx !== null ? 'Edit Question' : 'Add Question';
+  if (editIdx !== null) {
+    const q = getQBlocks(sec, n)[editIdx];
+    document.getElementById('qm-part').value  = q.part  || '';
+    document.getElementById('qm-instr').value = q.instr || '';
+    document.getElementById('qm-type').value  = q.type  || '';
+    qmTypeChange(q);
+  } else {
+    document.getElementById('qm-part').value  = '';
+    document.getElementById('qm-instr').value = '';
+    document.getElementById('qm-type').value  = '';
+    document.getElementById('qm-type-area').innerHTML = '';
+  }
+  document.getElementById('qm-overlay').classList.add('open');
+}
+function qmClose() {
+  document.getElementById('qm-overlay').classList.remove('open');
+  _qmEditIdx = null;
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('qm-overlay').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('qm-overlay')) qmClose();
+  });
+});
+
+// ── TYPE CHANGE ──
+function qmTypeChange(existing) {
+  existing = existing || null;
+  const type = document.getElementById('qm-type').value;
+  const area = document.getElementById('qm-type-area');
+  area.innerHTML = '';
+  if (!type) return;
+  const q = existing || {};
+
+  if (type === 'fc') {
+    const from   = q.fcFrom || 1;
+    const to     = q.fcTo   || 1;
+    const blanks = q.blanks || [{label:'',answer:''}];
+    area.innerHTML = `
+      <div class="qm-field">
+        <label>Question number range for this block</label>
+        <div class="qm-range-row">
+          Q <input type="number" id="qm-fc-from" min="1" max="99" value="${from}" oninput="qmRebuildFCBlanks()">
+          to Q <input type="number" id="qm-fc-to" min="1" max="99" value="${to}" oninput="qmRebuildFCBlanks()">
+        </div>
+      </div>
+      <div class="qm-section-label">Blanks — label &amp; correct answer</div>
+      <div id="qm-fc-blanks"></div>`;
+    qmRebuildFCBlanks(blanks);
+
+  } else if (type === 'mc') {
+    const opts   = q.options || ['','',''];
+    const answer = q.answer  || '';
+    let html = `
+      <div class="qm-field">
+        <label>Question number</label>
+        <input type="number" id="qm-mc-qnum" min="1" max="99" value="${q.qNum||''}" placeholder="e.g. 11">
+      </div>
+      <div class="qm-field">
+        <label>Question text</label>
+        <textarea id="qm-mc-qtext" placeholder="What does the speaker say about...?">${escH(q.qText||'')}</textarea>
+      </div>
+      <div class="qm-section-label">Options — tick the correct one</div>
+      <div id="qm-mc-opts">`;
+    opts.forEach((o, i) => { html += qmMCOptRow(i, o, answer === LTRS[i]); });
+    html += `</div><button class="qm-add-opt" onclick="qmAddMCOpt()">+ Add Option</button>`;
+    area.innerHTML = html;
+
+  } else if (type === 'ct2') {
+    const pick    = q.pick    || 2;
+    const opts    = q.options || ['','','','',''];
+    const answers = q.answers || [];
+    let html = `
+      <div class="qm-field">
+        <label>Question numbers (e.g. Q14 and Q15)</label>
+        <div class="qm-range-row">
+          Q <input type="number" id="qm-ct2-qfrom" min="1" max="99" value="${q.qFrom||''}" placeholder="14">
+          &amp; Q <input type="number" id="qm-ct2-qto" min="1" max="99" value="${q.qTo||''}" placeholder="15">
+        </div>
+      </div>
+      <div class="qm-field">
+        <label>Question / prompt text</label>
+        <textarea id="qm-ct2-qtext" placeholder="Which TWO of the following...?">${escH(q.qText||'')}</textarea>
+      </div>
+      <div class="ct2-pick-row">
+        <span>Candidates must choose</span>
+        <input type="number" id="qm-ct2-pick" min="1" max="10" value="${pick}">
+        <span>answer(s)</span>
+      </div>
+      <div class="qm-section-label">Options — tick all correct answers</div>
+      <div id="qm-ct2-opts">`;
+    opts.forEach((o, i) => { html += qmCT2OptRow(i, o, answers.includes(LTRS[i])); });
+    html += `</div><button class="qm-add-opt" onclick="qmAddCT2Opt()">+ Add Option</button>`;
+    area.innerHTML = html;
+
+  } else if (type === 'match') {
+    const choices = q.matchChoices || ['','','','',''];
+    const items   = q.matchItems   || [{num:'',label:'',answer:''}];
+    let html = `
+      <div class="qm-field">
+        <label>Shared prompt / context (optional)</label>
+        <textarea id="qm-match-prompt" placeholder="What does the speaker say about each of the following...">${escH(q.matchPrompt||'')}</textarea>
+      </div>
+      <div class="qm-section-label">Choice Box (A, B, C… shown to candidates)</div>
+      <div id="qm-match-choices">`;
+    choices.forEach((c, i) => { html += qmMatchChoiceRow(i, c); });
+    html += `</div><button class="qm-add-opt" onclick="qmAddMatchChoice()">+ Add Choice</button>
+      <div class="qm-section-label" style="margin-top:12px">Items to Match — Q number, label &amp; correct letter</div>
+      <div id="qm-match-items">`;
+    items.forEach((it, i) => { html += qmMatchItemRow(i, it); });
+    html += `</div><button class="qm-add-opt" onclick="qmAddMatchItem()">+ Add Item</button>`;
+    area.innerHTML = html;
+
+  } else if (type === 'short') {
+    area.innerHTML = `
+      <div class="qm-field">
+        <label>Question number</label>
+        <input type="number" id="qm-short-qnum" min="1" max="99" value="${q.qNum||''}" placeholder="e.g. 5">
+      </div>
+      <div class="qm-field">
+        <label>Question / stem text</label>
+        <textarea id="qm-short-qtext" placeholder="Question text...">${escH(q.qText||'')}</textarea>
+      </div>
+      <div class="qm-field">
+        <label>Correct Answer</label>
+        <input type="text" id="qm-short-ans" class="qm-ans-field" placeholder="e.g. library" value="${escH(q.answer||'')}">
+      </div>`;
+
+  } else if (type === 'tfng') {
+    const ans = q.answer || '';
+    area.innerHTML = `
+      <div class="qm-field">
+        <label>Question number</label>
+        <input type="number" id="qm-tfng-qnum" min="1" max="99" value="${q.qNum||''}" placeholder="e.g. 7">
+      </div>
+      <div class="qm-field">
+        <label>Statement text</label>
+        <textarea id="qm-tfng-qtext" placeholder="Statement...">${escH(q.qText||'')}</textarea>
+      </div>
+      <div class="qm-section-label">Correct Answer</div>
+      <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
+        ${['TRUE','FALSE','NOT GIVEN'].map(v=>`<label style="display:flex;align-items:center;gap:5px;font-size:0.84rem;cursor:pointer;padding:6px 12px;border:1px solid var(--paper3);border-radius:7px;background:${ans===v?'#f0fff4':'#fff'}"><input type="radio" name="qm-tfng" value="${v}" ${ans===v?'checked':''} style="accent-color:var(--green)"> ${v}</label>`).join('')}
+      </div>`;
+  }
+}
+
+// ── ROW BUILDERS ──
+function qmMCOptRow(i, val, correct) {
+  return `<div class="qm-opt-row" id="qm-mc-opt-${i}">
+    <span class="qm-opt-ltr">${LTRS[i]}</span>
+    <input type="text" class="qm-mc-val" placeholder="Option ${LTRS[i]}..." value="${escH(val)}" oninput="qmSyncMCLabels()">
+    <input type="checkbox" class="qm-mc-chk" ${correct?'checked':''} onchange="qmMCOnlyOne(this,${i})">
+    <button class="qm-del-opt" onclick="qmRemoveMCOpt(${i})">x</button>
+  </div>`;
+}
+function qmAddMCOpt() {
+  const wrap = document.getElementById('qm-mc-opts');
+  const i = wrap.querySelectorAll('.qm-opt-row').length;
+  const d = document.createElement('div'); d.innerHTML = qmMCOptRow(i,'',false);
+  wrap.appendChild(d.firstElementChild); qmSyncMCLabels();
+}
+function qmRemoveMCOpt(i) {
+  const rows = [...document.querySelectorAll('#qm-mc-opts .qm-opt-row')];
+  if (rows.length <= 2) return; rows[i] && rows[i].remove(); qmSyncMCLabels();
+}
+function qmSyncMCLabels() {
+  document.querySelectorAll('#qm-mc-opts .qm-opt-row').forEach((r,i)=>{
+    r.id=`qm-mc-opt-${i}`; r.querySelector('.qm-opt-ltr').textContent=LTRS[i];
+  });
+}
+function qmMCOnlyOne(el, i) {
+  document.querySelectorAll('#qm-mc-opts .qm-mc-chk').forEach((c,j)=>{ if(j!==i) c.checked=false; });
+}
+
+function qmCT2OptRow(i, val, correct) {
+  return `<div class="qm-opt-row" id="qm-ct2-opt-${i}">
+    <span class="qm-opt-ltr">${LTRS[i]}</span>
+    <input type="text" class="qm-ct2-val" placeholder="Option ${LTRS[i]}..." value="${escH(val)}" oninput="qmSyncCT2Labels()">
+    <input type="checkbox" class="qm-ct2-chk" ${correct?'checked':''}>
+    <button class="qm-del-opt" onclick="qmRemoveCT2Opt(${i})">x</button>
+  </div>`;
+}
+function qmAddCT2Opt() {
+  const wrap = document.getElementById('qm-ct2-opts');
+  const i = wrap.querySelectorAll('.qm-opt-row').length;
+  const d = document.createElement('div'); d.innerHTML = qmCT2OptRow(i,'',false);
+  wrap.appendChild(d.firstElementChild); qmSyncCT2Labels();
+}
+function qmRemoveCT2Opt(i) {
+  const rows=[...document.querySelectorAll('#qm-ct2-opts .qm-opt-row')];
+  if(rows.length<=2)return; rows[i]&&rows[i].remove(); qmSyncCT2Labels();
+}
+function qmSyncCT2Labels() {
+  document.querySelectorAll('#qm-ct2-opts .qm-opt-row').forEach((r,i)=>{
+    r.id=`qm-ct2-opt-${i}`; r.querySelector('.qm-opt-ltr').textContent=LTRS[i];
+  });
+}
+
+function qmMatchChoiceRow(i, val) {
+  return `<div class="qm-match-choice-row" id="qm-mc-ch-${i}">
+    <span class="qm-match-ltr">${LTRS[i]}</span>
+    <input type="text" class="qm-mc-choice-val" placeholder="Choice ${LTRS[i]}..." value="${escH(val)}" style="flex:1;padding:6px 9px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem">
+    <button class="qm-del-opt" onclick="qmRemoveMatchChoice(${i})">x</button>
+  </div>`;
+}
+function qmAddMatchChoice() {
+  const wrap=document.getElementById('qm-match-choices');
+  const i=wrap.querySelectorAll('.qm-match-choice-row').length;
+  const d=document.createElement('div'); d.innerHTML=qmMatchChoiceRow(i,'');
+  wrap.appendChild(d.firstElementChild); qmSyncChoiceLetters();
+}
+function qmRemoveMatchChoice(i) {
+  const rows=[...document.querySelectorAll('#qm-match-choices .qm-match-choice-row')];
+  if(rows.length<=2)return; rows[i]&&rows[i].remove(); qmSyncChoiceLetters();
+}
+function qmSyncChoiceLetters() {
+  document.querySelectorAll('#qm-match-choices .qm-match-choice-row').forEach((r,i)=>{
+    r.id=`qm-mc-ch-${i}`; r.querySelector('.qm-match-ltr').textContent=LTRS[i];
+  });
+}
+function qmMatchItemRow(i, item) {
+  return `<div class="qm-match-item-row" id="qm-mi-${i}">
+    <span class="qm-match-num">Q</span>
+    <input type="number" class="item-qnum" style="width:54px;padding:6px 7px;border:1px solid var(--paper3);border-radius:6px;font-size:0.84rem;text-align:center" min="1" max="99" placeholder="No." value="${escH(item.num||'')}">
+    <input type="text" class="item-lbl" placeholder="e.g. Fundraising..." value="${escH(item.label||'')}">
+    <input type="text" class="item-ans" maxlength="2" placeholder="A" value="${escH(item.answer||'')}">
+    <button class="qm-del-opt" onclick="qmRemoveMatchItem(${i})">x</button>
+  </div>`;
+}
+function qmAddMatchItem() {
+  const wrap=document.getElementById('qm-match-items');
+  const i=wrap.querySelectorAll('.qm-match-item-row').length;
+  const d=document.createElement('div'); d.innerHTML=qmMatchItemRow(i,{});
+  wrap.appendChild(d.firstElementChild);
+}
+function qmRemoveMatchItem(i) {
+  const rows=[...document.querySelectorAll('#qm-match-items .qm-match-item-row')];
+  if(rows.length<=1)return; rows[i]&&rows[i].remove();
+}
+
+function qmRebuildFCBlanks(existing) {
+  existing = existing || null;
+  const fromEl = document.getElementById('qm-fc-from');
+  const toEl   = document.getElementById('qm-fc-to');
+  if (!fromEl || !toEl) return;
+  const from = parseInt(fromEl.value)||1;
+  const to   = parseInt(toEl.value)||1;
+  const wrap = document.getElementById('qm-fc-blanks'); if(!wrap) return;
+  const cur  = existing || [...wrap.querySelectorAll('.fc-blank-row')].map(r=>({
+    label:  r.querySelector('.fc-lbl-in').value,
+    answer: r.querySelector('.fc-ans-in').value
+  }));
+  wrap.innerHTML='';
+  for (let i=from; i<=to; i++) {
+    const b = cur[i-from] || {label:'',answer:''};
+    const row = document.createElement('div'); row.className='fc-blank-row';
+    row.innerHTML=`<span class="fc-blank-qnum">Q${i}</span>
+      <input type="text" class="fc-lbl-in" placeholder="Label / hint (optional)" value="${escH(b.label||'')}">
+      <input type="text" class="fc-ans-in fc-ans" placeholder="Answer" value="${escH(b.answer||'')}">`;
+    wrap.appendChild(row);
+  }
+}
+
+// ── SAVE ──
+function qmSave() {
+  const type  = document.getElementById('qm-type').value;
+  const part  = document.getElementById('qm-part').value.trim();
+  const instr = document.getElementById('qm-instr').value.trim();
+  if (!type) { alert('Please select a question type.'); return; }
+
+  let q = { type, part, instr };
+
+  if (type === 'fc') {
+    const from   = parseInt(document.getElementById('qm-fc-from').value)||1;
+    const to     = parseInt(document.getElementById('qm-fc-to').value)||from;
+    const blanks = [...document.querySelectorAll('#qm-fc-blanks .fc-blank-row')].map((r,i)=>({
+      num:    from+i,
+      label:  r.querySelector('.fc-lbl-in').value.trim(),
+      answer: r.querySelector('.fc-ans-in').value.trim()
+    }));
+    Object.assign(q, {fcFrom:from,fcTo:to,blanks});
+    blanks.forEach(b => {
+      config.answerKey[_qmSec][b.num] = b.answer;
+      const el = document.getElementById('ak-'+_qmSec+'-'+b.num);
+      if(el) el.value = b.answer;
+    });
+
+  } else if (type === 'mc') {
+    const qNum  = parseInt(document.getElementById('qm-mc-qnum').value)||null;
+    const qText = document.getElementById('qm-mc-qtext').value.trim();
+    const opts  = [...document.querySelectorAll('#qm-mc-opts .qm-mc-val')].map(i=>i.value.trim());
+    const ci    = [...document.querySelectorAll('#qm-mc-opts .qm-mc-chk')].findIndex(c=>c.checked);
+    const answer= ci>=0 ? LTRS[ci] : '';
+    Object.assign(q, {qNum,qText,options:opts,answer});
+    if(qNum && answer){ config.answerKey[_qmSec][qNum]=answer; const el=document.getElementById('ak-'+_qmSec+'-'+qNum); if(el)el.value=answer; }
+
+  } else if (type === 'ct2') {
+    const qFrom   = parseInt(document.getElementById('qm-ct2-qfrom').value)||null;
+    const qTo     = parseInt(document.getElementById('qm-ct2-qto').value)||null;
+    const qText   = document.getElementById('qm-ct2-qtext').value.trim();
+    const pick    = parseInt(document.getElementById('qm-ct2-pick').value)||2;
+    const opts    = [...document.querySelectorAll('#qm-ct2-opts .qm-ct2-val')].map(i=>i.value.trim());
+    const answers = [...document.querySelectorAll('#qm-ct2-opts .qm-ct2-chk')].map((c,i)=>c.checked?LTRS[i]:null).filter(Boolean);
+    Object.assign(q, {qFrom,qTo,qText,pick,options:opts,answers});
+
+  } else if (type === 'match') {
+    const matchPrompt  = document.getElementById('qm-match-prompt').value.trim();
+    const matchChoices = [...document.querySelectorAll('#qm-match-choices .qm-mc-choice-val')].map(i=>i.value.trim());
+    const matchItems   = [...document.querySelectorAll('#qm-match-items .qm-match-item-row')].map(r=>({
+      num:    r.querySelector('.item-qnum').value.trim(),
+      label:  r.querySelector('.item-lbl').value.trim(),
+      answer: r.querySelector('.item-ans').value.trim().toUpperCase()
+    }));
+    Object.assign(q, {matchPrompt,matchChoices,matchItems});
+    matchItems.forEach(it=>{
+      if(it.num && it.answer){ config.answerKey[_qmSec][it.num]=it.answer; const el=document.getElementById('ak-'+_qmSec+'-'+it.num); if(el)el.value=it.answer; }
+    });
+
+  } else if (type === 'short') {
+    const qNum  = parseInt(document.getElementById('qm-short-qnum').value)||null;
+    const qText = document.getElementById('qm-short-qtext').value.trim();
+    const answer= document.getElementById('qm-short-ans').value.trim();
+    Object.assign(q, {qNum,qText,answer});
+    if(qNum && answer){ config.answerKey[_qmSec][qNum]=answer; const el=document.getElementById('ak-'+_qmSec+'-'+qNum); if(el)el.value=answer; }
+
+  } else if (type === 'tfng') {
+    const qNum  = parseInt(document.getElementById('qm-tfng-qnum').value)||null;
+    const qText = document.getElementById('qm-tfng-qtext').value.trim();
+    const chk   = document.querySelector('input[name="qm-tfng"]:checked');
+    const answer= chk ? chk.value : '';
+    Object.assign(q, {qNum,qText,answer});
+    if(qNum && answer){ config.answerKey[_qmSec][qNum]=answer; const el=document.getElementById('ak-'+_qmSec+'-'+qNum); if(el)el.value=answer; }
+  }
+
+  const blocks = getQBlocks(_qmSec, _qmSecN);
+  if (_qmEditIdx !== null) blocks[_qmEditIdx] = q; else blocks.push(q);
+  qmClose();
+  qmRenderList(_qmSec, _qmSecN);
+  toast('Question saved!');
+}
+
+// ── RENDER CARDS ──
+function qmRenderList(sec, n) {
+  const listId = 'qlist-'+sec+'-'+n;
+  const wrap = document.getElementById(listId);
+  if (!wrap) return;
+  const blocks = getQBlocks(sec, n);
+  const typeLbl = {fc:'Form Completion',mc:'Multiple Choice',ct2:'Choose TWO',match:'Matching',short:'Short Answer',tfng:'T/F/NG'};
+
+  if (!blocks.length) {
+    wrap.innerHTML = '<div class="q-card-empty"><span>📝</span>No questions yet. Click <b>+ Add Question</b> to get started.</div>';
+    return;
+  }
+  wrap.innerHTML = '';
+  blocks.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = qmCardHTML(q, i, sec, n);
+    wrap.appendChild(card);
+  });
+}
+
+function qmCardHTML(q, i, sec, n) {
+  const typeLbl = {fc:'Form Completion',mc:'Multiple Choice',ct2:'Choose TWO',match:'Matching',short:'Short Answer',tfng:'T/F/NG'};
+  const badge   = '<span class="q-type-badge">'+( typeLbl[q.type]||q.type )+'</span>';
+  const partTag = q.part ? '<span style="font-size:0.73rem;color:var(--ink3)">'+escH(q.part)+'</span>' : '';
+  const instr   = q.instr ? '<div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;font-style:italic">'+escH(q.instr)+'</div>' : '';
+  let body = '';
+
+  if (q.type === 'fc') {
+    body = '<div style="font-size:0.8rem;color:var(--ink2);margin-bottom:4px">Q'+q.fcFrom+'&ndash;Q'+q.fcTo+'</div>';
+    (q.blanks||[]).forEach(function(b){
+      body += '<div style="margin:3px 0;font-size:0.83rem"><b>Q'+b.num+'</b> '+escH(b.label||'')+' <span style="border-bottom:1px dotted #888;display:inline-block;min-width:80px;text-align:center;font-size:0.8rem;color:var(--ink3)">'+(escH(b.answer)||'___')+'</span> <span class="q-card-ans">'+escH(b.answer)+'</span></div>';
+    });
+  } else if (q.type === 'mc') {
+    body = '<div style="font-size:0.82rem;font-weight:700;color:var(--blue);margin-bottom:4px">Q'+(q.qNum||'?')+'</div>';
+    body += '<div class="q-card-text">'+escH(q.qText||'')+'</div>';
+    (q.options||[]).forEach(function(o,j){ body += '<div class="q-card-opt">'+LTRS[j]+'. '+escH(o)+'</div>'; });
+    if(q.answer) body += '<span class="q-card-ans">&#10003; '+q.answer+'</span>';
+  } else if (q.type === 'ct2') {
+    body = '<div style="font-size:0.8rem;color:var(--ink3);margin-bottom:4px">Q'+(q.qFrom||'?')+' &amp; Q'+(q.qTo||'?')+' &mdash; Choose '+(q.pick||2)+'</div>';
+    body += '<div class="q-card-text">'+escH(q.qText||'')+'</div>';
+    (q.options||[]).forEach(function(o,j){ body += '<div class="q-card-opt">'+LTRS[j]+'. '+escH(o)+'</div>'; });
+    if((q.answers||[]).length) body += '<span class="q-card-ans">&#10003; '+q.answers.join(', ')+'</span>';
+  } else if (q.type === 'match') {
+    if(q.matchPrompt) body += '<div class="q-card-text">'+escH(q.matchPrompt)+'</div>';
+    body += '<div class="match-preview-box"><div class="match-preview-grid">';
+    (q.matchChoices||[]).forEach(function(c,j){ body += '<div><b>'+LTRS[j]+'</b> '+escH(c)+'</div>'; });
+    body += '</div></div>';
+    (q.matchItems||[]).forEach(function(it){ body += '<div class="match-item-line"><b>Q'+(it.num||'?')+'</b> '+escH(it.label||'')+' <span class="match-item-blank">'+(escH(it.answer)||'_')+'</span></div>'; });
+  } else if (q.type === 'short') {
+    body = '<div style="font-size:0.82rem;font-weight:700;color:var(--blue);margin-bottom:4px">Q'+(q.qNum||'?')+'</div>';
+    body += '<div class="q-card-text">'+escH(q.qText||'')+'</div>';
+    if(q.answer) body += '<span class="q-card-ans">&#10003; '+escH(q.answer)+'</span>';
+  } else if (q.type === 'tfng') {
+    body = '<div style="font-size:0.82rem;font-weight:700;color:var(--blue);margin-bottom:4px">Q'+(q.qNum||'?')+'</div>';
+    body += '<div class="q-card-text">'+escH(q.qText||'')+'</div>';
+    if(q.answer) body += '<span class="q-card-ans">&#10003; '+escH(q.answer)+'</span>';
+  }
+
+  return '<div class="q-card-header"><div class="q-num-badge">'+(i+1)+'</div>'+badge+' '+partTag+'</div>'+
+    instr+body+
+    '<div class="q-card-actions">'+
+    '<button class="btn btn-green" style="padding:4px 12px;font-size:0.75rem" onclick="qmOpen(\''+sec+'\','+n+','+i+')">Edit</button>'+
+    '<button class="btn btn-ghost" style="padding:4px 12px;font-size:0.75rem" onclick="qmDup(\''+sec+'\','+n+','+i+')">Duplicate</button>'+
+    '<button class="btn btn-red"   style="padding:4px 12px;font-size:0.75rem" onclick="qmRemove(\''+sec+'\','+n+','+i+')">Remove</button>'+
+    '</div>';
+}
+
+function qmDup(sec, n, i) {
+  const blocks = getQBlocks(sec, n);
+  blocks.push(JSON.parse(JSON.stringify(blocks[i])));
+  qmRenderList(sec, n); toast('Duplicated!');
+}
+function qmRemove(sec, n, i) {
+  if (!confirm('Remove this question?')) return;
+  getQBlocks(sec, n).splice(i, 1);
+  qmRenderList(sec, n);
+}
+
+function populateQEditors() {
+  // Only render Section 1 (others built lazily on tab click)
+  qmRenderList('L', 1);
+  // Reading passage 1 (active by default)
+  [1,2,3].forEach(function(n){ qmRenderList('R', n); });
+}
+
+
+// ═══════════════════════════════════════
+// ANSWER KEY
+// ═══════════════════════════════════════
+function buildAnswerKeyGrids() {
+  ['L','R'].forEach(sec => {
+    const grid = document.getElementById('AK-'+sec+'-grid');
+    grid.innerHTML = '';
+    for (let i=1; i<=40; i++) {
+      const div = document.createElement('div');
+      div.className = 'field';
+      div.innerHTML = `<label>Q${i}</label><input type="text" id="ak-${sec}-${i}" placeholder="Answer..." value="${escH(config.answerKey[sec][i]||'')}" oninput="config.answerKey['${sec}'][${i}]=this.value">`;
+      grid.appendChild(div);
+    }
+  });
+}
+function populateAnswerKey() {
+  ['L','R'].forEach(sec => {
+    for (let i=1;i<=40;i++) {
+      const el = document.getElementById(`ak-${sec}-${i}`);
+      if (el) el.value = config.answerKey[sec][i] || '';
+    }
+  });
+}
+
+// ═══════════════════════════════════════
+// AUDIO / IMAGE
+// ═══════════════════════════════════════
+function loadSectionAudio(n, input) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = e => {
+    config.listening.sections[n-1].audioData = e.target.result;
+    config.listening.sections[n-1].audioName = file.name;
+    document.getElementById('L-audio-name-'+n).textContent = '🎵 ' + file.name;
+    document.getElementById('L-audio-slot-'+n).classList.add('loaded');
+    const el = document.getElementById('L-audio-el-'+n);
+    el.src = e.target.result; el.classList.remove('hidden');
+    toast('Audio loaded: ' + file.name);
+  };
+  reader.readAsDataURL(file);
+}
+function loadSectionImg(n, input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    config.listening.sections[n-1].imgData = e.target.result;
+    const img = document.getElementById('L-img-'+n);
+    img.src = e.target.result; img.style.display = 'block';
+    toast('Image loaded');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+function loadWritingImg(n, input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    config.writing.tasks[n].imgData = e.target.result;
+    const img = document.getElementById('W-img-'+n);
+    img.src = e.target.result; img.style.display = 'block';
+    toast('Image loaded');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ═══════════════════════════════════════
+// SAVE / LOAD CONFIG
+// ═══════════════════════════════════════
+function collectConfig() {
+  // Passages
+  [1,2,3].forEach(i => {
+    const el = document.getElementById('R-text-'+i);
+    if (el) config.reading.passages[i] = el.value;
+  });
+  // Writing
+  config.writing.tasks[1].prompt   = document.getElementById('W-prompt-1').value;
+  config.writing.tasks[2].prompt   = document.getElementById('W-prompt-2').value;
+  config.writing.tasks[1].minWords = parseInt(document.getElementById('W-min-1').value)||150;
+  config.writing.tasks[2].minWords = parseInt(document.getElementById('W-min-2').value)||250;
+
+  // Collect question text inputs from DOM for both L and R
+  // (qBlocks are already saved live via qmSave; just ensure answerKey is synced)
+  ['L','R'].forEach(sec => {
+    const blocks_store = sec==='L' ? config.listening.qBlocks : config.reading.qBlocks;
+    if (!blocks_store) return;
+    Object.keys(blocks_store).forEach(n => {
+      (blocks_store[n]||[]).forEach(q => {
+        if (q.type==='fc') {
+          (q.blanks||[]).forEach(b => { if(b.num && b.answer) config.answerKey[sec][b.num]=b.answer; });
+        } else if (q.type==='mc'||q.type==='short'||q.type==='tfng') {
+          if(q.qNum && q.answer) config.answerKey[sec][q.qNum]=q.answer;
+        } else if (q.type==='match') {
+          (q.matchItems||[]).forEach(it => { if(it.num && it.answer) config.answerKey[sec][it.num]=it.answer; });
+        }
+      });
+    });
+  });
+
+  // Audio URL — sweep from DOM inputs
+  [1,2,3,4].forEach(n => {
+    const urlInput = document.getElementById('audio-url-input-'+n);
+    if (urlInput && urlInput.value.trim()) {
+      config.listening.sections[n-1].audioURL = urlInput.value.trim();
+    }
+  });
+}
+
+function saveAllConfig() {
+  collectConfig();
+  // Save Drive URL into config so simulation can read it
+  const driveURL = localStorage.getItem('ielts_drive_url') || '';
+  config._driveURL = driveURL;
+  localStorage.setItem('ielts_admin_config', JSON.stringify(config));
+  // Download JSON
+  const blob = new Blob([JSON.stringify(config, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'ielts_config.json'; a.click();
+  toast('✅ Config saved! Now upload ielts_config.json to Google Drive.');
+}
+
+// ═══════════════════════════════════════
+// GOOGLE DRIVE CONFIG
+// ═══════════════════════════════════════
+function convertDriveURL(url) {
+  // Convert any Google Drive share URL to direct download URL
+  if (!url) return '';
+  // Already a direct/export URL
+  if (url.includes('export=download') || url.includes('uc?id=')) return url;
+  // Standard share link: https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+  return url;
+}
+
+function saveDriveURL(val) {
+  // Just store raw input for now — convert on button click
+}
+
+function convertAndSaveDriveURL() {
+  const raw = document.getElementById('drive-url-input').value.trim();
+  if (!raw) { showDriveStatus('Please paste a Google Drive share link first.', 'err'); return; }
+  const converted = convertDriveURL(raw);
+  localStorage.setItem('ielts_drive_url', converted);
+  document.getElementById('drive-active-url').textContent = converted;
+  document.getElementById('drive-url-input').value = converted;
+  config._driveURL = converted;
+  localStorage.setItem('ielts_admin_config', JSON.stringify(config));
+  showDriveStatus('✅ URL converted and saved! Candidates will now fetch config from this URL.', 'ok');
+  toast('✅ Drive URL saved!');
+}
+
+async function testDriveURL() {
+  const url = localStorage.getItem('ielts_drive_url') || document.getElementById('drive-url-input').value.trim();
+  if (!url) { showDriveStatus('No URL set. Paste a Drive link first.', 'err'); return; }
+  showDriveStatus('⏳ Testing connection...', 'info');
+  try {
+    const res = await fetch(convertDriveURL(url));
+    if (res.ok) {
+      const text = await res.text();
+      try {
+        JSON.parse(text);
+        showDriveStatus('✅ Success! Config file is accessible and valid JSON. Candidates can now load questions.', 'ok');
+      } catch(e) {
+        showDriveStatus('⚠️ File is accessible but is not valid JSON. Make sure you uploaded the correct ielts_config.json file.', 'warn');
+      }
+    } else {
+      showDriveStatus(`❌ Could not access file (HTTP ${res.status}). Make sure sharing is set to "Anyone with the link".`, 'err');
+    }
+  } catch(e) {
+    showDriveStatus('❌ Network error: ' + e.message + '\n\nTip: Google Drive direct download links may be blocked by CORS on some browsers. Try uploading to a CORS-friendly host like GitHub Pages or Cloudflare R2.', 'err');
+  }
+}
+
+function copyDriveURL() {
+  const url = localStorage.getItem('ielts_drive_url') || '';
+  if (!url) { toast('No Drive URL saved yet.'); return; }
+  navigator.clipboard.writeText(url).then(()=>toast('URL copied!')).catch(()=>toast('Could not copy — select manually'));
+}
+
+function showDriveStatus(msg, type) {
+  const el = document.getElementById('drive-status');
+  el.style.display = 'block';
+  el.textContent = msg;
+  el.style.background = type==='ok'?'#f0faf4':type==='err'?'#fff5f5':type==='warn'?'#fffbe6':'#f0f5ff';
+  el.style.border = `1px solid ${type==='ok'?'#a8dbb8':type==='err'?'#f5b8b8':type==='warn'?'#ffe082':'#c0d0f0'}`;
+  el.style.color = type==='ok'?'var(--green)':type==='err'?'var(--red)':type==='warn'?'#7a5f1a':'var(--blue2)';
+}
+
+function initDrivePanel() {
+  const saved = localStorage.getItem('ielts_drive_url') || '';
+  if (saved) {
+    document.getElementById('drive-active-url').textContent = saved;
+    document.getElementById('drive-url-input').value = saved;
+  }
+}
+
+function loadConfig(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      config = JSON.parse(e.target.result);
+      localStorage.setItem('ielts_admin_config', JSON.stringify(config));
+      buildAnswerKeyGrids();
+      loadConfigToUI();
+      toast('✅ Config loaded successfully!');
+    } catch(err) { alert('Invalid config file.'); }
+  };
+  reader.readAsText(input.files[0]);
+}
+
+// ═══════════════════════════════════════
+// CHECKER
+// ═══════════════════════════════════════
+function loadCandidateResponses(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      candidateResponses = JSON.parse(e.target.result);
+      const info = document.getElementById('checker-candidate-info');
+      info.classList.remove('hidden');
+      info.innerHTML = `<b>${candidateResponses.candidateName || 'Unknown'}</b> &nbsp;|&nbsp; ID: ${candidateResponses.candidateID || 'N/A'} &nbsp;|&nbsp; ${candidateResponses.candidateNationality || ''}<br>Submitted: ${candidateResponses.submitTime ? new Date(candidateResponses.submitTime).toLocaleString() : 'N/A'}`;
+      toast('Candidate file loaded');
+    } catch(err) { alert('Invalid response file.'); }
+  };
+  reader.readAsText(input.files[0]);
+}
+
+function runChecker() {
+  if (!candidateResponses) { alert('Load a candidate response file first.'); return; }
+  collectConfig();
+
+  let lScore=0, rScore=0;
+  const lDetails = document.getElementById('checker-details-L');
+  const rDetails = document.getElementById('checker-details-R');
+  lDetails.innerHTML = '<div style="font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Listening</div>';
+  rDetails.innerHTML = '<div style="font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Reading</div>';
+
+  const lAnswers = candidateResponses.listening || {};
+  const rAnswers = candidateResponses.reading || {};
+
+  for (let i=1; i<=40; i++) {
+    const key = (config.answerKey.L[i]||'').toString().trim().toLowerCase();
+    const given = (lAnswers[i]||'').toString().trim().toLowerCase();
+    const correct = key !== '' && given === key;
+    if (correct) lScore++;
+    lDetails.innerHTML += `<div class="checker-result ${correct?'checker-correct':'checker-wrong'}">
+      <b>Q${i}:</b> ${given||'<em>no answer</em>'} ${correct?'✓':'✗ Correct: '+escH(config.answerKey.L[i]||'—')}
+    </div>`;
+  }
+  for (let i=1; i<=40; i++) {
+    const key = (config.answerKey.R[i]||'').toString().trim().toLowerCase();
+    const given = (rAnswers[i]||'').toString().trim().toLowerCase();
+    const correct = key !== '' && given === key;
+    if (correct) rScore++;
+    rDetails.innerHTML += `<div class="checker-result ${correct?'checker-correct':'checker-wrong'}">
+      <b>Q${i}:</b> ${given||'<em>no answer</em>'} ${correct?'✓':'✗ Correct: '+escH(config.answerKey.R[i]||'—')}
+    </div>`;
+  }
+
+  const lBand = scoreToBand(lScore);
+  const rBand = scoreToBand(rScore);
+  document.getElementById('checker-score-display').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div style="text-align:center;padding:20px;background:var(--paper2);border-radius:10px">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)">Listening</div>
+        <div class="checker-score">${lScore}/40</div>
+        <div class="checker-band">Band ${lBand}</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:var(--paper2);border-radius:10px">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)">Reading</div>
+        <div class="checker-score">${rScore}/40</div>
+        <div class="checker-band">Band ${rBand}</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('checker-output').classList.remove('hidden');
+  toast('Checker complete!');
+}
+
+function scoreToBand(score) {
+  if (score >= 39) return 9.0;
+  if (score >= 37) return 8.5;
+  if (score >= 35) return 8.0;
+  if (score >= 33) return 7.5;
+  if (score >= 30) return 7.0;
+  if (score >= 27) return 6.5;
+  if (score >= 23) return 6.0;
+  if (score >= 20) return 5.5;
+  if (score >= 16) return 5.0;
+  if (score >= 13) return 4.5;
+  if (score >= 10) return 4.0;
+  return 3.5;
+}
+
+// ═══════════════════════════════════════
+// PDF EXPORT
+// ═══════════════════════════════════════
+function openPrintWindow(html) {
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>IELTS Export</title>
+  <style>
+    body{font-family:Georgia,serif;max-width:800px;margin:0 auto;padding:40px;color:#1a1a2e}
+    h1{font-size:1.5rem;color:#002f5f;border-bottom:3px solid #c8a84b;padding-bottom:10px;margin-bottom:6px}
+    h2{font-size:1.1rem;color:#002f5f;margin-top:28px;margin-bottom:8px}
+    h3{font-size:0.95rem;color:#4a4a6a;margin:16px 0 6px}
+    .q{margin-bottom:12px;padding:8px 12px;border:1px solid #e8e5df;border-radius:4px}
+    .q-num{font-weight:bold;color:#002f5f}
+    .answer-line{border-bottom:1px solid #888;min-width:200px;display:inline-block;height:18px;margin-left:8px}
+    .correct{color:#2e7d4f;font-weight:bold}
+    .wrong{color:#c0392b}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    td,th{border:1px solid #e8e5df;padding:6px 10px;font-size:0.88rem}
+    th{background:#f2f0ec;font-weight:700;color:#002f5f}
+    @media print{body{padding:20px}}
+  </style></head><body>${html}<script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+function exportQuestionPDF() {
+  collectConfig();
+  const title = document.getElementById('pdf-title').value;
+  const subtitle = document.getElementById('pdf-subtitle').value;
+  let html = `<h1>${escH(title)}</h1><p style="color:#8888aa;margin-bottom:24px">${escH(subtitle)}</p>`;
+  html += `<h2>Listening Section</h2>`;
+  for (let i=1; i<=40; i++) {
+    const q = config.listening.questions[i];
+    html += `<div class="q"><span class="q-num">${i}.</span> ${escH(q?.text||'Question '+i)} <span class="answer-line"></span></div>`;
+  }
+  html += `<h2>Reading Section</h2>`;
+  [1,2,3].forEach(p => {
+    html += `<h3>Passage ${p}</h3><p style="font-size:0.85rem;color:#4a4a6a;margin-bottom:10px">${escH(config.reading.passages[p]||'').substring(0,300)}...</p>`;
+  });
+  for (let i=1; i<=40; i++) {
+    const q = config.reading.questions[i];
+    html += `<div class="q"><span class="q-num">${i}.</span> ${escH(q?.text||'Question '+i)} <span class="answer-line"></span></div>`;
+  }
+  html += `<h2>Writing Section</h2>`;
+  html += `<h3>Task 1</h3><p>${escH(config.writing.tasks[1].prompt||'')}</p>`;
+  html += `<h3>Task 2</h3><p>${escH(config.writing.tasks[2].prompt||'')}</p>`;
+  openPrintWindow(html);
+}
+
+function exportAnswerSheetPDF() {
+  const title = document.getElementById('pdf-title').value;
+  let html = `<h1>${escH(title)} — Answer Sheet</h1>`;
+  html += `<h2>Listening</h2><table><tr><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th></tr>`;
+  for (let i=1; i<=10; i++) html += `<tr><td>${i}</td><td style="min-width:100px">&nbsp;</td><td>${i+10}</td><td>&nbsp;</td><td>${i+20}</td><td>&nbsp;</td><td>${i+30}</td><td>&nbsp;</td></tr>`;
+  html += `</table><h2>Reading</h2><table><tr><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th></tr>`;
+  for (let i=1; i<=10; i++) html += `<tr><td>${i}</td><td style="min-width:100px">&nbsp;</td><td>${i+10}</td><td>&nbsp;</td><td>${i+20}</td><td>&nbsp;</td><td>${i+30}</td><td>&nbsp;</td></tr>`;
+  html += `</table>`;
+  openPrintWindow(html);
+}
+
+function exportAnswerKeyPDF() {
+  collectConfig();
+  const title = document.getElementById('pdf-title').value;
+  let html = `<h1>${escH(title)} — Answer Key</h1><p style="color:#c0392b;font-size:0.8rem">CONFIDENTIAL — FOR ADMIN USE ONLY</p>`;
+  html += `<h2>Listening</h2><table><tr><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th></tr>`;
+  for (let i=1; i<=10; i++) html += `<tr><td>${i}</td><td class="correct">${escH(config.answerKey.L[i]||'')}</td><td>${i+10}</td><td class="correct">${escH(config.answerKey.L[i+10]||'')}</td><td>${i+20}</td><td class="correct">${escH(config.answerKey.L[i+20]||'')}</td><td>${i+30}</td><td class="correct">${escH(config.answerKey.L[i+30]||'')}</td></tr>`;
+  html += `</table><h2>Reading</h2><table><tr><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th></tr>`;
+  for (let i=1; i<=10; i++) html += `<tr><td>${i}</td><td class="correct">${escH(config.answerKey.R[i]||'')}</td><td>${i+10}</td><td class="correct">${escH(config.answerKey.R[i+10]||'')}</td><td>${i+20}</td><td class="correct">${escH(config.answerKey.R[i+20]||'')}</td><td>${i+30}</td><td class="correct">${escH(config.answerKey.R[i+30]||'')}</td></tr>`;
+  html += `</table>`;
+  openPrintWindow(html);
+}
+
+function exportCheckerPDF() {
+  const output = document.getElementById('checker-output').innerHTML;
+  openPrintWindow(`<h1>IELTS Checker Results</h1>${output}`);
+}
+
+// ═══════════════════════════════════════
+// GRADE WRITING
+// ═══════════════════════════════════════
+let currentGradeRow = null;
+
+async function loadUngraded() {
+  const wrap = document.getElementById('ungraded-wrap');
+  wrap.innerHTML = '<div class="tbl-empty">⏳ Loading...</div>';
+  try {
+    const data = await callSheets({ action:'getScores' });
+    if (!data.success) throw new Error(data.message);
+    const rows = (data.rows||[]).filter(r => !r[14] || r[14]===''); // no overall band = ungraded
+    if (!rows.length) { wrap.innerHTML='<div class="tbl-empty">✅ All submissions graded!</div>'; return; }
+    let html = '<div style="overflow-x:auto"><table class="sheets-table"><thead><tr><th>Date</th><th>Candidate</th><th>Test Set</th><th>L Band</th><th>R Band</th><th>W1 WC</th><th>W2 WC</th><th>Action</th></tr></thead><tbody>';
+    rows.forEach((r,i) => {
+      html += `<tr>
+        <td style="font-size:0.78rem">${formatDate(r[1])}</td>
+        <td><b>${escH(r[3])}</b><br><span style="font-size:0.75rem;color:var(--ink3)">${escH(r[2])}</span></td>
+        <td style="font-size:0.78rem">${escH(r[5]||'—')}</td>
+        <td><span class="band-badge ${bandClass(r[7])}">${r[7]||'—'}</span></td>
+        <td><span class="band-badge ${bandClass(r[9])}">${r[9]||'—'}</span></td>
+        <td style="text-align:center">${r[15]||0}</td>
+        <td style="text-align:center">${r[16]||0}</td>
+        <td><button class="btn btn-blue" style="padding:4px 10px;font-size:0.78rem" onclick="openGradeForm(${JSON.stringify(r).replace(/"/g,'&quot;')})">✏️ Grade</button></td>
+      </tr>`;
+    });
+    html += '</tbody></table></div>';
+    wrap.innerHTML = html;
+  } catch(e) {
+    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}</div>`;
+  }
+}
+
+function openGradeForm(row) {
+  currentGradeRow = row;
+  document.getElementById('grade-sub-id').value = row[0];
+  document.getElementById('grade-form-card').style.display = 'block';
+  document.getElementById('grade-candidate-info').innerHTML =
+    `<b>${escH(row[3])}</b> &nbsp;|&nbsp; ID: ${escH(row[2])} &nbsp;|&nbsp; Test Set: ${escH(row[5]||'—')}<br>
+     Submitted: ${formatDate(row[1])} &nbsp;|&nbsp; L: ${row[7]||'—'} &nbsp;|&nbsp; R: ${row[9]||'—'}`;
+  // Show writing texts
+  const w1 = row[17]||''; const w2 = row[18]||'';
+  document.getElementById('writing-texts-wrap').innerHTML = `
+    ${w1?`<div class="field"><label>Task 1 Response (${row[15]||0} words)</label><textarea style="min-height:80px;font-family:'Source Serif 4',serif;font-size:0.88rem" readonly>${escH(w1)}</textarea></div>`:''}
+    ${w2?`<div class="field"><label>Task 2 Response (${row[16]||0} words)</label><textarea style="min-height:100px;font-family:'Source Serif 4',serif;font-size:0.88rem" readonly>${escH(w2)}</textarea></div>`:''}
+  `;
+  // Auto-preview overall
+  updateGradePreview();
+  document.getElementById('grade-form-card').scrollIntoView({behavior:'smooth'});
+}
+
+function updateGradePreview() {
+  const w1 = parseFloat(document.getElementById('grade-w1').value)||0;
+  const w2 = parseFloat(document.getElementById('grade-w2').value)||0;
+  const s  = parseFloat(document.getElementById('grade-s').value)||0;
+  if (!currentGradeRow||(!w1&&!w2)) { document.getElementById('grade-preview').style.display='none'; return; }
+  const lBand = parseFloat(currentGradeRow[7])||0;
+  const rBand = parseFloat(currentGradeRow[9])||0;
+  const wBand = ((w1+w2)/2);
+  const components = [lBand, rBand, wBand];
+  if (s) components.push(s);
+  const avg = components.reduce((a,b)=>a+b,0)/components.length;
+  const overall = Math.round(avg*2)/2;
+  document.getElementById('grade-overall').textContent = overall.toFixed(1);
+  document.getElementById('grade-preview').style.display = 'block';
+}
+// Auto-update preview when bands change
+['grade-w1','grade-w2','grade-s'].forEach(id => {
+  setTimeout(()=>{ const el=document.getElementById(id); if(el) el.addEventListener('change',updateGradePreview); },1000);
+});
+
+async function submitGrade() {
+  const subID = document.getElementById('grade-sub-id').value;
+  const w1    = document.getElementById('grade-w1').value;
+  const w2    = document.getElementById('grade-w2').value;
+  if (!w1||!w2) { alert('Please set both Writing Task 1 and Task 2 bands.'); return; }
+  try {
+    const data = await callSheets({
+      action:'gradeWriting', submissionID:subID,
+      writingTask1Band:w1, writingTask2Band:w2,
+      speakingBand: document.getElementById('grade-s').value||'',
+      gradedBy:     document.getElementById('grade-by').value||'Admin',
+      examinerNotes:document.getElementById('grade-notes').value||''
+    });
+    if (data.success) {
+      toast(`✅ Graded! Overall Band: ${data.overallBand}`);
+      document.getElementById('grade-form-card').style.display='none';
+      loadUngraded();
+    } else { alert('Error: '+data.message); }
+  } catch(e) { alert('Error: '+e.message); }
+}
+
+function bandClass(b) {
+  const n=parseFloat(b)||0;
+  return n>=7?'band-high':n>=5.5?'band-mid':'band-low';
+}
+
+// ═══════════════════════════════════════
+// TEST SETS
+// ═══════════════════════════════════════
+let editingSetID = null;
+
+async function loadTestSets() {
+  const wrap = document.getElementById('testsets-wrap');
+  wrap.innerHTML = '<div class="tbl-empty">⏳ Loading...</div>';
+  try {
+    const data = await callSheets({ action:'getTestSets' });
+    const active = await callSheets({ action:'getActiveSet' });
+    const activeID = active.set ? active.set.setID : '';
+    if (!data.success) throw new Error(data.message);
+    const sets = data.sets||[];
+    if (!sets.length) { wrap.innerHTML='<div class="tbl-empty">No test sets yet. Create one!</div>'; return; }
+    let html='<div style="overflow-x:auto"><table class="sheets-table"><thead><tr><th>Set Name</th><th>Status</th><th>Config URL</th><th>Created</th><th>Actions</th></tr></thead><tbody>';
+    sets.forEach(s => {
+      const isActive = s.setID === activeID;
+      html+=`<tr>
+        <td><b>${escH(s.setName)}</b>${s.description?`<br><span style="font-size:0.75rem;color:var(--ink3)">${escH(s.description)}</span>`:''}</td>
+        <td>${isActive?'<span class="band-badge band-high">⚡ ACTIVE</span>':`<span class="band-badge">${escH(s.status)}</span>`}</td>
+        <td style="font-size:0.75rem;max-width:200px;overflow:hidden;text-overflow:ellipsis">${s.configURL?`<a href="${escH(s.configURL)}" target="_blank" style="color:var(--blue2)">View</a>`:'—'}</td>
+        <td style="font-size:0.78rem">${formatDate(s.createdAt)}</td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-ghost" style="padding:3px 8px;font-size:0.75rem" onclick="editSet(${JSON.stringify(s).replace(/"/g,'&quot;')})">✏️ Edit</button>
+          ${!isActive?`<button class="btn btn-green" style="padding:3px 8px;font-size:0.75rem;margin-left:4px" onclick="activateSet('${s.setID}')">⚡ Activate</button>`:''}
+        </td>
+      </tr>`;
+    });
+    html+='</tbody></table></div>';
+    wrap.innerHTML=html;
+  } catch(e) { wrap.innerHTML=`<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}</div>`; }
+}
+
+function showNewSetForm() {
+  editingSetID=null;
+  document.getElementById('set-id').value='';
+  document.getElementById('set-name').value='';
+  document.getElementById('set-desc').value='';
+  document.getElementById('set-url').value='';
+  document.getElementById('set-status').value='Active';
+  document.getElementById('set-form-title').textContent='New Test Set';
+  document.getElementById('activate-btn').style.display='none';
+  document.getElementById('set-form-card').style.display='block';
+  document.getElementById('set-form-card').scrollIntoView({behavior:'smooth'});
+}
+
+function editSet(s) {
+  editingSetID=s.setID;
+  document.getElementById('set-id').value=s.setID;
+  document.getElementById('set-name').value=s.setName;
+  document.getElementById('set-desc').value=s.description||'';
+  document.getElementById('set-url').value=s.configURL||'';
+  document.getElementById('set-status').value=s.status||'Active';
+  document.getElementById('set-form-title').textContent='Edit: '+s.setName;
+  document.getElementById('activate-btn').style.display='inline-flex';
+  document.getElementById('set-form-card').style.display='block';
+  document.getElementById('set-form-card').scrollIntoView({behavior:'smooth'});
+}
+
+async function saveTestSetForm() {
+  const name=document.getElementById('set-name').value.trim();
+  if (!name) { alert('Please enter a set name.'); return; }
+  try {
+    const data = await callSheets({
+      action:'saveTestSet',
+      setID:   document.getElementById('set-id').value||('SET-'+Date.now()),
+      setName: name,
+      configURL: document.getElementById('set-url').value.trim(),
+      status:  document.getElementById('set-status').value,
+      description: document.getElementById('set-desc').value.trim()
+    });
+    if (data.success) { toast('✅ Test set saved!'); document.getElementById('set-form-card').style.display='none'; loadTestSets(); }
+    else alert('Error: '+data.message);
+  } catch(e) { alert('Error: '+e.message); }
+}
+
+async function activateSet(setID) {
+  try {
+    await callSheets({ action:'setActiveSet', setID });
+    toast('⚡ Test set activated!'); loadTestSets();
+  } catch(e) { alert('Error: '+e.message); }
+}
+async function activateSetForm() { await activateSet(document.getElementById('set-id').value); }
+
+// ═══════════════════════════════════════
+// PUBLISH
+// ═══════════════════════════════════════
+function downloadConfigForGitHub() {
+  collectConfig();
+  const setName = document.getElementById('pub-set-name').value.trim() || 'Test Set';
+  const setDesc = document.getElementById('pub-set-desc').value.trim() || '';
+  const setID   = 'SET-'+Date.now();
+  const exportConfig = {
+    ...config,
+    _meta: { setID, setName, setDesc, exportedAt: new Date().toISOString() }
+  };
+  // Remove large audio data — YouTube URLs only
+  if (exportConfig.listening && exportConfig.listening.sections) {
+    exportConfig.listening.sections = exportConfig.listening.sections.map(s => ({
+      ...s,
+      audioData: '',  // Remove base64 audio — use audioURL instead
+    }));
+  }
+  const blob = new Blob([JSON.stringify(exportConfig, null, 2)], {type:'application/json'});
+  const a    = document.createElement('a');
+  const slug = setName.toLowerCase().replace(/[^a-z0-9]+/g,'_').substring(0,40);
+  a.href     = URL.createObjectURL(blob);
+  a.download = slug+'_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  toast('✅ Config downloaded! Upload to GitHub configs/ folder.');
+}
+
+async function testConfigURL() {
+  const url  = document.getElementById('pub-github-url').value.trim();
+  const wrap = document.getElementById('pub-test-result');
+  if (!url) { wrap.innerHTML='<span style="color:var(--red)">Please enter a URL first.</span>'; return; }
+  wrap.innerHTML='⏳ Testing...';
+  try {
+    const data = await callSheets({ action:'getConfig', configURL: url });
+    if (data.success && data.config) {
+      const meta = data.config._meta || {};
+      wrap.innerHTML=`<span style="color:var(--green)">✅ Config loaded! Set: <b>${escH(meta.setName||'Unknown')}</b> — exported ${meta.exportedAt?new Date(meta.exportedAt).toLocaleDateString():''}</span>`;
+    } else {
+      wrap.innerHTML=`<span style="color:var(--red)">❌ ${data.message||'Failed to load config'}</span>`;
+    }
+  } catch(e) { wrap.innerHTML=`<span style="color:var(--red)">❌ ${e.message}</span>`; }
+}
+
+async function savePublishedSet() {
+  const url  = document.getElementById('pub-github-url').value.trim();
+  const name = document.getElementById('pub-set-name').value.trim();
+  if (!url||!name) { alert('Please fill in the set name and GitHub URL.'); return; }
+  try {
+    const data = await callSheets({
+      action:'saveTestSet',
+      setID: 'SET-'+Date.now(), setName:name,
+      configURL:url, status:'Active',
+      description: document.getElementById('pub-set-desc').value.trim()
+    });
+    if (data.success) {
+      await callSheets({ action:'setActiveSet', setID:data.setID||'' });
+      // Also save Drive URL locally for simulation
+      localStorage.setItem('ielts_drive_url', url);
+      toast('✅ Published! Test set saved and activated.');
+    } else alert('Error: '+data.message);
+  } catch(e) { alert('Error: '+e.message); }
+}
+
+// ═══════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════
+async function loadSettingsForm() {
+  try {
+    const data = await callSheets({ action:'getSettings' });
+    if (data.success && data.settings) {
+      const s = data.settings;
+      document.getElementById('inst-name').value = s.institution_name||'';
+      document.getElementById('inst-addr').value = s.institution_address||'';
+      document.getElementById('trf-note').value  = s.trf_footer_note||'';
+    }
+  } catch(e) { console.warn('Settings load failed:', e); }
+}
+
+async function saveSettingsForm() {
+  try {
+    const data = await callSheets({
+      action:'saveSettings',
+      institution_name:    document.getElementById('inst-name').value,
+      institution_address: document.getElementById('inst-addr').value,
+      trf_footer_note:     document.getElementById('trf-note').value
+    });
+    if (data.success) {
+      const el = document.getElementById('settings-status');
+      el.style.display='block';
+      setTimeout(()=>el.style.display='none', 3000);
+      toast('✅ Settings saved!');
+    }
+  } catch(e) { alert('Error: '+e.message); }
+}
+
+async function testConnection() {
+  const wrap = document.getElementById('conn-status');
+  wrap.textContent='⏳ Testing...'; wrap.style.color='var(--ink3)';
+  try {
+    const data = await callSheets({ action:'ping' });
+    if (data.success) { wrap.textContent='✅ Connected! Server: '+data.time; wrap.style.color='var(--green)'; }
+    else { wrap.textContent='❌ '+data.message; wrap.style.color='var(--red)'; }
+  } catch(e) { wrap.textContent='❌ '+e.message; wrap.style.color='var(--red)'; }
+}
+
+function initDrivePanel() {
+  loadSettingsForm();
+  // Load active set info
+  callSheets({action:'getActiveSet'}).then(d=>{
+    if(d.success&&d.set) toast('Active test set: '+d.set.setName);
+  }).catch(()=>{});
+}
+
+// ═══════════════════════════════════════
+// READING FORM COMPLETION
+// ═══════════════════════════════════════
+function toggleRFC(n, enabled) {
+  if (!config.reading.passages_fc) config.reading.passages_fc = {1:{},2:{},3:{}};
+  config.reading.passages_fc[n].formCompletion = enabled;
+  document.getElementById('rfc-panel-'+n).classList.toggle('hidden', !enabled);
+  document.getElementById('R-qs-'+n).classList.toggle('hidden', enabled);
+  if (enabled) buildRFCAnswers(n);
+}
+
+function loadRFCImg(n, input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    if (!config.reading.passages_fc) config.reading.passages_fc={1:{},2:{},3:{}};
+    config.reading.passages_fc[n].fcImgData = e.target.result;
+    const pr = document.getElementById('rfc-img-'+n);
+    pr.src = e.target.result; pr.style.display = 'block';
+    toast('Form image loaded for Passage '+n);
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function updateRFCAnswers(n) {
+  const from = parseInt(document.getElementById('rfc-from-'+n).value)||1;
+  const to   = parseInt(document.getElementById('rfc-to-'+n).value)||13;
+  if (!config.reading.passages_fc) config.reading.passages_fc={1:{},2:{},3:{}};
+  config.reading.passages_fc[n].fcFrom = from;
+  config.reading.passages_fc[n].fcTo   = to;
+  buildRFCAnswers(n);
+}
+
+function buildRFCAnswers(n) {
+  if (!config.reading.passages_fc) return;
+  const pfc = config.reading.passages_fc[n] || {};
+  const from = parseInt(document.getElementById('rfc-from-'+n).value) || pfc.fcFrom || [1,14,27][n-1];
+  const to   = parseInt(document.getElementById('rfc-to-'+n).value)   || pfc.fcTo   || [13,26,40][n-1];
+  const wrap = document.getElementById('rfc-answers-'+n);
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  for (let i=from; i<=to; i++) {
+    const val = config.answerKey.R[i] || '';
+    const row = document.createElement('div');
+    row.className = 'fc-answer-row';
+    row.innerHTML = `<label>${i}</label><input type="text" placeholder="Answer..." value="${escH(val)}" oninput="saveRFCAnswer(${n},${i},this.value)">`;
+    wrap.appendChild(row);
+  }
+}
+
+function saveRFCAnswer(n, qNum, val) {
+  config.answerKey.R[qNum] = val;
+  if (!config.reading.questions[qNum]) config.reading.questions[qNum]={text:'Blank '+qNum,type:'fc',answer:''};
+  config.reading.questions[qNum].answer = val;
+  config.reading.questions[qNum].type = 'fc';
+  const akInput = document.getElementById('ak-R-'+qNum);
+  if (akInput) akInput.value = val;
+}
+
+function restoreReadingFC() {
+  if (!config.reading.passages_fc) return;
+  [1,2,3].forEach(n => {
+    const pfc = config.reading.passages_fc[n];
+    if (!pfc) return;
+    const chk = document.getElementById('rfc-chk-'+n);
+    if (!chk) return;
+    chk.checked = !!pfc.formCompletion;
+    document.getElementById('rfc-panel-'+n).classList.toggle('hidden', !pfc.formCompletion);
+    document.getElementById('R-qs-'+n).classList.toggle('hidden', !!pfc.formCompletion);
+    if (pfc.fcImgData) { const pr=document.getElementById('rfc-img-'+n); pr.src=pfc.fcImgData; pr.style.display='block'; }
+    if (pfc.fcFrom) document.getElementById('rfc-from-'+n).value = pfc.fcFrom;
+    if (pfc.fcTo)   document.getElementById('rfc-to-'+n).value   = pfc.fcTo;
+    if (pfc.formCompletion) buildRFCAnswers(n);
+  });
+}
+
+// ═══════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════
+function escH(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
