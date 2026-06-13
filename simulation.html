@@ -83,6 +83,7 @@
   .fc-input-row input{flex:1;padding:7px 10px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--ink);background:#fff;transition:all 0.15s}
   .fc-input-row input:focus{outline:none;border-color:var(--blue2);background:#f5f9ff}
   .fc-input-row input.filled{border-color:var(--green);background:#f5fbf7}
+  .matching-options-box{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--paper2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px;font-size:0.85rem;color:var(--ink2)}
   .submit-btn{margin:0 16px 16px;padding:11px;background:var(--green);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;width:calc(100% - 32px);transition:all 0.15s}
   .submit-btn:hover{opacity:0.9}
   .hidden{display:none!important}
@@ -452,9 +453,155 @@ function updateWC(){
 }
 
 // Build Q from config
+// ─── Read questions from qBlocks (new format) or questions (legacy) ───
+function getQBlocks(sec, secIdx) {
+  // secIdx: for L = 1,11,21,31; for R = 1,14,27
+  const store = sec==='L'
+    ? (config.listening  && config.listening.qBlocks)
+    : (config.reading    && config.reading.qBlocks);
+  if (store && store[secIdx]) return store[secIdx];
+  return null;
+}
+
 function getQs(sec) {
-  if(sec==='L')return(config.listening&&config.listening.questions)||{};
-  return(config.reading&&config.reading.questions)||{};
+  if(sec==='L') return (config.listening && config.listening.questions)||{};
+  return (config.reading && config.reading.questions)||{};
+}
+
+// ─── Render a qBlocks array into HTML ───
+function renderQBlocksHTML(sec, blocks, sectionLabel) {
+  if (!blocks || !blocks.length) return `<div class="q-section-label">${sectionLabel}</div><div style="color:var(--ink3);font-size:0.85rem;padding:12px 0">No questions set for this section.</div>`;
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let html = `<div class="q-section-label">${sectionLabel}</div>`;
+
+  blocks.forEach((b, bi) => {
+
+    // INSTRUCTIONS block
+    if (b.type === 'instructions') {
+      html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:14px;font-size:0.88rem;color:var(--ink2);line-height:1.6">${escH(b.text||b.instr||'')}</div>`;
+      return;
+    }
+
+    // FORM COMPLETION block
+    if (b.type === 'fc') {
+      const from = b.fcFrom || (b.blanks&&b.blanks[0]?b.blanks[0].num:1);
+      const to   = b.fcTo   || (b.blanks&&b.blanks[b.blanks.length-1]?b.blanks[b.blanks.length-1].num:10);
+      if (b.instr) html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:0.88rem;color:var(--ink2)">${escH(b.instr)}</div>`;
+      if (b.imgData) html += `<div class="fc-image-wrap"><img src="${b.imgData}" alt="Form"></div>`;
+
+      // If blanks array exists (new format from uploaded config)
+      if (b.blanks && b.blanks.length) {
+        html += `<div class="fc-inputs">`;
+        b.blanks.forEach(blank => {
+          html += `<div class="fc-input-row"><span class="q-num">${blank.num}</span><input type="text" placeholder="${escH(blank.label||'...')}" oninput="markFCQ('${sec}',${blank.num},this)"></div>`;
+        });
+        html += `</div>`;
+      } else {
+        // Fallback: just numbered inputs from-to
+        html += `<div class="fc-inputs">`;
+        for (let i=from; i<=to; i++) {
+          html += `<div class="fc-input-row"><span class="q-num">${i}</span><input type="text" placeholder="..." oninput="markFCQ('${sec}',${i},this)"></div>`;
+        }
+        html += `</div>`;
+      }
+      return;
+    }
+
+    // MATCHING block
+    if (b.type === 'matching') {
+      const nums  = b.numbers || (b.qNums) || [];
+      const opts  = b.options || [];
+      if (b.instr||b.text) html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:0.88rem;color:var(--ink2)">${escH(b.instr||b.text)}</div>`;
+      // Options box
+      if (opts.length) {
+        html += `<div class="matching-options-box">`;
+        opts.forEach(o => {
+          const letter = o.letter||o;
+          const text   = o.text||'';
+          html += `<div><strong>${escH(letter)}</strong> ${escH(text)}</div>`;
+        });
+        html += `</div>`;
+      }
+      // Question rows
+      nums.forEach(n => {
+        const label = b.labels && b.labels[n] ? b.labels[n] : `Question ${n}`;
+        html += `<div class="q-block"><div class="q-text"><span class="q-num">${n}</span>${escH(label)}</div>
+          <input class="q-input" type="text" maxlength="2" placeholder="e.g. A" style="text-transform:uppercase;width:80px" oninput="markQ('${sec}',${n},this)"></div>`;
+      });
+      return;
+    }
+
+    // CHOOSE LETTERS (grouped) — e.g. Q14 and Q15
+    if (b.type === 'cl' || b.type === 'choose-letters') {
+      const nums    = b.numbers || (b.qNums) || (b.qNum?[b.qNum]:[]);
+      const opts    = b.options || [];
+      const choose  = b.choose  || b.clPick || 2;
+      const numOpts = b.clCount || opts.length || 5;
+      const qLabel  = nums.length > 1
+        ? `Questions ${nums.join(' and ')}`
+        : `Question ${nums[0]||''}`;
+      if (b.instr||b.text) html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:0.88rem;color:var(--ink2)">${escH(b.instr||b.text)}</div>`;
+      const groupName = `cl_${sec}_${bi}`;
+      html += `<div class="q-block">
+        <div class="q-text" style="margin-bottom:8px"><span style="font-size:0.8rem;font-weight:700;color:var(--blue)">${qLabel}</span></div>
+        <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:8px">Choose <b>${choose}</b> letter(s). <span style="color:var(--red);font-size:0.75rem">✗ if you tick more than ${choose}</span></div>
+        <div class="mc-opts">`;
+      for (let i=0; i<numOpts; i++) {
+        const letter = letters[i];
+        const optText = opts[i] || '';
+        html += `<label class="mc-opt"><input type="checkbox" name="${groupName}" value="${letter}" onchange="markGroupedCL('${sec}',${JSON.stringify(nums)},this,${choose},'${groupName}')"> <span><b>${letter}</b>${optText?' — '+escH(optText):''}</span></label>`;
+      }
+      html += `</div></div>`;
+      return;
+    }
+
+    // SINGLE QUESTION (short, mc, tfng, yntg)
+    const n    = b.qNum || (b.numbers&&b.numbers[0]) || 0;
+    const text = b.qText || b.text || '';
+    const type = b.type;
+
+    if (!n) return; // skip if no question number
+
+    if (b.instr && (bi===0 || blocks[bi-1]?.instr!==b.instr)) {
+      html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:0.88rem;color:var(--ink2)">${escH(b.instr)}</div>`;
+    }
+
+    let inner = '';
+    if (type==='mc') {
+      const opts    = b.options||[];
+      const mcCount = b.mcCount||opts.length||4;
+      inner = '<div class="mc-opts">';
+      for (let i=0;i<mcCount;i++) {
+        inner += `<label class="mc-opt"><input type="radio" name="q${sec}${n}" value="${letters[i]}" onchange="markQ('${sec}',${n},this)"> <span><b>${letters[i]}</b>${opts[i]?' — '+escH(opts[i]):''}</span></label>`;
+      }
+      inner += '</div>';
+    } else if (type==='tfng') {
+      inner = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">'+
+        ['TRUE','FALSE','NOT GIVEN'].map(v=>`<label style="display:flex;align-items:center;gap:4px;font-size:0.82rem;cursor:pointer;padding:5px 10px;border:1px solid var(--paper3);border-radius:5px"><input type="radio" name="q${sec}${n}" value="${v}" onchange="markQ('${sec}',${n},this)"> ${v}</label>`).join('') + '</div>';
+    } else if (type==='yntg') {
+      inner = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">'+
+        ['YES','NO','NOT GIVEN'].map(v=>`<label style="display:flex;align-items:center;gap:4px;font-size:0.82rem;cursor:pointer;padding:5px 10px;border:1px solid var(--paper3);border-radius:5px"><input type="radio" name="q${sec}${n}" value="${v}" onchange="markQ('${sec}',${n},this)"> ${v}</label>`).join('') + '</div>';
+    } else {
+      // short answer
+      inner = `<input class="q-input" type="text" placeholder="Write answer..." oninput="markQ('${sec}',${n},this)">`;
+    }
+    html += `<div class="q-block"><div class="q-text"><span class="q-num">${n}</span>${escH(text)}</div>${inner}</div>`;
+  });
+
+  return html;
+}
+
+function markGroupedCL(sec, nums, el, maxPick, groupName) {
+  const checked = [...document.querySelectorAll(`[name="${groupName}"]:checked`)];
+  if (checked.length > maxPick) { el.checked=false; return; }
+  const val = checked.map(c=>c.value).join(', ');
+  // Assign to each question number in the group
+  nums.forEach((n,i) => {
+    answered[sec][n] = checked.length > i;
+    const v = checked[i] ? checked[i].value : '';
+    if (sec==='L') lAnswers[n]=v; else rAnswers[n]=v;
+  });
+  buildNav(cur);
 }
 
 function buildQBlock(sec,n){
@@ -505,78 +652,32 @@ function markCLQ(sec,n,el,maxPick){
 
 function buildLQs(n){
   const c=document.getElementById('L-qs');
-  const from=[1,11,21,31][n-1], to=[10,20,30,40][n-1];
+  const fromMap=[1,11,21,31];
+  const from=fromMap[n-1];
   const labels=['Section 1 — Questions 1–10','Section 2 — Questions 11–20','Section 3 — Questions 21–30','Section 4 — Questions 31–40'];
-  const sec=config.listening&&config.listening.sections&&config.listening.sections[n-1];
-  let html=`<div class="q-section-label">${labels[n-1]}</div>`;
+  const secCfg=config.listening&&config.listening.sections&&config.listening.sections[n-1];
 
-  if(sec&&sec.formCompletion&&sec.fcImgData){
-    const fcFrom=sec.fcFrom||from, fcTo=sec.fcTo||to;
-    html+=`<div class="fc-image-wrap"><img src="${sec.fcImgData}" alt="Form worksheet"></div>`;
-    html+=`<div style="font-size:0.82rem;color:var(--ink3);margin-bottom:10px">Fill in the blanks numbered <b>${fcFrom}–${fcTo}</b> as you listen.</div>`;
+  // Try qBlocks first (new format)
+  const blocks = getQBlocks('L', from);
+  if (blocks) {
+    c.innerHTML = renderQBlocksHTML('L', blocks, labels[n-1]);
+    return;
+  }
+
+  // Fallback: old format with FC image
+  let html=`<div class="q-section-label">${labels[n-1]}</div>`;
+  if(secCfg&&secCfg.formCompletion&&secCfg.fcImgData){
+    const fcFrom=secCfg.fcFrom||from, fcTo=secCfg.fcTo||from+9;
+    html+=`<div class="fc-image-wrap"><img src="${secCfg.fcImgData}" alt="Form worksheet"></div>`;
+    html+=`<div style="font-size:0.82rem;color:var(--ink3);margin-bottom:10px">Fill in blanks <b>${fcFrom}–${fcTo}</b>.</div>`;
     html+=`<div class="fc-inputs">`;
-    for(let i=fcFrom;i<=fcTo;i++){
-      html+=`<div class="fc-input-row"><span class="q-num">${i}</span><input type="text" placeholder="..." oninput="markFCQ('L',${i},this)"></div>`;
-    }
+    for(let i=fcFrom;i<=fcTo;i++) html+=`<div class="fc-input-row"><span class="q-num">${i}</span><input type="text" placeholder="..." oninput="markFCQ('L',${i},this)"></div>`;
     html+=`</div>`;
-    // Extra questions added by admin
-    const extraKey='L-extra-'+from;
-    const extras=(config._extraQuestions&&config._extraQuestions[extraKey])||[];
-    if(extras.length){
-      html+=`<div class="q-section-label" style="margin-top:20px">Additional Questions</div>`;
-      extras.forEach((eq,i)=>{
-        // Render as virtual question number 'extra-n-i'
-        const fakeQ={...eq};
-        html+=buildExtraQBlock('L',extraKey,i,fakeQ);
-      });
-    }
   } else {
+    const to=from+9;
     for(let i=from;i<=to;i++) html+=buildQBlock('L',i);
-    // Extra questions even in normal mode
-    const extraKey='L-extra-'+from;
-    const extras=(config._extraQuestions&&config._extraQuestions[extraKey])||[];
-    if(extras.length){
-      html+=`<div class="q-section-label" style="margin-top:16px">Additional Questions</div>`;
-      extras.forEach((eq,i)=>{ html+=buildExtraQBlock('L',extraKey,i,eq); });
-    }
   }
   c.innerHTML=html;
-}
-
-function buildExtraQBlock(sec,key,idx,eq){
-  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const numOpts=eq.clCount||5;
-  const numPick=eq.clPick||2;
-  const opts=eq.options||[];
-  let inner='';
-  if(eq.type==='mc'){
-    inner='<div class="mc-opts">'+['A','B','C'].map((l,i)=>
-      `<label class="mc-opt"><input type="radio" name="extra-${key}-${idx}" value="${l}" onchange="markExtraQ('${sec}','${key}',${idx},this.value)"> <span>${l} &nbsp; ${escH(opts[i]||'Option '+l)}</span></label>`
-    ).join('')+'</div>';
-  } else if(eq.type==='cl'){
-    inner=`<div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px">Choose <b>${numPick}</b> letter(s).</div><div class="mc-opts">`;
-    for(let i=0;i<numOpts;i++){
-      inner+=`<label class="mc-opt"><input type="checkbox" name="extra-cl-${key}-${idx}" value="${letters[i]}" onchange="markExtraCL('${sec}','${key}',${idx},this,${numPick})"> <span>${letters[i]} &nbsp; ${escH(opts[i]||'Option '+letters[i])}</span></label>`;
-    }
-    inner+=`</div>`;
-  } else if(eq.type==='tfng'){
-    inner='<div class="mc-opts"><div style="display:flex;gap:8px;margin-top:6px">'+
-      ['TRUE','FALSE','NOT GIVEN'].map(v=>`<label style="display:flex;align-items:center;gap:4px;font-size:0.82rem;cursor:pointer"><input type="radio" name="extra-${key}-${idx}" value="${v}" onchange="markExtraQ('${sec}','${key}',${idx},this.value)"> ${v}</label>`).join('')+'</div></div>';
-  } else {
-    inner=`<input class="q-input" type="text" placeholder="Write answer..." oninput="markExtraQ('${sec}','${key}',${idx},this.value)">`;
-  }
-  return `<div class="q-block"><div class="q-text"><span class="q-num" style="background:var(--gold)">+</span>${escH(eq.text||'Extra Question')}</div>${inner}</div>`;
-}
-
-function markExtraQ(sec,key,idx,val){
-  if(!window._extraAnswers)window._extraAnswers={};
-  if(!window._extraAnswers[sec])window._extraAnswers[sec]={};
-  window._extraAnswers[sec][key+'_'+idx]=val;
-}
-function markExtraCL(sec,key,idx,el,maxPick){
-  const checked=[...document.querySelectorAll(`[name="extra-cl-${key}-${idx}"]:checked`)];
-  if(checked.length>maxPick){el.checked=false;return;}
-  markExtraQ(sec,key,idx,checked.map(c=>c.value).join(', '));
 }
 
 function markFCQ(sec,n,el){
@@ -593,26 +694,24 @@ function buildRQs(){
   const labels=['Passage 1 — Questions 1–13','Passage 2 — Questions 14–26','Passage 3 — Questions 27–40'];
   let html='';
   groups.forEach((g,gi)=>{
-    const pfc=config.reading&&config.reading.passages_fc&&config.reading.passages_fc[g.p];
-    const extraKey='R-extra-'+g.from;
-    const extras=(config._extraQuestions&&config._extraQuestions[extraKey])||[];
     html+=`<div class="r-q-group${gi>0?' hidden':''}">`;
-    html+=`<div class="q-section-label">${labels[gi]}</div>`;
-    if(pfc&&pfc.formCompletion&&pfc.fcImgData){
-      const fcFrom=pfc.fcFrom||g.from, fcTo=pfc.fcTo||g.to;
-      html+=`<div class="fc-image-wrap"><img src="${pfc.fcImgData}" alt="Form worksheet"></div>`;
-      html+=`<div style="font-size:0.82rem;color:var(--ink3);margin-bottom:10px">Fill in the blanks numbered <b>${fcFrom}–${fcTo}</b>.</div>`;
-      html+=`<div class="fc-inputs">`;
-      for(let i=fcFrom;i<=fcTo;i++){
-        html+=`<div class="fc-input-row"><span class="q-num">${i}</span><input type="text" placeholder="..." oninput="markFCQ('R',${i},this)"></div>`;
-      }
-      html+=`</div>`;
+    // Try qBlocks first
+    const blocks=getQBlocks('R', g.from);
+    if(blocks){
+      html+=renderQBlocksHTML('R',blocks,labels[gi]);
     } else {
-      for(let i=g.from;i<=g.to;i++) html+=buildQBlock('R',i);
-    }
-    if(extras.length){
-      html+=`<div class="q-section-label" style="margin-top:16px">Additional Questions</div>`;
-      extras.forEach((eq,i)=>{ html+=buildExtraQBlock('R',extraKey,i,eq); });
+      // Fallback legacy
+      const pfc=config.reading&&config.reading.passages_fc&&config.reading.passages_fc[g.p];
+      html+=`<div class="q-section-label">${labels[gi]}</div>`;
+      if(pfc&&pfc.formCompletion&&pfc.fcImgData){
+        const fcFrom=pfc.fcFrom||g.from, fcTo=pfc.fcTo||g.to;
+        html+=`<div class="fc-image-wrap"><img src="${pfc.fcImgData}" alt="Form"></div>`;
+        html+=`<div class="fc-inputs">`;
+        for(let i=fcFrom;i<=fcTo;i++) html+=`<div class="fc-input-row"><span class="q-num">${i}</span><input type="text" placeholder="..." oninput="markFCQ('R',${i},this)"></div>`;
+        html+=`</div>`;
+      } else {
+        for(let i=g.from;i<=g.to;i++) html+=buildQBlock('R',i);
+      }
     }
     html+='</div>';
   });
