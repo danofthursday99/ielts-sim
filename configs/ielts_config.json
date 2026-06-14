@@ -52,58 +52,58 @@
         {
           "type": "fc",
           "part": "",
-          "instr": "Complete the notes below",
+          "instr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
           "fcFrom": 1,
           "fcTo": 10,
           "blanks": [
             {
               "num": 1,
-              "label": "asdasdsad",
+              "label": "zxzczxc",
               "answer": ""
             },
             {
               "num": 2,
-              "label": "asdasd",
+              "label": "zxzxczxdfwef",
               "answer": ""
             },
             {
               "num": 3,
-              "label": "asdasd",
+              "label": "werftydfgd",
               "answer": ""
             },
             {
               "num": 4,
-              "label": "asdsad",
+              "label": "cxvxcbn",
               "answer": ""
             },
             {
               "num": 5,
-              "label": "asdasd",
+              "label": "xcvxcvberyhj",
               "answer": ""
             },
             {
               "num": 6,
-              "label": "asdasd",
+              "label": "xcvxcasdasd",
               "answer": ""
             },
             {
               "num": 7,
-              "label": "asdasd",
+              "label": "zxczxcz zxxczxc",
               "answer": ""
             },
             {
               "num": 8,
-              "label": "asdasd",
+              "label": "zxcsgwsg",
               "answer": ""
             },
             {
               "num": 9,
-              "label": "asdasd",
+              "label": "sgsrhgxfc",
               "answer": ""
             },
             {
               "num": 10,
-              "label": "asdasda",
+              "label": "xcvxcbndfb",
               "answer": ""
             }
           ]
@@ -156,12 +156,12 @@
   "writing": {
     "tasks": {
       "1": {
-        "prompt": "The chart shows",
+        "prompt": "The chart shows asdasdasdsa",
         "imgData": "",
         "minWords": 150
       },
       "2": {
-        "prompt": "Some people believe",
+        "prompt": "Some people believe asdasdasdasd",
         "imgData": "",
         "minWords": 250
       }
@@ -182,5 +182,11 @@
     },
     "R": {}
   },
-  "_driveURL": ""
+  "_driveURL": "",
+  "_meta": {
+    "setID": "SET-1781316892576",
+    "setName": "asdasdasdasd",
+    "setDesc": "asdasdadasdasd",
+    "exportedAt": "2026-06-13T02:14:52.576Z"
+  }
 }
