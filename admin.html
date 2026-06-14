@@ -753,7 +753,7 @@
         <div class="card-title">Apps Script URL</div>
         <div class="field">
           <label>Web App URL</label>
-          <input type="text" id="apps-script-url-input" value="https://script.google.com/macros/s/AKfycbwEcaHQwN-AXs31xAh46YCd1uw4HyxVZa6WF3DeBpCjzP8v7BkSjADQ838xDxFVtR2J/exec">
+          <input type="text" id="apps-script-url-input" value="https://script.google.com/macros/s/AKfycbyarOzwfnraI3bR_HGD1E147tPGkBd_u9Uoeg4_hz9PLwnHMLWAgJMBuBrWo_6tEKc/exec">
         </div>
         <div class="btn-row">
           <button class="btn btn-ghost" onclick="testConnection()">🧪 Test Connection</button>
@@ -2189,30 +2189,45 @@ let editingSetID = null;
 async function loadTestSets() {
   const wrap = document.getElementById('testsets-wrap');
   wrap.innerHTML = '<div class="tbl-empty">⏳ Loading...</div>';
+
+  // Get from localStorage first (always available)
+  let sets = JSON.parse(localStorage.getItem('ielts_test_sets') || '[]');
+  const activeSet = JSON.parse(localStorage.getItem('ielts_active_set') || 'null');
+  const activeID  = activeSet ? activeSet.setID : '';
+
+  // Try to merge with Sheets data (optional)
   try {
-    const data = await callSheets({ action:'getTestSets' });
-    const active = await callSheets({ action:'getActiveSet' });
-    const activeID = active.set ? active.set.setID : '';
-    if (!data.success) throw new Error(data.message);
-    const sets = data.sets||[];
-    if (!sets.length) { wrap.innerHTML='<div class="tbl-empty">No test sets yet. Create one!</div>'; return; }
-    let html='<div style="overflow-x:auto"><table class="sheets-table"><thead><tr><th>Set Name</th><th>Status</th><th>Config URL</th><th>Created</th><th>Actions</th></tr></thead><tbody>';
-    sets.forEach(s => {
-      const isActive = s.setID === activeID;
-      html+=`<tr>
-        <td><b>${escH(s.setName)}</b>${s.description?`<br><span style="font-size:0.75rem;color:var(--ink3)">${escH(s.description)}</span>`:''}</td>
-        <td>${isActive?'<span class="band-badge band-high">⚡ ACTIVE</span>':`<span class="band-badge">${escH(s.status)}</span>`}</td>
-        <td style="font-size:0.75rem;max-width:200px;overflow:hidden;text-overflow:ellipsis">${s.configURL?`<a href="${escH(s.configURL)}" target="_blank" style="color:var(--blue2)">View</a>`:'—'}</td>
-        <td style="font-size:0.78rem">${formatDate(s.createdAt)}</td>
-        <td style="white-space:nowrap">
-          <button class="btn btn-ghost" style="padding:3px 8px;font-size:0.75rem" onclick="editSet(${JSON.stringify(s).replace(/"/g,'&quot;')})">✏️ Edit</button>
-          ${!isActive?`<button class="btn btn-green" style="padding:3px 8px;font-size:0.75rem;margin-left:4px" onclick="activateSet('${s.setID}')">⚡ Activate</button>`:''}
-        </td>
-      </tr>`;
-    });
-    html+='</tbody></table></div>';
-    wrap.innerHTML=html;
-  } catch(e) { wrap.innerHTML=`<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}</div>`; }
+    const data = await Promise.race([
+      callSheets({ action:'getTestSets' }),
+      new Promise((_,rej) => setTimeout(()=>rej(new Error('timeout')), 5000))
+    ]);
+    if (data.success && data.sets && data.sets.length) {
+      // Merge — Sheets is source of truth if available
+      sets = data.sets;
+    }
+  } catch(e) { /* Sheets unavailable — use localStorage */ }
+
+  if (!sets.length) {
+    wrap.innerHTML = '<div class="tbl-empty">No test sets yet. Create one in the Publish panel!</div>';
+    return;
+  }
+
+  let html = '<div style="overflow-x:auto"><table class="sheets-table"><thead><tr><th>Set Name</th><th>Status</th><th>Config URL</th><th>Created</th><th>Actions</th></tr></thead><tbody>';
+  sets.forEach(s => {
+    const isActive = s.setID === activeID || s.status === 'Active';
+    html += `<tr>
+      <td><b>${escH(s.setName)}</b>${s.description?`<br><span style="font-size:0.75rem;color:var(--ink3)">${escH(s.description)}</span>`:''}</td>
+      <td>${isActive?'<span class="band-badge band-high">⚡ ACTIVE</span>':`<span class="band-badge">${escH(s.status||'')}</span>`}</td>
+      <td style="font-size:0.75rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.configURL?`<a href="${escH(s.configURL)}" target="_blank" style="color:var(--blue2)">View ↗</a>`:'—'}</td>
+      <td style="font-size:0.78rem">${formatDate(s.createdAt)}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-ghost" style="padding:3px 8px;font-size:0.75rem" onclick="editSet(${JSON.stringify(s).replace(/"/g,'&quot;')})">✏️ Edit</button>
+        ${!isActive?`<button class="btn btn-green" style="padding:3px 8px;font-size:0.75rem;margin-left:4px" onclick="activateSet('${s.setID}')">⚡ Activate</button>`:''}
+      </td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  wrap.innerHTML = html;
 }
 
 function showNewSetForm() {
@@ -2241,28 +2256,18 @@ function editSet(s) {
   document.getElementById('set-form-card').scrollIntoView({behavior:'smooth'});
 }
 
-async function saveTestSetForm() {
-  const name=document.getElementById('set-name').value.trim();
-  if (!name) { alert('Please enter a set name.'); return; }
-  try {
-    const data = await callSheets({
-      action:'saveTestSet',
-      setID:   document.getElementById('set-id').value||('SET-'+Date.now()),
-      setName: name,
-      configURL: document.getElementById('set-url').value.trim(),
-      status:  document.getElementById('set-status').value,
-      description: document.getElementById('set-desc').value.trim()
-    });
-    if (data.success) { toast('✅ Test set saved!'); document.getElementById('set-form-card').style.display='none'; loadTestSets(); }
-    else alert('Error: '+data.message);
-  } catch(e) { alert('Error: '+e.message); }
-}
-
 async function activateSet(setID) {
-  try {
-    await callSheets({ action:'setActiveSet', setID });
-    toast('⚡ Test set activated!'); loadTestSets();
-  } catch(e) { alert('Error: '+e.message); }
+  // Save locally
+  const sets = JSON.parse(localStorage.getItem('ielts_test_sets') || '[]');
+  const found = sets.find(s => s.setID === setID);
+  if (found) {
+    localStorage.setItem('ielts_active_set', JSON.stringify(found));
+    localStorage.setItem('ielts_drive_url', found.configURL || '');
+  }
+  // Try Sheets optionally
+  try { await callSheets({ action:'setActiveSet', setID }); } catch(e) {}
+  toast('⚡ Test set activated!');
+  loadTestSets();
 }
 async function activateSetForm() { await activateSet(document.getElementById('set-id').value); }
 
@@ -2300,34 +2305,66 @@ async function testConfigURL() {
   if (!url) { wrap.innerHTML='<span style="color:var(--red)">Please enter a URL first.</span>'; return; }
   wrap.innerHTML='⏳ Testing...';
   try {
-    const data = await callSheets({ action:'getConfig', configURL: url });
-    if (data.success && data.config) {
-      const meta = data.config._meta || {};
-      wrap.innerHTML=`<span style="color:var(--green)">✅ Config loaded! Set: <b>${escH(meta.setName||'Unknown')}</b> — exported ${meta.exportedAt?new Date(meta.exportedAt).toLocaleDateString():''}</span>`;
-    } else {
-      wrap.innerHTML=`<span style="color:var(--red)">❌ ${data.message||'Failed to load config'}</span>`;
-    }
-  } catch(e) { wrap.innerHTML=`<span style="color:var(--red)">❌ ${e.message}</span>`; }
+    // GitHub raw URLs don't have CORS issues — fetch directly
+    const res = await fetch(url, { cache:'no-cache' });
+    if (!res.ok) { wrap.innerHTML=`<span style="color:var(--red)">❌ HTTP ${res.status} — Check the URL</span>`; return; }
+    const cfg  = await res.json();
+    const meta = cfg._meta || {};
+    wrap.innerHTML=`<span style="color:var(--green)">✅ Config OK! Set: <b>${escH(meta.setName||'(unnamed)')}</b>${meta.exportedAt?' — '+new Date(meta.exportedAt).toLocaleDateString():''}</span>`;
+  } catch(e) {
+    wrap.innerHTML=`<span style="color:var(--red)">❌ ${e.message}<br><small>Make sure the URL is a raw GitHub URL (starts with raw.githubusercontent.com)</small></span>`;
+  }
 }
 
 async function savePublishedSet() {
   const url  = document.getElementById('pub-github-url').value.trim();
   const name = document.getElementById('pub-set-name').value.trim();
-  if (!url||!name) { alert('Please fill in the set name and GitHub URL.'); return; }
+  const desc = document.getElementById('pub-set-desc').value.trim();
+  if (!url || !name) { alert('Please fill in the set name and GitHub URL.'); return; }
+
+  const setID = 'SET-' + Date.now();
+
+  // Save locally first (always works, no server needed)
+  const localSets = JSON.parse(localStorage.getItem('ielts_test_sets') || '[]');
+  localSets.push({ setID, setName:name, configURL:url, status:'Active', createdAt:new Date().toISOString(), description:desc });
+  localStorage.setItem('ielts_test_sets', JSON.stringify(localSets));
+  localStorage.setItem('ielts_active_set', JSON.stringify({ setID, setName:name, configURL:url }));
+  localStorage.setItem('ielts_drive_url', url);
+
+  // Try saving to Sheets too (optional — won't fail if not deployed yet)
   try {
-    const data = await callSheets({
-      action:'saveTestSet',
-      setID: 'SET-'+Date.now(), setName:name,
-      configURL:url, status:'Active',
-      description: document.getElementById('pub-set-desc').value.trim()
-    });
+    const data = await callSheets({ action:'saveTestSet', setID, setName:name, configURL:url, status:'Active', description:desc });
     if (data.success) {
-      await callSheets({ action:'setActiveSet', setID:data.setID||'' });
-      // Also save Drive URL locally for simulation
-      localStorage.setItem('ielts_drive_url', url);
-      toast('✅ Published! Test set saved and activated.');
-    } else alert('Error: '+data.message);
-  } catch(e) { alert('Error: '+e.message); }
+      await callSheets({ action:'setActiveSet', setID: data.setID || setID });
+    }
+  } catch(e) { /* Sheets optional — already saved locally */ }
+
+  toast('✅ Test set saved & activated! Config URL stored.');
+}
+
+async function saveTestSetForm() {
+  const name   = document.getElementById('set-name').value.trim();
+  const url    = document.getElementById('set-url').value.trim();
+  const desc   = document.getElementById('set-desc').value.trim();
+  const status = document.getElementById('set-status').value;
+  const setID  = document.getElementById('set-id').value || ('SET-'+Date.now());
+  if (!name) { alert('Please enter a set name.'); return; }
+
+  // Save locally
+  const localSets = JSON.parse(localStorage.getItem('ielts_test_sets') || '[]');
+  const existing  = localSets.findIndex(s => s.setID === setID);
+  const setObj    = { setID, setName:name, configURL:url, status, createdAt:new Date().toISOString(), description:desc };
+  if (existing >= 0) localSets[existing] = setObj; else localSets.push(setObj);
+  localStorage.setItem('ielts_test_sets', JSON.stringify(localSets));
+
+  // Try Sheets optionally
+  try {
+    await callSheets({ action:'saveTestSet', setID, setName:name, configURL:url, status, description:desc });
+  } catch(e) { /* optional */ }
+
+  toast('✅ Test set saved!');
+  document.getElementById('set-form-card').style.display='none';
+  loadTestSets();
 }
 
 // ═══════════════════════════════════════
