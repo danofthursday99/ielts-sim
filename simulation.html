@@ -261,27 +261,33 @@ function convertDriveURL(url) {
 }
 
 async function fetchDriveConfig(url) {
-  const fetchURL = convertDriveURL(url);
-  // Try direct fetch
+  // GitHub raw URLs & most direct JSON URLs work fine with fetch (no CORS)
   try {
-    const res = await fetch(fetchURL, { cache:'no-cache' });
-    if (res.ok) { const t = await res.text(); return JSON.parse(t); }
-  } catch(e) { /* CORS blocked — try proxy */ }
-
-  // Fallback: use Apps Script as a CORS proxy
-  return new Promise((resolve, reject) => {
-    const cb = 'cfg_' + Date.now();
-    const t  = setTimeout(() => { delete window[cb]; reject(new Error('Proxy timeout')); }, 12000);
-    window[cb] = (d) => {
-      clearTimeout(t); delete window[cb];
-      d && d.success ? resolve(d.config) : reject(new Error((d && d.message) || 'Proxy failed'));
-    };
-    const s   = document.createElement('script');
-    s.src     = APPS_SCRIPT_URL + '?' + new URLSearchParams({ action:'getConfig', configURL: fetchURL, callback: cb });
-    s.onerror = () => { clearTimeout(t); delete window[cb]; reject(new Error('Proxy error')); };
-    document.head.appendChild(s);
-    setTimeout(() => { try { document.head.removeChild(s); } catch(e){} }, 15000);
-  });
+    const res = await fetch(url, { cache:'no-cache' });
+    if (res.ok) {
+      const text = await res.text();
+      return JSON.parse(text);
+    }
+    throw new Error('HTTP ' + res.status);
+  } catch(e) {
+    // Only fall back to Apps Script proxy if direct fetch fails (e.g. Google Drive)
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+      return new Promise((resolve, reject) => {
+        const cb = 'cfg_' + Date.now();
+        const t  = setTimeout(() => { delete window[cb]; reject(new Error('Proxy timeout')); }, 12000);
+        window[cb] = (d) => {
+          clearTimeout(t); delete window[cb];
+          d && d.success ? resolve(d.config) : reject(new Error((d && d.message) || 'Proxy failed'));
+        };
+        const s   = document.createElement('script');
+        s.src     = APPS_SCRIPT_URL + '?' + new URLSearchParams({ action:'getConfig', configURL: url, callback: cb });
+        s.onerror = () => { clearTimeout(t); delete window[cb]; reject(new Error('Proxy error')); };
+        document.head.appendChild(s);
+        setTimeout(() => { try { document.head.removeChild(s); } catch(e){} }, 15000);
+      });
+    }
+    throw e;
+  }
 }
 
 function showLoadingOverlay(msg) {
