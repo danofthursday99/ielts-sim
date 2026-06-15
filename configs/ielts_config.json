@@ -10,7 +10,8 @@
         "formCompletion": false,
         "fcImgData": "",
         "fcFrom": 1,
-        "fcTo": 10
+        "fcTo": 10,
+        "audioURL": "https://d1z803pryv3vab.cloudfront.net/IELTS16/IELTS16_test1_audio1.mp3"
       },
       {
         "from": 11,
@@ -21,7 +22,8 @@
         "formCompletion": false,
         "fcImgData": "",
         "fcFrom": 11,
-        "fcTo": 20
+        "fcTo": 20,
+        "audioURL": "https://d1z803pryv3vab.cloudfront.net/IELTS16/IELTS16_test1_audio2.mp3"
       },
       {
         "from": 21,
@@ -32,7 +34,8 @@
         "formCompletion": false,
         "fcImgData": "",
         "fcFrom": 21,
-        "fcTo": 30
+        "fcTo": 30,
+        "audioURL": "https://d1z803pryv3vab.cloudfront.net/IELTS16/IELTS16_test1_audio3.mp3"
       },
       {
         "from": 31,
@@ -53,60 +56,281 @@
           "type": "fc",
           "part": "",
           "instr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
-          "fcFrom": 1,
-          "fcTo": 10,
+          "fcHtml": "<h2><center>Children's Engineering Workshops</center></h2><br>\n<h3>Tiny Engineers (ages 4-5)</h3>\n<h4>Activities:</h4>\n<p>• Create a cover for an {{1}}so they can drop it from a height\nwithout breaking it.</p>\n<p>• Take part in a competition to build the tallest {{2}}</p>\n<p>• Make a {{3}} powered by a balloon.</p><br>\n<h3>Junior Engineers (ages 6-8)</h3>\n<h4>Activities:</h4>\n<p>• Build model cars, trucks and {{4}} and learn how to program\nthem so they can move.</p>\n<p>• Take part in a competition to build the longest {{5}} using card and wood.</p>\n<p>• Create a short {{6}}with special software.</p>\n<p>• Build, {{7}} and program a humanoid robot.</p><br>\n<p>Cost for a five-week block: £50</p>\n<p>Held on {{8}} from 10 am to 11 am</p><br>\n<h3>Location</h3>\n<p>Building 10A, {{9}} Industrial Estate, Grasford</p>\n<p>Plenty of {{10}} is available.</p>\n",
+          "fcInstr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
+          "fcAnswers": {},
           "blanks": [
             {
               "num": 1,
-              "label": "zxzczxc",
               "answer": ""
             },
             {
               "num": 2,
-              "label": "zxzxczxdfwef",
               "answer": ""
             },
             {
               "num": 3,
-              "label": "werftydfgd",
               "answer": ""
             },
             {
               "num": 4,
-              "label": "cxvxcbn",
               "answer": ""
             },
             {
               "num": 5,
-              "label": "xcvxcvberyhj",
               "answer": ""
             },
             {
               "num": 6,
-              "label": "xcvxcasdasd",
               "answer": ""
             },
             {
               "num": 7,
-              "label": "zxczxcz zxxczxc",
               "answer": ""
             },
             {
               "num": 8,
-              "label": "zxcsgwsg",
               "answer": ""
             },
             {
               "num": 9,
-              "label": "sgsrhgxfc",
               "answer": ""
             },
             {
               "num": 10,
-              "label": "xcvxcbndfb",
+              "answer": ""
+            }
+          ],
+          "fcFrom": 1,
+          "fcTo": 10
+        }
+      ],
+      "2": [
+        {
+          "type": "mc",
+          "part": "Part 2",
+          "instr": "Questions 11-14\nChoose the correct letter, A, B or C.",
+          "qNum": 11,
+          "qText": "Stevenson's was founded in",
+          "options": [
+            "1923.",
+            "1924.",
+            "1926."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 2",
+          "instr": "Questions 11-14\nChoose the correct letter, A, B or C.",
+          "qNum": 12,
+          "qText": "Originally, Stevenson's manufactured goods for",
+          "options": [
+            "the healthcare industry.",
+            "the automotive industry.",
+            "the machine tools industry."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 2",
+          "instr": "Questions 11-14\nChoose the correct letter, A, B or C.",
+          "qNum": 13,
+          "qText": "What does the speaker say about the company premises?",
+          "options": [
+            "The company has recently moved.",
+            "The company has no plans to move.",
+            "The company is going to move shortly."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 2",
+          "instr": "Questions 11-14\nChoose the correct letter, A, B or C.",
+          "qNum": 14,
+          "qText": "The programme for the work experience group includes",
+          "options": [
+            "time to do research.",
+            "meetings with a teacher.",
+            "talks by staff."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "fc",
+          "part": "Part 2",
+          "instr": "Questions 15-20 Label the map below. Write the correct letter, A-J, next to Questions 15-20.",
+          "fcHtml": "<p>coffee room {{15}}</p>\n<p>warehouse {{16}}</p>\n<p>staff canteen {{17}}</p>\n<p>meeting room {{18}}</p>\n<p>meeting room {{19}}</p>\n<p>board room {{20}}</p>",
+          "fcInstr": "Questions 15-20 Label the map below. Write the correct letter, A-J, next to Questions 15-20.",
+          "fcAnswers": {},
+          "blanks": [
+            {
+              "num": 15,
+              "answer": ""
+            },
+            {
+              "num": 16,
+              "answer": ""
+            },
+            {
+              "num": 17,
+              "answer": ""
+            },
+            {
+              "num": 18,
+              "answer": ""
+            },
+            {
+              "num": 19,
+              "answer": ""
+            },
+            {
+              "num": 20,
+              "answer": ""
+            }
+          ],
+          "fcFrom": 15,
+          "fcTo": 20
+        }
+      ],
+      "3": [
+        {
+          "type": "ct2",
+          "part": "Part 3",
+          "instr": "Questions 21 and 22\nChoose TWO letters, A-E.",
+          "qFrom": 21,
+          "qTo": 22,
+          "qText": "Which TWO parts of the introductory stage to their art projects do Jess and Tom agree were useful?",
+          "pick": 2,
+          "options": [
+            "the Bird Park visit",
+            "the workshop sessions",
+            "the Natural History Museum visit",
+            "the projects done in previous years",
+            "the handouts with research sources"
+          ],
+          "answers": []
+        },
+        {
+          "type": "ct2",
+          "part": "Part 3",
+          "instr": "Questions 23 and 24\nChoose TWO letters, A-E.",
+          "qFrom": 21,
+          "qTo": 22,
+          "qText": "In which TWO ways do both Jess and Tom decide to change their proposals?",
+          "pick": 2,
+          "options": [
+            "by giving a rationale for their action plans",
+            "by being less specific about the outcome",
+            "by adding a video diary presentation",
+            "by providing a timeline and a mind map",
+            "by making their notes more evaluative"
+          ],
+          "answers": []
+        },
+        {
+          "type": "match",
+          "part": "Part 3",
+          "instr": "Questions 25-30",
+          "matchPrompt": "Choose SIX answers from the box and write the correct letter, A-H, next to\nQuestions 25-30.\n\n<h4><center>Personal meanings</center><h4>",
+          "matchChoices": [
+            "a childhood memory",
+            "hope for the future",
+            "fast movement",
+            "a potential threat",
+            "the power of colour",
+            "the continuity of life",
+            "protection of nature",
+            "a confused attitude to nature"
+          ],
+          "matchItems": [
+            {
+              "num": "25",
+              "label": "Falcon (Landseer)",
+              "answer": ""
+            },
+            {
+              "num": "26",
+              "label": "Fish hawk (Audubon)",
+              "answer": ""
+            },
+            {
+              "num": "27",
+              "label": "Kingfisher (van Gogh)",
+              "answer": ""
+            },
+            {
+              "num": "28",
+              "label": "Portrait of William Wells",
+              "answer": ""
+            },
+            {
+              "num": "29",
+              "label": "Vairumati (Gauguin)",
+              "answer": ""
+            },
+            {
+              "num": "30",
+              "label": "Portrait of Giovanni de Medici",
               "answer": ""
             }
           ]
+        }
+      ],
+      "4": [
+        {
+          "type": "fc",
+          "part": "",
+          "instr": "",
+          "fcHtml": "<h2><center>Stoicism</center></h2>\n\n<p>Stoicism is still relevant today because of its {{31}} appeal.</p>\n<h3>Ancient Stoics</h3>\n<p.• Stoicism was founded over 2,000 years ago in Greece.</p>\n</p>• The Stoics' ideas are surprisingly well known, despite not being intended for {{32}}.</p><br>\n<h3>Stoic principles</h3>\n<p>• Happiness could be achieved by leading a virtuous life.</p>\n<p>• Controlling emotions was essential.</p>\n<p>• Epictetus said that external events cannot be controlled but the {{33}} people make in response can be controlled.</p>\n<p>• A Stoic is someone who has a different view on experiences which others would consider as {{34}} .</p><br>\n\n<h3>The influence of Stoicism</h3>\n<p>• George Washington organised a {{35}} about Cato to motivate\nhis men.</p>\n<p>• The French artist Delacroix was a Stoic.</p>\n<p>• Adam Smith's ideas on {{36}} were influenced by Stoicism.</p>\n<p>• Some of today's political leaders are inspired by the Stoics.</p>\n<p>• Cognitive Behaviour Therapy (CBT)</p>\n<p>- the treatment for {{37}} is based on ideas from Stoicism\n- people learn to base their thinking on {{38}}.\n<p>• In business, people benefit from Stoicism by identifying obstacles as {{39}}.</p><br>\n<h3>Relevance of Stoicism</h3>\n<p>• It requires a lot of {{40}} but Stoicism can help people to lead a good life.</p>\n<p>• It teaches people that having a strong character is more important than anything else.</p>",
+          "fcInstr": "",
+          "fcAnswers": {},
+          "blanks": [
+            {
+              "num": 31,
+              "answer": ""
+            },
+            {
+              "num": 32,
+              "answer": ""
+            },
+            {
+              "num": 33,
+              "answer": ""
+            },
+            {
+              "num": 34,
+              "answer": ""
+            },
+            {
+              "num": 35,
+              "answer": ""
+            },
+            {
+              "num": 36,
+              "answer": ""
+            },
+            {
+              "num": 37,
+              "answer": ""
+            },
+            {
+              "num": 38,
+              "answer": ""
+            },
+            {
+              "num": 39,
+              "answer": ""
+            },
+            {
+              "num": 40,
+              "answer": ""
+            }
+          ],
+          "fcFrom": 31,
+          "fcTo": 40
         }
       ]
     }
@@ -182,7 +406,7 @@
     },
     "R": {}
   },
-  "_driveURL": "",
+  "_driveURL": "https://raw.githubusercontent.com/danofthursday99/ielts-sim/refs/heads/main/configs/ielts_config.json",
   "_meta": {
     "setID": "SET-1781316892576",
     "setName": "asdasdasdasd",
