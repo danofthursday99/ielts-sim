@@ -121,6 +121,23 @@
   .fc-blank-qnum{font-weight:700;color:var(--blue);font-size:0.8rem;width:32px;flex-shrink:0}
   .fc-blank-row input{flex:1;padding:6px 9px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.84rem}
   .fc-blank-row .fc-ans{width:140px!important;flex:none;color:var(--green);font-weight:600;background:#f5fbf7;border-color:#a8dbb8!important}
+
+  /* FC VISUAL LINE BUILDER */
+  .fc-line-wrap{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+  .fc-line-wrap:hover{border-color:var(--blue2)}
+  .fc-line-type-badge{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px}
+  .fc-line-editor{display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-height:32px}
+  .fc-seg{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:5px;font-size:0.84rem}
+  .fc-seg-text{background:var(--paper2);border:1px solid var(--paper3);color:var(--ink);cursor:pointer}
+  .fc-seg-text:hover{border-color:var(--blue2)}
+  .fc-seg-blank{background:#e8f0ff;border:1px solid #b0c4f0;color:var(--blue);font-weight:700;font-size:0.82rem}
+  .fc-seg-del{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.85rem;padding:0;line-height:1}
+  .fc-seg-del:hover{color:var(--red)}
+  .fc-add-text-btn{padding:3px 8px;border:1px dashed var(--blue2);border-radius:5px;font-size:0.78rem;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif}
+  .fc-add-blank-btn{padding:3px 8px;border:1px dashed var(--green);border-radius:5px;font-size:0.78rem;color:var(--green);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600}
+  .fc-line-footer{display:flex;gap:4px;margin-top:6px}
+  .fc-line-move{padding:2px 6px;border:1px solid var(--border);border-radius:4px;background:var(--paper);cursor:pointer;font-size:0.75rem}
+  .fc-line-del{padding:2px 6px;border:1px solid #f5b8b8;border-radius:4px;background:#fff5f5;cursor:pointer;font-size:0.75rem;color:var(--red)}
   .section-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
   .sec-tab{padding:6px 14px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;font-weight:600;cursor:pointer;background:var(--paper);color:var(--ink2);transition:all 0.15s}
   .sec-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
@@ -1319,21 +1336,51 @@ function qmTypeChange(existing) {
   const q = existing || {};
 
   if (type === 'fc') {
-    const from   = q.fcFrom || 1;
-    const to     = q.fcTo   || 1;
-    const blanks = q.blanks || [{label:'',answer:''}];
+    const imgURL = q.fcImgURL || '';
+    const lines  = q.fcLines  || [];
+
     area.innerHTML = `
       <div class="qm-field">
-        <label>Question number range for this block</label>
-        <div class="qm-range-row">
-          Q <input type="number" id="qm-fc-from" min="1" max="99" value="${from}" oninput="qmRebuildFCBlanks()">
-          to Q <input type="number" id="qm-fc-to" min="1" max="99" value="${to}" oninput="qmRebuildFCBlanks()">
+        <label style="display:flex;align-items:center;justify-content:space-between">
+          <span>Diagram / Map Image URL <span style="font-weight:400;color:var(--ink3)">(optional)</span></span>
+          <button type="button" onclick="qmPreviewFCImg()" class="qm-add-opt" style="font-size:0.75rem;padding:3px 10px">👁 Preview</button>
+        </label>
+        <input type="text" id="qm-fc-img-url"
+          placeholder="https://raw.githubusercontent.com/username/ielts-sim/main/images/map.jpg"
+          value="${escH(imgURL)}"
+          style="font-family:monospace;font-size:0.82rem">
+        <div id="qm-fc-img-preview" style="margin-top:6px">
+          ${imgURL?`<img src="${escH(imgURL)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)">`:''}
         </div>
       </div>
-      <div class="qm-section-label">Blanks — label &amp; correct answer</div>
-      <div id="qm-fc-blanks"></div>`;
-    qmRebuildFCBlanks(blanks);
 
+      <div class="qm-section-label" style="margin-bottom:8px">Form Content Builder</div>
+      <div style="font-size:0.78rem;color:var(--ink3);margin-bottom:10px;line-height:1.6;padding:8px 10px;background:var(--paper2);border-radius:6px">
+        Build your form line by line. Click <b>+ Blank</b> inside any line to insert a numbered answer blank at that position.
+      </div>
+
+      <div id="qm-fc-lines" style="margin-bottom:10px"></div>
+
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+        <button type="button" onclick="qmFCAddLine('heading')"   class="qm-add-opt">+ Heading</button>
+        <button type="button" onclick="qmFCAddLine('subheading')" class="qm-add-opt">+ Subheading</button>
+        <button type="button" onclick="qmFCAddLine('text')"      class="qm-add-opt">+ Text Line</button>
+        <button type="button" onclick="qmFCAddLine('bullet')"    class="qm-add-opt">+ Bullet Item</button>
+      </div>
+
+      <div class="qm-section-label" style="margin-bottom:6px">Answer Key <span style="font-weight:400;color:var(--ink3)">— auto-filled as you add blanks</span></div>
+      <div id="qm-fc-answers" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px"></div>
+
+      <div class="qm-section-label" style="margin-bottom:6px">Live Preview</div>
+      <div id="qm-fc-preview" style="padding:16px;background:#fff;border:1px solid var(--border);border-radius:8px;font-family:'Source Serif 4',serif;font-size:0.9rem;line-height:2;min-height:60px">
+        <span style="color:var(--ink3);font-size:0.82rem">Add lines above to see preview...</span>
+      </div>`;
+
+    // Restore existing lines
+    if (lines.length) {
+      lines.forEach(ln => qmFCAddLine(ln.ltype || 'text', ln));
+    }
+    qmFCUpdatePreview();
   } else if (type === 'mc') {
     const opts   = q.options || ['','',''];
     const answer = q.answer  || '';
@@ -1524,28 +1571,177 @@ function qmRemoveMatchItem(i) {
   if(rows.length<=1)return; rows[i]&&rows[i].remove();
 }
 
-function qmRebuildFCBlanks(existing) {
-  existing = existing || null;
-  const fromEl = document.getElementById('qm-fc-from');
-  const toEl   = document.getElementById('qm-fc-to');
-  if (!fromEl || !toEl) return;
-  const from = parseInt(fromEl.value)||1;
-  const to   = parseInt(toEl.value)||1;
-  const wrap = document.getElementById('qm-fc-blanks'); if(!wrap) return;
-  const cur  = existing || [...wrap.querySelectorAll('.fc-blank-row')].map(r=>({
-    label:  r.querySelector('.fc-lbl-in').value,
-    answer: r.querySelector('.fc-ans-in').value
-  }));
-  wrap.innerHTML='';
-  for (let i=from; i<=to; i++) {
-    const b = cur[i-from] || {label:'',answer:''};
-    const row = document.createElement('div'); row.className='fc-blank-row';
-    row.innerHTML=`<span class="fc-blank-qnum">Q${i}</span>
-      <input type="text" class="fc-lbl-in" placeholder="Label / hint (optional)" value="${escH(b.label||'')}">
-      <input type="text" class="fc-ans-in fc-ans" placeholder="Answer" value="${escH(b.answer||'')}">`;
-    wrap.appendChild(row);
-  }
+// ══════════════════════════════════════════════
+// FC VISUAL LINE BUILDER
+// ══════════════════════════════════════════════
+// A "line" is: { ltype:'text'|'heading'|'subheading'|'bullet', segments:[{stype:'text'|'blank', text:'', num:0}] }
+// _fcNextBlank tracks the next auto-assigned blank number
+
+let _fcNextBlank = 1;
+
+function qmFCGetLines() {
+  const wrap = document.getElementById('qm-fc-lines');
+  if (!wrap) return [];
+  return [...wrap.querySelectorAll('.fc-line-wrap')].map(lw => {
+    const ltype = lw.dataset.ltype || 'text';
+    const segments = [...lw.querySelectorAll('.fc-seg')].map(seg => ({
+      stype: seg.dataset.stype,
+      text:  seg.dataset.text  || '',
+      num:   parseInt(seg.dataset.num||0)||0
+    }));
+    return { ltype, segments };
+  });
 }
+
+function qmFCAddLine(ltype, existing) {
+  const wrap = document.getElementById('qm-fc-lines');
+  if (!wrap) return;
+  const lineIdx = wrap.querySelectorAll('.fc-line-wrap').length;
+  const typeLabels = { heading:'Heading', subheading:'Subheading', text:'Text Line', bullet:'Bullet Item' };
+  const typeColors = { heading:'var(--blue)', subheading:'var(--blue2)', text:'var(--ink3)', bullet:'var(--ink3)' };
+
+  const div = document.createElement('div');
+  div.className = 'fc-line-wrap';
+  div.dataset.ltype = ltype;
+  div.dataset.lidx  = lineIdx;
+  div.innerHTML = `
+    <div class="fc-line-type-badge" style="color:${typeColors[ltype]}">${typeLabels[ltype]}</div>
+    <div class="fc-line-editor" id="fc-segs-${lineIdx}"></div>
+    <div class="fc-line-footer">
+      <button type="button" class="fc-add-text-btn" onclick="qmFCAddTextSeg(${lineIdx})">+ Text</button>
+      <button type="button" class="fc-add-blank-btn" onclick="qmFCAddBlankSeg(${lineIdx})">+ Blank</button>
+      <button type="button" class="fc-line-move" onclick="qmFCMoveLine(this,-1)" title="Move up">↑</button>
+      <button type="button" class="fc-line-move" onclick="qmFCMoveLine(this,1)"  title="Move down">↓</button>
+      <button type="button" class="fc-line-del"  onclick="qmFCDelLine(this)">✕ Remove line</button>
+    </div>`;
+  wrap.appendChild(div);
+
+  // Restore existing segments
+  if (existing && existing.segments) {
+    existing.segments.forEach(seg => {
+      if (seg.stype === 'blank') qmFCAddBlankSeg(lineIdx, seg.num);
+      else qmFCAddTextSeg(lineIdx, seg.text);
+    });
+  }
+  qmFCUpdatePreview();
+}
+
+function qmFCAddTextSeg(lineIdx, existing) {
+  const segs = document.getElementById('fc-segs-'+lineIdx);
+  if (!segs) return;
+  const text = existing !== undefined ? existing : prompt('Enter text:');
+  if (text === null) return;
+  const segIdx = segs.querySelectorAll('.fc-seg').length;
+  const span = document.createElement('span');
+  span.className = 'fc-seg fc-seg-text';
+  span.dataset.stype = 'text';
+  span.dataset.text  = text;
+  span.dataset.sidx  = segIdx;
+  span.title = 'Click to edit';
+  span.onclick = function() {
+    const newText = prompt('Edit text:', this.dataset.text);
+    if (newText !== null) { this.dataset.text = newText; this.childNodes[0].textContent = newText || '(empty)'; qmFCUpdatePreview(); }
+  };
+  span.innerHTML = `${escH(text||'(empty)')}<button class="fc-seg-del" onclick="event.stopPropagation();this.parentElement.remove();qmFCUpdatePreview()" title="Remove">✕</button>`;
+  segs.appendChild(span);
+  qmFCUpdatePreview();
+}
+
+function qmFCAddBlankSeg(lineIdx, existingNum) {
+  const segs = document.getElementById('fc-segs-'+lineIdx);
+  if (!segs) return;
+  // Auto-assign next blank number
+  const num = existingNum || _fcNextBlank++;
+  // Sync _fcNextBlank to be higher than all existing blanks
+  const allBlanks = [...document.querySelectorAll('.fc-seg[data-stype="blank"]')].map(s=>parseInt(s.dataset.num)||0);
+  if (allBlanks.length) _fcNextBlank = Math.max(...allBlanks) + 1;
+
+  const span = document.createElement('span');
+  span.className = 'fc-seg fc-seg-blank';
+  span.dataset.stype = 'blank';
+  span.dataset.num   = num;
+  span.innerHTML = `Q${num}<button class="fc-seg-del" onclick="event.stopPropagation();qmFCRemoveBlank(${num},this)" title="Remove blank">✕</button>`;
+  segs.appendChild(span);
+  qmFCAddAnswerRow(num);
+  qmFCUpdatePreview();
+}
+
+function qmFCRemoveBlank(num, btn) {
+  btn.parentElement.remove();
+  const ansRow = document.getElementById('qm-fc-ans-'+num);
+  if (ansRow) ansRow.remove();
+  qmFCUpdatePreview();
+}
+
+function qmFCMoveLine(btn, dir) {
+  const line = btn.closest('.fc-line-wrap');
+  const wrap = document.getElementById('qm-fc-lines');
+  const lines = [...wrap.querySelectorAll('.fc-line-wrap')];
+  const idx   = lines.indexOf(line);
+  const newIdx= idx + dir;
+  if (newIdx < 0 || newIdx >= lines.length) return;
+  if (dir === -1) wrap.insertBefore(line, lines[newIdx]);
+  else            wrap.insertBefore(lines[newIdx], line);
+  qmFCUpdatePreview();
+}
+
+function qmFCDelLine(btn) {
+  const line = btn.closest('.fc-line-wrap');
+  // Remove answer rows for blanks in this line
+  line.querySelectorAll('.fc-seg-blank[data-num],.fc-seg[data-stype="blank"]').forEach(s => {
+    const row = document.getElementById('qm-fc-ans-'+s.dataset.num);
+    if (row) row.remove();
+  });
+  line.remove();
+  qmFCUpdatePreview();
+}
+
+function qmFCAddAnswerRow(num) {
+  const wrap = document.getElementById('qm-fc-answers');
+  if (!wrap || document.getElementById('qm-fc-ans-'+num)) return;
+  const row = document.createElement('div');
+  row.className = 'fc-answer-row';
+  row.id = 'qm-fc-ans-'+num;
+  row.innerHTML = `<label>${num}</label><input type="text" class="fc-ans" placeholder="Answer for Q${num}" value="">`;
+  wrap.appendChild(row);
+  // Sort by number
+  const rows = [...wrap.querySelectorAll('.fc-answer-row')].sort((a,b)=>parseInt(a.querySelector('label').textContent)-parseInt(b.querySelector('label').textContent));
+  rows.forEach(r => wrap.appendChild(r));
+}
+
+function qmFCUpdatePreview() {
+  const preview = document.getElementById('qm-fc-preview');
+  if (!preview) return;
+  const wrap = document.getElementById('qm-fc-lines');
+  if (!wrap) return;
+  const lines = [...wrap.querySelectorAll('.fc-line-wrap')];
+  if (!lines.length) { preview.innerHTML='<span style="color:var(--ink3);font-size:0.82rem">Add lines above...</span>'; return; }
+  let html = '';
+  lines.forEach(lw => {
+    const ltype = lw.dataset.ltype;
+    const segs  = [...lw.querySelectorAll('.fc-seg')].map(s => {
+      if (s.dataset.stype === 'blank') return `<span style="display:inline-block;border-bottom:2px solid var(--blue);min-width:80px;padding:0 4px;margin:0 3px;text-align:center;color:var(--ink3);font-size:0.78rem">${s.dataset.num}</span>`;
+      return `<span>${escH(s.dataset.text||'')}</span>`;
+    }).join(' ');
+    if (ltype==='heading')    html += `<h3 style="font-family:'Source Serif 4',serif;color:var(--blue);margin:12px 0 6px;font-size:1rem">${segs}</h3>`;
+    else if (ltype==='subheading') html += `<h4 style="font-family:'Source Serif 4',serif;color:var(--blue2);margin:10px 0 4px;font-size:0.9rem">${segs}</h4>`;
+    else if (ltype==='bullet') html += `<div style="padding-left:16px;margin:2px 0">• ${segs}</div>`;
+    else html += `<div style="margin:2px 0">${segs}</div>`;
+  });
+  preview.innerHTML = html;
+}
+
+function qmPreviewFCImg() {
+  const url  = document.getElementById('qm-fc-img-url').value.trim();
+  const wrap = document.getElementById('qm-fc-img-preview');
+  if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">No URL entered.</span>'; return; }
+  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.style.display='none'">`;
+}
+
+// Legacy — no longer used but keep to avoid errors
+function qmScanFCBlanks() {}
+function qmPreviewFC() { qmFCUpdatePreview(); }
+function qmRebuildFCBlanks() {}
 
 // ── SAVE ──
 function qmSave() {
@@ -1557,18 +1753,42 @@ function qmSave() {
   let q = { type, part, instr };
 
   if (type === 'fc') {
-    const from   = parseInt(document.getElementById('qm-fc-from').value)||1;
-    const to     = parseInt(document.getElementById('qm-fc-to').value)||from;
-    const blanks = [...document.querySelectorAll('#qm-fc-blanks .fc-blank-row')].map((r,i)=>({
-      num:    from+i,
-      label:  r.querySelector('.fc-lbl-in').value.trim(),
-      answer: r.querySelector('.fc-ans-in').value.trim()
-    }));
-    Object.assign(q, {fcFrom:from,fcTo:to,blanks});
+    const fcImgURL = (document.getElementById('qm-fc-img-url')||{}).value||'';
+    // Collect lines from builder
+    const wrap = document.getElementById('qm-fc-lines');
+    const fcLines = wrap ? [...wrap.querySelectorAll('.fc-line-wrap')].map(lw => ({
+      ltype: lw.dataset.ltype || 'text',
+      segments: [...lw.querySelectorAll('.fc-seg')].map(s => ({
+        stype: s.dataset.stype,
+        text:  s.dataset.text  || '',
+        num:   parseInt(s.dataset.num||0)||0
+      }))
+    })) : [];
+    // Collect answers
+    const fcAnswers = {};
+    document.querySelectorAll('#qm-fc-answers .fc-answer-row').forEach(r => {
+      const lbl = r.querySelector('label');
+      const inp = r.querySelector('input');
+      if (lbl && inp && inp.value.trim()) fcAnswers[lbl.textContent.trim()] = inp.value.trim();
+    });
+    // Build blanks array from segments
+    const blanks = [];
+    fcLines.forEach(ln => {
+      ln.segments.filter(s=>s.stype==='blank').forEach(s => {
+        blanks.push({ num:s.num, answer: fcAnswers[s.num]||'' });
+      });
+    });
+    blanks.sort((a,b)=>a.num-b.num);
+    const fcFrom = blanks[0]?.num||1;
+    const fcTo   = blanks[blanks.length-1]?.num||fcFrom;
+    Object.assign(q, { fcImgURL, fcLines, fcAnswers, blanks, fcFrom, fcTo });
+    // Sync to answer key
     blanks.forEach(b => {
-      config.answerKey[_qmSec][b.num] = b.answer;
-      const el = document.getElementById('ak-'+_qmSec+'-'+b.num);
-      if(el) el.value = b.answer;
+      if (b.answer) {
+        config.answerKey[_qmSec][b.num] = b.answer;
+        const el = document.getElementById('ak-'+_qmSec+'-'+b.num);
+        if (el) el.value = b.answer;
+      }
     });
 
   } else if (type === 'mc') {
