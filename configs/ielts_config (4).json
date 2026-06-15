@@ -1,0 +1,192 @@
+{
+  "listening": {
+    "sections": [
+      {
+        "from": 1,
+        "to": 10,
+        "audioName": "",
+        "audioData": "",
+        "imgData": "",
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 1,
+        "fcTo": 10
+      },
+      {
+        "from": 11,
+        "to": 20,
+        "audioName": "",
+        "audioData": "",
+        "imgData": "",
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 11,
+        "fcTo": 20
+      },
+      {
+        "from": 21,
+        "to": 30,
+        "audioName": "",
+        "audioData": "",
+        "imgData": "",
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 21,
+        "fcTo": 30
+      },
+      {
+        "from": 31,
+        "to": 40,
+        "audioName": "",
+        "audioData": "",
+        "imgData": "",
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 31,
+        "fcTo": 40
+      }
+    ],
+    "questions": {},
+    "qBlocks": {
+      "1": [
+        {
+          "type": "fc",
+          "part": "",
+          "instr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
+          "fcFrom": 1,
+          "fcTo": 10,
+          "blanks": [
+            {
+              "num": 1,
+              "label": "zxzczxc",
+              "answer": ""
+            },
+            {
+              "num": 2,
+              "label": "zxzxczxdfwef",
+              "answer": ""
+            },
+            {
+              "num": 3,
+              "label": "werftydfgd",
+              "answer": ""
+            },
+            {
+              "num": 4,
+              "label": "cxvxcbn",
+              "answer": ""
+            },
+            {
+              "num": 5,
+              "label": "xcvxcvberyhj",
+              "answer": ""
+            },
+            {
+              "num": 6,
+              "label": "xcvxcasdasd",
+              "answer": ""
+            },
+            {
+              "num": 7,
+              "label": "zxczxcz zxxczxc",
+              "answer": ""
+            },
+            {
+              "num": 8,
+              "label": "zxcsgwsg",
+              "answer": ""
+            },
+            {
+              "num": 9,
+              "label": "sgsrhgxfc",
+              "answer": ""
+            },
+            {
+              "num": 10,
+              "label": "xcvxcbndfb",
+              "answer": ""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "reading": {
+    "passages": {
+      "1": "asdasdasdasdasdasdasd\nasdasdasdasdasdasdasdasdasd\nasdasdasdasdasdasdasdasd\nasdasdasdadasdasd\nasdasdasdasdasd",
+      "2": "",
+      "3": ""
+    },
+    "passages_fc": {
+      "1": {
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 1,
+        "fcTo": 13
+      },
+      "2": {
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 14,
+        "fcTo": 26
+      },
+      "3": {
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 27,
+        "fcTo": 40
+      }
+    },
+    "questions": {},
+    "qBlocks": {
+      "1": [
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "",
+          "qNum": 1,
+          "qText": "asdasdasdasdasdasdasdasdasd",
+          "answer": ""
+        }
+      ],
+      "2": [],
+      "3": []
+    }
+  },
+  "writing": {
+    "tasks": {
+      "1": {
+        "prompt": "The chart shows asdasdasdsa",
+        "imgData": "",
+        "minWords": 150
+      },
+      "2": {
+        "prompt": "Some people believe asdasdasdasd",
+        "imgData": "",
+        "minWords": 250
+      }
+    }
+  },
+  "answerKey": {
+    "L": {
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": "",
+      "10": ""
+    },
+    "R": {}
+  },
+  "_driveURL": "https://raw.githubusercontent.com/danofthursday99/ielts-sim/refs/heads/main/configs/ielts_config.json",
+  "_meta": {
+    "setID": "SET-1781316892576",
+    "setName": "asdasdasdasd",
+    "setDesc": "asdasdadasdasd",
+    "exportedAt": "2026-06-13T02:14:52.576Z"
+  }
+}
