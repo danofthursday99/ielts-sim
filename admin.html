@@ -194,16 +194,7 @@
   .hidden{display:none!important}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-  /* FORM COMPLETION */
-  .fc-toggle{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:10px 14px;background:var(--paper2);border-radius:8px;border:1px solid var(--border)}
-  .fc-toggle label{font-size:0.83rem;font-weight:600;color:var(--ink2);cursor:pointer}
-  .fc-toggle input[type=checkbox]{accent-color:var(--blue);width:16px;height:16px;cursor:pointer}
-  .fc-panel{background:#f0f5ff;border:1px solid #c0d0f0;border-radius:10px;padding:16px;margin-bottom:16px}
-  .fc-panel-title{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue2);margin-bottom:12px}
-  .fc-img-preview{max-width:100%;max-height:200px;border-radius:8px;margin-top:8px;display:none}
-  .fc-q-range{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:0.83rem;color:var(--ink2)}
-  .fc-q-range input{width:60px;padding:5px 8px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;text-align:center}
-  .fc-answers{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  /* FORM COMPLETION (answer-row, used by HTML-template FC question type) */
   .fc-answer-row{display:flex;align-items:center;gap:8px}
   .fc-answer-row label{font-size:0.78rem;font-weight:700;color:var(--blue);width:28px;flex-shrink:0}
   .fc-answer-row input{flex:1;padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--green);font-weight:600}
@@ -229,20 +220,6 @@
   .audio-slot p{font-size:0.83rem;color:var(--ink3);margin-bottom:8px}
   .audio-slot audio{width:100%;margin-top:8px}
 
-  /* FORM COMPLETION */
-  .fc-toggle{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:10px 14px;background:var(--paper2);border-radius:8px;border:1px solid var(--border)}
-  .fc-toggle label{font-size:0.83rem;font-weight:600;color:var(--ink2);cursor:pointer}
-  .fc-toggle input[type=checkbox]{accent-color:var(--blue);width:16px;height:16px;cursor:pointer}
-  .fc-panel{background:#f0f5ff;border:1px solid #c0d0f0;border-radius:10px;padding:16px;margin-bottom:16px}
-  .fc-panel-title{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue2);margin-bottom:12px}
-  .fc-img-preview{max-width:100%;max-height:200px;border-radius:8px;margin-top:8px;display:none}
-  .fc-q-range{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:0.83rem;color:var(--ink2);flex-wrap:wrap}
-  .fc-q-range input{width:60px;padding:5px 8px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;text-align:center}
-  .fc-answers{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .fc-answer-row{display:flex;align-items:center;gap:8px}
-  .fc-answer-row label{font-size:0.78rem;font-weight:700;color:var(--blue);width:28px;flex-shrink:0}
-  .fc-answer-row input{flex:1;padding:5px 10px;border:1px solid var(--paper3);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--green);font-weight:600}
-  .fc-answer-row input:focus{outline:none;border-color:var(--green)}
   .extra-qs-section{margin-top:14px;border-top:1px dashed var(--paper3);padding-top:14px}
   .extra-qs-title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
   .btn-add-q{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px dashed var(--blue2);border-radius:7px;font-size:0.82rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;transition:all 0.15s}
@@ -348,20 +325,6 @@
         <div class="card"><div class="card-title">Passage 1 Text</div><textarea class="passage-textarea" id="R-text-1" placeholder="Paste or type the reading passage here..."></textarea></div>
         <div class="card">
           <div class="card-title">Questions 1–13</div>
-          <div class="fc-toggle">
-            <input type="checkbox" id="rfc-chk-1" onchange="toggleRFC(1,this.checked)">
-            <label for="rfc-chk-1">📋 Use Form / Note Completion layout for this passage</label>
-          </div>
-          <div id="rfc-panel-1" class="fc-panel hidden">
-            <div class="fc-panel-title">Form Completion Settings — Passage 1</div>
-            <div class="field"><label>Upload Worksheet Image</label><input type="file" accept="image/*" onchange="loadRFCImg(1,this)"><img id="rfc-img-1" class="fc-img-preview"></div>
-            <div class="fc-q-range"><span>Blanks cover question numbers:</span>
-              <input type="number" id="rfc-from-1" value="1" min="1" max="40" onchange="updateRFCAnswers(1)"> to
-              <input type="number" id="rfc-to-1" value="13" min="1" max="40" onchange="updateRFCAnswers(1)">
-            </div>
-            <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
-            <div class="fc-answers" id="rfc-answers-1"></div>
-          </div>
           <div id="R-qs-1">
             <button class="btn-add-q-modal" onclick="qmOpen('R',1)">+ Add Question</button>
             <div id="qlist-R-1" class="qlist"></div>
@@ -372,20 +335,6 @@
         <div class="card"><div class="card-title">Passage 2 Text</div><textarea class="passage-textarea" id="R-text-2" placeholder="Paste or type the reading passage here..."></textarea></div>
         <div class="card">
           <div class="card-title">Questions 14–26</div>
-          <div class="fc-toggle">
-            <input type="checkbox" id="rfc-chk-2" onchange="toggleRFC(2,this.checked)">
-            <label for="rfc-chk-2">📋 Use Form / Note Completion layout for this passage</label>
-          </div>
-          <div id="rfc-panel-2" class="fc-panel hidden">
-            <div class="fc-panel-title">Form Completion Settings — Passage 2</div>
-            <div class="field"><label>Upload Worksheet Image</label><input type="file" accept="image/*" onchange="loadRFCImg(2,this)"><img id="rfc-img-2" class="fc-img-preview"></div>
-            <div class="fc-q-range"><span>Blanks cover question numbers:</span>
-              <input type="number" id="rfc-from-2" value="14" min="1" max="40" onchange="updateRFCAnswers(2)"> to
-              <input type="number" id="rfc-to-2" value="26" min="1" max="40" onchange="updateRFCAnswers(2)">
-            </div>
-            <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
-            <div class="fc-answers" id="rfc-answers-2"></div>
-          </div>
           <div id="R-qs-2">
             <button class="btn-add-q-modal" onclick="qmOpen('R',2)">+ Add Question</button>
             <div id="qlist-R-2" class="qlist"></div>
@@ -396,20 +345,6 @@
         <div class="card"><div class="card-title">Passage 3 Text</div><textarea class="passage-textarea" id="R-text-3" placeholder="Paste or type the reading passage here..."></textarea></div>
         <div class="card">
           <div class="card-title">Questions 27–40</div>
-          <div class="fc-toggle">
-            <input type="checkbox" id="rfc-chk-3" onchange="toggleRFC(3,this.checked)">
-            <label for="rfc-chk-3">📋 Use Form / Note Completion layout for this passage</label>
-          </div>
-          <div id="rfc-panel-3" class="fc-panel hidden">
-            <div class="fc-panel-title">Form Completion Settings — Passage 3</div>
-            <div class="field"><label>Upload Worksheet Image</label><input type="file" accept="image/*" onchange="loadRFCImg(3,this)"><img id="rfc-img-3" class="fc-img-preview"></div>
-            <div class="fc-q-range"><span>Blanks cover question numbers:</span>
-              <input type="number" id="rfc-from-3" value="27" min="1" max="40" onchange="updateRFCAnswers(3)"> to
-              <input type="number" id="rfc-to-3" value="40" min="1" max="40" onchange="updateRFCAnswers(3)">
-            </div>
-            <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
-            <div class="fc-answers" id="rfc-answers-3"></div>
-          </div>
           <div id="R-qs-3">
             <button class="btn-add-q-modal" onclick="qmOpen('R',3)">+ Add Question</button>
             <div id="qlist-R-3" class="qlist"></div>
@@ -425,7 +360,17 @@
       <div class="card">
         <div class="card-title">Task 1 — Report</div>
         <div class="field"><label>Task Prompt</label><textarea id="W-prompt-1" placeholder="The chart below shows..." style="min-height:80px"></textarea></div>
-        <div class="field"><label>Chart / Diagram Image</label><input type="file" accept="image/*" onchange="loadWritingImg(1,this)"><img id="W-img-1" style="max-width:100%;max-height:200px;margin-top:8px;border-radius:8px;display:none"></div>
+        <div class="field" style="margin-top:12px">
+          <label>Chart / Diagram Image URL <span style="font-weight:400;color:var(--ink3)">(optional — chart, graph, table or diagram)</span></label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="text" id="W-img-url-1"
+              placeholder="https://raw.githubusercontent.com/username/ielts-sim/main/images/chart.jpg"
+              oninput="saveWritingImgURL(1,this.value)"
+              style="flex:1;font-family:monospace;font-size:0.82rem">
+            <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.78rem;white-space:nowrap" onclick="previewWritingImg(1)">👁 Preview</button>
+          </div>
+          <div id="W-img-preview-1" style="margin-top:6px"></div>
+        </div>
         <div class="field"><label>Minimum Word Count</label><input type="text" id="W-min-1" value="150"></div>
       </div>
       <div class="card">
@@ -948,25 +893,20 @@ function exportScoresPDF() {
 let config = {
   listening: {
     sections: [
-      { from:1, to:10, audioName:'', audioData:'', imgData:'', formCompletion:false, fcImgData:'', fcFrom:1, fcTo:10 },
-      { from:11, to:20, audioName:'', audioData:'', imgData:'', formCompletion:false, fcImgData:'', fcFrom:11, fcTo:20 },
-      { from:21, to:30, audioName:'', audioData:'', imgData:'', formCompletion:false, fcImgData:'', fcFrom:21, fcTo:30 },
-      { from:31, to:40, audioName:'', audioData:'', imgData:'', formCompletion:false, fcImgData:'', fcFrom:31, fcTo:40 },
+      { from:1, to:10, audioName:'', audioData:'', imgData:'' },
+      { from:11, to:20, audioName:'', audioData:'', imgData:'' },
+      { from:21, to:30, audioName:'', audioData:'', imgData:'' },
+      { from:31, to:40, audioName:'', audioData:'', imgData:'' },
     ],
     questions: {} // {1:{text:'',type:'short',options:[],answer:''}, ...}
   },
   reading: {
     passages: { 1:'', 2:'', 3:'' },
-    passages_fc: {
-      1:{ formCompletion:false, fcImgData:'', fcFrom:1,  fcTo:13 },
-      2:{ formCompletion:false, fcImgData:'', fcFrom:14, fcTo:26 },
-      3:{ formCompletion:false, fcImgData:'', fcFrom:27, fcTo:40 }
-    },
     questions: {}
   },
   writing: {
     tasks: {
-      1: { prompt:'', imgData:'', minWords:150 },
+      1: { prompt:'', imgURL:'', minWords:150 },
       2: { prompt:'', imgData:'', minWords:250 }
     }
   },
@@ -995,13 +935,16 @@ window.onload = () => {
     if (sec.audioURL) { switchAudioSrc(1,'url'); document.getElementById('audio-url-input-1').value = sec.audioURL; document.getElementById('audio-url-preview-1').innerHTML = buildURLPreview(sec.audioURL); }
     if (sec.audioName) { document.getElementById('L-audio-name-1').textContent='🎵 '+sec.audioName; document.getElementById('L-audio-slot-1').classList.add('loaded'); }
     if (sec.audioData) { const el=document.getElementById('L-audio-el-1'); el.src=sec.audioData; el.classList.remove('hidden'); }
-    if (sec.imgData)   { const img=document.getElementById('L-img-1'); img.src=sec.imgData; img.style.display='block'; }
-    // FC state
-    if (sec.formCompletion) { document.getElementById('fc-chk-1').checked=true; document.getElementById('fc-panel-1').classList.remove('hidden'); }
-    if (sec.fcImgData) { const pr=document.getElementById('fc-img-preview-1'); pr.src=sec.fcImgData; pr.style.display='block'; }
-    if (sec.fcFrom) document.getElementById('fc-from-1').value = sec.fcFrom;
-    if (sec.fcTo)   document.getElementById('fc-to-1').value   = sec.fcTo;
-    if (sec.formCompletion) buildFCAnswers(1);
+    if (sec.imgURL) {
+      const urlInp = document.getElementById('L-img-url-1');
+      const prev   = document.getElementById('L-img-preview-1');
+      if (urlInp) urlInp.value = sec.imgURL;
+      if (prev)   prev.innerHTML = `<img src="${escH(sec.imgURL)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)">`;
+    }
+    if (sec.imgData) {
+      const prev = document.getElementById('L-img-preview-1');
+      if (prev) prev.innerHTML = `<img src="${sec.imgData}" style="max-width:100%;max-height:150px;border-radius:6px">`;
+    }
   }
 
   buildAnswerKeyGrids();
@@ -1015,6 +958,10 @@ function loadConfigToUI() {
   document.getElementById('W-prompt-2').value = config.writing.tasks[2].prompt || '';
   document.getElementById('W-min-1').value = config.writing.tasks[1].minWords || 150;
   document.getElementById('W-min-2').value = config.writing.tasks[2].minWords || 250;
+  if (config.writing.tasks[1].imgURL) {
+    document.getElementById('W-img-url-1').value = config.writing.tasks[1].imgURL;
+    previewWritingImg(1);
+  }
   // Reading passages
   [1,2,3].forEach(i => {
     document.getElementById('R-text-'+i).value = config.reading.passages[i] || '';
@@ -1023,8 +970,6 @@ function loadConfigToUI() {
   populateQEditors();
   // Answer key
   populateAnswerKey();
-  // Audio/FC state restored in buildAllQEditors (now part of populateQEditors)
-  restoreReadingFC();
 }
 
 // ═══════════════════════════════════════
@@ -1040,7 +985,6 @@ function showPanel(id) {
     const activeBtn = document.querySelector('#p-reading .sec-tab.active');
     const n = activeBtn ? ([...document.querySelectorAll('#p-reading .sec-tab')].indexOf(activeBtn) + 1) : 1;
     qmRenderList('R', n);
-    restoreReadingFC();
   }
 }
 // ═══════════════════════════════════════
@@ -1048,8 +992,6 @@ function showPanel(id) {
 // ═══════════════════════════════════════
 function buildLSecHTML(n) {
   const ranges = ['1–10','11–20','21–30','31–40'];
-  const from   = [1,11,21,31][n-1];
-  const to     = [10,20,30,40][n-1];
   const sec    = config.listening.sections[n-1] || {};
   const urlVal = escH(sec.audioURL||'');
   const hasURL = !!sec.audioURL;
@@ -1089,40 +1031,25 @@ function buildLSecHTML(n) {
         <button class="btn btn-ghost" style="font-size:0.78rem;margin-top:8px" onclick="previewAudioURL(${n})">▶ Preview URL</button>
       </div>
 
-      <!-- SECTION IMAGE -->
+      <!-- SECTION IMAGE — paste URL -->
       <div class="field" style="margin-top:12px">
-        <label>Section Image (optional — map/diagram)</label>
-        <input type="file" accept="image/*" onchange="loadSectionImg(${n},this)">
-        <img id="L-img-${n}" style="max-width:100%;max-height:150px;margin-top:8px;border-radius:6px;display:none">
+        <label>Section Image URL <span style="font-weight:400;color:var(--ink3)">(optional — map/diagram/floor plan)</span></label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="L-img-url-${n}"
+            placeholder="https://raw.githubusercontent.com/username/ielts-sim/main/images/map.jpg"
+            value="${escH(sec.imgURL||'')}"
+            oninput="saveSectionImgURL(${n},this.value)"
+            style="flex:1;font-family:monospace;font-size:0.82rem">
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.78rem;white-space:nowrap" onclick="previewSectionImg(${n})">👁 Preview</button>
+        </div>
+        <div id="L-img-preview-${n}" style="margin-top:6px">
+          ${sec.imgURL?`<img src="${escH(sec.imgURL)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)">`:''}
+        </div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">Questions ${ranges[n-1]}</div>
-
-      <!-- FORM COMPLETION TOGGLE -->
-      <div class="fc-toggle">
-        <input type="checkbox" id="fc-chk-${n}" onchange="toggleFC(${n},this.checked)">
-        <label for="fc-chk-${n}">📋 Use Form / Note Completion layout (image with numbered blanks)</label>
-      </div>
-
-      <!-- FC SETTINGS -->
-      <div id="fc-panel-${n}" class="fc-panel hidden">
-        <div class="fc-panel-title">Form Completion Settings</div>
-        <div class="field">
-          <label>Upload Worksheet Image</label>
-          <input type="file" accept="image/*" onchange="loadFCImg(${n},this)">
-          <img id="fc-img-preview-${n}" class="fc-img-preview">
-        </div>
-        <div class="fc-q-range">
-          <span>Blanks cover question numbers:</span>
-          <input type="number" id="fc-from-${n}" value="${from}" min="1" max="40" onchange="updateFCAnswers(${n})"> to
-          <input type="number" id="fc-to-${n}"   value="${to}"   min="1" max="40" onchange="updateFCAnswers(${n})">
-          <button class="btn btn-ghost" style="padding:4px 10px;font-size:0.78rem" onclick="buildFCAnswers(${n})">Apply</button>
-        </div>
-        <div style="margin-top:12px;font-size:0.78rem;font-weight:600;color:var(--ink3);margin-bottom:6px">Answer Key for blanks:</div>
-        <div class="fc-answers" id="fc-answers-${n}"></div>
-      </div>
 
       <!-- QUESTION LIST (modal-based) -->
       <div id="L-qs-${n}">
@@ -1165,54 +1092,6 @@ function previewAudioURL(n) {
   toast('Preview updated');
 }
 
-function toggleFC(n, enabled) {
-  config.listening.sections[n-1].formCompletion = enabled;
-  document.getElementById('fc-panel-'+n).classList.toggle('hidden', !enabled);
-  if (enabled) buildFCAnswers(n);
-}
-
-function loadFCImg(n, input) {
-  if (!input.files[0]) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    config.listening.sections[n-1].fcImgData = e.target.result;
-    const pr = document.getElementById('fc-img-preview-'+n);
-    pr.src = e.target.result; pr.style.display = 'block';
-    toast('Form image loaded');
-  };
-  reader.readAsDataURL(input.files[0]);
-}
-
-function updateFCAnswers(n) {
-  const from = parseInt(document.getElementById('fc-from-'+n).value)||1;
-  const to   = parseInt(document.getElementById('fc-to-'+n).value)||10;
-  config.listening.sections[n-1].fcFrom = from;
-  config.listening.sections[n-1].fcTo   = to;
-  buildFCAnswers(n);
-}
-
-function buildFCAnswers(n) {
-  const from = parseInt(document.getElementById('fc-from-'+n).value)||config.listening.sections[n-1].fcFrom||1;
-  const to   = parseInt(document.getElementById('fc-to-'+n).value)||config.listening.sections[n-1].fcTo||10;
-  const wrap = document.getElementById('fc-answers-'+n);
-  if (!wrap) return;
-  wrap.innerHTML = '';
-  for (let i=from; i<=to; i++) {
-    const val = config.answerKey.L[i] || '';
-    const row = document.createElement('div');
-    row.className = 'fc-answer-row';
-    row.innerHTML = `<label>${i}</label><input type="text" placeholder="Answer..." value="${escH(val)}" oninput="saveFCAnswer(${n},${i},this.value)">`;
-    wrap.appendChild(row);
-  }
-}
-
-function saveFCAnswer(n, qNum, val) {
-  config.answerKey.L[qNum] = val;
-  config.listening.sections[n-1][`fcAnswer_${qNum}`] = val;
-  const akInput = document.getElementById('ak-L-'+qNum);
-  if (akInput) akInput.value = val;
-}
-
 // ═══════════════════════════════════════
 function showLSec(n, btn) {
   document.querySelectorAll('.l-sec').forEach(s=>s.classList.add('hidden'));
@@ -1221,7 +1100,6 @@ function showLSec(n, btn) {
   btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 
-  const s   = [{n:1,from:1,to:10},{n:2,from:11,to:20},{n:3,from:21,to:30},{n:4,from:31,to:40}][n-1];
   const sec = config.listening.sections[n-1];
 
   // Always rebuild the HTML shell (cheap, ensures containers exist)
@@ -1235,15 +1113,16 @@ function showLSec(n, btn) {
   }
   if (sec.audioName) { document.getElementById('L-audio-name-'+n).textContent='🎵 '+sec.audioName; document.getElementById('L-audio-slot-'+n).classList.add('loaded'); }
   if (sec.audioData) { const el=document.getElementById('L-audio-el-'+n); el.src=sec.audioData; el.classList.remove('hidden'); }
-  if (sec.imgData)   { const img=document.getElementById('L-img-'+n); img.src=sec.imgData; img.style.display='block'; }
-
-  // Restore FC state
-  document.getElementById('fc-chk-'+n).checked = !!sec.formCompletion;
-  document.getElementById('fc-panel-'+n).classList.toggle('hidden', !sec.formCompletion);
-  document.getElementById('fc-from-'+n).value = sec.fcFrom || s.from;
-  document.getElementById('fc-to-'+n).value   = sec.fcTo   || s.to;
-  if (sec.fcImgData) { const pr=document.getElementById('fc-img-preview-'+n); pr.src=sec.fcImgData; pr.style.display='block'; }
-  if (sec.formCompletion) buildFCAnswers(n);
+  if (sec.imgURL) {
+    const urlInp = document.getElementById('L-img-url-'+n);
+    const prev   = document.getElementById('L-img-preview-'+n);
+    if (urlInp) urlInp.value = sec.imgURL;
+    if (prev)   prev.innerHTML = `<img src="${escH(sec.imgURL)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)">`;
+  }
+  if (sec.imgData) {
+    const prev = document.getElementById('L-img-preview-'+n);
+    if (prev) prev.innerHTML = `<img src="${sec.imgData}" style="max-width:100%;max-height:150px;border-radius:6px">`;
+  }
 
   // Always render question list
   qmRenderList('L', n);
@@ -1254,19 +1133,7 @@ function showRPass(n, btn) {
   btn.closest('.section-tabs').querySelectorAll('.sec-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   // Re-render Q list for this passage
-  const pfc = config.reading.passages_fc && config.reading.passages_fc[n];
   qmRenderList('R', n);
-  // Re-apply FC state
-  const chk = document.getElementById('rfc-chk-'+n);
-  if (chk && pfc) {
-    chk.checked = !!pfc.formCompletion;
-    document.getElementById('rfc-panel-'+n).classList.toggle('hidden', !pfc.formCompletion);
-    document.getElementById('R-qs-'+n).classList.toggle('hidden', !!pfc.formCompletion);
-    if (pfc.fcImgData) { const pr=document.getElementById('rfc-img-'+n); pr.src=pfc.fcImgData; pr.style.display='block'; }
-    if (pfc.fcFrom) document.getElementById('rfc-from-'+n).value = pfc.fcFrom;
-    if (pfc.fcTo)   document.getElementById('rfc-to-'+n).value   = pfc.fcTo;
-    if (pfc.formCompletion) buildRFCAnswers(n);
-  }
 }
 function showAKTab(t, btn) {
   document.querySelectorAll('.ak-tab').forEach(s=>s.classList.add('hidden'));
@@ -1336,51 +1203,53 @@ function qmTypeChange(existing) {
   const q = existing || {};
 
   if (type === 'fc') {
-    const imgURL = q.fcImgURL || '';
-    const lines  = q.fcLines  || [];
-
+    const fcHtml = q.fcHtml || '';
+    const fcImgURL = q.fcImgURL || '';
     area.innerHTML = `
       <div class="qm-field">
-        <label style="display:flex;align-items:center;justify-content:space-between">
-          <span>Diagram / Map Image URL <span style="font-weight:400;color:var(--ink3)">(optional)</span></span>
-          <button type="button" onclick="qmPreviewFCImg()" class="qm-add-opt" style="font-size:0.75rem;padding:3px 10px">👁 Preview</button>
+        <label>Instructions <span style="font-weight:400;color:var(--ink3)">(e.g. Write ONE WORD AND/OR A NUMBER)</span></label>
+        <input type="text" id="qm-fc-instr" value="${escH(q.instr||q.fcInstr||'')}" placeholder="Complete the notes below. Write ONE WORD AND/OR A NUMBER for each answer.">
+      </div>
+      <div class="qm-field">
+        <label>HTML Template
+          <span style="font-weight:400;color:var(--ink3)"> — use <code style="background:var(--paper2);padding:1px 5px;border-radius:3px">{{1}}</code> for blanks</span>
         </label>
-        <input type="text" id="qm-fc-img-url"
-          placeholder="https://raw.githubusercontent.com/username/ielts-sim/main/images/map.jpg"
-          value="${escH(imgURL)}"
-          style="font-family:monospace;font-size:0.82rem">
-        <div id="qm-fc-img-preview" style="margin-top:6px">
-          ${imgURL?`<img src="${escH(imgURL)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)">`:''}
+        <div style="background:var(--paper2);border-radius:6px;padding:10px 12px;font-size:0.78rem;color:var(--ink2);margin-bottom:8px;line-height:1.8;border:1px solid var(--border)">
+          <b>How to use:</b> Type your form HTML below. Put <code>{{1}}</code>, <code>{{2}}</code>, etc. where the blanks should appear.<br>
+          <b>Example:</b><br>
+          <code>&lt;h3&gt;Transport Survey&lt;/h3&gt;</code><br>
+          <code>&lt;p&gt;&lt;strong&gt;Postcode:&lt;/strong&gt; {{1}}&lt;/p&gt;</code><br>
+          <code>&lt;p&gt;Got on bus at {{5}} Street&lt;/p&gt;</code><br>
+          <code>&lt;p&gt;Bus was {{6}} today&lt;/p&gt;</code>
         </div>
+        <textarea id="qm-fc-html" style="min-height:220px;font-family:monospace;font-size:0.83rem;resize:vertical;line-height:1.6;width:100%;padding:10px;border:1px solid var(--paper3);border-radius:7px" placeholder="Paste or type your HTML here...">${escH(fcHtml)}</textarea>
       </div>
-
-      <div class="qm-section-label" style="margin-bottom:8px">Form Content Builder</div>
-      <div style="font-size:0.78rem;color:var(--ink3);margin-bottom:10px;line-height:1.6;padding:8px 10px;background:var(--paper2);border-radius:6px">
-        Build your form line by line. Click <b>+ Blank</b> inside any line to insert a numbered answer blank at that position.
+      <div class="qm-field">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <label>Answer Key <span style="font-weight:400;color:var(--ink3)">— one per blank</span></label>
+          <div style="display:flex;gap:6px">
+            <button type="button" onclick="qmScanFCBlanks()" class="qm-add-opt" style="font-size:0.78rem">🔍 Scan blanks</button>
+            <button type="button" onclick="qmPreviewFC()" class="qm-add-opt" style="font-size:0.78rem">👁 Preview</button>
+          </div>
+        </div>
+        <div id="qm-fc-answers" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
       </div>
+      <div id="qm-fc-preview" style="padding:14px;background:#fff;border:1px solid var(--border);border-radius:8px;display:none;font-family:'Source Serif 4',serif;font-size:0.9rem;line-height:2;margin-top:4px"></div>`;
 
-      <div id="qm-fc-lines" style="margin-bottom:10px"></div>
-
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
-        <button type="button" onclick="qmFCAddLine('heading')"   class="qm-add-opt">+ Heading</button>
-        <button type="button" onclick="qmFCAddLine('subheading')" class="qm-add-opt">+ Subheading</button>
-        <button type="button" onclick="qmFCAddLine('text')"      class="qm-add-opt">+ Text Line</button>
-        <button type="button" onclick="qmFCAddLine('bullet')"    class="qm-add-opt">+ Bullet Item</button>
-      </div>
-
-      <div class="qm-section-label" style="margin-bottom:6px">Answer Key <span style="font-weight:400;color:var(--ink3)">— auto-filled as you add blanks</span></div>
-      <div id="qm-fc-answers" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px"></div>
-
-      <div class="qm-section-label" style="margin-bottom:6px">Live Preview</div>
-      <div id="qm-fc-preview" style="padding:16px;background:#fff;border:1px solid var(--border);border-radius:8px;font-family:'Source Serif 4',serif;font-size:0.9rem;line-height:2;min-height:60px">
-        <span style="color:var(--ink3);font-size:0.82rem">Add lines above to see preview...</span>
-      </div>`;
-
-    // Restore existing lines
-    if (lines.length) {
-      lines.forEach(ln => qmFCAddLine(ln.ltype || 'text', ln));
+    // Restore existing answers
+    if (q.fcAnswers && Object.keys(q.fcAnswers).length) {
+      const wrap = document.getElementById('qm-fc-answers');
+      Object.entries(q.fcAnswers).sort((a,b)=>parseInt(a[0])-parseInt(b[0])).forEach(([num,ans]) => {
+        const row = document.createElement('div');
+        row.className = 'fc-answer-row';
+        row.id = 'qm-fc-ans-'+num;
+        row.innerHTML = `<label>${num}</label><input type="text" class="fc-ans" placeholder="Answer for {{${num}}}" value="${escH(ans||'')}">`;
+        wrap.appendChild(row);
+      });
+    } else if (fcHtml) {
+      qmScanFCBlanks();
     }
-    qmFCUpdatePreview();
+
   } else if (type === 'mc') {
     const opts   = q.options || ['','',''];
     const answer = q.answer  || '';
@@ -1572,176 +1441,65 @@ function qmRemoveMatchItem(i) {
 }
 
 // ══════════════════════════════════════════════
-// FC VISUAL LINE BUILDER
+// FC HTML TEMPLATE HELPERS
 // ══════════════════════════════════════════════
-// A "line" is: { ltype:'text'|'heading'|'subheading'|'bullet', segments:[{stype:'text'|'blank', text:'', num:0}] }
-// _fcNextBlank tracks the next auto-assigned blank number
-
-let _fcNextBlank = 1;
-
-function qmFCGetLines() {
-  const wrap = document.getElementById('qm-fc-lines');
-  if (!wrap) return [];
-  return [...wrap.querySelectorAll('.fc-line-wrap')].map(lw => {
-    const ltype = lw.dataset.ltype || 'text';
-    const segments = [...lw.querySelectorAll('.fc-seg')].map(seg => ({
-      stype: seg.dataset.stype,
-      text:  seg.dataset.text  || '',
-      num:   parseInt(seg.dataset.num||0)||0
-    }));
-    return { ltype, segments };
-  });
-}
-
-function qmFCAddLine(ltype, existing) {
-  const wrap = document.getElementById('qm-fc-lines');
-  if (!wrap) return;
-  const lineIdx = wrap.querySelectorAll('.fc-line-wrap').length;
-  const typeLabels = { heading:'Heading', subheading:'Subheading', text:'Text Line', bullet:'Bullet Item' };
-  const typeColors = { heading:'var(--blue)', subheading:'var(--blue2)', text:'var(--ink3)', bullet:'var(--ink3)' };
-
-  const div = document.createElement('div');
-  div.className = 'fc-line-wrap';
-  div.dataset.ltype = ltype;
-  div.dataset.lidx  = lineIdx;
-  div.innerHTML = `
-    <div class="fc-line-type-badge" style="color:${typeColors[ltype]}">${typeLabels[ltype]}</div>
-    <div class="fc-line-editor" id="fc-segs-${lineIdx}"></div>
-    <div class="fc-line-footer">
-      <button type="button" class="fc-add-text-btn" onclick="qmFCAddTextSeg(${lineIdx})">+ Text</button>
-      <button type="button" class="fc-add-blank-btn" onclick="qmFCAddBlankSeg(${lineIdx})">+ Blank</button>
-      <button type="button" class="fc-line-move" onclick="qmFCMoveLine(this,-1)" title="Move up">↑</button>
-      <button type="button" class="fc-line-move" onclick="qmFCMoveLine(this,1)"  title="Move down">↓</button>
-      <button type="button" class="fc-line-del"  onclick="qmFCDelLine(this)">✕ Remove line</button>
-    </div>`;
-  wrap.appendChild(div);
-
-  // Restore existing segments
-  if (existing && existing.segments) {
-    existing.segments.forEach(seg => {
-      if (seg.stype === 'blank') qmFCAddBlankSeg(lineIdx, seg.num);
-      else qmFCAddTextSeg(lineIdx, seg.text);
-    });
-  }
-  qmFCUpdatePreview();
-}
-
-function qmFCAddTextSeg(lineIdx, existing) {
-  const segs = document.getElementById('fc-segs-'+lineIdx);
-  if (!segs) return;
-  const text = existing !== undefined ? existing : prompt('Enter text:');
-  if (text === null) return;
-  const segIdx = segs.querySelectorAll('.fc-seg').length;
-  const span = document.createElement('span');
-  span.className = 'fc-seg fc-seg-text';
-  span.dataset.stype = 'text';
-  span.dataset.text  = text;
-  span.dataset.sidx  = segIdx;
-  span.title = 'Click to edit';
-  span.onclick = function() {
-    const newText = prompt('Edit text:', this.dataset.text);
-    if (newText !== null) { this.dataset.text = newText; this.childNodes[0].textContent = newText || '(empty)'; qmFCUpdatePreview(); }
-  };
-  span.innerHTML = `${escH(text||'(empty)')}<button class="fc-seg-del" onclick="event.stopPropagation();this.parentElement.remove();qmFCUpdatePreview()" title="Remove">✕</button>`;
-  segs.appendChild(span);
-  qmFCUpdatePreview();
-}
-
-function qmFCAddBlankSeg(lineIdx, existingNum) {
-  const segs = document.getElementById('fc-segs-'+lineIdx);
-  if (!segs) return;
-  // Auto-assign next blank number
-  const num = existingNum || _fcNextBlank++;
-  // Sync _fcNextBlank to be higher than all existing blanks
-  const allBlanks = [...document.querySelectorAll('.fc-seg[data-stype="blank"]')].map(s=>parseInt(s.dataset.num)||0);
-  if (allBlanks.length) _fcNextBlank = Math.max(...allBlanks) + 1;
-
-  const span = document.createElement('span');
-  span.className = 'fc-seg fc-seg-blank';
-  span.dataset.stype = 'blank';
-  span.dataset.num   = num;
-  span.innerHTML = `Q${num}<button class="fc-seg-del" onclick="event.stopPropagation();qmFCRemoveBlank(${num},this)" title="Remove blank">✕</button>`;
-  segs.appendChild(span);
-  qmFCAddAnswerRow(num);
-  qmFCUpdatePreview();
-}
-
-function qmFCRemoveBlank(num, btn) {
-  btn.parentElement.remove();
-  const ansRow = document.getElementById('qm-fc-ans-'+num);
-  if (ansRow) ansRow.remove();
-  qmFCUpdatePreview();
-}
-
-function qmFCMoveLine(btn, dir) {
-  const line = btn.closest('.fc-line-wrap');
-  const wrap = document.getElementById('qm-fc-lines');
-  const lines = [...wrap.querySelectorAll('.fc-line-wrap')];
-  const idx   = lines.indexOf(line);
-  const newIdx= idx + dir;
-  if (newIdx < 0 || newIdx >= lines.length) return;
-  if (dir === -1) wrap.insertBefore(line, lines[newIdx]);
-  else            wrap.insertBefore(lines[newIdx], line);
-  qmFCUpdatePreview();
-}
-
-function qmFCDelLine(btn) {
-  const line = btn.closest('.fc-line-wrap');
-  // Remove answer rows for blanks in this line
-  line.querySelectorAll('.fc-seg-blank[data-num],.fc-seg[data-stype="blank"]').forEach(s => {
-    const row = document.getElementById('qm-fc-ans-'+s.dataset.num);
-    if (row) row.remove();
-  });
-  line.remove();
-  qmFCUpdatePreview();
-}
-
-function qmFCAddAnswerRow(num) {
+function qmScanFCBlanks() {
+  const tpl  = (document.getElementById('qm-fc-html')||{}).value || '';
+  const nums = [...new Set([...tpl.matchAll(/\{\{(\d+)\}\}/g)].map(m=>parseInt(m[1])))].sort((a,b)=>a-b);
   const wrap = document.getElementById('qm-fc-answers');
-  if (!wrap || document.getElementById('qm-fc-ans-'+num)) return;
-  const row = document.createElement('div');
-  row.className = 'fc-answer-row';
-  row.id = 'qm-fc-ans-'+num;
-  row.innerHTML = `<label>${num}</label><input type="text" class="fc-ans" placeholder="Answer for Q${num}" value="">`;
-  wrap.appendChild(row);
-  // Sort by number
-  const rows = [...wrap.querySelectorAll('.fc-answer-row')].sort((a,b)=>parseInt(a.querySelector('label').textContent)-parseInt(b.querySelector('label').textContent));
-  rows.forEach(r => wrap.appendChild(r));
+  if (!wrap) return;
+  // Keep existing answer values
+  const existing = {};
+  wrap.querySelectorAll('.fc-answer-row').forEach(r => {
+    const lbl = r.querySelector('label');
+    const inp = r.querySelector('input');
+    if (lbl && inp) existing[lbl.textContent.trim()] = inp.value;
+  });
+  wrap.innerHTML = '';
+  if (!nums.length) {
+    wrap.innerHTML = '<span style="color:var(--ink3);font-size:0.82rem">No {{n}} blanks found — type {{1}}, {{2}} etc. in your template.</span>';
+    return;
+  }
+  nums.forEach(n => {
+    const row = document.createElement('div');
+    row.className = 'fc-answer-row';
+    row.id = 'qm-fc-ans-'+n;
+    row.innerHTML = `<label>${n}</label><input type="text" class="fc-ans" placeholder="Answer for {{${n}}}" value="${escH(existing[n]||'')}">`;
+    wrap.appendChild(row);
+  });
+  toast(`Found ${nums.length} blank${nums.length>1?'s':''}: Q${nums.join(', Q')}`);
 }
 
-function qmFCUpdatePreview() {
-  const preview = document.getElementById('qm-fc-preview');
-  if (!preview) return;
-  const wrap = document.getElementById('qm-fc-lines');
+function qmPreviewFC() {
+  const tpl  = (document.getElementById('qm-fc-html')||{}).value || '';
+  const wrap = document.getElementById('qm-fc-preview');
   if (!wrap) return;
-  const lines = [...wrap.querySelectorAll('.fc-line-wrap')];
-  if (!lines.length) { preview.innerHTML='<span style="color:var(--ink3);font-size:0.82rem">Add lines above...</span>'; return; }
-  let html = '';
-  lines.forEach(lw => {
-    const ltype = lw.dataset.ltype;
-    const segs  = [...lw.querySelectorAll('.fc-seg')].map(s => {
-      if (s.dataset.stype === 'blank') return `<span style="display:inline-block;border-bottom:2px solid var(--blue);min-width:80px;padding:0 4px;margin:0 3px;text-align:center;color:var(--ink3);font-size:0.78rem">${s.dataset.num}</span>`;
-      return `<span>${escH(s.dataset.text||'')}</span>`;
-    }).join(' ');
-    if (ltype==='heading')    html += `<h3 style="font-family:'Source Serif 4',serif;color:var(--blue);margin:12px 0 6px;font-size:1rem">${segs}</h3>`;
-    else if (ltype==='subheading') html += `<h4 style="font-family:'Source Serif 4',serif;color:var(--blue2);margin:10px 0 4px;font-size:0.9rem">${segs}</h4>`;
-    else if (ltype==='bullet') html += `<div style="padding-left:16px;margin:2px 0">• ${segs}</div>`;
-    else html += `<div style="margin:2px 0">${segs}</div>`;
-  });
-  preview.innerHTML = html;
+  const rendered = tpl.replace(/\{\{(\d+)\}\}/g, (_,n) =>
+    `<span style="display:inline-block;border-bottom:2px solid var(--blue);min-width:80px;padding:0 6px;margin:0 3px;text-align:center;color:var(--ink3);font-size:0.78rem;background:#f0f5ff;border-radius:2px 2px 0 0">${n}</span>`
+  );
+  wrap.style.display = 'block';
+  wrap.innerHTML = rendered || '<span style="color:var(--ink3)">Nothing to preview yet.</span>';
 }
 
 function qmPreviewFCImg() {
-  const url  = document.getElementById('qm-fc-img-url').value.trim();
+  const url  = (document.getElementById('qm-fc-img-url')||{}).value || '';
   const wrap = document.getElementById('qm-fc-img-preview');
+  if (!wrap) return;
   if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">No URL entered.</span>'; return; }
-  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.style.display='none'">`;
+  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.outerHTML='<span style=\\'color:var(--red);font-size:0.8rem\\'>Cannot load image.</span>'">`;
 }
 
-// Legacy — no longer used but keep to avoid errors
-function qmScanFCBlanks() {}
-function qmPreviewFC() { qmFCUpdatePreview(); }
-function qmRebuildFCBlanks() {}
+// Stubs — no longer used but kept to avoid errors
+function qmFCAddLine() {}
+function qmFCAddTextSeg() {}
+function qmFCAddBlankSeg() {}
+function qmFCRemoveBlank() {}
+function qmFCMoveLine() {}
+function qmFCDelLine() {}
+function qmFCAddAnswerRow() {}
+function qmFCUpdatePreview() {}
+function qmFCGetLines() { return []; }
+function qmRebuildFCBlanks() { qmScanFCBlanks(); }
 
 // ── SAVE ──
 function qmSave() {
@@ -1753,17 +1511,10 @@ function qmSave() {
   let q = { type, part, instr };
 
   if (type === 'fc') {
-    const fcImgURL = (document.getElementById('qm-fc-img-url')||{}).value||'';
-    // Collect lines from builder
-    const wrap = document.getElementById('qm-fc-lines');
-    const fcLines = wrap ? [...wrap.querySelectorAll('.fc-line-wrap')].map(lw => ({
-      ltype: lw.dataset.ltype || 'text',
-      segments: [...lw.querySelectorAll('.fc-seg')].map(s => ({
-        stype: s.dataset.stype,
-        text:  s.dataset.text  || '',
-        num:   parseInt(s.dataset.num||0)||0
-      }))
-    })) : [];
+    const fcHtml   = (document.getElementById('qm-fc-html')||{}).value||'';
+    const fcInstr  = (document.getElementById('qm-fc-instr')||{}).value||'';
+    // Extract blank numbers from template
+    const nums = [...new Set([...fcHtml.matchAll(/\{\{(\d+)\}\}/g)].map(m=>parseInt(m[1])))].sort((a,b)=>a-b);
     // Collect answers
     const fcAnswers = {};
     document.querySelectorAll('#qm-fc-answers .fc-answer-row').forEach(r => {
@@ -1771,18 +1522,9 @@ function qmSave() {
       const inp = r.querySelector('input');
       if (lbl && inp && inp.value.trim()) fcAnswers[lbl.textContent.trim()] = inp.value.trim();
     });
-    // Build blanks array from segments
-    const blanks = [];
-    fcLines.forEach(ln => {
-      ln.segments.filter(s=>s.stype==='blank').forEach(s => {
-        blanks.push({ num:s.num, answer: fcAnswers[s.num]||'' });
-      });
-    });
-    blanks.sort((a,b)=>a.num-b.num);
-    const fcFrom = blanks[0]?.num||1;
-    const fcTo   = blanks[blanks.length-1]?.num||fcFrom;
-    Object.assign(q, { fcImgURL, fcLines, fcAnswers, blanks, fcFrom, fcTo });
-    // Sync to answer key
+    const blanks = nums.map(n => ({ num:n, answer: fcAnswers[n]||'' }));
+    const fcFrom = nums[0]||1, fcTo = nums[nums.length-1]||fcFrom;
+    Object.assign(q, { fcHtml, fcInstr, fcAnswers, blanks, fcFrom, fcTo, instr: fcInstr||q.instr });
     blanks.forEach(b => {
       if (b.answer) {
         config.answerKey[_qmSec][b.num] = b.answer;
@@ -1975,26 +1717,37 @@ function loadSectionAudio(n, input) {
   reader.readAsDataURL(file);
 }
 function loadSectionImg(n, input) {
+  // Legacy — kept for compat
   if (!input.files[0]) return;
   const reader = new FileReader();
-  reader.onload = e => {
-    config.listening.sections[n-1].imgData = e.target.result;
-    const img = document.getElementById('L-img-'+n);
-    img.src = e.target.result; img.style.display = 'block';
-    toast('Image loaded');
-  };
+  reader.onload = e => { config.listening.sections[n-1].imgData = e.target.result; toast('Image loaded'); };
   reader.readAsDataURL(input.files[0]);
 }
-function loadWritingImg(n, input) {
-  if (!input.files[0]) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    config.writing.tasks[n].imgData = e.target.result;
-    const img = document.getElementById('W-img-'+n);
-    img.src = e.target.result; img.style.display = 'block';
-    toast('Image loaded');
-  };
-  reader.readAsDataURL(input.files[0]);
+
+function saveSectionImgURL(n, val) {
+  config.listening.sections[n-1].imgURL = val.trim();
+}
+
+function previewSectionImg(n) {
+  const url  = document.getElementById('L-img-url-'+n).value.trim();
+  const wrap = document.getElementById('L-img-preview-'+n);
+  if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">No URL entered.</span>'; return; }
+  config.listening.sections[n-1].imgURL = url;
+  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.outerHTML='<span style=\\'color:var(--red);font-size:0.8rem\\'>Cannot load — check URL.</span>'">`;
+  toast('Image preview updated');
+}
+function saveWritingImgURL(n, val) {
+  config.writing.tasks[n].imgURL = val.trim();
+}
+
+function previewWritingImg(n) {
+  const url  = document.getElementById('W-img-url-'+n).value.trim();
+  const wrap = document.getElementById('W-img-preview-'+n);
+  if (!wrap) return;
+  if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">No URL entered.</span>'; return; }
+  config.writing.tasks[n].imgURL = url;
+  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--border)" onerror="this.outerHTML='<span style=\\'color:var(--red);font-size:0.8rem\\'>Cannot load — check URL.</span>'">`;
+  toast('Image preview updated');
 }
 
 // ═══════════════════════════════════════
@@ -2635,82 +2388,6 @@ function initDrivePanel() {
   callSheets({action:'getActiveSet'}).then(d=>{
     if(d.success&&d.set) toast('Active test set: '+d.set.setName);
   }).catch(()=>{});
-}
-
-// ═══════════════════════════════════════
-// READING FORM COMPLETION
-// ═══════════════════════════════════════
-function toggleRFC(n, enabled) {
-  if (!config.reading.passages_fc) config.reading.passages_fc = {1:{},2:{},3:{}};
-  config.reading.passages_fc[n].formCompletion = enabled;
-  document.getElementById('rfc-panel-'+n).classList.toggle('hidden', !enabled);
-  document.getElementById('R-qs-'+n).classList.toggle('hidden', enabled);
-  if (enabled) buildRFCAnswers(n);
-}
-
-function loadRFCImg(n, input) {
-  if (!input.files[0]) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    if (!config.reading.passages_fc) config.reading.passages_fc={1:{},2:{},3:{}};
-    config.reading.passages_fc[n].fcImgData = e.target.result;
-    const pr = document.getElementById('rfc-img-'+n);
-    pr.src = e.target.result; pr.style.display = 'block';
-    toast('Form image loaded for Passage '+n);
-  };
-  reader.readAsDataURL(input.files[0]);
-}
-
-function updateRFCAnswers(n) {
-  const from = parseInt(document.getElementById('rfc-from-'+n).value)||1;
-  const to   = parseInt(document.getElementById('rfc-to-'+n).value)||13;
-  if (!config.reading.passages_fc) config.reading.passages_fc={1:{},2:{},3:{}};
-  config.reading.passages_fc[n].fcFrom = from;
-  config.reading.passages_fc[n].fcTo   = to;
-  buildRFCAnswers(n);
-}
-
-function buildRFCAnswers(n) {
-  if (!config.reading.passages_fc) return;
-  const pfc = config.reading.passages_fc[n] || {};
-  const from = parseInt(document.getElementById('rfc-from-'+n).value) || pfc.fcFrom || [1,14,27][n-1];
-  const to   = parseInt(document.getElementById('rfc-to-'+n).value)   || pfc.fcTo   || [13,26,40][n-1];
-  const wrap = document.getElementById('rfc-answers-'+n);
-  if (!wrap) return;
-  wrap.innerHTML = '';
-  for (let i=from; i<=to; i++) {
-    const val = config.answerKey.R[i] || '';
-    const row = document.createElement('div');
-    row.className = 'fc-answer-row';
-    row.innerHTML = `<label>${i}</label><input type="text" placeholder="Answer..." value="${escH(val)}" oninput="saveRFCAnswer(${n},${i},this.value)">`;
-    wrap.appendChild(row);
-  }
-}
-
-function saveRFCAnswer(n, qNum, val) {
-  config.answerKey.R[qNum] = val;
-  if (!config.reading.questions[qNum]) config.reading.questions[qNum]={text:'Blank '+qNum,type:'fc',answer:''};
-  config.reading.questions[qNum].answer = val;
-  config.reading.questions[qNum].type = 'fc';
-  const akInput = document.getElementById('ak-R-'+qNum);
-  if (akInput) akInput.value = val;
-}
-
-function restoreReadingFC() {
-  if (!config.reading.passages_fc) return;
-  [1,2,3].forEach(n => {
-    const pfc = config.reading.passages_fc[n];
-    if (!pfc) return;
-    const chk = document.getElementById('rfc-chk-'+n);
-    if (!chk) return;
-    chk.checked = !!pfc.formCompletion;
-    document.getElementById('rfc-panel-'+n).classList.toggle('hidden', !pfc.formCompletion);
-    document.getElementById('R-qs-'+n).classList.toggle('hidden', !!pfc.formCompletion);
-    if (pfc.fcImgData) { const pr=document.getElementById('rfc-img-'+n); pr.src=pfc.fcImgData; pr.style.display='block'; }
-    if (pfc.fcFrom) document.getElementById('rfc-from-'+n).value = pfc.fcFrom;
-    if (pfc.fcTo)   document.getElementById('rfc-to-'+n).value   = pfc.fcTo;
-    if (pfc.formCompletion) buildRFCAnswers(n);
-  });
 }
 
 // ═══════════════════════════════════════
