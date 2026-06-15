@@ -13,6 +13,7 @@
     --paper:#faf9f7;--paper2:#f2f0ec;--paper3:#e8e5df;
     --blue:#002f5f;--blue2:#1a5fa8;--gold:#c8a84b;
     --green:#2e7d4f;--red:#c0392b;--border:rgba(0,0,0,0.1);
+    --input-focus:#fff9c4;
   }
   body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column}
   .hdr{background:var(--blue);color:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
@@ -490,24 +491,52 @@ function renderQBlocksHTML(sec, blocks, sectionLabel) {
 
     // FORM COMPLETION block
     if (b.type === 'fc') {
-      const from = b.fcFrom || (b.blanks&&b.blanks[0]?b.blanks[0].num:1);
-      const to   = b.fcTo   || (b.blanks&&b.blanks[b.blanks.length-1]?b.blanks[b.blanks.length-1].num:10);
       if (b.instr) html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:0.88rem;color:var(--ink2)">${escH(b.instr)}</div>`;
-      if (b.imgData) html += `<div class="fc-image-wrap"><img src="${b.imgData}" alt="Form"></div>`;
 
-      // If blanks array exists (new format from uploaded config)
+      // Show image
+      if (b.fcImgURL) html += `<div style="margin-bottom:12px"><img src="${escH(b.fcImgURL)}" style="max-width:100%;border-radius:8px;border:1px solid var(--border)"></div>`;
+      if (b.imgData)  html += `<div style="margin-bottom:12px"><img src="${b.imgData}" style="max-width:100%;border-radius:8px;border:1px solid var(--border)"></div>`;
+
+      // fcLines mode — Visual Line Builder output
+      if (b.fcLines && b.fcLines.length) {
+        html += `<div class="fc-render" style="font-family:'Source Serif 4',serif;font-size:0.92rem;line-height:2.2">`;
+        b.fcLines.forEach(line => {
+          const segsHTML = line.segments.map(s => {
+            if (s.stype === 'blank') {
+              return `<input type="text" id="fc-inp-${sec}-${s.num}" class="fc-inline-input" oninput="markFCQ('${sec}',${s.num},this)" style="display:inline-block;border:none;border-bottom:2px solid var(--blue);background:var(--input-focus,#fff9c4);width:100px;padding:1px 4px;font-family:inherit;font-size:inherit;text-align:center;outline:none;color:var(--ink);border-radius:0;vertical-align:middle">`;
+            }
+            return `<span>${escH(s.text||'')}</span>`;
+          }).join(' ');
+
+          if (line.ltype === 'heading')         html += `<h3 style="font-family:'Source Serif 4',serif;font-size:1rem;font-weight:600;color:var(--blue);margin:14px 0 6px">${segsHTML}</h3>`;
+          else if (line.ltype === 'subheading') html += `<h4 style="font-family:'Source Serif 4',serif;font-size:0.92rem;font-weight:600;color:var(--blue2);margin:10px 0 4px">${segsHTML}</h4>`;
+          else if (line.ltype === 'bullet')     html += `<div style="padding-left:18px;margin:1px 0">• ${segsHTML}</div>`;
+          else                                   html += `<div style="margin:1px 0">${segsHTML}</div>`;
+        });
+        html += `</div>`;
+        return;
+      }
+
+      // fcHtml template mode (legacy)
+      if (b.fcHtml) {
+        const rendered = b.fcHtml.replace(/\{\{(\d+)\}\}/g, (_, n) =>
+          `<input type="text" class="fc-inline-input" id="fc-inp-${sec}-${n}" oninput="markFCQ('${sec}',${n},this)" style="display:inline-block;border:none;border-bottom:2px solid var(--blue);background:var(--input-focus,#fff9c4);width:100px;padding:1px 4px;font-family:inherit;font-size:inherit;text-align:center;outline:none;color:var(--ink);border-radius:0;vertical-align:middle">`
+        );
+        html += `<div class="fc-render" style="font-family:'Source Serif 4',serif;font-size:0.92rem;line-height:2.2">${rendered}</div>`;
+        return;
+      }
+
+      // Blanks array fallback
       if (b.blanks && b.blanks.length) {
         html += `<div class="fc-inputs">`;
         b.blanks.forEach(blank => {
-          html += `<div class="fc-input-row"><span class="q-num">${blank.num}</span><input type="text" placeholder="${escH(blank.label||'...')}" oninput="markFCQ('${sec}',${blank.num},this)"></div>`;
+          html += `<div class="fc-input-row"><span class="q-num">${blank.num}</span><input type="text" placeholder="..." oninput="markFCQ('${sec}',${blank.num},this)"></div>`;
         });
         html += `</div>`;
       } else {
-        // Fallback: just numbered inputs from-to
+        const from=b.fcFrom||1, to=b.fcTo||10;
         html += `<div class="fc-inputs">`;
-        for (let i=from; i<=to; i++) {
-          html += `<div class="fc-input-row"><span class="q-num">${i}</span><input type="text" placeholder="..." oninput="markFCQ('${sec}',${i},this)"></div>`;
-        }
+        for (let i=from;i<=to;i++) html+=`<div class="fc-input-row"><span class="q-num">${i}</span><input type="text" placeholder="..." oninput="markFCQ('${sec}',${i},this)"></div>`;
         html += `</div>`;
       }
       return;
@@ -690,7 +719,9 @@ function markFCQ(sec,n,el){
   const val=el.value.trim();
   answered[sec][n]=val!=='';
   if(sec==='L')lAnswers[n]=val; else rAnswers[n]=val;
-  el.classList.toggle('filled',val!=='');
+  // Highlight filled inline inputs
+  el.style.background = val ? '#e8f5e9' : 'var(--input-focus,#fff9c4)';
+  el.style.borderBottomColor = val ? 'var(--green)' : 'var(--blue)';
   buildNav(cur);
 }
 
@@ -742,7 +773,7 @@ function loadWritingPrompts(){
   });
 }
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEcaHQwN-AXs31xAh46YCd1uw4HyxVZa6WF3DeBpCjzP8v7BkSjADQ838xDxFVtR2J/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyarOzwfnraI3bR_HGD1E147tPGkBd_u9Uoeg4_hz9PLwnHMLWAgJMBuBrWo_6tEKc/exec';
 
 function callSheets(payload) {
   return new Promise((resolve, reject) => {
