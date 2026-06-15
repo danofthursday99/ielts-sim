@@ -84,7 +84,7 @@
   .fc-input-row input{flex:1;padding:7px 10px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--ink);background:#fff;transition:all 0.15s}
   .fc-input-row input:focus{outline:none;border-color:var(--blue2);background:#f5f9ff}
   .fc-input-row input.filled{border-color:var(--green);background:#f5fbf7}
-  .matching-options-box{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--paper2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px;font-size:0.85rem;color:var(--ink2)}
+  .matching-options-box{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;background:var(--paper2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:0.85rem;color:var(--ink2)}
   .submit-btn{margin:0 16px 16px;padding:11px;background:var(--green);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;width:calc(100% - 32px);transition:all 0.15s}
   .submit-btn:hover{opacity:0.9}
   .hidden{display:none!important}
@@ -462,11 +462,21 @@ function updateWC(){
 // Build Q from config
 // ─── Read questions from qBlocks (new format) or questions (legacy) ───
 function getQBlocks(sec, secIdx) {
-  // secIdx: for L = 1,11,21,31; for R = 1,14,27
   const store = sec==='L'
     ? (config.listening  && config.listening.qBlocks)
     : (config.reading    && config.reading.qBlocks);
-  if (store && store[secIdx]) return store[secIdx];
+  if (!store) return null;
+  // Try direct key (e.g. "1", "11", "21", "31" for L sections)
+  if (store[secIdx]) return store[secIdx];
+  // Also try section number (1,2,3,4) for L or (1,2,3) for R
+  const secNumMap = sec==='L'
+    ? { 1:1, 11:2, 21:3, 31:4 }
+    : { 1:1, 14:2, 27:3 };
+  const secNum = secNumMap[secIdx];
+  if (secNum && store[secNum]) return store[secNum];
+  // Try string versions
+  if (store[String(secIdx)]) return store[String(secIdx)];
+  if (secNum && store[String(secNum)]) return store[String(secNum)];
   return null;
 }
 
@@ -590,15 +600,73 @@ function renderQBlocksHTML(sec, blocks, sectionLabel) {
       return;
     }
 
+    // CHOOSE TWO (ct2) — qFrom/qTo range, shared options
+    if (b.type === 'ct2') {
+      const qFrom   = b.qFrom || 21;
+      const qTo     = b.qTo   || 22;
+      const pick    = b.pick  || 2;
+      const opts    = b.options || [];
+      const nums    = [];
+      for (let i=qFrom; i<=qTo; i++) nums.push(i);
+      const groupName = `ct2_${sec}_${bi}`;
+      const qLabel  = nums.length > 1 ? `Questions ${qFrom} and ${qTo}` : `Question ${qFrom}`;
+
+      // Show instr only if different from previous block
+      if (b.instr && (bi===0 || blocks[bi-1]?.instr !== b.instr)) {
+        html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:0.88rem;color:var(--ink2);white-space:pre-line">${escH(b.instr)}</div>`;
+      }
+      html += `<div class="q-block">
+        <div class="q-text" style="margin-bottom:6px;font-weight:600;color:var(--blue)">${qLabel}</div>
+        <div style="font-size:0.85rem;color:var(--ink2);margin-bottom:8px;font-style:italic">${escH(b.qText||'')}</div>
+        <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:8px">Choose <b>${pick}</b> letters. <span style="color:var(--red);font-size:0.75rem">(Max ${pick})</span></div>
+        <div class="mc-opts">`;
+      opts.forEach((opt, i) => {
+        html += `<label class="mc-opt"><input type="checkbox" name="${groupName}" value="${letters[i]}" onchange="markGroupedCL('${sec}',${JSON.stringify(nums)},this,${pick},'${groupName}')"> <span><b>${letters[i]}</b> — ${escH(opt)}</span></label>`;
+      });
+      html += `</div></div>`;
+      return;
+    }
+
+    // MATCH type — matchChoices + matchItems
+    if (b.type === 'match') {
+      const choices  = b.matchChoices || [];
+      const items    = b.matchItems   || [];
+      const prompt   = b.matchPrompt  || b.instr || '';
+
+      if (b.instr && (bi===0 || blocks[bi-1]?.instr !== b.instr)) {
+        html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:0.88rem;color:var(--ink2);white-space:pre-line">${escH(b.instr)}</div>`;
+      }
+
+      // Options box
+      if (prompt) html += `<div style="font-size:0.88rem;color:var(--ink2);margin-bottom:10px;line-height:1.6">${prompt.replace(/\n/g,'<br>')}</div>`;
+      if (choices.length) {
+        html += `<div class="matching-options-box" style="margin-bottom:14px">`;
+        choices.forEach((c, i) => {
+          html += `<div><strong>${letters[i]}</strong> &nbsp; ${escH(c)}</div>`;
+        });
+        html += `</div>`;
+      }
+      // Question rows
+      items.forEach(item => {
+        const n = parseInt(item.num)||0;
+        html += `<div class="q-block">
+          <div class="q-text"><span class="q-num">${item.num}</span>${escH(item.label||'')}</div>
+          <input class="q-input" type="text" maxlength="2" placeholder="A–${letters[choices.length-1]||'H'}" style="text-transform:uppercase;width:80px" oninput="markQ('${sec}',${n},this)">
+        </div>`;
+      });
+      return;
+    }
+
     // SINGLE QUESTION (short, mc, tfng, yntg)
     const n    = b.qNum || (b.numbers&&b.numbers[0]) || 0;
     const text = b.qText || b.text || '';
     const type = b.type;
 
-    if (!n) return; // skip if no question number
+    if (!n) return;
 
-    if (b.instr && (bi===0 || blocks[bi-1]?.instr!==b.instr)) {
-      html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:0.88rem;color:var(--ink2)">${escH(b.instr)}</div>`;
+    // Show instr only if different from previous block's instr
+    if (b.instr && (bi===0 || blocks[bi-1]?.instr !== b.instr)) {
+      html += `<div style="background:var(--paper2);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:12px;font-size:0.88rem;color:var(--ink2);white-space:pre-line">${escH(b.instr)}</div>`;
     }
 
     let inner = '';
