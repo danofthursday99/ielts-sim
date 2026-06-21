@@ -20,7 +20,9 @@
   .hdr-logo{font-family:'Source Serif 4',serif;font-size:1.1rem;font-weight:600}.hdr-logo span{color:var(--gold)}
   .hdr-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:3px 10px;font-size:0.75rem;color:rgba(255,255,255,0.8)}
   .hdr-left{display:flex;align-items:center;gap:14px}
-  .candidate-info{font-size:0.8rem;color:rgba(255,255,255,0.7);display:flex;gap:16px}.candidate-info b{color:#fff}
+  .candidate-info{font-size:0.8rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:16px}.candidate-info b{color:#fff}
+  .btn-profile{padding:5px 14px;border:1px solid rgba(255,255,255,0.3);border-radius:5px;color:rgba(255,255,255,0.85);background:transparent;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:5px;line-height:1;transition:all 0.15s}
+  .btn-profile:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.5)}
   .timer{background:#fff;color:var(--red);border-radius:6px;padding:6px 16px;font-family:monospace;font-size:1.1rem;font-weight:700;letter-spacing:0.05em}
   .timer.warn{background:var(--red);color:#fff;animation:pulse 1s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.85}}
@@ -101,7 +103,8 @@
   <div class="candidate-info">
     <span>Candidate: <b id="disp-name">Guest</b></span>
     <span>ID: <b id="disp-id">N/A</b></span>
-    <button onclick="window.location.href='profile.html'" style="padding:4px 12px;border:1px solid rgba(255,255,255,0.3);border-radius:5px;color:rgba(255,255,255,0.85);background:transparent;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">👤 My Profile</button>
+    <button class="btn-profile" onclick="window.location.href='tests.html'">← Tests</button>
+    <button class="btn-profile" onclick="window.location.href='profile.html'">👤 My Profile</button>
   </div>
   <div class="timer" id="timer">2:45:00</div>
 </div>
@@ -227,19 +230,30 @@ let activeTestSet={ setID:'', setName:'' };
 // CONFIG LOADER — tries Google Drive first, falls back to localStorage
 // ══════════════════════════════════════
 async function loadConfig() {
-  // Step 1: Load cached config from localStorage (instant)
+  // Priority 1: Test set selected on tests.html (this session)
+  const selected = sessionStorage.getItem('selectedTestSet');
+  let driveURL = '';
+  if (selected) {
+    try {
+      const sel = JSON.parse(selected);
+      driveURL = sel.configURL || '';
+      activeTestSet = { setID: sel.setID || '', setName: sel.setName || '' };
+    } catch(e) {}
+  }
+
+  // Load cached config from localStorage first (instant, avoids blank screen)
   const local = localStorage.getItem('ielts_admin_config');
   if (local) { try { config = JSON.parse(local); } catch(e){ config={}; } }
 
-  // Step 2: Check if there's a Drive URL to fetch fresh config from
-  const driveURL = (config && config._driveURL)
-    || localStorage.getItem('ielts_drive_url')
-    || '';
+  // Priority 2: fall back to previously-active Drive URL if nothing selected
+  if (!driveURL) {
+    driveURL = (config && config._driveURL) || localStorage.getItem('ielts_drive_url') || '';
+  }
 
-  if (!driveURL) return; // No Drive URL set — use cached config
+  if (!driveURL) return; // No URL available — use cached config
 
   try {
-    showLoadingOverlay('Loading latest test configuration...');
+    showLoadingOverlay('Loading test configuration...');
     const fresh = await fetchDriveConfig(driveURL);
     if (fresh) {
       config = fresh;
@@ -247,7 +261,7 @@ async function loadConfig() {
       if (config._driveURL) localStorage.setItem('ielts_drive_url', config._driveURL);
     }
   } catch(e) {
-    console.warn('Drive fetch failed, using cached config:', e.message);
+    console.warn('Config fetch failed, using cached config:', e.message);
   } finally {
     hideLoadingOverlay();
   }
@@ -272,7 +286,7 @@ async function fetchDriveConfig(url) {
     throw new Error('HTTP ' + res.status);
   } catch(e) {
     // Only fall back to Apps Script proxy if direct fetch fails (e.g. Google Drive)
-    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbwOWjeZlhj3HWA9C7W8j7GVh9OlVunuMgp6cvGfCFAW_RSZlsjpHvL4Ihqpbo0huwfdSg/exec') {
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
       return new Promise((resolve, reject) => {
         const cb = 'cfg_' + Date.now();
         const t  = setTimeout(() => { delete window[cb]; reject(new Error('Proxy timeout')); }, 12000);
@@ -836,19 +850,21 @@ function loadWritingPrompts(){
     const t=config.writing&&config.writing.tasks&&config.writing.tasks[i];
     document.getElementById('prompt-text-'+i).textContent=(t&&t.prompt)||'No prompt loaded.';
     const img=document.getElementById('W-img-'+i);
-    if(t&&t.imgData){img.src=t.imgData;img.style.display='block';}
+    if(t&&t.imgURL){ img.src=t.imgURL; img.style.display='block'; }
+    else if(t&&t.imgData){ img.src=t.imgData; img.style.display='block'; }
     else img.style.display='none';
   });
 }
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOWjeZlhj3HWA9C7W8j7GVh9OlVunuMgp6cvGfCFAW_RSZlsjpHvL4Ihqpbo0huwfdSg/exec';
+const API_KEY = 'ielts-sim-x7k2m9-change-me'; // must match API_SECRET in Code.gs
 
 function callSheets(payload) {
   return new Promise((resolve, reject) => {
     const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
     const timeout = setTimeout(() => { delete window[cbName]; reject(new Error('Timeout')); }, 15000);
     window[cbName] = (data) => { clearTimeout(timeout); delete window[cbName]; resolve(data); };
-    const params = new URLSearchParams({ ...payload, callback: cbName });
+    const params = new URLSearchParams({ ...payload, key: API_KEY, callback: cbName });
     const script = document.createElement('script');
     script.src = APPS_SCRIPT_URL + '?' + params.toString();
     script.onerror = () => { clearTimeout(timeout); delete window[cbName]; reject(new Error('Network error')); };
@@ -881,21 +897,21 @@ function autoCheckScore(){
 }
 
 async function submitTest(){
-  if(!confirm('Submit your answers? Your scores will be saved to Google Sheets.'))return;
+  if(!confirm('Submit your answers? You will not be able to make changes after this.'))return;
   writingVals[curWriting]=document.getElementById('w-textarea').value;
 
   const candidateData=JSON.parse(sessionStorage.getItem('candidateData')||'{}');
-  const scores = autoCheckScore();
   const wc1 = (writingVals[1]||'').trim().split(/\s+/).filter(Boolean).length;
   const wc2 = (writingVals[2]||'').trim().split(/\s+/).filter(Boolean).length;
 
   const submission={
     ...candidateData,
     submitTime: new Date().toISOString(),
+    testSetID:   activeTestSet.setID   || '',
+    testSetName: activeTestSet.setName || '',
     listening: lAnswers,
     reading: rAnswers,
-    writing: { task1: writingVals[1], task2: writingVals[2] },
-    scores
+    writing: { task1: writingVals[1], task2: writingVals[2] }
   };
 
   // Download JSON backup
@@ -903,7 +919,7 @@ async function submitTest(){
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
   a.download=`response_${candidateData.candidateID||'unknown'}_${Date.now()}.json`;a.click();
 
-  // Save to Google Sheets
+  // Save to Google Sheets — raw answers only, no auto-scoring
   const btn=document.getElementById('submit-btn');
   btn.textContent='Saving...'; btn.disabled=true;
   try {
@@ -913,18 +929,19 @@ async function submitTest(){
       fullName:      candidateData.fullName||sessionStorage.getItem('candidateName')||'',
       testSetID:     activeTestSet.setID   || '',
       testSetName:   activeTestSet.setName || '',
-      listeningScore:scores.lScore, listeningBand:scores.lBand,
-      readingScore:  scores.rScore, readingBand:  scores.rBand,
+      listeningAnswers: JSON.stringify(lAnswers),
+      readingAnswers:   JSON.stringify(rAnswers),
       writingTask1WC:wc1, writingTask2WC:wc2,
-      writingTask1:  (writingVals[1]||'').substring(0,300),
-      writingTask2:  (writingVals[2]||'').substring(0,300)
+      writingTask1:  (writingVals[1]||'').substring(0,2000),
+      writingTask2:  (writingVals[2]||'').substring(0,2000)
     });
-    alert(`✅ Test submitted!\n\nListening: ${scores.lScore}/40 (Band ${scores.lBand})\nReading: ${scores.rScore}/40 (Band ${scores.rBand})\n\nScores saved to Google Sheets.`);
   } catch(e){
-    alert(`✅ Answers downloaded.\n\nListening: ${scores.lScore}/40 (Band ${scores.lBand})\nReading: ${scores.rScore}/40 (Band ${scores.rBand})\n\n(Google Sheets save failed — JSON backup downloaded.)`);
+    // Sheets save optional — JSON backup already downloaded
   } finally {
     btn.textContent='Submitted ✓'; btn.disabled=true;
   }
+
+  alert('✅ Answers submitted.\n\nYour test has been recorded. Your results will be reviewed and made available on your profile.');
 }
 
 function buildAudioURLPlayer(url){
@@ -943,15 +960,15 @@ function escH(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&
 window.onload = async () => {
   const hasSession = sessionStorage.getItem('candidateName') || sessionStorage.getItem('candidateData');
   if(!hasSession){ window.location.href='index.html'; return; }
+
+  // Must have selected a test from tests.html
+  if (!sessionStorage.getItem('selectedTestSet')) {
+    window.location.href = 'tests.html'; return;
+  }
+
   await loadConfig();
-  // Fetch active test set info
-  try {
-    const d = await callSheets({ action:'getActiveSet' });
-    if (d.success && d.set) {
-      activeTestSet = { setID: d.set.setID, setName: d.set.setName };
-      document.getElementById('hdr-badge').textContent = d.set.setName;
-    }
-  } catch(e) { console.warn('Could not fetch active set:', e); }
+  if (activeTestSet.setName) document.getElementById('hdr-badge').textContent = activeTestSet.setName;
+
   initUser();
   buildLQs(1);
   buildRQs();
