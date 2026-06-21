@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Test — IELTS Academic Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#1a1a2e;--ink2:#4a4a6a;--ink3:#8888aa;
+    --paper:#faf9f7;--paper2:#f2f0ec;--paper3:#e8e5df;
+    --blue:#002f5f;--blue2:#1a5fa8;--gold:#c8a84b;
+    --green:#2e7d4f;--red:#c0392b;--border:rgba(0,0,0,0.1);
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+
+  .hdr{background:var(--blue);color:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;border-bottom:3px solid var(--gold)}
+  .hdr-left{display:flex;align-items:center;gap:14px}
+  .hdr-logo{font-family:'Source Serif 4',serif;font-size:1.1rem;font-weight:600}.hdr-logo span{color:var(--gold)}
+  .hdr-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:3px 10px;font-size:0.75rem;color:rgba(255,255,255,0.8)}
+  .candidate-info{font-size:0.8rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:16px}
+  .candidate-info b{color:#fff}
+  .btn-hdr{padding:5px 14px;border:1px solid rgba(255,255,255,0.3);border-radius:5px;color:rgba(255,255,255,0.85);background:transparent;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+  .btn-hdr:hover{background:rgba(255,255,255,0.12)}
+
+  .page{max-width:760px;margin:0 auto;padding:36px 20px;width:100%;flex:1}
+  .page-title{font-family:'Source Serif 4',serif;font-size:1.5rem;font-weight:600;color:var(--blue);margin-bottom:6px}
+  .page-desc{font-size:0.88rem;color:var(--ink3);margin-bottom:28px}
+
+  .test-card{background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:14px;display:flex;align-items:center;gap:18px;transition:all 0.2s;cursor:pointer}
+  .test-card:hover{border-color:var(--blue2);box-shadow:0 4px 16px rgba(0,47,95,0.08);transform:translateY(-1px)}
+  .test-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;color:var(--gold)}
+  .test-info{flex:1;min-width:0}
+  .test-name{font-family:'Source Serif 4',serif;font-size:1.05rem;font-weight:600;color:var(--blue);margin-bottom:3px}
+  .test-desc{font-size:0.82rem;color:var(--ink3);margin-bottom:6px}
+  .test-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .test-date{font-size:0.75rem;color:var(--ink3);display:flex;align-items:center;gap:4px}
+  .test-status{font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:2px 9px;border-radius:4px}
+  .status-active{background:#e8f5e9;color:var(--green)}
+  .status-taken{background:#fff9e6;color:#7a5f1a}
+  .btn-start{padding:9px 18px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all 0.15s;flex-shrink:0}
+  .btn-start:hover{background:var(--blue2)}
+  .btn-start.taken{background:var(--paper3);color:var(--ink2)}
+
+  .empty-state{text-align:center;padding:60px 20px;color:var(--ink3)}
+  .empty-icon{font-size:3rem;margin-bottom:14px;opacity:0.5}
+  .empty-title{font-family:'Source Serif 4',serif;font-size:1.1rem;color:var(--ink2);margin-bottom:6px}
+  .empty-desc{font-size:0.85rem}
+
+  .loading-state{text-align:center;padding:60px 20px;color:var(--ink3)}
+  .spinner{width:32px;height:32px;border:3px solid var(--paper3);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .section-label{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin:24px 0 12px}
+  .section-label:first-of-type{margin-top:0}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-logo">IELTS <span>Academic</span></div>
+    <div class="hdr-badge">Select Test</div>
+  </div>
+  <div class="candidate-info">
+    <span>Candidate: <b id="disp-name">Guest</b></span>
+    <button class="btn-hdr" onclick="window.location.href='profile.html'">👤 My Profile</button>
+    <button class="btn-hdr" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-title">Available Tests</div>
+  <div class="page-desc">Select a test set to begin. Tests are listed by date.</div>
+
+  <div id="tests-wrap">
+    <div class="loading-state">
+      <div class="spinner"></div>
+      Loading available tests...
+    </div>
+  </div>
+</div>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOWjeZlhj3HWA9C7W8j7GVh9OlVunuMgp6cvGfCFAW_RSZlsjpHvL4Ihqpbo0huwfdSg/exec';
+const API_KEY = 'ielts-sim-x7k2m9-change-me'; // must match API_SECRET in Code.gs
+
+let candidateData = {};
+let myTakenSets = [];
+
+function callSheets(payload) {
+  return new Promise((resolve, reject) => {
+    const cb = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
+    const t  = setTimeout(() => { delete window[cb]; reject(new Error('Timeout')); }, 15000);
+    window[cb] = (d) => { clearTimeout(t); delete window[cb]; resolve(d); };
+    const s  = document.createElement('script');
+    s.src    = APPS_SCRIPT_URL + '?' + new URLSearchParams({...payload, key: API_KEY, callback:cb});
+    s.onerror = () => { clearTimeout(t); delete window[cb]; reject(new Error('Network error')); };
+    document.head.appendChild(s);
+    setTimeout(() => { try { document.head.removeChild(s); } catch(e){} }, 20000);
+  });
+}
+
+window.onload = async () => {
+  const raw = sessionStorage.getItem('candidateData');
+  if (!raw) { window.location.href = 'index.html'; return; }
+  candidateData = JSON.parse(raw);
+  document.getElementById('disp-name').textContent = candidateData.fullName || 'Guest';
+
+  await loadTests();
+};
+
+async function loadTests() {
+  const wrap = document.getElementById('tests-wrap');
+  let sets = [];
+  let source = 'sheets';
+
+  // Try Google Sheets first
+  try {
+    const data = await callSheets({ action: 'getTestSets' });
+    if (data.success && data.sets) sets = data.sets;
+  } catch(e) { /* fall through to localStorage */ }
+
+  // Fallback to localStorage (set by admin's Publish panel)
+  if (!sets.length) {
+    sets = JSON.parse(localStorage.getItem('ielts_test_sets') || '[]');
+    source = 'local';
+  }
+
+  // Only show Active sets
+  const activeSets = sets.filter(s => s.status === 'Active' && s.configURL);
+
+  // Sort by date, newest first
+  activeSets.sort((a,b) => new Date(b.createdAt||0) - new Date(a.createdAt||0));
+
+  // Get candidate's taken tests (from their own score history)
+  try {
+    const scoresData = await callSheets({ action:'getCandidateScores', candidateID: candidateData.candidateID });
+    if (scoresData.success && scoresData.rows) {
+      myTakenSets = scoresData.rows.map(r => r[4]); // testSetID column
+    }
+  } catch(e) { /* optional */ }
+
+  renderTests(activeSets);
+}
+
+function renderTests(sets) {
+  const wrap = document.getElementById('tests-wrap');
+
+  if (!sets.length) {
+    wrap.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <div class="empty-title">No tests available right now</div>
+      <div class="empty-desc">Please check back later or contact your administrator.</div>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+  sets.forEach(s => {
+    const taken = myTakenSets.includes(s.setID);
+    const dateStr = formatDate(s.createdAt);
+    html += `<div class="test-card" data-setid="${escH(s.setID)}" data-setname="${escH(s.setName)}" data-configurl="${escH(s.configURL)}" data-taken="${taken?'1':'0'}" onclick="handleCardClick(this)">
+      <div class="test-icon">📝</div>
+      <div class="test-info">
+        <div class="test-name">${escH(s.setName)}</div>
+        ${s.description?`<div class="test-desc">${escH(s.description)}</div>`:''}
+        <div class="test-meta">
+          <span class="test-date">📅 ${dateStr}</span>
+          <span class="test-status ${taken?'status-taken':'status-active'}">${taken?'Already Taken':'Available'}</span>
+        </div>
+      </div>
+      <button class="btn-start ${taken?'taken':''}" onclick="event.stopPropagation();handleButtonClick(this.closest('.test-card'))">
+        ${taken?'Retake':'Start →'}
+      </button>
+    </div>`;
+  });
+
+  wrap.innerHTML = html;
+}
+
+function handleCardClick(card) {
+  if (card.dataset.taken === '1') return; // taken — only the Retake button should act
+  startTest(card.dataset.setid, card.dataset.setname, card.dataset.configurl);
+}
+
+function handleButtonClick(card) {
+  const setID     = card.dataset.setid;
+  const setName   = card.dataset.setname;
+  const configURL = card.dataset.configurl;
+  if (card.dataset.taken === '1') retakeConfirm(setID, setName, configURL);
+  else startTest(setID, setName, configURL);
+}
+
+function startTest(setID, setName, configURL) {
+  sessionStorage.setItem('selectedTestSet', JSON.stringify({ setID, setName, configURL }));
+  window.location.href = 'simulation.html';
+}
+
+function retakeConfirm(setID, setName, configURL) {
+  if (confirm(`You've already taken "${setName}". Start a new attempt?`)) {
+    startTest(setID, setName, configURL);
+  }
+}
+
+function logout() {
+  if (confirm('Logout? You will need to sign in again.')) {
+    sessionStorage.clear();
+    window.location.href = 'index.html';
+  }
+}
+
+function formatDate(val) {
+  if (!val) return 'No date';
+  try { return new Date(val).toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}); }
+  catch(e){ return String(val); }
+}
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s){ return String(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
