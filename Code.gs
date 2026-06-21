@@ -23,9 +23,9 @@ function setupSheets() {
   let cSheet = ss.getSheetByName(SHEET_CANDIDATES);
   if (!cSheet) {
     cSheet = ss.insertSheet(SHEET_CANDIDATES);
-    cSheet.appendRow(['CandidateID','FullName','DateOfBirth','Gender','Nationality','Password','CreatedAt','LastLogin']);
+    cSheet.appendRow(['CandidateID','FullName','DateOfBirth','Gender','Nationality','Password','CreatedAt','LastLogin','PhotoBase64']);
     cSheet.setFrozenRows(1);
-    cSheet.getRange(1,1,1,8).setFontWeight('bold').setBackground('#002f5f').setFontColor('#ffffff');
+    cSheet.getRange(1,1,1,9).setFontWeight('bold').setBackground('#002f5f').setFontColor('#ffffff');
   }
 
   // Scores sheet
@@ -41,10 +41,11 @@ function setupSheets() {
       'SpeakingBand','OverallBand',
       'WritingTask1WC','WritingTask2WC',
       'WritingTask1Text','WritingTask2Text',
-      'ExaminerNotes','GradedBy','GradedAt'
+      'ExaminerNotes','GradedBy','GradedAt',
+      'ListeningAnswers','ReadingAnswers'
     ]);
     sSheet.setFrozenRows(1);
-    sSheet.getRange(1,1,1,22).setFontWeight('bold').setBackground('#002f5f').setFontColor('#ffffff');
+    sSheet.getRange(1,1,1,24).setFontWeight('bold').setBackground('#002f5f').setFontColor('#ffffff');
   }
 
   // Test Sets sheet
@@ -65,11 +66,27 @@ function setupSheets() {
     stSheet.appendRow(['institution_address','']);
     stSheet.appendRow(['active_set_id','']);
     stSheet.appendRow(['trf_footer_note','This is a simulation test result for preparation purposes only.']);
+    stSheet.appendRow(['admin_password', hashPassword('admin1234')]); // CHANGE THIS after first login!
+    stSheet.appendRow(['notify_email', Session.getActiveUser().getEmail() || '']); // defaults to script owner
     stSheet.setFrozenRows(1);
     stSheet.getRange(1,1,1,2).setFontWeight('bold').setBackground('#002f5f').setFontColor('#ffffff');
   }
 
   return 'All sheets ready!';
+}
+
+// ============================================================
+//  SECURITY
+//  This key adds a basic barrier against random/bot traffic.
+//  It is visible in client-side code (unavoidable for a static
+//  site with no real backend), so it does NOT stop a determined
+//  attacker — but it blocks casual scrapers and accidental hits.
+//  Change this to your own random string.
+// ============================================================
+const API_SECRET = 'ielts-sim-x7k2m9-change-me';
+
+function checkApiKey(p) {
+  return p.key === API_SECRET;
 }
 
 // ============================================================
@@ -82,25 +99,37 @@ function doGet(e) {
   let result;
 
   try {
-    switch(action) {
-      case 'ping':              result = { success:true, message:'pong', time:new Date().toISOString() }; break;
-      case 'setup':             result = { success:true, message:setupSheets() }; break;
-      case 'checkCandidate':    result = checkCandidate(p);    break;
-      case 'registerCandidate': result = registerCandidate(p); break;
-      case 'loginCandidate':    result = loginCandidate(p);    break;
-      case 'saveScore':         result = saveScore(p);         break;
-      case 'getCandidates':     result = getCandidates();      break;
-      case 'getScores':         result = getScores(p);         break;
-      case 'getCandidateScores':result = getCandidateScores(p);break;
-      case 'gradeWriting':      result = gradeWriting(p);      break;
-      case 'getTestSets':       result = getTestSets();        break;
-      case 'saveTestSet':       result = saveTestSet(p);       break;
-      case 'setActiveSet':      result = setActiveSet(p);      break;
-      case 'getActiveSet':      result = getActiveSet();       break;
-      case 'getSettings':       result = getSettings();        break;
-      case 'saveSettings':      result = saveSettings(p);      break;
-      case 'getConfig':         result = getConfig(p);         break;
-      default: result = { success:false, message:'Unknown action: '+action };
+    // Public actions — no key required (candidate-facing, must work for everyone)
+    const publicActions = ['ping','checkCandidate','registerCandidate','loginCandidate','saveScore','getTestSets','getActiveSet','getConfig','getCandidateScores','verifyAdmin','updateProfile','updateProfilePhoto'];
+
+    if (!publicActions.includes(action) && !checkApiKey(p)) {
+      result = { success:false, message:'Unauthorized — invalid or missing API key.' };
+    } else {
+      switch(action) {
+        case 'ping':              result = { success:true, message:'pong', time:new Date().toISOString() }; break;
+        case 'setup':             result = { success:true, message:setupSheets() }; break;
+        case 'checkCandidate':    result = checkCandidate(p);    break;
+        case 'registerCandidate': result = registerCandidate(p); break;
+        case 'loginCandidate':    result = loginCandidate(p);    break;
+        case 'updateProfile':     result = updateProfile(p);     break;
+        case 'updateProfilePhoto':result = updateProfilePhoto(p);break;
+        case 'saveScore':         result = saveScore(p);         break;
+        case 'getCandidates':     result = getCandidates();      break;
+        case 'getScores':         result = getScores(p);         break;
+        case 'getCandidateScores':result = getCandidateScores(p);break;
+        case 'gradeWriting':      result = gradeWriting(p);      break;
+        case 'getTestSets':       result = getTestSets();        break;
+        case 'saveTestSet':       result = saveTestSet(p);       break;
+        case 'deleteTestSet':     result = deleteTestSet(p);     break;
+        case 'setActiveSet':      result = setActiveSet(p);      break;
+        case 'getActiveSet':      result = getActiveSet();       break;
+        case 'getSettings':       result = getSettings();        break;
+        case 'saveSettings':      result = saveSettings(p);      break;
+        case 'getConfig':         result = getConfig(p);         break;
+        case 'verifyAdmin':       result = verifyAdmin(p);       break;
+        case 'changeAdminPassword': result = changeAdminPassword(p); break;
+        default: result = { success:false, message:'Unknown action: '+action };
+      }
     }
   } catch(err) {
     result = { success:false, message:'Error: '+err.toString() };
@@ -140,7 +169,7 @@ function registerCandidate(p) {
   sheet.appendRow([
     String(p.candidateID), String(p.fullName),
     String(p.dob||''), String(p.gender||''), String(p.nationality||''),
-    hashPassword(String(p.password)), now, now
+    hashPassword(String(p.password)), now, now, ''
   ]);
   return { success:true, candidateID:p.candidateID, fullName:p.fullName };
 }
@@ -159,8 +188,52 @@ function loginCandidate(p) {
     fullName:     String(row[1]),
     dob:          String(row[2]),
     gender:       String(row[3]),
-    nationality:  String(row[4])
+    nationality:  String(row[4]),
+    photoBase64:  String(row[8]||'')
   };
+}
+
+// ============================================================
+//  PROFILE UPDATES
+// ============================================================
+function updateProfile(p) {
+  if (!p.candidateID) return { success:false, message:'No candidateID.' };
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_CANDIDATES);
+  if (!sheet) return { success:false, message:'Candidates sheet not found.' };
+  const data  = sheet.getDataRange().getValues();
+  const id    = String(p.candidateID).trim().toLowerCase();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]).trim().toLowerCase() === id) {
+      const row = i + 1;
+      if (p.fullName     !== undefined) sheet.getRange(row, 2).setValue(String(p.fullName));
+      if (p.dob          !== undefined) sheet.getRange(row, 3).setValue(String(p.dob));
+      if (p.gender       !== undefined) sheet.getRange(row, 4).setValue(String(p.gender));
+      if (p.nationality  !== undefined) sheet.getRange(row, 5).setValue(String(p.nationality));
+      return { success:true, message:'Profile updated.' };
+    }
+  }
+  return { success:false, message:'Candidate not found.' };
+}
+
+function updateProfilePhoto(p) {
+  if (!p.candidateID) return { success:false, message:'No candidateID.' };
+  // Rough size guard — Sheets cells max out around 50,000 chars
+  if (p.photoBase64 && p.photoBase64.length > 45000) {
+    return { success:false, message:'Image too large even after compression. Try a smaller photo.' };
+  }
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_CANDIDATES);
+  if (!sheet) return { success:false, message:'Candidates sheet not found.' };
+  const data  = sheet.getDataRange().getValues();
+  const id    = String(p.candidateID).trim().toLowerCase();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]).trim().toLowerCase() === id) {
+      sheet.getRange(i+1, 9).setValue(String(p.photoBase64 || ''));
+      return { success:true, message:'Photo updated.' };
+    }
+  }
+  return { success:false, message:'Candidate not found.' };
 }
 
 // ============================================================
@@ -187,9 +260,11 @@ function saveScore(p) {
     '',          // Overall (calculated after grading)
     Number(p.writingTask1WC|| 0),
     Number(p.writingTask2WC|| 0),
-    String(p.writingTask1  || '').substring(0,1000),
-    String(p.writingTask2  || '').substring(0,1000),
-    '', '', ''   // Examiner notes, graded by, graded at
+    String(p.writingTask1  || '').substring(0,2000),
+    String(p.writingTask2  || '').substring(0,2000),
+    '', '', '',  // Examiner notes, graded by, graded at
+    String(p.listeningAnswers || ''),  // Raw L answers (JSON) — admin checks manually
+    String(p.readingAnswers   || '')   // Raw R answers (JSON) — admin checks manually
   ]);
   return { success:true, submissionID:subID };
 }
@@ -301,6 +376,25 @@ function saveTestSet(p) {
   return { success:true, setID, message:'Created.' };
 }
 
+function deleteTestSet(p) {
+  if (!p.setID) return { success:false, message:'No setID.' };
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_SETS);
+  if (!sheet) return { success:false, message:'TestSets sheet not found.' };
+  const data  = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(p.setID)) {
+      sheet.deleteRow(i + 1);
+      // If this was the active set, clear the setting
+      if (getSettingValue('active_set_id') === String(p.setID)) {
+        saveSettingValue('active_set_id', '');
+      }
+      return { success:true, message:'Deleted.' };
+    }
+  }
+  return { success:false, message:'Test set not found.' };
+}
+
 function setActiveSet(p) {
   if (!p.setID) return { success:false, message:'No setID.' };
   saveSettingValue('active_set_id', p.setID);
@@ -324,12 +418,16 @@ function getSettings() {
   if (!sheet) return { success:true, settings:{} };
   const data  = sheet.getDataRange().getValues();
   const settings = {};
-  data.slice(1).forEach(r => { settings[String(r[0])] = String(r[1]); });
+  data.slice(1).forEach(r => {
+    const key = String(r[0]);
+    if (key === 'admin_password') return; // never expose the password hash to the client
+    settings[key] = String(r[1]);
+  });
   return { success:true, settings };
 }
 
 function saveSettings(p) {
-  const keys = ['institution_name','institution_address','trf_footer_note'];
+  const keys = ['institution_name','institution_address','trf_footer_note','notify_email'];
   keys.forEach(k => { if (p[k] !== undefined) saveSettingValue(k, p[k]); });
   return { success:true };
 }
@@ -357,6 +455,67 @@ function saveSettingValue(key, value) {
     }
   }
   sheet.appendRow([key, String(value)]);
+}
+
+// ============================================================
+//  ADMIN AUTH — password verified server-side, never shipped
+//  to the client. Login attempts trigger an email alert.
+// ============================================================
+function verifyAdmin(p) {
+  const stored = getSettingValue('admin_password');
+  const given  = hashPassword(String(p.password || ''));
+  const ok     = stored && stored === given;
+
+  notifyAdminLoginAttempt(ok, p);
+
+  if (!ok) return { success:false, message:'Incorrect password.' };
+  return { success:true, message:'Verified.' };
+}
+
+function changeAdminPassword(p) {
+  // Require the CURRENT password before allowing a change
+  const stored  = getSettingValue('admin_password');
+  const current = hashPassword(String(p.currentPassword || ''));
+  if (!stored || stored !== current) {
+    return { success:false, message:'Current password is incorrect.' };
+  }
+  if (!p.newPassword || String(p.newPassword).length < 6) {
+    return { success:false, message:'New password must be at least 6 characters.' };
+  }
+  saveSettingValue('admin_password', hashPassword(String(p.newPassword)));
+  notifyAdminPasswordChanged();
+  return { success:true, message:'Password changed.' };
+}
+
+function notifyAdminLoginAttempt(success, p) {
+  try {
+    const email = getSettingValue('notify_email');
+    if (!email) return; // no email configured — skip silently
+    const subject = success
+      ? '✅ IELTS Admin Panel — Successful Login'
+      : '⚠️ IELTS Admin Panel — Failed Login Attempt';
+    const body =
+      (success ? 'Someone successfully logged into your IELTS admin panel.' : 'Someone attempted to log in with an incorrect password.') +
+      '\n\nTime: ' + new Date().toString() +
+      '\nUser-Agent / Source: ' + (p.ua || 'Unknown') +
+      '\n\nIf this was not you, change your admin password immediately from the admin panel → Settings → Change Password.';
+    MailApp.sendEmail(email, subject, body);
+  } catch(e) {
+    // Email failures should never break login — fail silently
+  }
+}
+
+function notifyAdminPasswordChanged() {
+  try {
+    const email = getSettingValue('notify_email');
+    if (!email) return;
+    MailApp.sendEmail(
+      email,
+      '🔑 IELTS Admin Panel — Password Changed',
+      'Your IELTS admin panel password was just changed.\n\nTime: ' + new Date().toString() +
+      '\n\nIf you did not make this change, your system may be compromised — review access immediately.'
+    );
+  } catch(e) {}
 }
 
 // ============================================================
