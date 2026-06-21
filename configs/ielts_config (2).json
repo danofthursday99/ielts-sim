@@ -564,7 +564,7 @@
         {
           "type": "mc",
           "part": "Part 3",
-          "instr": "Questions 27-30\nChoose the correct Jetter, A, B, C or D.\nWrite the correct Jetter in boxes 27-30 on your answer sheet.",
+          "instr": "Questions 27-30\nChoose the correct letter, A, B, C or D.\nWrite the correct letter in boxes 27-30 on your answer sheet.",
           "qNum": 27,
           "qText": "The first paragraph tells us about",
           "options": [
@@ -578,7 +578,7 @@
         {
           "type": "mc",
           "part": "Part 3",
-          "instr": "Questions 27-30\nChoose the correct letter, A, B, C or D.\nWrite the correct letter in boxes 27-30 on your answer sheet.",
+          "instr": "",
           "qNum": 28,
           "qText": "According to the second paragraph, what is Stella Pachidi's view of the 'knowledge economy'?",
           "options": [
@@ -592,7 +592,7 @@
         {
           "type": "mc",
           "part": "Part 3",
-          "instr": "Questions 27-30\nChoose the correct letter, A, B, C or D.\nWrite the correct letter in boxes 27-30 on your answer sheet.",
+          "instr": "",
           "qNum": 29,
           "qText": "What did Pachidi observe at the telecommunications company?",
           "options": [
@@ -606,7 +606,7 @@
         {
           "type": "mc",
           "part": "Part 3",
-          "instr": "Questions 27-30\nChoose the correct letter, A, B, C or D.\nWrite the correct letter in boxes 27-30 on your answer sheet.",
+          "instr": "",
           "qNum": 30,
           "qText": "In his recently published research, Ewan McGaughey",
           "options": [
