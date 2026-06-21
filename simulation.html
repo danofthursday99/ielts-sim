@@ -6,8 +6,10 @@
 <title>IELTS Academic Simulation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.youtube.com/iframe_api"></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:100%} /* base for rem scaling — adjusted by JS via font-size adjuster */
   :root{
     --ink:#1a1a2e;--ink2:#4a4a6a;--ink3:#8888aa;
     --paper:#faf9f7;--paper2:#f2f0ec;--paper3:#e8e5df;
@@ -15,6 +17,26 @@
     --green:#2e7d4f;--red:#c0392b;--border:rgba(0,0,0,0.1);
     --input-focus:#fff9c4;
   }
+  body.dark-mode{
+    --ink:#e8e8f0;--ink2:#b8b8d0;--ink3:#8888aa;
+    --paper:#1c1d2b;--paper2:#23243a;--paper3:#33344a;
+    --blue:#1a5fa8;--blue2:#3a7fd8;--gold:#d8b85f;
+    --green:#4caf6e;--red:#e05858;--border:rgba(255,255,255,0.1);
+    --input-focus:#3a3a1c;
+  }
+  body.dark-mode{background:#15161f}
+  body.dark-mode .panel-right{background:#1c1d2b}
+  body.dark-mode .q-input,body.dark-mode .fc-inline-input,body.dark-mode .writing-textarea{background:#23243a;color:var(--ink)}
+  body.dark-mode .mc-opt{background:#23243a}
+  body.dark-mode .timer{background:#2a2a3a;color:#ff8080}
+  body.dark-mode .passage{color:var(--ink)}
+
+  /* FONT SIZE CONTROL */
+  .font-size-ctrl{display:flex;gap:2px;align-items:center}
+  .fs-btn{padding:4px 9px;border:1px solid rgba(255,255,255,0.3);border-radius:5px;color:rgba(255,255,255,0.85);background:transparent;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;line-height:1}
+  .fs-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.5)}
+  .fs-btn:first-child{border-radius:5px 0 0 5px}
+  .fs-btn:last-child{border-radius:0 5px 5px 0;border-left:none}
   body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column}
   .hdr{background:var(--blue);color:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
   .hdr-logo{font-family:'Source Serif 4',serif;font-size:1.1rem;font-weight:600}.hdr-logo span{color:var(--gold)}
@@ -45,7 +67,7 @@
   .play-ring:hover:not(:disabled){background:var(--blue);color:#fff;transform:scale(1.05)}
   .play-ring:disabled{border-color:var(--border);color:var(--ink3);cursor:not-allowed}
   .audio-status{margin-top:14px;font-size:0.82rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:0.08em}
-  .progress-bar{width:100%;height:3px;background:var(--paper3);border-radius:2px;margin-top:16px;overflow:hidden}
+  .progress-bar{width:100%;height:3px;background:var(--paper3);border-radius:2px;margin-top:16px;overflow:hidden;pointer-events:none}
   .progress-fill{height:100%;background:var(--blue2);width:0%;transition:width 0.3s}
   .passage{font-family:'Source Serif 4',serif;font-size:0.95rem;line-height:1.9;color:var(--ink);padding-bottom:40px}
   .passage h2{font-size:1.15rem;font-weight:600;margin-bottom:14px;color:var(--blue);padding-bottom:10px;border-bottom:1px solid var(--border)}
@@ -103,6 +125,11 @@
   <div class="candidate-info">
     <span>Candidate: <b id="disp-name">Guest</b></span>
     <span>ID: <b id="disp-id">N/A</b></span>
+    <div class="font-size-ctrl" title="Adjust text size">
+      <button class="fs-btn" onclick="changeFontSize(-1)">A−</button>
+      <button class="fs-btn" onclick="changeFontSize(1)">A+</button>
+    </div>
+    <button class="btn-profile" id="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
     <button class="btn-profile" onclick="window.location.href='tests.html'">← Tests</button>
     <button class="btn-profile" onclick="window.location.href='profile.html'">👤 My Profile</button>
   </div>
@@ -121,8 +148,8 @@
         <button class="play-ring" id="play-btn" disabled onclick="playAudio()">&#9654;</button>
         <div class="audio-status" id="audio-status">Loading...</div>
         <div class="progress-bar"><div class="progress-fill" id="audio-prog"></div></div>
-        <audio id="audio-el" onended="onAudioEnd()" ontimeupdate="updateProgress()"></audio>
-        <div id="audio-url-wrap" style="display:none;margin-top:10px;width:100%"></div>
+        <audio id="audio-el" onended="onAudioEnd()" ontimeupdate="updateProgress()" oncontextmenu="return false" style="display:none"></audio>
+        <div id="yt-player-target" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden"></div>
         <div style="margin-top:14px;font-size:0.78rem;color:var(--ink3);text-align:center">
           Use the section tabs on the right to navigate.
         </div>
@@ -147,7 +174,7 @@
       <div id="w-prompt-1" class="prompt-card">
         <h3>Writing Task 1</h3>
         <div id="prompt-text-1" class="content-pre" style="font-size:0.88rem;line-height:1.7;color:var(--ink2)">Loading...</div>
-        <img id="W-img-1" style="max-width:700%;max-height:900px;margin-top:12px;border-radius:8px;display:none">
+        <img id="W-img-1" style="max-width:100%;max-height:220px;margin-top:12px;border-radius:8px;display:none">
       </div>
       <div id="w-prompt-2" class="prompt-card hidden">
         <h3>Writing Task 2</h3>
@@ -173,7 +200,10 @@
       </div>
       <div class="scroll">
         <div class="section-header" id="L-q-head">Questions 1–10</div>
-        <div id="L-qs"></div>
+        <div id="L-qs-1"></div>
+        <div id="L-qs-2" class="hidden"></div>
+        <div id="L-qs-3" class="hidden"></div>
+        <div id="L-qs-4" class="hidden"></div>
       </div>
     </div>
     <!-- READING QS -->
@@ -224,6 +254,91 @@ let lAnswers={}, rAnswers={};
 let timeLeft=9900;
 let config={};
 let activeTestSet={ setID:'', setName:'' };
+
+// ══════════════════════════════════════
+// ACCESSIBILITY — FONT SIZE & DARK MODE
+// Preferences persist across the whole site via localStorage so they
+// carry over between index/profile/tests/simulation pages.
+// ══════════════════════════════════════
+const FONT_SCALE_STEPS = [85, 100, 115, 130, 145]; // percent
+let fontScaleIndex = 1; // default = 100%
+
+function initAccessibilityPrefs() {
+  // Font size
+  const savedScale = parseInt(localStorage.getItem('ielts_font_scale'));
+  if (!isNaN(savedScale)) {
+    const idx = FONT_SCALE_STEPS.indexOf(savedScale);
+    fontScaleIndex = idx >= 0 ? idx : 1;
+  }
+  applyFontScale();
+
+  // Dark mode
+  const darkOn = localStorage.getItem('ielts_dark_mode') === '1';
+  if (darkOn) {
+    document.body.classList.add('dark-mode');
+    const btn = document.getElementById('dark-mode-toggle');
+    if (btn) btn.textContent = '☀️';
+  }
+}
+
+function applyFontScale() {
+  document.documentElement.style.fontSize = FONT_SCALE_STEPS[fontScaleIndex] + '%';
+  localStorage.setItem('ielts_font_scale', FONT_SCALE_STEPS[fontScaleIndex]);
+}
+
+function changeFontSize(direction) {
+  const newIndex = fontScaleIndex + direction;
+  if (newIndex < 0 || newIndex >= FONT_SCALE_STEPS.length) return; // already at min/max
+  fontScaleIndex = newIndex;
+  applyFontScale();
+}
+
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('ielts_dark_mode', isDark ? '1' : '0');
+  const btn = document.getElementById('dark-mode-toggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+}
+
+// ══════════════════════════════════════
+// UNIFIED AUDIO PLAYER
+// Both YouTube and direct MP3 audio go through this single custom
+// player — no native controls are ever exposed, so candidates can't
+// drag/click the seek bar to skip or replay parts of the recording.
+// ══════════════════════════════════════
+let ytPlayer = null;
+let ytReady = false;
+let ytPendingVideoId = null;
+let currentAudioMode = 'none'; // 'none' | 'file' | 'youtube'
+let progressInterval = null;
+let isSingleContinuousAudio = false; // true when all 4 sections share the same audio URL
+
+function onYouTubeIframeAPIReady() {
+  ytReady = true;
+  ytPlayer = new YT.Player('yt-player-target', {
+    height: '1', width: '1',
+    playerVars: { controls: 0, disablekb: 1, fs: 0, modestbranding: 1, rel: 0, iv_load_policy: 3 },
+    events: {
+      onReady: () => { if (ytPendingVideoId) { ytPlayer.cueVideoById(ytPendingVideoId); ytPendingVideoId = null; } },
+      onStateChange: onYTStateChange
+    }
+  });
+}
+
+function onYTStateChange(e) {
+  if (e.data === YT.PlayerState.ENDED) {
+    onAudioEnd();
+  }
+}
+
+function extractYouTubeId(url) {
+  if (!url) return null;
+  let id = null;
+  if (url.includes('watch?v=')) id = url.split('watch?v=')[1].split('&')[0];
+  else if (url.includes('youtu.be/')) id = url.split('youtu.be/')[1].split('?')[0];
+  else if (url.includes('/embed/')) id = url.split('/embed/')[1].split('?')[0];
+  return id;
+}
 
 // Load config from localStorage (set by admin)
 // ══════════════════════════════════════
@@ -345,13 +460,54 @@ function initUser() {
   document.getElementById('disp-id').innerText   = id   || 'N/A';
 }
 
+// ══════════════════════════════════════
+// PERSISTENT TIMER — survives refresh/logout
+// Stores the actual end timestamp (not just a counter), so the
+// remaining time is recalculated from the wall clock every time
+// the page loads, instead of resetting to the full duration.
+// ══════════════════════════════════════
+const TEST_DURATION_SECONDS = 9900; // 2:45:00
+
+function getTimerStorageKey() {
+  const cid = sessionStorage.getItem('candidateID') || 'guest';
+  const sid = (activeTestSet && activeTestSet.setID) || 'default';
+  return `ielts_timer_end_${cid}_${sid}`;
+}
+
+function initTimer() {
+  const key = getTimerStorageKey();
+  let endTime = localStorage.getItem(key);
+
+  if (!endTime) {
+    // First time opening this test — start the clock now
+    endTime = Date.now() + TEST_DURATION_SECONDS * 1000;
+    localStorage.setItem(key, String(endTime));
+  } else {
+    endTime = parseInt(endTime);
+  }
+
+  timeLeft = Math.max(0, Math.round((endTime - Date.now()) / 1000));
+}
+
+function clearTimerStorage() {
+  try { localStorage.removeItem(getTimerStorageKey()); } catch(e) {}
+}
+
 const timerEl = document.getElementById('timer');
 setInterval(()=>{
   if(timeLeft<=0)return; timeLeft--;
   let h=Math.floor(timeLeft/3600),m=Math.floor((timeLeft%3600)/60),s=timeLeft%60;
   timerEl.innerText=`${h}:${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
   if(timeLeft<=600)timerEl.className='timer warn';
+  if(timeLeft<=0){ timerEl.innerText='0:00:00'; autoSubmitOnTimeUp(); }
 },1000);
+
+function autoSubmitOnTimeUp() {
+  if (window._timeUpHandled) return;
+  window._timeUpHandled = true;
+  alert('⏰ Time is up! Your test will be submitted automatically.');
+  submitTest(true);
+}
 
 function switchSection(s) {
   cur=s;
@@ -371,34 +527,75 @@ function switchSection(s) {
 function switchLSection(n) {
   curLSec=n;
   for(let i=1;i<=4;i++) document.getElementById('lst'+i).classList.toggle('active',i===n);
+  for(let i=1;i<=4;i++) document.getElementById('L-qs-'+i).classList.toggle('hidden', i!==n);
   const ranges=['1–10','11–20','21–30','31–40'];
   document.getElementById('L-q-head').innerText='Questions '+ranges[n-1];
   buildLQs(n);
   const sec=config.listening&&config.listening.sections&&config.listening.sections[n-1];
-  const el=document.getElementById('audio-el');
-  const btn=document.getElementById('play-btn');
-  const status=document.getElementById('audio-status');
   const img=document.getElementById('audio-img');
-  const urlWrap=document.getElementById('audio-url-wrap');
-  document.getElementById('L-section-label').innerText=`Section ${n} Audio`;
-  if(sec&&(sec.audioData||sec.audioURL)){
-    if(sec.audioURL){
-      el.src=''; btn.disabled=true;
-      if(urlWrap){ urlWrap.innerHTML=buildAudioURLPlayer(sec.audioURL); urlWrap.style.display='block'; }
-      status.innerText='';
+  document.getElementById('L-section-label').innerText = isSingleContinuousAudio ? 'Section Audio (continuous)' : `Section ${n} Audio`;
+
+  // Image is independent of whether audio exists for this section
+  if (sec && sec.imgURL) { img.src = sec.imgURL; img.style.display = 'block'; }
+  else if (sec && sec.imgData) { img.src = sec.imgData; img.style.display = 'block'; }
+  else { img.src = ''; img.style.display = 'none'; }
+
+  // If audio is shared across all 4 sections, don't touch the player at
+  // all when switching tabs — let it keep playing uninterrupted.
+  if (isSingleContinuousAudio) return;
+
+  loadAudioForSection(sec, n);
+}
+
+function loadAudioForSection(sec, n) {
+  const btn    = document.getElementById('play-btn');
+  const status = document.getElementById('audio-status');
+
+  stopAndResetPlayer();
+
+  if (sec && sec.audioURL) {
+    const ytId = extractYouTubeId(sec.audioURL);
+    if (ytId) {
+      currentAudioMode = 'youtube';
+      btn.disabled = audioPlayed[n-1];
+      status.innerText = audioPlayed[n-1] ? 'Recording finished' : 'Ready to play';
+      if (ytReady && ytPlayer && ytPlayer.cueVideoById) ytPlayer.cueVideoById(ytId);
+      else ytPendingVideoId = ytId;
     } else {
-      if(urlWrap){ urlWrap.innerHTML=''; urlWrap.style.display='none'; }
-      el.src=sec.audioData;
-      btn.disabled=audioPlayed[n-1];
-      status.innerText=audioPlayed[n-1]?'Recording finished':'Ready to play';
+      // Direct audio URL (mp3 etc.) — still routed through our custom button
+      currentAudioMode = 'file';
+      const el = document.getElementById('audio-el');
+      el.src = sec.audioURL;
+      btn.disabled = audioPlayed[n-1];
+      status.innerText = audioPlayed[n-1] ? 'Recording finished' : 'Ready to play';
     }
-    document.getElementById('audio-prog').style.width='0%';
-    if(sec.imgData){ img.src=sec.imgData; img.style.display='block'; } else img.style.display='none';
+  } else if (sec && sec.audioData) {
+    currentAudioMode = 'file';
+    const el = document.getElementById('audio-el');
+    el.src = sec.audioData;
+    btn.disabled = audioPlayed[n-1];
+    status.innerText = audioPlayed[n-1] ? 'Recording finished' : 'Ready to play';
   } else {
-    if(urlWrap){ urlWrap.innerHTML=''; urlWrap.style.display='none'; }
-    el.src=''; btn.disabled=true; status.innerText='No audio for this section';
-    img.style.display='none';
+    currentAudioMode = 'none';
+    btn.disabled = true;
+    status.innerText = 'No audio for this section';
   }
+  document.getElementById('audio-prog').style.width = '0%';
+}
+
+function stopAndResetPlayer() {
+  if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+  const el = document.getElementById('audio-el');
+  el.pause(); el.removeAttribute('src'); el.load();
+  if (ytReady && ytPlayer && ytPlayer.stopVideo) { try { ytPlayer.stopVideo(); } catch(e){} }
+}
+
+// Detect once on load: if every section with audio shares the exact same
+// URL, treat it as one continuous recording instead of 4 separate clips.
+function detectSingleContinuousAudio() {
+  const sections = (config.listening && config.listening.sections) || [];
+  const urls = sections.map(s => s && (s.audioURL || s.audioData)).filter(Boolean);
+  isSingleContinuousAudio = urls.length >= 2 && urls.every(u => u === urls[0]);
 }
 
 function syncPassage(n){
@@ -438,17 +635,42 @@ function buildNav(s){
 }
 
 function playAudio(){
-  if(audioPlayed[curLSec-1])return;
-  document.getElementById('audio-el').play();
+  // For single continuous audio, "already played" is tracked globally
+  // (index 0) instead of per-section, since it's really one recording.
+  const playedIdx = isSingleContinuousAudio ? 0 : curLSec-1;
+  if(audioPlayed[playedIdx])return;
+
   document.getElementById('play-btn').disabled=true;
   document.getElementById('audio-status').innerText='Playing — listen carefully';
-  audioPlayed[curLSec-1]=true;
+  audioPlayed[playedIdx]=true;
+  if (isSingleContinuousAudio) audioPlayed=[true,true,true,true]; // mark all sections played
+
+  if (currentAudioMode === 'youtube' && ytReady && ytPlayer && ytPlayer.playVideo) {
+    ytPlayer.playVideo();
+    progressInterval = setInterval(updateProgress, 400);
+  } else if (currentAudioMode === 'file') {
+    const el = document.getElementById('audio-el');
+    el.play();
+    progressInterval = setInterval(updateProgress, 400);
+  }
 }
-function onAudioEnd(){document.getElementById('audio-status').innerText='Recording finished';}
+
+function onAudioEnd(){
+  document.getElementById('audio-status').innerText='Recording finished';
+  if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+  document.getElementById('audio-prog').style.width='100%';
+}
+
 function updateProgress(){
-  const el=document.getElementById('audio-el');
-  if(!el.duration)return;
-  document.getElementById('audio-prog').style.width=((el.currentTime/el.duration)*100)+'%';
+  let pct = 0;
+  if (currentAudioMode === 'youtube' && ytReady && ytPlayer && ytPlayer.getDuration) {
+    const dur = ytPlayer.getDuration();
+    if (dur > 0) pct = (ytPlayer.getCurrentTime() / dur) * 100;
+  } else if (currentAudioMode === 'file') {
+    const el = document.getElementById('audio-el');
+    if (el.duration) pct = (el.currentTime / el.duration) * 100;
+  }
+  document.getElementById('audio-prog').style.width = Math.min(100, pct) + '%';
 }
 
 function switchWriting(n,skipSave){
@@ -767,8 +989,15 @@ function markCLQ(sec,n,el,maxPick){
   buildNav(cur);
 }
 
+let _lSectionsBuilt = {};
+
 function buildLQs(n){
-  const c=document.getElementById('L-qs');
+  // If already built once, don't rebuild — rebuilding destroys input values.
+  // Just leave the cached DOM in place; switchLSection() handles show/hide.
+  if (_lSectionsBuilt[n]) return;
+  _lSectionsBuilt[n] = true;
+
+  const c=document.getElementById('L-qs-'+n);
   const fromMap=[1,11,21,31];
   const from=fromMap[n-1];
   const labels=['Section 1 — Questions 1–10','Section 2 — Questions 11–20','Section 3 — Questions 21–30','Section 4 — Questions 31–40'];
@@ -778,6 +1007,7 @@ function buildLQs(n){
   const blocks = getQBlocks('L', from);
   if (blocks) {
     c.innerHTML = renderQBlocksHTML('L', blocks, labels[n-1]);
+    restoreSavedAnswers('L');
     return;
   }
 
@@ -795,6 +1025,46 @@ function buildLQs(n){
     for(let i=from;i<=to;i++) html+=buildQBlock('L',i);
   }
   c.innerHTML=html;
+  restoreSavedAnswers('L');
+}
+
+// After (re)rendering question inputs, fill them back in from the in-memory
+// answers object. Needed because rebuilding HTML wipes typed-in values —
+// this restores them so switching tabs/sections never loses an answer.
+function restoreSavedAnswers(sec) {
+  const answers = sec==='L' ? lAnswers : rAnswers;
+  Object.keys(answers).forEach(numStr => {
+    const n = parseInt(numStr);
+    const val = answers[numStr];
+    if (val === undefined || val === '') return;
+
+    // Text-style inputs (short answer, FC inline, matching, choose-letters comma list)
+    const textInput = document.getElementById(`fc-inp-${sec}-${n}`) ||
+                       document.querySelector(`.q-block input[type="text"][oninput*="markQ('${sec}',${n}"]`) ||
+                       document.querySelector(`input[type="text"][oninput*="markFCQ('${sec}',${n}"]`);
+    if (textInput && textInput.value === '') {
+      textInput.value = val;
+      textInput.classList.add('filled');
+      if (textInput.style) { textInput.style.background = '#e8f5e9'; }
+    }
+
+    // Radio-style inputs (MC, TFNG, YNTG)
+    const radio = document.querySelector(`input[type="radio"][name="q${sec}${n}"][value="${CSS.escape(String(val))}"]`);
+    if (radio && !radio.checked) {
+      radio.checked = true;
+      const opt = radio.closest('.mc-opt');
+      if (opt) opt.classList.add('sel');
+    }
+
+    // Checkbox-style inputs (grouped choose-letters) — val is a comma-separated list
+    if (typeof val === 'string' && val.includes(',')) {
+      const letters = val.split(',').map(s=>s.trim());
+      letters.forEach(letter => {
+        const cb = document.querySelector(`input[type="checkbox"][name^="cl_${sec}_"][value="${CSS.escape(letter)}"]:not(:checked)`);
+        if (cb) cb.checked = true;
+      });
+    }
+  });
 }
 
 function markFCQ(sec,n,el){
@@ -856,21 +1126,39 @@ function loadWritingPrompts(){
   });
 }
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOWjeZlhj3HWA9C7W8j7GVh9OlVunuMgp6cvGfCFAW_RSZlsjpHvL4Ihqpbo0huwfdSg/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEcaHQwN-AXs31xAh46YCd1uw4HyxVZa6WF3DeBpCjzP8v7BkSjADQ838xDxFVtR2J/exec';
 const API_KEY = 'ielts-sim-x7k2m9-change-me'; // must match API_SECRET in Code.gs
 
-function callSheets(payload) {
+function callSheetsOnce(payload, timeoutMs) {
   return new Promise((resolve, reject) => {
     const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
-    const timeout = setTimeout(() => { delete window[cbName]; reject(new Error('Timeout')); }, 15000);
+    const timeout = setTimeout(() => { delete window[cbName]; reject(new Error('TIMEOUT')); }, timeoutMs);
     window[cbName] = (data) => { clearTimeout(timeout); delete window[cbName]; resolve(data); };
     const params = new URLSearchParams({ ...payload, key: API_KEY, callback: cbName });
     const script = document.createElement('script');
     script.src = APPS_SCRIPT_URL + '?' + params.toString();
-    script.onerror = () => { clearTimeout(timeout); delete window[cbName]; reject(new Error('Network error')); };
+    script.onerror = () => { clearTimeout(timeout); delete window[cbName]; reject(new Error('NETWORK_ERROR')); };
     document.head.appendChild(script);
-    setTimeout(() => { try { document.head.removeChild(script); } catch(e){} }, 20000);
+    setTimeout(() => { try { document.head.removeChild(script); } catch(e){} }, timeoutMs + 5000);
   });
+}
+
+// Mobile networks can be slow on the first request — retry once with a
+// longer timeout before surfacing an error, so one slow lookup doesn't
+// block the whole flow.
+async function callSheets(payload) {
+  try {
+    return await callSheetsOnce(payload, 25000);
+  } catch (e) {
+    if (e.message === 'TIMEOUT' || e.message === 'NETWORK_ERROR') {
+      try {
+        return await callSheetsOnce(payload, 25000);
+      } catch (e2) {
+        throw new Error('Could not reach the server after 2 attempts. Please check your internet connection and try again.');
+      }
+    }
+    throw e;
+  }
 }
 
 function scoreToBand(score){
@@ -896,8 +1184,8 @@ function autoCheckScore(){
   return {lScore,rScore,lBand:scoreToBand(lScore),rBand:scoreToBand(rScore)};
 }
 
-async function submitTest(){
-  if(!confirm('Submit your answers? You will not be able to make changes after this.'))return;
+async function submitTest(autoSubmit){
+  if(!autoSubmit && !confirm('Submit your answers? You will not be able to make changes after this.'))return;
   writingVals[curWriting]=document.getElementById('w-textarea').value;
 
   const candidateData=JSON.parse(sessionStorage.getItem('candidateData')||'{}');
@@ -941,23 +1229,18 @@ async function submitTest(){
     btn.textContent='Submitted ✓'; btn.disabled=true;
   }
 
-  alert('✅ Answers submitted.\n\nYour test has been recorded. Your results will be reviewed and made available on your profile.');
-}
+  clearTimerStorage(); // test is done — don't resume this timer if they revisit
 
-function buildAudioURLPlayer(url){
-  if(!url) return '';
-  if(url.includes('youtube.com')||url.includes('youtu.be')){
-    let embedURL=url;
-    if(url.includes('watch?v=')) embedURL=url.replace('watch?v=','embed/').split('&')[0];
-    else if(url.includes('youtu.be/')) embedURL='https://www.youtube.com/embed/'+url.split('youtu.be/')[1].split('?')[0];
-    return `<iframe src="${embedURL}" style="width:100%;height:180px;border:none;border-radius:8px" allowfullscreen></iframe>`;
+  if (!autoSubmit) {
+    alert('✅ Answers submitted.\n\nYour test has been recorded. Your results will be reviewed and made available on your profile.');
   }
-  return `<audio controls src="${url}" style="width:100%;border-radius:6px" controlsList="nodownload"></audio>`;
 }
 
 function escH(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 window.onload = async () => {
+  initAccessibilityPrefs(); // apply saved font size / dark mode before anything else renders
+
   const hasSession = sessionStorage.getItem('candidateName') || sessionStorage.getItem('candidateData');
   if(!hasSession){ window.location.href='index.html'; return; }
 
@@ -968,6 +1251,8 @@ window.onload = async () => {
 
   await loadConfig();
   if (activeTestSet.setName) document.getElementById('hdr-badge').textContent = activeTestSet.setName;
+  initTimer();
+  detectSingleContinuousAudio();
 
   initUser();
   buildLQs(1);
@@ -975,6 +1260,10 @@ window.onload = async () => {
   loadPassages();
   loadWritingPrompts();
   switchLSection(1);
+  if (isSingleContinuousAudio) {
+    const firstSec = config.listening && config.listening.sections && config.listening.sections[0];
+    loadAudioForSection(firstSec, 1);
+  }
   switchSection('L');
 };
 </script>
