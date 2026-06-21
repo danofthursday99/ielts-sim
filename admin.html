@@ -712,6 +712,40 @@
         <div id="settings-status" style="margin-top:8px;font-size:0.82rem;color:var(--green);display:none">✅ Settings saved!</div>
       </div>
       <div class="card">
+        <div class="card-title">🔐 Admin Password</div>
+        <p style="font-size:0.82rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">
+          Your password is verified on the server and never appears in the page source. Changing it here updates it immediately for all future logins. An email alert is sent on every login attempt and password change.
+        </p>
+        <div class="row2">
+          <div class="field">
+            <label>Current Password</label>
+            <input type="password" id="cur-admin-pass" placeholder="Enter current password">
+          </div>
+          <div class="field">
+            <label>New Password <span style="font-weight:400;color:var(--ink3)">(min. 6 characters)</span></label>
+            <input type="password" id="new-admin-pass" placeholder="Enter new password">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-blue" onclick="changeAdminPasswordForm()">🔑 Change Password</button>
+        </div>
+        <div id="pw-change-status" style="margin-top:8px;font-size:0.82rem;display:none"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📧 Login Notification Email</div>
+        <p style="font-size:0.82rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">
+          This email receives alerts whenever someone attempts to log into the admin panel (success or failure), and whenever the password is changed.
+        </p>
+        <div class="field">
+          <label>Notification Email</label>
+          <input type="email" id="notify-email" placeholder="your@email.com">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-blue" onclick="saveNotifyEmail()">💾 Save Email</button>
+        </div>
+        <div id="email-save-status" style="margin-top:8px;font-size:0.82rem;display:none"></div>
+      </div>
+      <div class="card">
         <div class="card-title">Apps Script URL</div>
         <div class="field">
           <label>Web App URL</label>
@@ -769,14 +803,19 @@
 // ═══════════════════════════════════════
 // APPS SCRIPT
 // ═══════════════════════════════════════
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEcaHQwN-AXs31xAh46YCd1uw4HyxVZa6WF3DeBpCjzP8v7BkSjADQ838xDxFVtR2J/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOWjeZlhj3HWA9C7W8j7GVh9OlVunuMgp6cvGfCFAW_RSZlsjpHvL4Ihqpbo0huwfdSg/exec';
+
+// Must match API_SECRET in Code.gs. This is a speed bump against
+// random bot traffic, not real security (it's visible in page
+// source) — the admin password itself is verified server-side.
+const API_KEY = 'ielts-sim-x7k2m9-change-me';
 
 function callSheets(payload) {
   return new Promise((resolve, reject) => {
     const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
     const timeout = setTimeout(() => { delete window[cbName]; reject(new Error('Timeout')); }, 15000);
     window[cbName] = (data) => { clearTimeout(timeout); delete window[cbName]; resolve(data); };
-    const params = new URLSearchParams({ ...payload, callback: cbName });
+    const params = new URLSearchParams({ ...payload, key: API_KEY, callback: cbName });
     const script = document.createElement('script');
     script.src = APPS_SCRIPT_URL + '?' + params.toString();
     script.onerror = () => { clearTimeout(timeout); delete window[cbName]; reject(new Error('Network error')); };
@@ -1486,7 +1525,7 @@ function qmPreviewFCImg() {
   const wrap = document.getElementById('qm-fc-img-preview');
   if (!wrap) return;
   if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">No URL entered.</span>'; return; }
-  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.outerHTML='<span style=\\'color:var(--red);font-size:0.8rem\\'>Cannot load image.</span>'">`;
+  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="color:var(--red);font-size:0.8rem;display:none">Cannot load image.</span>`;
 }
 
 // Stubs — no longer used but kept to avoid errors
@@ -1733,7 +1772,7 @@ function previewSectionImg(n) {
   const wrap = document.getElementById('L-img-preview-'+n);
   if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">No URL entered.</span>'; return; }
   config.listening.sections[n-1].imgURL = url;
-  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.outerHTML='<span style=\\'color:var(--red);font-size:0.8rem\\'>Cannot load — check URL.</span>'">`;
+  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="color:var(--red);font-size:0.8rem;display:none">Cannot load — check URL.</span>`;
   toast('Image preview updated');
 }
 function saveWritingImgURL(n, val) {
@@ -1746,7 +1785,7 @@ function previewWritingImg(n) {
   if (!wrap) return;
   if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">No URL entered.</span>'; return; }
   config.writing.tasks[n].imgURL = url;
-  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--border)" onerror="this.outerHTML='<span style=\\'color:var(--red);font-size:0.8rem\\'>Cannot load — check URL.</span>'">`;
+  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="color:var(--red);font-size:0.8rem;display:none">Cannot load — check URL.</span>`;
   toast('Image preview updated');
 }
 
@@ -1764,6 +1803,9 @@ function collectConfig() {
   config.writing.tasks[2].prompt   = document.getElementById('W-prompt-2').value;
   config.writing.tasks[1].minWords = parseInt(document.getElementById('W-min-1').value)||150;
   config.writing.tasks[2].minWords = parseInt(document.getElementById('W-min-2').value)||250;
+  // Writing image URL — sweep from DOM (was missing, causing image loss when loaded on other devices)
+  const wImgInput1 = document.getElementById('W-img-url-1');
+  if (wImgInput1) config.writing.tasks[1].imgURL = wImgInput1.value.trim();
 
   // Collect question text inputs from DOM for both L and R
   // (qBlocks are already saved live via qmSave; just ensure answerKey is synced)
@@ -2196,11 +2238,34 @@ async function loadTestSets() {
       <td style="white-space:nowrap">
         <button class="btn btn-ghost" style="padding:3px 8px;font-size:0.75rem" onclick="editSet(${JSON.stringify(s).replace(/"/g,'&quot;')})">✏️ Edit</button>
         ${!isActive?`<button class="btn btn-green" style="padding:3px 8px;font-size:0.75rem;margin-left:4px" onclick="activateSet('${s.setID}')">⚡ Activate</button>`:''}
+        <button class="btn btn-red" style="padding:3px 8px;font-size:0.75rem;margin-left:4px" data-setid="${escH(s.setID)}" data-setname="${escH(s.setName)}" onclick="deleteSet(this.dataset.setid,this.dataset.setname)">🗑️ Delete</button>
       </td>
     </tr>`;
   });
   html += '</tbody></table></div>';
   wrap.innerHTML = html;
+}
+
+async function deleteSet(setID, setName) {
+  if (!confirm(`Delete "${setName}"?\n\nThis cannot be undone. Candidates who already took this test will keep their scores, but the test will no longer be selectable.`)) return;
+
+  // Remove from localStorage
+  let sets = JSON.parse(localStorage.getItem('ielts_test_sets') || '[]');
+  sets = sets.filter(s => s.setID !== setID);
+  localStorage.setItem('ielts_test_sets', JSON.stringify(sets));
+
+  // If this was the active set, clear it
+  const activeSet = JSON.parse(localStorage.getItem('ielts_active_set') || 'null');
+  if (activeSet && activeSet.setID === setID) {
+    localStorage.removeItem('ielts_active_set');
+    localStorage.removeItem('ielts_drive_url');
+  }
+
+  // Try Sheets too (optional)
+  try { await callSheets({ action:'deleteTestSet', setID }); } catch(e) { /* optional */ }
+
+  toast('🗑️ Test set deleted.');
+  loadTestSets();
 }
 
 function showNewSetForm() {
@@ -2348,9 +2413,10 @@ async function loadSettingsForm() {
     const data = await callSheets({ action:'getSettings' });
     if (data.success && data.settings) {
       const s = data.settings;
-      document.getElementById('inst-name').value = s.institution_name||'';
-      document.getElementById('inst-addr').value = s.institution_address||'';
-      document.getElementById('trf-note').value  = s.trf_footer_note||'';
+      document.getElementById('inst-name').value   = s.institution_name||'';
+      document.getElementById('inst-addr').value   = s.institution_address||'';
+      document.getElementById('trf-note').value    = s.trf_footer_note||'';
+      document.getElementById('notify-email').value = s.notify_email||'';
     }
   } catch(e) { console.warn('Settings load failed:', e); }
 }
@@ -2370,6 +2436,57 @@ async function saveSettingsForm() {
       toast('✅ Settings saved!');
     }
   } catch(e) { alert('Error: '+e.message); }
+}
+
+async function changeAdminPasswordForm() {
+  const cur = document.getElementById('cur-admin-pass').value;
+  const neu = document.getElementById('new-admin-pass').value;
+  const statusEl = document.getElementById('pw-change-status');
+  statusEl.style.display = 'none';
+
+  if (!cur || !neu) {
+    statusEl.style.display='block'; statusEl.style.color='var(--red)';
+    statusEl.textContent = 'Please fill in both fields.';
+    return;
+  }
+  if (neu.length < 6) {
+    statusEl.style.display='block'; statusEl.style.color='var(--red)';
+    statusEl.textContent = 'New password must be at least 6 characters.';
+    return;
+  }
+
+  try {
+    const data = await callSheets({ action:'changeAdminPassword', currentPassword:cur, newPassword:neu });
+    statusEl.style.display = 'block';
+    if (data.success) {
+      statusEl.style.color = 'var(--green)';
+      statusEl.textContent = '✅ Password changed! Use the new password next time you log in.';
+      document.getElementById('cur-admin-pass').value = '';
+      document.getElementById('new-admin-pass').value = '';
+      toast('🔑 Admin password changed');
+    } else {
+      statusEl.style.color = 'var(--red)';
+      statusEl.textContent = '❌ ' + (data.message || 'Could not change password.');
+    }
+  } catch(e) {
+    statusEl.style.display = 'block'; statusEl.style.color='var(--red)';
+    statusEl.textContent = '❌ ' + e.message;
+  }
+}
+
+async function saveNotifyEmail() {
+  const email = document.getElementById('notify-email').value.trim();
+  const statusEl = document.getElementById('email-save-status');
+  if (!email) { statusEl.style.display='block'; statusEl.style.color='var(--red)'; statusEl.textContent='Please enter an email.'; return; }
+  try {
+    await callSheets({ action:'saveSettings', notify_email: email });
+    statusEl.style.display = 'block'; statusEl.style.color='var(--green)';
+    statusEl.textContent = '✅ Notification email saved.';
+    toast('📧 Notification email updated');
+  } catch(e) {
+    statusEl.style.display = 'block'; statusEl.style.color='var(--red)';
+    statusEl.textContent = '❌ ' + e.message;
+  }
 }
 
 async function testConnection() {
