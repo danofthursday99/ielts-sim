@@ -23,7 +23,8 @@
         "fcImgData": "",
         "fcFrom": 11,
         "fcTo": 20,
-        "audioURL": "https://d1z803pryv3vab.cloudfront.net/IELTS16/IELTS16_test1_audio2.mp3"
+        "audioURL": "https://d1z803pryv3vab.cloudfront.net/IELTS16/IELTS16_test1_audio2.mp3",
+        "imgURL": "https://raw.githubusercontent.com/danofthursday99/ielts-sim/refs/heads/main/img/62126/map-ielts16t1listening.png"
       },
       {
         "from": 21,
@@ -59,47 +60,58 @@
           "instr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
           "fcHtml": "<h2><center>Children's Engineering Workshops</center></h2><br>\n<h3>Tiny Engineers (ages 4-5)</h3>\n<h4>Activities:</h4>\n<p>• Create a cover for an {{1}}so they can drop it from a height\nwithout breaking it.</p>\n<p>• Take part in a competition to build the tallest {{2}}</p>\n<p>• Make a {{3}} powered by a balloon.</p><br>\n<h3>Junior Engineers (ages 6-8)</h3>\n<h4>Activities:</h4>\n<p>• Build model cars, trucks and {{4}} and learn how to program\nthem so they can move.</p>\n<p>• Take part in a competition to build the longest {{5}} using card and wood.</p>\n<p>• Create a short {{6}}with special software.</p>\n<p>• Build, {{7}} and program a humanoid robot.</p><br>\n<p>Cost for a five-week block: £50</p>\n<p>Held on {{8}} from 10 am to 11 am</p><br>\n<h3>Location</h3>\n<p>Building 10A, {{9}} Industrial Estate, Grasford</p>\n<p>Plenty of {{10}} is available.</p>\n",
           "fcInstr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
-          "fcAnswers": {},
+          "fcAnswers": {
+            "1": "egg",
+            "2": "tower",
+            "3": "car",
+            "4": "animals",
+            "5": "bridge",
+            "6": "movie",
+            "7": "decorate",
+            "8": "Wednesdays",
+            "9": "Fradstone",
+            "10": "parking"
+          },
           "blanks": [
             {
               "num": 1,
-              "answer": ""
+              "answer": "egg"
             },
             {
               "num": 2,
-              "answer": ""
+              "answer": "tower"
             },
             {
               "num": 3,
-              "answer": ""
+              "answer": "car"
             },
             {
               "num": 4,
-              "answer": ""
+              "answer": "animals"
             },
             {
               "num": 5,
-              "answer": ""
+              "answer": "bridge"
             },
             {
               "num": 6,
-              "answer": ""
+              "answer": "movie"
             },
             {
               "num": 7,
-              "answer": ""
+              "answer": "decorate"
             },
             {
               "num": 8,
-              "answer": ""
+              "answer": "Wednesdays"
             },
             {
               "num": 9,
-              "answer": ""
+              "answer": "Fradstone"
             },
             {
               "num": 10,
-              "answer": ""
+              "answer": "parking"
             }
           ],
           "fcFrom": 1,
@@ -118,7 +130,7 @@
             "1924.",
             "1926."
           ],
-          "answer": ""
+          "answer": "C"
         },
         {
           "type": "mc",
@@ -131,7 +143,7 @@
             "the automotive industry.",
             "the machine tools industry."
           ],
-          "answer": ""
+          "answer": "A"
         },
         {
           "type": "mc",
@@ -144,7 +156,7 @@
             "The company has no plans to move.",
             "The company is going to move shortly."
           ],
-          "answer": ""
+          "answer": "B"
         },
         {
           "type": "mc",
@@ -157,7 +169,7 @@
             "meetings with a teacher.",
             "talks by staff."
           ],
-          "answer": ""
+          "answer": "C"
         },
         {
           "type": "fc",
@@ -165,31 +177,38 @@
           "instr": "Questions 15-20 Label the map below. Write the correct letter, A-J, next to Questions 15-20.",
           "fcHtml": "<p>coffee room {{15}}</p>\n<p>warehouse {{16}}</p>\n<p>staff canteen {{17}}</p>\n<p>meeting room {{18}}</p>\n<p>meeting room {{19}}</p>\n<p>board room {{20}}</p>",
           "fcInstr": "Questions 15-20 Label the map below. Write the correct letter, A-J, next to Questions 15-20.",
-          "fcAnswers": {},
+          "fcAnswers": {
+            "15": "H",
+            "16": "C",
+            "17": "G",
+            "18": "B",
+            "19": "I",
+            "20": "A"
+          },
           "blanks": [
             {
               "num": 15,
-              "answer": ""
+              "answer": "H"
             },
             {
               "num": 16,
-              "answer": ""
+              "answer": "C"
             },
             {
               "num": 17,
-              "answer": ""
+              "answer": "G"
             },
             {
               "num": 18,
-              "answer": ""
+              "answer": "B"
             },
             {
               "num": 19,
-              "answer": ""
+              "answer": "I"
             },
             {
               "num": 20,
-              "answer": ""
+              "answer": "A"
             }
           ],
           "fcFrom": 15,
@@ -212,7 +231,10 @@
             "the projects done in previous years",
             "the handouts with research sources"
           ],
-          "answers": []
+          "answers": [
+            "C",
+            "E"
+          ]
         },
         {
           "type": "ct2",
@@ -229,7 +251,10 @@
             "by providing a timeline and a mind map",
             "by making their notes more evaluative"
           ],
-          "answers": []
+          "answers": [
+            "B",
+            "E"
+          ]
         },
         {
           "type": "match",
@@ -250,32 +275,32 @@
             {
               "num": "25",
               "label": "Falcon (Landseer)",
-              "answer": ""
+              "answer": "D"
             },
             {
               "num": "26",
               "label": "Fish hawk (Audubon)",
-              "answer": ""
+              "answer": "C"
             },
             {
               "num": "27",
               "label": "Kingfisher (van Gogh)",
-              "answer": ""
+              "answer": "A"
             },
             {
               "num": "28",
               "label": "Portrait of William Wells",
-              "answer": ""
+              "answer": "H"
             },
             {
               "num": "29",
               "label": "Vairumati (Gauguin)",
-              "answer": ""
+              "answer": "F"
             },
             {
               "num": "30",
               "label": "Portrait of Giovanni de Medici",
-              "answer": ""
+              "answer": "G"
             }
           ]
         }
@@ -287,47 +312,58 @@
           "instr": "",
           "fcHtml": "<h2><center>Stoicism</center></h2>\n\n<p>Stoicism is still relevant today because of its {{31}} appeal.</p>\n<h3>Ancient Stoics</h3>\n<p.• Stoicism was founded over 2,000 years ago in Greece.</p>\n</p>• The Stoics' ideas are surprisingly well known, despite not being intended for {{32}}.</p><br>\n<h3>Stoic principles</h3>\n<p>• Happiness could be achieved by leading a virtuous life.</p>\n<p>• Controlling emotions was essential.</p>\n<p>• Epictetus said that external events cannot be controlled but the {{33}} people make in response can be controlled.</p>\n<p>• A Stoic is someone who has a different view on experiences which others would consider as {{34}} .</p><br>\n\n<h3>The influence of Stoicism</h3>\n<p>• George Washington organised a {{35}} about Cato to motivate\nhis men.</p>\n<p>• The French artist Delacroix was a Stoic.</p>\n<p>• Adam Smith's ideas on {{36}} were influenced by Stoicism.</p>\n<p>• Some of today's political leaders are inspired by the Stoics.</p>\n<p>• Cognitive Behaviour Therapy (CBT)</p>\n<p>- the treatment for {{37}} is based on ideas from Stoicism\n- people learn to base their thinking on {{38}}.\n<p>• In business, people benefit from Stoicism by identifying obstacles as {{39}}.</p><br>\n<h3>Relevance of Stoicism</h3>\n<p>• It requires a lot of {{40}} but Stoicism can help people to lead a good life.</p>\n<p>• It teaches people that having a strong character is more important than anything else.</p>",
           "fcInstr": "",
-          "fcAnswers": {},
+          "fcAnswers": {
+            "31": "practical",
+            "32": "publication",
+            "33": "choices",
+            "34": "negative",
+            "35": "play",
+            "36": "capitalism",
+            "37": "depression",
+            "38": "logic",
+            "39": "opportunity",
+            "40": "practice"
+          },
           "blanks": [
             {
               "num": 31,
-              "answer": ""
+              "answer": "practical"
             },
             {
               "num": 32,
-              "answer": ""
+              "answer": "publication"
             },
             {
               "num": 33,
-              "answer": ""
+              "answer": "choices"
             },
             {
               "num": 34,
-              "answer": ""
+              "answer": "negative"
             },
             {
               "num": 35,
-              "answer": ""
+              "answer": "play"
             },
             {
               "num": 36,
-              "answer": ""
+              "answer": "capitalism"
             },
             {
               "num": 37,
-              "answer": ""
+              "answer": "depression"
             },
             {
               "num": 38,
-              "answer": ""
+              "answer": "logic"
             },
             {
               "num": 39,
-              "answer": ""
+              "answer": "opportunity"
             },
             {
               "num": 40,
-              "answer": ""
+              "answer": "practice"
             }
           ],
           "fcFrom": 31,
@@ -338,9 +374,9 @@
   },
   "reading": {
     "passages": {
-      "1": "asdasdasdasdasdasdasd\nasdasdasdasdasdasdasdasdasd\nasdasdasdasdasdasdasdasd\nasdasdasdadasdasd\nasdasdasdasdasd",
-      "2": "",
-      "3": ""
+      "1": "Why we need to protect polar bears\n\nPolar bears are being increasingly threatened by the effects of climate change, but their disappearance could have far-reaching consequences. They are uniquely adapted to the extreme conditions of the Arctic Circle, where temperatures can reach -40°C. One reason for this is that they have up to 11 centimetres of fat underneath their skin. Humans with comparative levels of adipose tissue would be considered obese and would be likely to suffer from diabetes and heart disease. Yet the polar bear experiences no such consequences.\n\nA 2014 study by Shi Ping Liu and colleagues sheds light on this mystery. They compared the genetics tructure of polar bears with that of their closest relatives from a warmer climate, the brown bears. This allowed them to determine the genes that have allowed polar bears to survive in one of the toughest environments on Earth. Liu and his colleagues found the polar bears had a gene known as APoB, which reduces levels of low density lipoproteins (LDLs) - a form of 'bad' cholesterol. In humans, mutations of this gene are associated with increased risk of heart disease. Polar bears may therefore be an important study model to understand heart disease in humans.\n\nThe genome of the polar bear may also provide the solution for another condition, one that particularly affects our older generation: osteoporosis. This is a disease where bones show reduced density, usually caused by insufficient exercise, reduced calcium intake or food starvation. Bone tissue is constantly being remodelled, meaning that bone is added or removed, depending on nutrient availability and the stress that the bone is under. Female polar bears, however, undergo extreme conditions during every pregnancy. Once autumn comes around, these females will dig maternity dens in the snow and will remain there throughout the winter, both before and after the birth of their cubs. This process results in about six months of fasting, where the female bears have to keep themselves and their cubs alive, depleting their own calcium and calorie reserves. Despite this, their bones remain strong and dense.\n\nPhysiologists Alanda Lennox and Allen Goodship found an explanation for this paradox in 2008. They discovered that pregnant bears were able to increase the density of their bones before they started to build their dens. In addition, six months later, when they finally emerged from the den with their cubs, there was no evidence of significant loss of bone density. Hibernating brown bears do not have this capacity and must therefore resort to major bone reformation in the following spring. If the mechanism of bone remodelling in polar bears can be understood, many bedridden humans, and even astronauts, could potentially benefit.\n\nThe medical benefits of the polar bear for humanity certainly have their importance in our conservation efforts, but these should not be the only factors taken into consideration. We tend to want to protect animals we think are intelligent and possess emotions, such as elephants and primates. Bears, on the other hand, seem to be perceived as stupid and in many cases violent. And yet anecdotal evidence from the field challenges those assumptions, suggesting for example that polar bears have good problem-solving abilities. A male bear called GoGo in Tennoji Zoo, Osaka, has even been observed making use of a tool to manipulate his environment. The bear used a tree branch on multiple occasions to dislodge a piece of meat hung out of his reach. Problem-solving ability has also been witnessed in wild polar bears, although not as obviously as with GoGo. A calculated move by a male bear involved running and jumping onto barrels in an attempt to get to a photographer standing on a platform four metres high.\n\nIn other studies, such as one by Alison Ames in 2008, polar bears showed deliberate and focussed manipulation. For example, Ames observed bears putting objects in piles and then knocking them over in what appeared to be a game. The study demonstrates that bears are capable of agile and thought-out behaviours. These examples suggest bears have greater creativity and problem-solving abilities than previously thought.\n\nAs for emotions, while the evidence is once again anecdotal, many bears have been seen to hit out at ice and snow - seemingly out of frustration - when they have just missed out on a kill. Moreover, polar bears can form unusual relationships with other species, including playing with the dogs used to pull sleds in the Arctic. Remarkably, one hand-raised polar bear called Agee has formed a close relationship with her owner Mark Dumas to the point where they even swim together. This is even more astonishing since polar bears are known to actively hunt humans in the wild.\n\nIf climate change were to lead to their extinction, this would mean the loss not only of potential breakthroughs in human medicine, but more importantly, the disappearance of an intelligent, majestic animal.",
+      "2": "The Step Pyramid of Djoser\n\nA - The pyramids are the most famous monuments of ancient Egypt and still hold enormous interest for people in the present day. These grand, impressive tributes to the memory of the Egyptian kings have become linked with the country even though other cultures, such as the Chinese and Mayan, also built pyramids. The evolution of the pyramid form has been written and argued about for centuries. However, there is no question that, as far as Egypt is concerned, it began with one monument to one king designed by one brilliant architect: the Step Pyramid of Djoser at Saqqara.</p><br>\n\nB - Djoser was the first king of the Third Dynasty of Egypt and the first to build in stone. Prior to Djoser's reign, tombs were rectangular monuments made of dried clay brick, which covered underground passages where the deceased person was buried. For reasons which remain unclear, Djoser's main official, whose name was Imhotep, conceived of building a taller, more impressive tomb for his king by stacking stone slabs on top of one another, progressively making them smaller, to form the shape now known as the Step Pyramid. Djoser is thought to have reigned for 19 years, but some historians and scholars attribute a much longer time for his rule, owing to the number and size of the monuments he built.\n\nC - The Step Pyramid has been thoroughly examined and investigated over the last century, and it is now known that the building process went through many different stages. Historian Marc Van de Mieroop comments on this, writing 'Much experimentation was involved, which is especially clear in the construction of the pyramid in the center of the complex. It had several plans ... before it became the first Step Pyramid in history, piling six levels on top of one another ... The weight of the enormous mass was a challenge for the builders, who placed the stones at an inward incline in order to prevent the monument breaking up.'\n\nD - When finally completed, the Step Pyramid rose 62 meters high and was the tallest structure of its time. The complex in which it was built was the size of a city in ancient Egypt and included a temple, courtyards, shrines, and living quarters for the priests. It covered a region of 16 hectares and was surrounded by a wall 10.5 meters high. The wall had 13 false doors cut into it with only one true entrance cut into the south-east comer; the entire wall was then ringed by a trench 750 meters long and 40 meters wide. The false doors and the trench were incorporated into the complex to discourage unwanted visitors. If someone wished to enter, he or she would have needed to know in advance how to find the location of the true opening in the wall. Djoser was so proud of his accomplishment that he broke the tradition of having only his own name on the monument and had Imhotep 's name carved on it as well.\n\nE - The burial chamber of the tomb, where the king's body was laid to rest, was dug beneath the base of the pyramid, surrounded by a vast maze of long tunnels that had rooms off them to discourage robbers. One of the most mysterious discoveries found inside the pyramid was a large number of stone vessels. Over 40,000 of these vessels, of various forms and shapes, were discovered in storerooms off the pyramid's underground passages. They are inscribed with the names of rulers from the First and Second Dynasties of Egypt and made from different kinds of stone. There is no agreement among scholars and archaeologists on why the vessels\nwere placed in the tomb of Djoser or what they were supposed to represent. The archaeologist Jean-Philippe Lauer, who excavated most of the pyramid and complex, believes they were originally stored and then given a 'proper burial' by Djoser in his pyramid to honor his predecessors. There are other historians, however, who claim the vessels were dumped into the shafts as yet another attempt to prevent grave robbers from getting to the king's burial chamber.\n\nF - Unfortunately, all of the precautions and intricate design of the underground network did not prevent ancient robbers from finding a way in. Djoser's grave goods, and even his body, were stolen at some point in the past and all archaeologists found were a small number of his valuables overlooked by the thieves. There was enough left throughout the pyramid and its complex, however, to astonish and amaze the archaeologists who excavated it.\n\nG - Egyptologist Miroslav Verner writes, 'Few monuments hold a place in human history as significant as that of the Step Pyramid in Saqqara ... It can be said without exaggeration that this pyramid complex constitutes a milestone in the evolution of monumental stone architecture in Egypt and in the world as a whole.' The Step Pyramid was a revolutionary advance in architecture and became the archetype which all the other great pyramid builders of Egypt would follow.\n\n",
+      "3": "You should spend about 20 minutes on Questions 27-40, which are based on Reading Passage 3 below.\n\nThe future of work\n\nAccording to a leading business consultancy, 3-14% of the global workforce will need to switch to a different occupation within the next 10-15 years, and all workers will need to adapt as their occupations evolve alongside increasingly capable machines. Automation - or 'embodied artificial intelligence' (Al)-is one aspect of the disruptive effects of technology on the labour market. 'Disembodied Al', like. The algorithms running in our smartphones, is another.\n\nDr Stella Pachidi from Cambridge Judge Business School believes that some of the most fundamental changes are happening as a result of the 'algorithmication' of jobs that are dependent on data rather than on production - the so-called knowledge economy. Algorithms are capable of learning from data to undertake tasks that previously needed human judgement, such as reading legal contracts, analysing medical scans and gathering market intelligence.\n\n'In many cases, they can outperform humans,' says Pachidi. 'Organisations are attracted to using algorithms because they want to make choices based on what they consider is \"perfect information\", as well as to reduce costs and enhance productivity.'\n\n'But these enhancements are not without consequences,' says Pachidi. 'If routine cognitive tasks are taken over by AI, how do professions develop their future experts?' she asks. 'One way of learning about a job is \"legitimate peripheral participation\" - a novice stands next to experts and learns by observation. If this isn't happening, then you need to find new ways to learn.'\n\nAnother issue is the extent to which the technology influences or even controls the workforce. For over two years, Pachidi monitored a telecommunications company. 'The way telecoms salespeople work is through personal and frequent contact with clients, using the benefit of experience to assess a situation and reach a decision. However, the company had started using a[n] ... algorithm that defined when account managers should contact certain customers about which kinds of campaigns and what to offer them.'\n\nThe algorithm - usually built by external designers - often becomes the keeper of knowledge, she explains. In cases like this, Pachidi believes, a short-sighted view begins to creep into working practices whereby workers learn through the 'algorithm's eyes' and become dependent on its instructions. Alternative explorations - where experimentation and human instinct lead to progress and new ideas - are effectively discouraged.\n\nPachidi and colleagues even observed people developing strategies to make the algorithm work to their own advantage. 'We are seeing cases where workers feed the algorithm with false data to reach their targets,' she reports.\n\nIt's scenarios like these that many researchers are working to avoid. Their objective is to make AI technologies more trustworthy and transparent, so that organisations and individuals understand how AI decisions are made. In the meantime, says Pachidi, 'We need to make sure we fully understand the dilemmas that this new world raises regarding expertise, occupational boundaries and control.'\n\nEconomist Professor Hamish Low believes that the future of work will involve major transitions across the whole life course for everyone: 'The traditional trajectory of full-time education followed by full-time work followed by a pensioned retirement is a thing of the past,' says Low. Instead, he envisages a multistage employment life: one where retraining happens across the life\ncourse, and where multiple jobs and no job happen by choice at different stages.\n\nOn the subject of job losses, Low believes the predictions are founded on a fallacy: 'It assumes that the number of jobs is fixed. If in 30 years, half of 100 jobs are being carried out by robots, that doesn't mean we are left with just 50 jobs for humans. The number of jobs will increase: we would expect there to be 150 jobs.'\n\nDr Ewan. McGaughey, at Cambridge's Centre for Business Research and King's College London, agrees that 'apocalyptic' views about the future of work are misguided. 'It's the laws that restrict the supply of capital to the job market, not the advent of new technologies that causes unemployment.'\n\nHis recently published research answers the question of whether automation, AI and robotics will mean a 'jobless future' by looking at the causes of unemployment. 'History is clear that change can mean redundancies. But social policies can tackle this through retraining and redeployment.'\n\nHe adds: 'If there is going to be change to jobs as a result of AI and robotics then I'd like to see governments seizing the opportunity to improve policy to enforce good job security. We can \"reprogramme\"the law to prepare for a fairer future of work and leisure.' McGaughey's findings are a call to arms to leaders of organisations, governments and banks to pre-empt the coming changes with bold new policies that guarantee full employment, fair incomes and a thriving economic democracy.\n\n'The promises of these new technologies are astounding. They deliver humankind the capacity to live in a way that nobody could have once imagined,' he adds. 'Just as the industrial revolution brought people past subsistence agriculture, and the corporate revolution enabled mass production, a third revolution has been pronounced. But it will not only be one of technology. The next revolution will be social.'"
     },
     "passages_fc": {
       "1": {
@@ -368,25 +404,358 @@
         {
           "type": "tfng",
           "part": "",
-          "instr": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
           "qNum": 1,
-          "qText": "asdasdasdasdasdasdasdasdasd",
-          "answer": ""
+          "qText": "Polar bears suffer from various health problems due to the build-up of fat under their skin.",
+          "answer": "FALSE"
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 2,
+          "qText": "The study done by Liu and his colleagues compared different groups of polar bears.",
+          "answer": "FALSE"
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 3,
+          "qText": "Liu and colleagues were the first researchers to compare polar bears and brown bears genetically.",
+          "answer": "NOT GIVEN"
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 4,
+          "qText": "Polar bears are able to control their levels of 'bad' cholesterol by genetic means.",
+          "answer": "TRUE"
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 5,
+          "qText": "Female polar bears are able to survive for about six months without food.",
+          "answer": "TRUE"
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 6,
+          "qText": "It was found that the bones ·of female polar bears were very weak when they came out of their dens in spring.",
+          "answer": "FALSE"
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 7,
+          "qText": "The polar bear's mechanism for increasing bone density could also be used by people one day.",
+          "answer": "TRUE"
+        },
+        {
+          "type": "fc",
+          "part": "",
+          "instr": "Complete the table below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.",
+          "fcHtml": "<h2><center>Reasons why polar bears should be protected</center></h2><br>\n<p>People think of bears as unintelligent and {{8}}</p>\n<p>However, this may not be correct. For example:</p>\n<p>• In Tennoji Zoo, a bear has been seen using a branch as a {{9}}</p>\n<p>This allowed him to knock down some {{10}}</p>\n<p>• A wild polar bear worked out a method of reaching a platform where a {{11}} was located.</p>\n<p>• Polar bears have displayed behaviour such as conscious manipulation of objects and activity similar to a {{12}}</p><br>\n<p>Bears may also display emotions. For example:</p>\n<p>• They may make movements suggesting {{13}} if disappointed\nwhen hunting.</p>\n<p>• They may form relationships with other species.</p>",
+          "fcInstr": "Complete the table below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.",
+          "fcAnswers": {
+            "8": "violent",
+            "9": "tool",
+            "10": "meat",
+            "11": "photographer",
+            "12": "game",
+            "13": "frustration"
+          },
+          "blanks": [
+            {
+              "num": 8,
+              "answer": "violent"
+            },
+            {
+              "num": 9,
+              "answer": "tool"
+            },
+            {
+              "num": 10,
+              "answer": "meat"
+            },
+            {
+              "num": 11,
+              "answer": "photographer"
+            },
+            {
+              "num": 12,
+              "answer": "game"
+            },
+            {
+              "num": 13,
+              "answer": "frustration"
+            }
+          ],
+          "fcFrom": 8,
+          "fcTo": 13
         }
       ],
-      "2": [],
-      "3": []
+      "2": [
+        {
+          "type": "match",
+          "part": "Part 2",
+          "instr": "",
+          "matchPrompt": "",
+          "matchChoices": [
+            "The areas and artefacts within the pyramid itself",
+            "A difficult task for those involved",
+            "A king who saved his people",
+            "A single certainty among other less definite facts",
+            "An overview of the external buildings and areas",
+            "A pyramid design that others copied",
+            "An idea for changing the design of burial structures",
+            "An incredible experience despite the few remains",
+            "The answers to some unexpected questions"
+          ],
+          "matchItems": [
+            {
+              "num": "14",
+              "label": "Paragraph A",
+              "answer": "D"
+            },
+            {
+              "num": "15",
+              "label": "Paragraph B",
+              "answer": "G"
+            },
+            {
+              "num": "16",
+              "label": "Paragraph C",
+              "answer": "B"
+            },
+            {
+              "num": "17",
+              "label": "Paragraph D",
+              "answer": "E"
+            },
+            {
+              "num": "18",
+              "label": "Paragraph E",
+              "answer": "A"
+            },
+            {
+              "num": "19",
+              "label": "Paragraph F",
+              "answer": "H"
+            },
+            {
+              "num": "20",
+              "label": "Paragraph G",
+              "answer": "F"
+            }
+          ]
+        },
+        {
+          "type": "fc",
+          "part": "Part 2",
+          "instr": "Questions 21-24 Complete the notes below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 21-24 on your answer sheet.",
+          "fcHtml": "<h2><center>The Step Pyramid of Djoser</center></h2>\n\n<p>The complex that includes the Step Pyramid and its surroundings is considered to be as big as an Egyptian {{21}} of the past. The area outside the pyramid included accommodation that was occupied by {{22}} along with many other buildings and features. </p><br>\n\n<p>A wall ran around the outside of the complex and a number of false entrances were built into this. In addition, a long {{23}} encircled the wall. As a result, any visitors who had not been invited were cleverly prevented from entering the pyramid grounds unless they knew the {{24}}of the real entrance.</p>\n",
+          "fcInstr": "Questions 21-24 Complete the notes below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 21-24 on your answer sheet.",
+          "fcAnswers": {
+            "21": "city",
+            "22": "priests",
+            "23": "trench",
+            "24": "location"
+          },
+          "blanks": [
+            {
+              "num": 21,
+              "answer": "city"
+            },
+            {
+              "num": 22,
+              "answer": "priests"
+            },
+            {
+              "num": 23,
+              "answer": "trench"
+            },
+            {
+              "num": 24,
+              "answer": "location"
+            }
+          ],
+          "fcFrom": 21,
+          "fcTo": 24
+        },
+        {
+          "type": "ct2",
+          "part": "Part 2",
+          "instr": "Choose TWO letters, A-E.\nWrite the correct letters in boxes 25 and 26 on your answer sheet.",
+          "qFrom": 25,
+          "qTo": 26,
+          "qText": "Which TWO of the following points does the writer make about King Djoser?",
+          "pick": 2,
+          "options": [
+            "Initially he had to be persuaded to build in stone rather than clay.",
+            "There is disagreement concerning the length of his reign.",
+            "He failed to appreciate lmhotep's part in the design of the Step Pyramid.",
+            "A few of his possessions were still in his tomb when archaeologists found it.",
+            "He criticised the design and construction of other pyramids in Egypt."
+          ],
+          "answers": [
+            "B",
+            "D"
+          ]
+        }
+      ],
+      "3": [
+        {
+          "type": "mc",
+          "part": "Part 3",
+          "instr": "Questions 27-30\nChoose the correct letter, A, B, C or D.\nWrite the correct letter in boxes 27-30 on your answer sheet.",
+          "qNum": 27,
+          "qText": "The first paragraph tells us about",
+          "options": [
+            "the kinds of jobs that will be most affected by the growth of Al.",
+            "the extent to which Al will alter the nature of the work that people do.",
+            "the proportion of the world's labour force who will have jobs in Al in the future.",
+            "the difference between ways that embodied and disembodied Al will impact on workers."
+          ],
+          "answer": "B"
+        },
+        {
+          "type": "mc",
+          "part": "Part 3",
+          "instr": "",
+          "qNum": 28,
+          "qText": "According to the second paragraph, what is Stella Pachidi's view of the 'knowledge economy'?",
+          "options": [
+            "It is having an influence on the number of jobs available.",
+            "It is changing people's attitudes towards their occupations.",
+            "It is the main reason why the production sector is declining.",
+            "It is a key factor driving current developments in the workplace."
+          ],
+          "answer": "D"
+        },
+        {
+          "type": "mc",
+          "part": "Part 3",
+          "instr": "",
+          "qNum": 29,
+          "qText": "What did Pachidi observe at the telecommunications company?",
+          "options": [
+            "staff disagreeing with the recommendations of Al",
+            "staff feeling resentful about the intrusion of Al in their work",
+            "staff making sure that Al produces the results that they want",
+            "staff allowing Arto carry out tasks they ought to do themselves"
+          ],
+          "answer": "C"
+        },
+        {
+          "type": "mc",
+          "part": "Part 3",
+          "instr": "",
+          "qNum": 30,
+          "qText": "In his recently published research, Ewan McGaughey",
+          "options": [
+            "challenges the idea that redundancy is a negative thing.",
+            "shows the profound effect of mass unemployment on society.",
+            "highlights some differences between past and future job losses.",
+            "illustrates how changes in the job market can be successfully handled."
+          ],
+          "answer": "D"
+        },
+        {
+          "type": "fc",
+          "part": "",
+          "instr": "Write the correct Jetter, A-G, in boxes 31-34 on your answer sheet.",
+          "fcHtml": "<h2><center>The 'algorithmication' of jobs</center></h2><br>\n\n<p>Stella Pachidi of Cambridge Judge Business School has been focusing on the 'algorithmication' of jobs which rely not on production but on {{31}}.</p><br>\n\n<p>While monitoring a telecommunications company, Pachidi observed a growing {{32}} on the recommendations made by Al, as workers begin to learn through the 'algorithm's eyes'. Meanwhile, staff are deterred from experimenting and using their own {{33}} and are therefore prevented from achieving innovation.</p><br>\n\n<p>To avoid the kind of situations which Pachidi observed, researchers are trying to make Al's decision-making process easier to comprehend, and to increase users'{{34}} with regard to the technology.</p><br><hr>\n<p><strong>A pressure </strong></p>\n<p><strong>B satisfaction </strong></p>\n<p><strong>C intuition </strong></p>\n<p><strong>D promotion </strong></p>\n<p><strong>E reliance </strong></p>\n<p><strong>F confidence </strong></p>\n<p><strong>G information</strong></p>",
+          "fcInstr": "Write the correct Jetter, A-G, in boxes 31-34 on your answer sheet.",
+          "fcAnswers": {
+            "31": "g",
+            "32": "e",
+            "33": "c",
+            "34": "f"
+          },
+          "blanks": [
+            {
+              "num": 31,
+              "answer": "g"
+            },
+            {
+              "num": 32,
+              "answer": "e"
+            },
+            {
+              "num": 33,
+              "answer": "c"
+            },
+            {
+              "num": 34,
+              "answer": "f"
+            }
+          ],
+          "fcFrom": 31,
+          "fcTo": 34
+        },
+        {
+          "type": "match",
+          "part": "Part 3",
+          "instr": "Questions 35-40\nLook at the following statements (Questions 35-40) and the list of people below.",
+          "matchPrompt": "Match each statement with the correct person, A, B or C.\nWrite the correct letter, A, B or C, in boxes 35-40 on your answer sheet.\nNB You may use any letter more than once.",
+          "matchChoices": [
+            "Stella Pachidi",
+            "Hamish Low",
+            "Ewan McGaughey"
+          ],
+          "matchItems": [
+            {
+              "num": "35",
+              "label": "Greater levels of automation will not result in lower employment.",
+              "answer": "B"
+            },
+            {
+              "num": "36",
+              "label": "There are several reasons why Al is appealing to businesses.",
+              "answer": "A"
+            },
+            {
+              "num": "37",
+              "label": "Al's potential to transform people's lives has parallels with major cultural shifts which occurred in previous eras.",
+              "answer": "C"
+            },
+            {
+              "num": "38",
+              "label": "It is important to be aware of the range of problems that Al causes.",
+              "answer": "A"
+            },
+            {
+              "num": "39",
+              "label": "People are going to follow a less conventional career path than in the past.",
+              "answer": "B"
+            },
+            {
+              "num": "40",
+              "label": "Authorities should take measures to ensure that there will be adequately paid work for everyone.",
+              "answer": "C"
+            }
+          ]
+        }
+      ]
     }
   },
   "writing": {
     "tasks": {
       "1": {
-        "prompt": "The chart shows asdasdasdsa",
+        "prompt": "The charts below show the changes in ownership of electrical appliances and amount of time spent doing housework in households in one country between 1920 and 2019.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
         "imgData": "",
-        "minWords": 150
+        "minWords": 150,
+        "imgURL": "https://raw.githubusercontent.com/danofthursday99/ielts-sim/refs/heads/main/img/62126/ielts-w1t1.png"
       },
       "2": {
-        "prompt": "Some people believe asdasdasdasd",
+        "prompt": "In some countries, more and more people are becoming interested in finding out about the history of the house or building they live in.\n\nWhat are the reasons for this?\nHow can people research this?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\nWrite at least 250 words.",
         "imgData": "",
         "minWords": 250
       }
@@ -394,18 +763,87 @@
   },
   "answerKey": {
     "L": {
-      "1": "",
-      "2": "",
-      "3": "",
-      "4": "",
-      "5": "",
-      "6": "",
-      "7": "",
-      "8": "",
-      "9": "",
-      "10": ""
+      "1": "egg",
+      "2": "tower",
+      "3": "car",
+      "4": "animals",
+      "5": "bridge",
+      "6": "movie",
+      "7": "decorate",
+      "8": "Wednesdays",
+      "9": "Fradstone",
+      "10": "parking",
+      "11": "C",
+      "12": "A",
+      "13": "B",
+      "14": "C",
+      "15": "H",
+      "16": "C",
+      "17": "G",
+      "18": "B",
+      "19": "I",
+      "20": "A",
+      "21": "C",
+      "22": "E",
+      "23": "B",
+      "24": "E",
+      "25": "D",
+      "26": "C",
+      "27": "A",
+      "28": "H",
+      "29": "F",
+      "30": "G",
+      "31": "practical",
+      "32": "publication",
+      "33": "choices",
+      "34": "negative",
+      "35": "play",
+      "36": "capitalism",
+      "37": "depression",
+      "38": "logic",
+      "39": "opportunity",
+      "40": "practice"
     },
-    "R": {}
+    "R": {
+      "1": "FALSE",
+      "2": "FALSE",
+      "3": "NOT GIVEN",
+      "4": "TRUE",
+      "5": "TRUE",
+      "6": "FALSE",
+      "7": "TRUE",
+      "8": "violent",
+      "9": "tool",
+      "10": "meat",
+      "11": "photographer",
+      "12": "game",
+      "13": "frustration",
+      "14": "D",
+      "15": "G",
+      "16": "B",
+      "17": "E",
+      "18": "A",
+      "19": "H",
+      "20": "F",
+      "21": "city",
+      "22": "priests",
+      "23": "trench",
+      "24": "location",
+      "27": "B",
+      "28": "D",
+      "29": "C",
+      "30": "D",
+      "31": "g",
+      "32": "e",
+      "33": "c",
+      "34": "f",
+      "35": "B",
+      "36": "A",
+      "37": "C",
+      "38": "A",
+      "39": "B",
+      "40": "C"
+    }
   },
   "_driveURL": "https://raw.githubusercontent.com/danofthursday99/ielts-sim/refs/heads/main/configs/ielts_config.json",
   "_meta": {
