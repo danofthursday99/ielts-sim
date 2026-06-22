@@ -58,60 +58,49 @@
           "type": "fc",
           "part": "",
           "instr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
-          "fcHtml": "<h2><center>Children's Engineering Workshops</center></h2><br>\n<h3>Tiny Engineers (ages 4-5)</h3>\n<h4>Activities:</h4>\n<p>• Create a cover for an 1{{1}}so they can drop it from a height\nwithout breaking it.</p>\n<p>• Take part in a competition to build the tallest 2{{2}}</p>\n<p>• Make a 3{{3}} powered by a balloon.</p><br>\n<h3>Junior Engineers (ages 6-8)</h3>\n<h4>Activities:</h4>\n<p>• Build model cars, trucks and 4{{4}} and learn how to program\nthem so they can move.</p>\n<p>• Take part in a competition to build the longest 5{{5}} using card and wood.</p>\n<p>• Create a short 6{{6}}with special software.</p>\n<p>• Build, 7{{7}} and program a humanoid robot.</p><br>\n<p>Cost for a five-week block: £50</p>\n<p>Held on 8{{8}} from 10 am to 11 am</p><br>\n<h3>Location</h3>\n<p>Building 10A, 9{{9}} Industrial Estate, Grasford</p>\n<p>Plenty of 10{{10}} is available.</p>\n",
+          "fcHtml": "<h2><center>Children's Engineering Workshops</center></h2><br>\n<h3>Tiny Engineers (ages 4-5)</h3>\n<h4>Activities:</h4>\n<p>• Create a cover for an {{1}}so they can drop it from a height\nwithout breaking it.</p>\n<p>• Take part in a competition to build the tallest {{2}}</p>\n<p>• Make a {{3}} powered by a balloon.</p><br>\n<h3>Junior Engineers (ages 6-8)</h3>\n<h4>Activities:</h4>\n<p>• Build model cars, trucks and {{4}} and learn how to program\nthem so they can move.</p>\n<p>• Take part in a competition to build the longest {{5}} using card and wood.</p>\n<p>• Create a short {{6}}with special software.</p>\n<p>• Build, {{7}} and program a humanoid robot.</p><br>\n<p>Cost for a five-week block: £50</p>\n<p>Held on {{8}} from 10 am to 11 am</p><br>\n<h3>Location</h3>\n<p>Building 10A, {{9}} Industrial Estate, Grasford</p>\n<p>Plenty of {{10}} is available.</p>\n",
           "fcInstr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
-          "fcAnswers": {
-            "1": "egg",
-            "2": "tower",
-            "3": "car",
-            "4": "animals",
-            "5": "bridge",
-            "6": "movie",
-            "7": "decorate",
-            "8": "Wednesdays",
-            "9": "Fradstone",
-            "10": "parking"
-          },
+          "fcAnswers": {},
           "blanks": [
             {
               "num": 1,
-              "answer": "egg"
+              "answer": ""
             },
             {
               "num": 2,
-              "answer": "tower"
+              "answer": ""
             },
             {
               "num": 3,
-              "answer": "car"
+              "answer": ""
             },
             {
               "num": 4,
-              "answer": "animals"
+              "answer": ""
             },
             {
               "num": 5,
-              "answer": "bridge"
+              "answer": ""
             },
             {
               "num": 6,
-              "answer": "movie"
+              "answer": ""
             },
             {
               "num": 7,
-              "answer": "decorate"
+              "answer": ""
             },
             {
               "num": 8,
-              "answer": "Wednesdays"
+              "answer": ""
             },
             {
               "num": 9,
-              "answer": "Fradstone"
+              "answer": ""
             },
             {
               "num": 10,
-              "answer": "parking"
+              "answer": ""
             }
           ],
           "fcFrom": 1,
@@ -130,7 +119,7 @@
             "1924.",
             "1926."
           ],
-          "answer": "C"
+          "answer": ""
         },
         {
           "type": "mc",
@@ -143,7 +132,7 @@
             "the automotive industry.",
             "the machine tools industry."
           ],
-          "answer": "A"
+          "answer": ""
         },
         {
           "type": "mc",
@@ -156,7 +145,7 @@
             "The company has no plans to move.",
             "The company is going to move shortly."
           ],
-          "answer": "B"
+          "answer": ""
         },
         {
           "type": "mc",
@@ -169,46 +158,39 @@
             "meetings with a teacher.",
             "talks by staff."
           ],
-          "answer": "C"
+          "answer": ""
         },
         {
           "type": "fc",
           "part": "Part 2",
           "instr": "Questions 15-20 Label the map below. Write the correct letter, A-J, next to Questions 15-20.",
-          "fcHtml": "<p>15. coffee room {{15}}</p>\n<p>16. warehouse {{16}}</p>\n<p>17. staff canteen {{17}}</p>\n<p>18. meeting room {{18}}</p>\n<p>19. meeting room {{19}}</p>\n<p>20. board room {{20}}</p>",
+          "fcHtml": "<p>coffee room {{15}}</p>\n<p>warehouse {{16}}</p>\n<p>staff canteen {{17}}</p>\n<p>meeting room {{18}}</p>\n<p>meeting room {{19}}</p>\n<p>board room {{20}}</p>",
           "fcInstr": "Questions 15-20 Label the map below. Write the correct letter, A-J, next to Questions 15-20.",
-          "fcAnswers": {
-            "15": "H",
-            "16": "C",
-            "17": "G",
-            "18": "B",
-            "19": "I",
-            "20": "A"
-          },
+          "fcAnswers": {},
           "blanks": [
             {
               "num": 15,
-              "answer": "H"
+              "answer": ""
             },
             {
               "num": 16,
-              "answer": "C"
+              "answer": ""
             },
             {
               "num": 17,
-              "answer": "G"
+              "answer": ""
             },
             {
               "num": 18,
-              "answer": "B"
+              "answer": ""
             },
             {
               "num": 19,
-              "answer": "I"
+              "answer": ""
             },
             {
               "num": 20,
-              "answer": "A"
+              "answer": ""
             }
           ],
           "fcFrom": 15,
@@ -231,10 +213,7 @@
             "the projects done in previous years",
             "the handouts with research sources"
           ],
-          "answers": [
-            "C",
-            "E"
-          ]
+          "answers": []
         },
         {
           "type": "ct2",
@@ -251,10 +230,7 @@
             "by providing a timeline and a mind map",
             "by making their notes more evaluative"
           ],
-          "answers": [
-            "B",
-            "E"
-          ]
+          "answers": []
         },
         {
           "type": "match",
@@ -275,32 +251,32 @@
             {
               "num": "25",
               "label": "Falcon (Landseer)",
-              "answer": "D"
+              "answer": ""
             },
             {
               "num": "26",
               "label": "Fish hawk (Audubon)",
-              "answer": "C"
+              "answer": ""
             },
             {
               "num": "27",
               "label": "Kingfisher (van Gogh)",
-              "answer": "A"
+              "answer": ""
             },
             {
               "num": "28",
               "label": "Portrait of William Wells",
-              "answer": "H"
+              "answer": ""
             },
             {
               "num": "29",
               "label": "Vairumati (Gauguin)",
-              "answer": "F"
+              "answer": ""
             },
             {
               "num": "30",
               "label": "Portrait of Giovanni de Medici",
-              "answer": "G"
+              "answer": ""
             }
           ]
         }
@@ -310,60 +286,49 @@
           "type": "fc",
           "part": "",
           "instr": "",
-          "fcHtml": "<h2><center>Stoicism</center></h2>\n\n<p>Stoicism is still relevant today because of its 31{{31}} appeal.</p>\n<h3>Ancient Stoics</h3>\n<p.• Stoicism was founded over 2,000 years ago in Greece.</p>\n</p>• The Stoics' ideas are surprisingly well known, despite not being intended for 32{{32}}.</p><br>\n<h3>Stoic principles</h3>\n<p>• Happiness could be achieved by leading a virtuous life.</p>\n<p>• Controlling emotions was essential.</p>\n<p>• Epictetus said that external events cannot be controlled but the 33{{33}} people make in response can be controlled.</p>\n<p>• A Stoic is someone who has a different view on experiences which others would consider as 34{{34}} .</p><br>\n\n<h3>The influence of Stoicism</h3>\n<p>• George Washington organised a 35{{35}} about Cato to motivate\nhis men.</p>\n<p>• The French artist Delacroix was a Stoic.</p>\n<p>• Adam Smith's ideas on 36{{36}} were influenced by Stoicism.</p>\n<p>• Some of today's political leaders are inspired by the Stoics.</p>\n<p>• Cognitive Behaviour Therapy (CBT)</p>\n<p>- the treatment for 37{{37}} is based on ideas from Stoicism\n- people learn to base their thinking on 38{{38}}.\n<p>• In business, people benefit from Stoicism by identifying obstacles as 39{{39}}.</p><br>\n<h3>Relevance of Stoicism</h3>\n<p>• It requires a lot of 40{{40}} but Stoicism can help people to lead a good life.</p>\n<p>• It teaches people that having a strong character is more important than anything else.</p>",
+          "fcHtml": "<h2><center>Stoicism</center></h2>\n\n<p>Stoicism is still relevant today because of its {{31}} appeal.</p>\n<h3>Ancient Stoics</h3>\n<p.• Stoicism was founded over 2,000 years ago in Greece.</p>\n</p>• The Stoics' ideas are surprisingly well known, despite not being intended for {{32}}.</p><br>\n<h3>Stoic principles</h3>\n<p>• Happiness could be achieved by leading a virtuous life.</p>\n<p>• Controlling emotions was essential.</p>\n<p>• Epictetus said that external events cannot be controlled but the {{33}} people make in response can be controlled.</p>\n<p>• A Stoic is someone who has a different view on experiences which others would consider as {{34}} .</p><br>\n\n<h3>The influence of Stoicism</h3>\n<p>• George Washington organised a {{35}} about Cato to motivate\nhis men.</p>\n<p>• The French artist Delacroix was a Stoic.</p>\n<p>• Adam Smith's ideas on {{36}} were influenced by Stoicism.</p>\n<p>• Some of today's political leaders are inspired by the Stoics.</p>\n<p>• Cognitive Behaviour Therapy (CBT)</p>\n<p>- the treatment for {{37}} is based on ideas from Stoicism\n- people learn to base their thinking on {{38}}.\n<p>• In business, people benefit from Stoicism by identifying obstacles as {{39}}.</p><br>\n<h3>Relevance of Stoicism</h3>\n<p>• It requires a lot of {{40}} but Stoicism can help people to lead a good life.</p>\n<p>• It teaches people that having a strong character is more important than anything else.</p>",
           "fcInstr": "",
-          "fcAnswers": {
-            "31": "practical",
-            "32": "publication",
-            "33": "choices",
-            "34": "negative",
-            "35": "play",
-            "36": "capitalism",
-            "37": "depression",
-            "38": "logic",
-            "39": "opportunity",
-            "40": "practice"
-          },
+          "fcAnswers": {},
           "blanks": [
             {
               "num": 31,
-              "answer": "practical"
+              "answer": ""
             },
             {
               "num": 32,
-              "answer": "publication"
+              "answer": ""
             },
             {
               "num": 33,
-              "answer": "choices"
+              "answer": ""
             },
             {
               "num": 34,
-              "answer": "negative"
+              "answer": ""
             },
             {
               "num": 35,
-              "answer": "play"
+              "answer": ""
             },
             {
               "num": 36,
-              "answer": "capitalism"
+              "answer": ""
             },
             {
               "num": 37,
-              "answer": "depression"
+              "answer": ""
             },
             {
               "num": 38,
-              "answer": "logic"
+              "answer": ""
             },
             {
               "num": 39,
-              "answer": "opportunity"
+              "answer": ""
             },
             {
               "num": 40,
-              "answer": "practice"
+              "answer": ""
             }
           ],
           "fcFrom": 31,
@@ -407,7 +372,7 @@
           "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
           "qNum": 1,
           "qText": "Polar bears suffer from various health problems due to the build-up of fat under their skin.",
-          "answer": "FALSE"
+          "answer": ""
         },
         {
           "type": "tfng",
@@ -415,7 +380,7 @@
           "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
           "qNum": 2,
           "qText": "The study done by Liu and his colleagues compared different groups of polar bears.",
-          "answer": "FALSE"
+          "answer": ""
         },
         {
           "type": "tfng",
@@ -423,7 +388,7 @@
           "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
           "qNum": 3,
           "qText": "Liu and colleagues were the first researchers to compare polar bears and brown bears genetically.",
-          "answer": "NOT GIVEN"
+          "answer": ""
         },
         {
           "type": "tfng",
@@ -431,70 +396,63 @@
           "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
           "qNum": 4,
           "qText": "Polar bears are able to control their levels of 'bad' cholesterol by genetic means.",
-          "answer": "TRUE"
+          "answer": ""
         },
         {
           "type": "tfng",
           "part": "",
           "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
-          "qNum": 5,
+          "qNum": 4,
           "qText": "Female polar bears are able to survive for about six months without food.",
-          "answer": "TRUE"
+          "answer": ""
         },
         {
           "type": "tfng",
           "part": "",
           "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
-          "qNum": 6,
+          "qNum": 4,
           "qText": "It was found that the bones ·of female polar bears were very weak when they came out of their dens in spring.",
-          "answer": "FALSE"
+          "answer": ""
         },
         {
           "type": "tfng",
           "part": "",
           "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
-          "qNum": 7,
+          "qNum": 4,
           "qText": "The polar bear's mechanism for increasing bone density could also be used by people one day.",
-          "answer": "TRUE"
+          "answer": ""
         },
         {
           "type": "fc",
           "part": "",
           "instr": "Complete the table below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.",
-          "fcHtml": "<h2><center>Reasons why polar bears should be protected</center></h2><br>\n<p>People think of bears as unintelligent and 8{{8}}</p>\n<p>However, this may not be correct. For example:</p>\n<p>• In Tennoji Zoo, a bear has been seen using a branch as a 9{{9}}</p>\n<p>This allowed him to knock down some 10{{10}}</p>\n<p>• A wild polar bear worked out a method of reaching a platform where a 11{{11}} was located.</p>\n<p>• Polar bears have displayed behaviour such as conscious manipulation of objects and activity similar to a 12{{12}}</p><br>\n<p>Bears may also display emotions. For example:</p>\n<p>• They may make movements suggesting 13{{13}} if disappointed\nwhen hunting.</p>\n<p>• They may form relationships with other species.</p>",
+          "fcHtml": "<h2><center>Reasons why polar bears should be protected</center></h2><br>\n<p>People think of bears as unintelligent and {{8}}</p>\n<p>However, this may not be correct. For example:</p>\n<p>• In Tennoji Zoo, a bear has been seen using a branch as a {{9}}</p>\n<p>This allowed him to knock down some {{10}}</p>\n<p>• A wild polar bear worked out a method of reaching a platform where a {{11}} was located.</p>\n<p>• Polar bears have displayed behaviour such as conscious manipulation of objects and activity similar to a {{12}}</p><br>\n<p>Bears may also display emotions. For example:</p>\n<p>• They may make movements suggesting {{13}} if disappointed\nwhen hunting.</p>\n<p>• They may form relationships with other species.</p>",
           "fcInstr": "Complete the table below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.",
-          "fcAnswers": {
-            "8": "violent",
-            "9": "tool",
-            "10": "meat",
-            "11": "photographer",
-            "12": "game",
-            "13": "frustration"
-          },
+          "fcAnswers": {},
           "blanks": [
             {
               "num": 8,
-              "answer": "violent"
+              "answer": ""
             },
             {
               "num": 9,
-              "answer": "tool"
+              "answer": ""
             },
             {
               "num": 10,
-              "answer": "meat"
+              "answer": ""
             },
             {
               "num": 11,
-              "answer": "photographer"
+              "answer": ""
             },
             {
               "num": 12,
-              "answer": "game"
+              "answer": ""
             },
             {
               "num": 13,
-              "answer": "frustration"
+              "answer": ""
             }
           ],
           "fcFrom": 8,
@@ -522,37 +480,37 @@
             {
               "num": "14",
               "label": "Paragraph A",
-              "answer": "D"
+              "answer": ""
             },
             {
               "num": "15",
               "label": "Paragraph B",
-              "answer": "G"
+              "answer": ""
             },
             {
               "num": "16",
               "label": "Paragraph C",
-              "answer": "B"
+              "answer": ""
             },
             {
               "num": "17",
               "label": "Paragraph D",
-              "answer": "E"
+              "answer": ""
             },
             {
               "num": "18",
               "label": "Paragraph E",
-              "answer": "A"
+              "answer": ""
             },
             {
               "num": "19",
               "label": "Paragraph F",
-              "answer": "H"
+              "answer": ""
             },
             {
               "num": "20",
               "label": "Paragraph G",
-              "answer": "F"
+              "answer": ""
             }
           ]
         },
@@ -560,30 +518,25 @@
           "type": "fc",
           "part": "Part 2",
           "instr": "Questions 21-24 Complete the notes below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 21-24 on your answer sheet.",
-          "fcHtml": "<h2><center>The Step Pyramid of Djoser</center></h2>\n\n<p>The complex that includes the Step Pyramid and its surroundings is considered to be as big as an Egyptian 21{{21}} of the past. The area outside the pyramid included accommodation that was occupied by 22{{22}} along with many other buildings and features. </p><br>\n\n<p>A wall ran around the outside of the complex and a number of false entrances were built into this. In addition, a long 23{{23}} encircled the wall. As a result, any visitors who had not been invited were cleverly prevented from entering the pyramid grounds unless they knew the 24{{24}}of the real entrance.</p>\n",
+          "fcHtml": "<h2><center>The Step Pyramid of Djoser</center></h2>\n\n<p>The complex that includes the Step Pyramid and its surroundings is considered to be as big as an Egyptian {{21}} of the past. The area outside the pyramid included accommodation that was occupied by {{22}} along with many other buildings and features. </p><br>\n\n<p>A wall ran around the outside of the complex and a number of false entrances were built into this. In addition, a long {{23}} encircled the wall. As a result, any visitors who had not been invited were cleverly prevented from entering the pyramid grounds unless they knew the {{24}}of the real entrance.</p>\n",
           "fcInstr": "Questions 21-24 Complete the notes below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 21-24 on your answer sheet.",
-          "fcAnswers": {
-            "21": "city",
-            "22": "priests",
-            "23": "trench",
-            "24": "location"
-          },
+          "fcAnswers": {},
           "blanks": [
             {
               "num": 21,
-              "answer": "city"
+              "answer": ""
             },
             {
               "num": 22,
-              "answer": "priests"
+              "answer": ""
             },
             {
               "num": 23,
-              "answer": "trench"
+              "answer": ""
             },
             {
               "num": 24,
-              "answer": "location"
+              "answer": ""
             }
           ],
           "fcFrom": 21,
@@ -604,10 +557,7 @@
             "A few of his possessions were still in his tomb when archaeologists found it.",
             "He criticised the design and construction of other pyramids in Egypt."
           ],
-          "answers": [
-            "B",
-            "D"
-          ]
+          "answers": []
         }
       ],
       "3": [
@@ -623,7 +573,7 @@
             "the proportion of the world's labour force who will have jobs in Al in the future.",
             "the difference between ways that embodied and disembodied Al will impact on workers."
           ],
-          "answer": "B"
+          "answer": ""
         },
         {
           "type": "mc",
@@ -637,7 +587,7 @@
             "It is the main reason why the production sector is declining.",
             "It is a key factor driving current developments in the workplace."
           ],
-          "answer": "D"
+          "answer": ""
         },
         {
           "type": "mc",
@@ -651,7 +601,7 @@
             "staff making sure that Al produces the results that they want",
             "staff allowing Arto carry out tasks they ought to do themselves"
           ],
-          "answer": "C"
+          "answer": ""
         },
         {
           "type": "mc",
@@ -665,36 +615,31 @@
             "highlights some differences between past and future job losses.",
             "illustrates how changes in the job market can be successfully handled."
           ],
-          "answer": "D"
+          "answer": ""
         },
         {
           "type": "fc",
           "part": "",
           "instr": "Write the correct Jetter, A-G, in boxes 31-34 on your answer sheet.",
-          "fcHtml": "<h2><center>The 'algorithmication' of jobs</center></h2><br>\n\n<p>Stella Pachidi of Cambridge Judge Business School has been focusing on the 'algorithmication' of jobs which rely not on production but on 31{{31}}.</p><br>\n\n<p>While monitoring a telecommunications company, Pachidi observed a growing 32{{32}} on the recommendations made by Al, as workers begin to learn through the 'algorithm's eyes'. Meanwhile, staff are deterred from experimenting and using their own 33{{33}} and are therefore prevented from achieving innovation.</p><br>\n\n<p>To avoid the kind of situations which Pachidi observed, researchers are trying to make Al's decision-making process easier to comprehend, and to increase users'34{{34}} with regard to the technology.</p><br><hr>\n<p><strong>A pressure </strong></p>\n<p><strong>B satisfaction </strong></p>\n<p><strong>C intuition </strong></p>\n<p><strong>D promotion </strong></p>\n<p><strong>E reliance </strong></p>\n<p><strong>F confidence </strong></p>\n<p><strong>G information</strong></p>",
+          "fcHtml": "<h2><center>The 'algorithmication' of jobs</center></h2><br>\n\n<p>Stella Pachidi of Cambridge Judge Business School has been focusing on the 'algorithmication' of jobs which rely not on production but on {{31}}.</p><br>\n\n<p>While monitoring a telecommunications company, Pachidi observed a growing {{32}} on the recommendations made by Al, as workers begin to learn through the 'algorithm's eyes'. Meanwhile, staff are deterred from experimenting and using their own {{33}} and are therefore prevented from achieving innovation.</p><br>\n\n<p>To avoid the kind of situations which Pachidi observed, researchers are trying to make Al's decision-making process easier to comprehend, and to increase users'{{34}} with regard to the technology.</p><br><hr>\n<p><strong>A pressure </strong></p>\n<p><strong>B satisfaction </strong></p>\n<p><strong>C intuition </strong></p>\n<p><strong>D promotion </strong></p>\n<p><strong>E reliance </strong></p>\n<p><strong>F confidence </strong></p>\n<p><strong>G information</strong></p>",
           "fcInstr": "Write the correct Jetter, A-G, in boxes 31-34 on your answer sheet.",
-          "fcAnswers": {
-            "31": "g",
-            "32": "e",
-            "33": "c",
-            "34": "f"
-          },
+          "fcAnswers": {},
           "blanks": [
             {
               "num": 31,
-              "answer": "g"
+              "answer": ""
             },
             {
               "num": 32,
-              "answer": "e"
+              "answer": ""
             },
             {
               "num": 33,
-              "answer": "c"
+              "answer": ""
             },
             {
               "num": 34,
-              "answer": "f"
+              "answer": ""
             }
           ],
           "fcFrom": 31,
@@ -703,8 +648,8 @@
         {
           "type": "match",
           "part": "Part 3",
-          "instr": "Questions 35-40\nLook at the following statements (Questions 35-40) and the list of people below.",
-          "matchPrompt": "Match each statement with the correct person, A, B or C.\nWrite the correct letter, A, B or C, in boxes 35-40 on your answer sheet.\nNB You may use any letter more than once.",
+          "instr": "Questions 35-40\nLook at the following statements (Questions 35-40) and the list of people below.\nMatch each statement with the correct person, A, B or C.\nWrite the correct letter, A, B or C, in boxes 35-40 on your answer sheet.\nNB You may use any letter more than once.",
+          "matchPrompt": "LIST OF PEOPLE",
           "matchChoices": [
             "Stella Pachidi",
             "Hamish Low",
@@ -714,32 +659,32 @@
             {
               "num": "35",
               "label": "Greater levels of automation will not result in lower employment.",
-              "answer": "B"
+              "answer": ""
             },
             {
               "num": "36",
               "label": "There are several reasons why Al is appealing to businesses.",
-              "answer": "A"
+              "answer": ""
             },
             {
               "num": "37",
               "label": "Al's potential to transform people's lives has parallels with major cultural shifts which occurred in previous eras.",
-              "answer": "C"
+              "answer": ""
             },
             {
               "num": "38",
               "label": "It is important to be aware of the range of problems that Al causes.",
-              "answer": "A"
+              "answer": ""
             },
             {
               "num": "39",
               "label": "People are going to follow a less conventional career path than in the past.",
-              "answer": "B"
+              "answer": ""
             },
             {
               "num": "40",
               "label": "Authorities should take measures to ensure that there will be adequately paid work for everyone.",
-              "answer": "C"
+              "answer": ""
             }
           ]
         }
@@ -763,89 +708,20 @@
   },
   "answerKey": {
     "L": {
-      "1": "egg",
-      "2": "tower",
-      "3": "car",
-      "4": "animals",
-      "5": "bridge",
-      "6": "movie",
-      "7": "decorate",
-      "8": "Wednesdays",
-      "9": "Fradstone",
-      "10": "parking",
-      "11": "C",
-      "12": "A",
-      "13": "B",
-      "14": "C",
-      "15": "H",
-      "16": "C",
-      "17": "G",
-      "18": "B",
-      "19": "I",
-      "20": "A",
-      "21": "C",
-      "22": "E",
-      "23": "B",
-      "24": "E",
-      "25": "D",
-      "26": "C",
-      "27": "A",
-      "28": "H",
-      "29": "F",
-      "30": "G",
-      "31": "practical",
-      "32": "publication",
-      "33": "choices",
-      "34": "negative",
-      "35": "play",
-      "36": "capitalism",
-      "37": "depression",
-      "38": "logic",
-      "39": "opportunity",
-      "40": "practice"
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": "",
+      "10": ""
     },
-    "R": {
-      "1": "FALSE",
-      "2": "FALSE",
-      "3": "NOT GIVEN",
-      "4": "TRUE",
-      "5": "TRUE",
-      "6": "FALSE",
-      "7": "TRUE",
-      "8": "violent",
-      "9": "tool",
-      "10": "meat",
-      "11": "photographer",
-      "12": "game",
-      "13": "frustration",
-      "14": "D",
-      "15": "G",
-      "16": "B",
-      "17": "E",
-      "18": "A",
-      "19": "H",
-      "20": "F",
-      "21": "city",
-      "22": "priests",
-      "23": "trench",
-      "24": "location",
-      "27": "B",
-      "28": "D",
-      "29": "C",
-      "30": "D",
-      "31": "g",
-      "32": "e",
-      "33": "c",
-      "34": "f",
-      "35": "B",
-      "36": "A",
-      "37": "C",
-      "38": "A",
-      "39": "B",
-      "40": "C"
-    }
+    "R": {}
   },
-  "_driveURL": "https://raw.githubusercontent.com/danofthursday99/ielts-sim/refs/heads/main/configs/ielts_config.json",
+  "_driveURL": "",
   "_meta": {
     "setID": "SET-1781316892576",
     "setName": "asdasdasdasd",
