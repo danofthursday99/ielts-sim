@@ -8,12 +8,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@300;400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:100%}
   :root{
     --ink:#1a1a2e;--ink2:#4a4a6a;--ink3:#8888aa;
     --paper:#faf9f7;--paper2:#f2f0ec;--paper3:#e8e5df;
     --blue:#002f5f;--blue2:#1a5fa8;--gold:#c8a84b;
     --green:#2e7d4f;--red:#c0392b;--border:rgba(0,0,0,0.12);
   }
+  body.dark-mode{
+    --ink:#e8e8f0;--ink2:#b8b8d0;--ink3:#8888aa;
+    --paper:#1c1d2b;--paper2:#23243a;--paper3:#33344a;
+    --blue:#1a5fa8;--blue2:#3a7fd8;--gold:#d8b85f;
+    --green:#4caf6e;--red:#e05858;--border:rgba(255,255,255,0.12);
+  }
+  body.dark-mode{background:#15161f}
+  body.dark-mode input,body.dark-mode select{background:#23243a;color:var(--ink)}
+  .a11y-bar{position:fixed;top:16px;right:16px;z-index:5;display:flex;gap:6px;align-items:center}
+  .a11y-bar .fs-btn,.a11y-bar #dark-mode-toggle{background:var(--paper);border:1px solid var(--border);color:var(--ink2)}
+  .a11y-bar .fs-btn:hover,.a11y-bar #dark-mode-toggle:hover{background:var(--paper2)}
+  .font-size-ctrl{display:flex;gap:2px;align-items:center}
+  .fs-btn{padding:6px 12px;border-radius:5px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;line-height:1}
+  .fs-btn:first-child{border-radius:5px 0 0 5px}
+  .fs-btn:last-child{border-radius:0 5px 5px 0;border-left:none}
   body{font-family:'DM Sans',sans-serif;background:var(--paper2);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink)}
   body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--paper3) 1px,transparent 1px),linear-gradient(90deg,var(--paper3) 1px,transparent 1px);background-size:32px 32px;opacity:0.5;pointer-events:none;z-index:0}
   .card{position:relative;z-index:1;width:420px;background:var(--paper);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.08)}
@@ -68,6 +84,14 @@
 </style>
 </head>
 <body>
+
+<div class="a11y-bar">
+  <div class="font-size-ctrl">
+    <button class="fs-btn" onclick="changeFontSize(-1)">A−</button>
+    <button class="fs-btn" onclick="changeFontSize(1)">A+</button>
+  </div>
+  <button class="fs-btn" id="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
+</div>
 
 <div class="card">
   <div class="card-header">
@@ -213,7 +237,46 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOWjeZlhj3HWA9
 const API_KEY = 'ielts-sim-x7k2m9-change-me';
 const COUNTRIES = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
+// ══════════════════════════════════════
+// ACCESSIBILITY — FONT SIZE & DARK MODE
+// Shared preference keys across the whole site.
+// ══════════════════════════════════════
+const FONT_SCALE_STEPS = [85, 100, 115, 130, 145];
+let fontScaleIndex = 1;
+
+function initAccessibilityPrefs() {
+  const savedScale = parseInt(localStorage.getItem('ielts_font_scale'));
+  if (!isNaN(savedScale)) {
+    const idx = FONT_SCALE_STEPS.indexOf(savedScale);
+    fontScaleIndex = idx >= 0 ? idx : 1;
+  }
+  applyFontScale();
+  const darkOn = localStorage.getItem('ielts_dark_mode') === '1';
+  if (darkOn) {
+    document.body.classList.add('dark-mode');
+    const btn = document.getElementById('dark-mode-toggle');
+    if (btn) btn.textContent = '☀️';
+  }
+}
+function applyFontScale() {
+  document.documentElement.style.fontSize = FONT_SCALE_STEPS[fontScaleIndex] + '%';
+  localStorage.setItem('ielts_font_scale', FONT_SCALE_STEPS[fontScaleIndex]);
+}
+function changeFontSize(direction) {
+  const newIndex = fontScaleIndex + direction;
+  if (newIndex < 0 || newIndex >= FONT_SCALE_STEPS.length) return;
+  fontScaleIndex = newIndex;
+  applyFontScale();
+}
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('ielts_dark_mode', isDark ? '1' : '0');
+  const btn = document.getElementById('dark-mode-toggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+}
+
 window.onload = () => {
+  initAccessibilityPrefs();
   // Populate countries
   const sel = document.getElementById('nationality');
   COUNTRIES.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
@@ -256,13 +319,13 @@ function checkStrength(inp) {
 // ══════════════════════════════════════════════
 // SHEETS CALLER — uses JSONP to bypass CORS
 // ══════════════════════════════════════════════
-function callSheets(payload) {
+function callSheetsOnce(payload, timeoutMs) {
   return new Promise((resolve, reject) => {
     const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
     const timeout = setTimeout(() => {
       delete window[cbName];
-      reject(new Error('Request timed out'));
-    }, 15000);
+      reject(new Error('TIMEOUT'));
+    }, timeoutMs);
 
     window[cbName] = (data) => {
       clearTimeout(timeout);
@@ -270,17 +333,36 @@ function callSheets(payload) {
       resolve(data);
     };
 
-    const params = new URLSearchParams({ ...payload, callback: cbName });
+    const params = new URLSearchParams({ ...payload, key: API_KEY, callback: cbName });
     const script = document.createElement('script');
     script.src = APPS_SCRIPT_URL + '?' + params.toString();
     script.onerror = () => {
       clearTimeout(timeout);
       delete window[cbName];
-      reject(new Error('Network error'));
+      reject(new Error('NETWORK_ERROR'));
     };
     document.head.appendChild(script);
-    setTimeout(() => { try { document.head.removeChild(script); } catch(e){} }, 20000);
+    setTimeout(() => { try { document.head.removeChild(script); } catch(e){} }, timeoutMs + 5000);
   });
+}
+
+// Mobile networks (especially mobile data) can be slow to resolve the first
+// request. Use a longer timeout and retry once before giving up, so a single
+// slow DNS lookup or dropped packet doesn't block the whole login flow.
+async function callSheets(payload) {
+  try {
+    return await callSheetsOnce(payload, 25000);
+  } catch (e) {
+    if (e.message === 'TIMEOUT' || e.message === 'NETWORK_ERROR') {
+      // One retry with a fresh request — covers transient mobile network hiccups
+      try {
+        return await callSheetsOnce(payload, 25000);
+      } catch (e2) {
+        throw new Error('Could not reach the server after 2 attempts. Please check your internet connection and try again.');
+      }
+    }
+    throw e;
+  }
 }
 
 // ══════════════════════════════════════════════
