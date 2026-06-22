@@ -8,12 +8,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:100%}
   :root{
     --ink:#1a1a2e;--ink2:#4a4a6a;--ink3:#8888aa;
     --paper:#faf9f7;--paper2:#f2f0ec;--paper3:#e8e5df;
     --blue:#002f5f;--blue2:#1a5fa8;--gold:#c8a84b;
     --green:#2e7d4f;--red:#c0392b;--border:rgba(0,0,0,0.1);
   }
+  body.dark-mode{
+    --ink:#e8e8f0;--ink2:#b8b8d0;--ink3:#8888aa;
+    --paper:#1c1d2b;--paper2:#23243a;--paper3:#33344a;
+    --blue:#1a5fa8;--blue2:#3a7fd8;--gold:#d8b85f;
+    --green:#4caf6e;--red:#e05858;--border:rgba(255,255,255,0.1);
+  }
+  body.dark-mode{background:#15161f}
+  body.dark-mode .card{background:var(--paper)}
+  body.dark-mode input,body.dark-mode select,body.dark-mode textarea{background:#23243a;color:var(--ink);border-color:var(--paper3)}
+  body.dark-mode .trf-doc{background:#1c1d2b}
+
+  .font-size-ctrl{display:flex;gap:2px;align-items:center}
+  .fs-btn{padding:6px 12px;border:1px solid rgba(255,255,255,0.25);border-radius:5px;color:rgba(255,255,255,0.85);background:transparent;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;line-height:1}
+  .fs-btn:hover{background:rgba(255,255,255,0.12)}
+  .fs-btn:first-child{border-radius:5px 0 0 5px}
+  .fs-btn:last-child{border-radius:0 5px 5px 0;border-left:none}
   body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
 
   .hdr{background:var(--blue);color:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;border-bottom:3px solid var(--gold)}
@@ -182,7 +199,12 @@
     <div class="hdr-logo">IELTS <span>Academic</span></div>
     <div class="hdr-badge">Candidate Profile</div>
   </div>
-  <div style="display:flex;gap:10px">
+  <div style="display:flex;gap:10px;align-items:center">
+    <div class="font-size-ctrl">
+      <button class="fs-btn" onclick="changeFontSize(-1)">A−</button>
+      <button class="fs-btn" onclick="changeFontSize(1)">A+</button>
+    </div>
+    <button class="btn-hdr btn-logout" id="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
     <button class="btn-hdr btn-logout" onclick="window.location.href='index.html'">← Logout</button>
     <button class="btn-hdr btn-start" onclick="proceedToTest()">Start Test →</button>
   </div>
@@ -284,22 +306,80 @@ let candidateData = {};
 let myScores      = [];
 let settings      = {};
 
+// ══════════════════════════════════════
+// ACCESSIBILITY — FONT SIZE & DARK MODE
+// Shared preference keys with simulation.html/tests.html/index.html
+// so the setting carries over across the whole site.
+// ══════════════════════════════════════
+const FONT_SCALE_STEPS = [85, 100, 115, 130, 145];
+let fontScaleIndex = 1;
+
+function initAccessibilityPrefs() {
+  const savedScale = parseInt(localStorage.getItem('ielts_font_scale'));
+  if (!isNaN(savedScale)) {
+    const idx = FONT_SCALE_STEPS.indexOf(savedScale);
+    fontScaleIndex = idx >= 0 ? idx : 1;
+  }
+  applyFontScale();
+
+  const darkOn = localStorage.getItem('ielts_dark_mode') === '1';
+  if (darkOn) {
+    document.body.classList.add('dark-mode');
+    const btn = document.getElementById('dark-mode-toggle');
+    if (btn) btn.textContent = '☀️';
+  }
+}
+function applyFontScale() {
+  document.documentElement.style.fontSize = FONT_SCALE_STEPS[fontScaleIndex] + '%';
+  localStorage.setItem('ielts_font_scale', FONT_SCALE_STEPS[fontScaleIndex]);
+}
+function changeFontSize(direction) {
+  const newIndex = fontScaleIndex + direction;
+  if (newIndex < 0 || newIndex >= FONT_SCALE_STEPS.length) return;
+  fontScaleIndex = newIndex;
+  applyFontScale();
+}
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('ielts_dark_mode', isDark ? '1' : '0');
+  const btn = document.getElementById('dark-mode-toggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+}
+
 // ─── JSONP ───
-function callSheets(payload) {
+function callSheetsOnce(payload, timeoutMs) {
   return new Promise((res,rej)=>{
     const cb='cb_'+Date.now()+'_'+Math.floor(Math.random()*9999);
-    const t=setTimeout(()=>{ delete window[cb]; rej(new Error('Timeout')); },15000);
+    const t=setTimeout(()=>{ delete window[cb]; rej(new Error('TIMEOUT')); },timeoutMs);
     window[cb]=(d)=>{ clearTimeout(t); delete window[cb]; res(d); };
     const s=document.createElement('script');
     s.src=APPS_SCRIPT_URL+'?'+new URLSearchParams({...payload,key:API_KEY,callback:cb});
-    s.onerror=()=>{ clearTimeout(t); delete window[cb]; rej(new Error('Network error')); };
+    s.onerror=()=>{ clearTimeout(t); delete window[cb]; rej(new Error('NETWORK_ERROR')); };
     document.head.appendChild(s);
-    setTimeout(()=>{ try{document.head.removeChild(s);}catch(e){} },20000);
+    setTimeout(()=>{ try{document.head.removeChild(s);}catch(e){} },timeoutMs+5000);
   });
+}
+
+// Mobile networks can be slow on the first request — retry once with a
+// longer timeout before surfacing an error.
+async function callSheets(payload) {
+  try {
+    return await callSheetsOnce(payload, 25000);
+  } catch (e) {
+    if (e.message === 'TIMEOUT' || e.message === 'NETWORK_ERROR') {
+      try {
+        return await callSheetsOnce(payload, 25000);
+      } catch (e2) {
+        throw new Error('Could not reach the server after 2 attempts. Please check your internet connection and try again.');
+      }
+    }
+    throw e;
+  }
 }
 
 // ─── INIT ───
 window.onload = async () => {
+  initAccessibilityPrefs();
   const raw = sessionStorage.getItem('candidateData');
   if (!raw) { window.location.href='index.html'; return; }
   candidateData = JSON.parse(raw);
