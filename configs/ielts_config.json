@@ -175,7 +175,7 @@
           "type": "fc",
           "part": "Part 2",
           "instr": "Questions 15-20 Label the map below. Write the correct letter, A-J, next to Questions 15-20.",
-          "fcHtml": "<p>15 coffee room {{15}}</p>\n<p>16 warehouse {{16}}</p>\n<p>17 staff canteen {{17}}</p>\n<p>18 meeting room {{18}}</p>\n<p>19meeting room {{19}}</p>\n<p>20 board room {{20}}</p>",
+          "fcHtml": "<p>15. coffee room {{15}}</p>\n<p>16. warehouse {{16}}</p>\n<p>17. staff canteen {{17}}</p>\n<p>18. meeting room {{18}}</p>\n<p>19. meeting room {{19}}</p>\n<p>20. board room {{20}}</p>",
           "fcInstr": "Questions 15-20 Label the map below. Write the correct letter, A-J, next to Questions 15-20.",
           "fcAnswers": {
             "15": "H",
@@ -461,7 +461,7 @@
           "type": "fc",
           "part": "",
           "instr": "Complete the table below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.",
-          "fcHtml": "<h2><center>Reasons why polar bears should be protected</center></h2><br>\n<p>People think of bears as unintelligent and {{8}}</p>\n<p>However, this may not be correct. For example:</p>\n<p>• In Tennoji Zoo, a bear has been seen using a branch as a {{9}}</p>\n<p>This allowed him to knock down some {{10}}</p>\n<p>• A wild polar bear worked out a method of reaching a platform where a {{11}} was located.</p>\n<p>• Polar bears have displayed behaviour such as conscious manipulation of objects and activity similar to a {{12}}</p><br>\n<p>Bears may also display emotions. For example:</p>\n<p>• They may make movements suggesting {{13}} if disappointed\nwhen hunting.</p>\n<p>• They may form relationships with other species.</p>",
+          "fcHtml": "<h2><center>Reasons why polar bears should be protected</center></h2><br>\n<p>People think of bears as unintelligent and 8{{8}}</p>\n<p>However, this may not be correct. For example:</p>\n<p>• In Tennoji Zoo, a bear has been seen using a branch as a 9{{9}}</p>\n<p>This allowed him to knock down some 10{{10}}</p>\n<p>• A wild polar bear worked out a method of reaching a platform where a 11{{11}} was located.</p>\n<p>• Polar bears have displayed behaviour such as conscious manipulation of objects and activity similar to a 12{{12}}</p><br>\n<p>Bears may also display emotions. For example:</p>\n<p>• They may make movements suggesting 13{{13}} if disappointed\nwhen hunting.</p>\n<p>• They may form relationships with other species.</p>",
           "fcInstr": "Complete the table below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.",
           "fcAnswers": {
             "8": "violent",
@@ -560,7 +560,7 @@
           "type": "fc",
           "part": "Part 2",
           "instr": "Questions 21-24 Complete the notes below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 21-24 on your answer sheet.",
-          "fcHtml": "<h2><center>The Step Pyramid of Djoser</center></h2>\n\n<p>The complex that includes the Step Pyramid and its surroundings is considered to be as big as an Egyptian {{21}} of the past. The area outside the pyramid included accommodation that was occupied by {{22}} along with many other buildings and features. </p><br>\n\n<p>A wall ran around the outside of the complex and a number of false entrances were built into this. In addition, a long {{23}} encircled the wall. As a result, any visitors who had not been invited were cleverly prevented from entering the pyramid grounds unless they knew the {{24}}of the real entrance.</p>\n",
+          "fcHtml": "<h2><center>The Step Pyramid of Djoser</center></h2>\n\n<p>The complex that includes the Step Pyramid and its surroundings is considered to be as big as an Egyptian 21{{21}} of the past. The area outside the pyramid included accommodation that was occupied by 22{{22}} along with many other buildings and features. </p><br>\n\n<p>A wall ran around the outside of the complex and a number of false entrances were built into this. In addition, a long 23{{23}} encircled the wall. As a result, any visitors who had not been invited were cleverly prevented from entering the pyramid grounds unless they knew the 24{{24}}of the real entrance.</p>\n",
           "fcInstr": "Questions 21-24 Complete the notes below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 21-24 on your answer sheet.",
           "fcAnswers": {
             "21": "city",
@@ -671,7 +671,7 @@
           "type": "fc",
           "part": "",
           "instr": "Write the correct Jetter, A-G, in boxes 31-34 on your answer sheet.",
-          "fcHtml": "<h2><center>The 'algorithmication' of jobs</center></h2><br>\n\n<p>Stella Pachidi of Cambridge Judge Business School has been focusing on the 'algorithmication' of jobs which rely not on production but on {{31}}.</p><br>\n\n<p>While monitoring a telecommunications company, Pachidi observed a growing {{32}} on the recommendations made by Al, as workers begin to learn through the 'algorithm's eyes'. Meanwhile, staff are deterred from experimenting and using their own {{33}} and are therefore prevented from achieving innovation.</p><br>\n\n<p>To avoid the kind of situations which Pachidi observed, researchers are trying to make Al's decision-making process easier to comprehend, and to increase users'{{34}} with regard to the technology.</p><br><hr>\n<p><strong>A pressure </strong></p>\n<p><strong>B satisfaction </strong></p>\n<p><strong>C intuition </strong></p>\n<p><strong>D promotion </strong></p>\n<p><strong>E reliance </strong></p>\n<p><strong>F confidence </strong></p>\n<p><strong>G information</strong></p>",
+          "fcHtml": "<h2><center>The 'algorithmication' of jobs</center></h2><br>\n\n<p>Stella Pachidi of Cambridge Judge Business School has been focusing on the 'algorithmication' of jobs which rely not on production but on 31{{31}}.</p><br>\n\n<p>While monitoring a telecommunications company, Pachidi observed a growing 32{{32}} on the recommendations made by Al, as workers begin to learn through the 'algorithm's eyes'. Meanwhile, staff are deterred from experimenting and using their own 33{{33}} and are therefore prevented from achieving innovation.</p><br>\n\n<p>To avoid the kind of situations which Pachidi observed, researchers are trying to make Al's decision-making process easier to comprehend, and to increase users'34{{34}} with regard to the technology.</p><br><hr>\n<p><strong>A pressure </strong></p>\n<p><strong>B satisfaction </strong></p>\n<p><strong>C intuition </strong></p>\n<p><strong>D promotion </strong></p>\n<p><strong>E reliance </strong></p>\n<p><strong>F confidence </strong></p>\n<p><strong>G information</strong></p>",
           "fcInstr": "Write the correct Jetter, A-G, in boxes 31-34 on your answer sheet.",
           "fcAnswers": {
             "31": "g",
