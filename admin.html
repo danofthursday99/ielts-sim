@@ -261,6 +261,26 @@
   .extra-qs-title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
   .add-extra-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border:1px dashed var(--blue2);border-radius:7px;font-size:0.82rem;font-weight:600;color:var(--blue2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;width:100%;justify-content:center}
   .add-extra-btn:hover{background:#f0f5ff}
+
+  /* AI GENERATOR */
+  .ai-q-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;position:relative}
+  .ai-q-card.selected{border-color:var(--green);background:#f5fbf7}
+  .ai-q-card-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .ai-q-type-badge{background:#e8f0ff;color:var(--blue);border:1px solid #c0d0f0;border-radius:5px;padding:2px 9px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase}
+  .ai-q-text{font-size:0.86rem;color:var(--ink);margin-bottom:8px;line-height:1.5}
+  .ai-q-opts{margin-bottom:8px}
+  .ai-q-opt{font-size:0.82rem;color:var(--ink2);margin:2px 0;padding-left:16px}
+  .ai-q-ans{display:inline-block;background:#f5fbf7;border:1px solid #a8dbb8;color:var(--green);border-radius:5px;padding:2px 10px;font-size:0.78rem;font-weight:600}
+  .ai-q-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .ai-q-chk{position:absolute;top:12px;right:12px;width:18px;height:18px;accent-color:var(--green);cursor:pointer}
+
+  /* Q BANK */
+  .qbank-card{background:#fff;border:1px solid var(--border);border-radius:9px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
+  .qbank-body{flex:1;min-width:0}
+  .qbank-text{font-size:0.85rem;color:var(--ink);margin-bottom:4px;line-height:1.5}
+  .qbank-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .qbank-tag{font-size:0.68rem;background:var(--paper2);border-radius:4px;padding:1px 7px;color:var(--ink3);font-weight:600}
+  .qbank-actions{display:flex;gap:5px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -314,7 +334,10 @@
     <!-- LISTENING PANEL -->
     <div id="p-listening" class="panel active">
       <div class="panel-title">Listening Section</div>
-      <div class="panel-desc">Upload audio files and manage questions for each section.</div>
+      <div class="panel-desc" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <span>Upload audio files and manage questions for each section.</span>
+        <button class="btn-add-q-modal" onclick="openAIGen('L',null)" style="margin:0;border-color:var(--gold);color:var(--gold);padding:7px 16px">✨ AI Generate Questions</button>
+      </div>
 
       <div class="section-tabs">
         <button class="sec-tab active" onclick="showLSec(1,this)">Section 1 (Q1–10)</button>
@@ -343,7 +366,10 @@
         <div class="card">
           <div class="card-title">Questions 1–13</div>
           <div id="R-qs-1">
-            <button class="btn-add-q-modal" onclick="qmOpen('R',1)">+ Add Question</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+              <button class="btn-add-q-modal" onclick="qmOpen('R',1)" style="margin:0">+ Add Question</button>
+              <button class="btn-add-q-modal" onclick="openAIGen('R',1)" style="margin:0;border-color:var(--gold);color:var(--gold)">✨ AI Generate</button>
+            </div>
             <div id="qlist-R-1" class="qlist"></div>
           </div>
         </div>
@@ -353,7 +379,10 @@
         <div class="card">
           <div class="card-title">Questions 14–26</div>
           <div id="R-qs-2">
-            <button class="btn-add-q-modal" onclick="qmOpen('R',2)">+ Add Question</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+              <button class="btn-add-q-modal" onclick="qmOpen('R',2)" style="margin:0">+ Add Question</button>
+              <button class="btn-add-q-modal" onclick="openAIGen('R',2)" style="margin:0;border-color:var(--gold);color:var(--gold)">✨ AI Generate</button>
+            </div>
             <div id="qlist-R-2" class="qlist"></div>
           </div>
         </div>
@@ -363,7 +392,10 @@
         <div class="card">
           <div class="card-title">Questions 27–40</div>
           <div id="R-qs-3">
-            <button class="btn-add-q-modal" onclick="qmOpen('R',3)">+ Add Question</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+              <button class="btn-add-q-modal" onclick="qmOpen('R',3)" style="margin:0">+ Add Question</button>
+              <button class="btn-add-q-modal" onclick="openAIGen('R',3)" style="margin:0;border-color:var(--gold);color:var(--gold)">✨ AI Generate</button>
+            </div>
             <div id="qlist-R-3" class="qlist"></div>
           </div>
         </div>
@@ -536,6 +568,16 @@
           <span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:#8888aa;display:inline-block"></span>Offline</span>
         </div>
 
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <div style="position:relative;flex:1;max-width:320px">
+            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.9rem;pointer-events:none">🔍</span>
+            <input type="text" id="monitor-search" placeholder="Search name or Candidate ID…"
+              oninput="filterMonitor()"
+              style="width:100%;padding:8px 12px 8px 32px;border:1px solid var(--paper3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.84rem;background:var(--paper2)">
+          </div>
+          <span id="monitor-count-label" style="font-size:0.78rem;color:var(--ink3);white-space:nowrap"></span>
+        </div>
+
         <div id="monitor-wrap"><div class="tbl-empty">Click Refresh to load live candidate status.</div></div>
       </div>
 
@@ -595,12 +637,21 @@
       <div class="panel-title">Registered Candidates</div>
       <div class="panel-desc">Live list of all registered candidates from Google Sheets.</div>
       <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
           <div class="card-title" style="margin:0">Candidates List</div>
-          <div style="display:flex;align-items:center;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             <span class="sheets-status" id="cand-status"></span>
             <button class="refresh-btn" onclick="loadCandidates()">🔄 Refresh</button>
           </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <div style="position:relative;flex:1;max-width:340px">
+            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.9rem;pointer-events:none">🔍</span>
+            <input type="text" id="cand-search" placeholder="Search name or Candidate ID…"
+              oninput="filterCandidates()"
+              style="width:100%;padding:8px 12px 8px 32px;border:1px solid var(--paper3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.84rem;background:var(--paper2)">
+          </div>
+          <span id="cand-count-label" style="font-size:0.78rem;color:var(--ink3);white-space:nowrap"></span>
         </div>
         <div id="cand-table-wrap">
           <div class="tbl-empty">Click Refresh to load candidates from Google Sheets.</div>
@@ -613,13 +664,22 @@
       <div class="panel-title">Test Scores</div>
       <div class="panel-desc">Live scores of all submitted tests from Google Sheets.</div>
       <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
           <div class="card-title" style="margin:0">Scores List</div>
-          <div style="display:flex;align-items:center;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             <span class="sheets-status" id="scores-status"></span>
             <button class="refresh-btn" onclick="loadScores()">🔄 Refresh</button>
             <button class="btn btn-gold" onclick="exportScoresPDF()" style="padding:6px 14px;font-size:0.8rem">📄 Export PDF</button>
           </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <div style="position:relative;flex:1;max-width:340px">
+            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.9rem;pointer-events:none">🔍</span>
+            <input type="text" id="scores-search" placeholder="Search name or Candidate ID…"
+              oninput="filterScores()"
+              style="width:100%;padding:8px 12px 8px 32px;border:1px solid var(--paper3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.84rem;background:var(--paper2)">
+          </div>
+          <span id="scores-count-label" style="font-size:0.78rem;color:var(--ink3);white-space:nowrap"></span>
         </div>
         <div id="scores-table-wrap">
           <div class="tbl-empty">Click Refresh to load scores from Google Sheets.</div>
@@ -856,6 +916,129 @@
   </div>
 </div>
 
+    <!-- QUESTIONNAIRE MAKER PANEL -->
+    <div id="p-qmaker" class="panel">
+      <div class="panel-title">🧠 Questionnaire Maker</div>
+      <div class="panel-desc">AI-powered tools to build questions fast — generate from a passage, import via CSV, or browse the question bank.</div>
+
+      <!-- TOOL CARDS -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px">
+        <div class="card" style="cursor:pointer;transition:all 0.2s;border:2px solid transparent" onclick="showPanel('p-qbank')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='transparent'">
+          <div style="font-size:2rem;margin-bottom:10px">🗄️</div>
+          <div style="font-weight:700;color:var(--blue);margin-bottom:4px">Question Bank</div>
+          <div style="font-size:0.82rem;color:var(--ink3)">Save, search, and reuse questions across test sets.</div>
+        </div>
+        <div class="card" style="cursor:pointer;transition:all 0.2s;border:2px solid transparent" onclick="openAIGen(null,null)" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='transparent'">
+          <div style="font-size:2rem;margin-bottom:10px">✨</div>
+          <div style="font-weight:700;color:var(--blue);margin-bottom:4px">AI Generator</div>
+          <div style="font-size:0.82rem;color:var(--ink3)">Paste a passage → Claude generates IELTS-style questions automatically.</div>
+        </div>
+        <div class="card" style="cursor:pointer;transition:all 0.2s;border:2px solid transparent" onclick="openCSVImport()" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='transparent'">
+          <div style="font-size:2rem;margin-bottom:10px">📥</div>
+          <div style="font-weight:700;color:var(--blue);margin-bottom:4px">Bulk CSV Import</div>
+          <div style="font-size:0.82rem;color:var(--ink3)">Upload a spreadsheet of questions to add them all at once.</div>
+        </div>
+      </div>
+
+      <!-- CSV IMPORT SECTION -->
+      <div class="card" id="csv-import-card" style="display:none">
+        <div class="card-title">📥 Bulk Import via CSV</div>
+        <div style="background:var(--paper2);border-radius:8px;padding:14px;font-size:0.83rem;color:var(--ink2);line-height:1.9;margin-bottom:14px">
+          <b style="color:var(--blue)">CSV Format:</b> Each row = one question.<br>
+          Required columns: <code>type, text, optionA, optionB, optionC, optionD, answer, section, part</code><br>
+          <b>type</b> options: <code>mc</code>, <code>tfng</code>, <code>short</code>, <code>fc</code><br>
+          <b>section</b>: <code>R</code> (Reading) or <code>L</code> (Listening) | <b>part</b>: <code>1</code>, <code>2</code>, or <code>3</code>
+        </div>
+        <div class="field">
+          <label>Download Template</label>
+          <button class="btn btn-ghost" onclick="downloadCSVTemplate()" style="padding:7px 14px;font-size:0.82rem">⬇ Download CSV Template</button>
+        </div>
+        <div class="field">
+          <label>Upload CSV File</label>
+          <input type="file" accept=".csv" onchange="handleCSVUpload(this)" style="font-size:0.83rem">
+        </div>
+        <div id="csv-preview-wrap" style="display:none">
+          <div style="font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px">Preview (<span id="csv-count">0</span> questions)</div>
+          <div style="overflow-x:auto;margin-bottom:14px">
+            <table class="sheets-table" id="csv-preview-tbl">
+              <thead><tr><th>#</th><th>Type</th><th>Question Text</th><th>Answer</th><th>Section</th><th>Part</th></tr></thead>
+              <tbody id="csv-preview-body"></tbody>
+            </table>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-green" onclick="importCSVQuestions()">✅ Import All Questions</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('csv-preview-wrap').style.display='none'">Cancel</button>
+          </div>
+          <div id="csv-import-status" style="margin-top:8px;font-size:0.83rem;display:none"></div>
+        </div>
+        <button class="btn btn-ghost" onclick="document.getElementById('csv-import-card').style.display='none'" style="margin-top:12px">✕ Close</button>
+      </div>
+    </div>
+
+    <!-- QUESTION BANK PANEL -->
+    <div id="p-qbank" class="panel">
+      <div class="panel-title">🗄️ Question Bank</div>
+      <div class="panel-desc">Your library of saved questions. Add any question here to reuse it across test sets.</div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+          <div class="card-title" style="margin:0">Saved Questions</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input type="text" id="qbank-search" placeholder="Search questions..." oninput="renderQBank()"
+              style="padding:7px 12px;border:1px solid var(--paper3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.84rem;width:200px">
+            <select id="qbank-filter-type" onchange="renderQBank()"
+              style="padding:7px 10px;border:1px solid var(--paper3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.82rem">
+              <option value="">All Types</option>
+              <option value="mc">Multiple Choice</option>
+              <option value="tfng">True/False/NG</option>
+              <option value="short">Short Answer</option>
+              <option value="fc">Form Completion</option>
+              <option value="match">Matching</option>
+            </select>
+            <button class="btn btn-blue" onclick="openAddToBank()" style="padding:7px 14px;font-size:0.82rem">+ Add Question</button>
+          </div>
+        </div>
+        <div id="qbank-wrap"><div class="tbl-empty">No questions in the bank yet. Add questions or generate them with AI.</div></div>
+      </div>
+
+      <!-- Add to Bank Form -->
+      <div class="card" id="qbank-add-card" style="display:none">
+        <div class="card-title">Add Question to Bank</div>
+        <div class="row2">
+          <div class="field">
+            <label>Question Type</label>
+            <select id="qbank-type">
+              <option value="mc">Multiple Choice</option>
+              <option value="tfng">True / False / Not Given</option>
+              <option value="short">Short Answer</option>
+              <option value="fc">Form Completion</option>
+              <option value="match">Matching</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Tags (comma-separated)</label>
+            <input type="text" id="qbank-tags" placeholder="e.g. reading, academic, environment">
+          </div>
+        </div>
+        <div class="field">
+          <label>Question Text</label>
+          <textarea id="qbank-qtext" placeholder="Enter the question..." style="min-height:70px"></textarea>
+        </div>
+        <div class="field">
+          <label>Options (one per line — for MC/TFNG)</label>
+          <textarea id="qbank-opts" placeholder="Option A&#10;Option B&#10;Option C&#10;Option D" style="min-height:80px"></textarea>
+        </div>
+        <div class="field">
+          <label>Correct Answer</label>
+          <input type="text" id="qbank-ans" placeholder="e.g. A or TRUE or the exact word">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-green" onclick="saveToBank()">💾 Save to Bank</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('qbank-add-card').style.display='none'">Cancel</button>
+        </div>
+      </div>
+    </div>
+
 <!-- QUESTION MODAL -->
 <div class="qm-overlay" id="qm-overlay">
   <div class="qm-box">
@@ -894,6 +1077,72 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- AI GENERATOR MODAL -->
+<div class="qm-overlay" id="ai-gen-overlay">
+  <div class="qm-box" style="width:660px">
+    <button class="qm-close" onclick="closeAIGen()">×</button>
+    <div class="qm-title">✨ AI Question Generator</div>
+    <p style="font-size:0.82rem;color:var(--ink2);margin-bottom:16px;line-height:1.6">
+      Paste a passage or topic below. Claude will generate IELTS-style questions. Review them, then add to your test or Question Bank.
+    </p>
+
+    <div id="ai-gen-step1">
+      <div class="qm-field">
+        <label>Test Section</label>
+        <select id="ai-gen-section">
+          <option value="R">Reading</option>
+          <option value="L">Listening</option>
+        </select>
+      </div>
+      <div class="qm-field">
+        <label>Question Types to Generate</label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+          <label style="display:flex;align-items:center;gap:5px;font-size:0.83rem"><input type="checkbox" id="ai-t-mc" checked style="accent-color:var(--blue)"> Multiple Choice</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:0.83rem"><input type="checkbox" id="ai-t-tfng" checked style="accent-color:var(--blue)"> True/False/NG</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:0.83rem"><input type="checkbox" id="ai-t-short" style="accent-color:var(--blue)"> Short Answer</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:0.83rem"><input type="checkbox" id="ai-t-fc" style="accent-color:var(--blue)"> Form Completion</label>
+        </div>
+      </div>
+      <div class="qm-field">
+        <label>Number of Questions to Generate</label>
+        <select id="ai-gen-count">
+          <option value="3">3 questions</option>
+          <option value="5" selected>5 questions</option>
+          <option value="8">8 questions</option>
+          <option value="10">10 questions</option>
+        </select>
+      </div>
+      <div class="qm-field">
+        <label>Passage / Context Text</label>
+        <textarea id="ai-gen-passage" style="min-height:160px;resize:vertical;line-height:1.6" placeholder="Paste your reading passage or listening transcript here. The AI will base questions on this text.&#10;&#10;You can also type a topic (e.g. 'climate change and renewable energy') and the AI will create appropriate questions."></textarea>
+      </div>
+      <button class="qm-save-btn" id="ai-gen-btn" onclick="runAIGenerate()" style="background:linear-gradient(135deg,var(--blue),var(--blue2))">✨ Generate Questions</button>
+    </div>
+
+    <!-- Loading state -->
+    <div id="ai-gen-loading" style="display:none;text-align:center;padding:40px 20px">
+      <div class="spinner" style="border-top-color:var(--gold)"></div>
+      <div style="font-size:0.88rem;color:var(--ink2);margin-top:10px" id="ai-gen-loading-msg">Claude is generating questions...</div>
+    </div>
+
+    <!-- Results -->
+    <div id="ai-gen-results" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--green)">✅ <span id="ai-res-count">0</span> questions generated</div>
+        <button class="btn btn-ghost" onclick="resetAIGen()" style="padding:5px 12px;font-size:0.78rem">← Try Again</button>
+      </div>
+      <div id="ai-gen-cards"></div>
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn btn-green" onclick="addAllAIQuestions()">✅ Add All to Test</button>
+        <button class="btn btn-blue" onclick="saveAllAIToBank()">🗄️ Save All to Question Bank</button>
+        <button class="btn btn-ghost" onclick="closeAIGen()">Cancel</button>
+      </div>
+    </div>
+
+    <div id="ai-gen-error" style="display:none;background:#fff5f5;border:1px solid #f5b8b8;border-radius:8px;padding:14px;color:var(--red);font-size:0.84rem;margin-top:14px"></div>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════
 // APPS SCRIPT
@@ -922,6 +1171,9 @@ function callSheets(payload) {
 // ═══════════════════════════════════════
 // CANDIDATES — load from Sheets
 // ═══════════════════════════════════════
+let _candidateRows = [];
+let _scoreRows = [];
+
 async function loadCandidates() {
   const wrap = document.getElementById('cand-table-wrap');
   const status = document.getElementById('cand-status');
@@ -931,33 +1183,62 @@ async function loadCandidates() {
   try {
     const data = await callSheets({ action: 'getCandidates' });
     if (!data.success) throw new Error(data.message || 'Failed');
-    const rows = data.rows || [];
+    _candidateRows = data.rows || [];
     status.className = 'sheets-status ok';
-    status.textContent = `✅ ${rows.length} candidates`;
-    if (!rows.length) { wrap.innerHTML = '<div class="tbl-empty">No candidates registered yet.</div>'; return; }
-    let html = `<div style="overflow-x:auto"><table class="sheets-table">
-      <thead><tr>
-        <th>Candidate ID</th><th>Full Name</th><th>Date of Birth</th>
-        <th>Gender</th><th>Nationality</th><th>Registered</th><th>Last Login</th>
-      </tr></thead><tbody>`;
-    rows.forEach(r => {
-      html += `<tr>
-        <td><b>${escH(r[0])}</b></td>
-        <td>${escH(r[1])}</td>
-        <td>${escH(r[2])}</td>
-        <td>${escH(r[3])}</td>
-        <td>${escH(r[4])}</td>
-        <td style="font-size:0.78rem;color:var(--ink3)">${formatDate(r[6])}</td>
-        <td style="font-size:0.78rem;color:var(--ink3)">${formatDate(r[7])}</td>
-      </tr>`;
-    });
-    html += '</tbody></table></div>';
-    wrap.innerHTML = html;
+    status.textContent = `✅ ${_candidateRows.length} candidates`;
+    document.getElementById('cand-search').value = '';
+    renderCandidateTable(_candidateRows);
   } catch(e) {
     status.className = 'sheets-status err';
     status.textContent = '❌ Error';
     wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}<br><br>Make sure Code.gs is updated and redeployed.</div>`;
   }
+}
+
+function filterCandidates() {
+  const q = document.getElementById('cand-search').value.trim().toLowerCase();
+  const filtered = q
+    ? _candidateRows.filter(r => String(r[0]||'').toLowerCase().includes(q) || String(r[1]||'').toLowerCase().includes(q))
+    : _candidateRows;
+  renderCandidateTable(filtered, q);
+}
+
+function renderCandidateTable(rows, highlight) {
+  const wrap = document.getElementById('cand-table-wrap');
+  const label = document.getElementById('cand-count-label');
+  label.textContent = _candidateRows.length ? `${rows.length} of ${_candidateRows.length} shown` : '';
+
+  if (!rows.length) {
+    wrap.innerHTML = `<div class="tbl-empty">${_candidateRows.length ? '🔍 No candidates match your search.' : 'No candidates registered yet.'}</div>`;
+    return;
+  }
+
+  const hl = v => {
+    if (!highlight) return escH(v);
+    const s = String(v||'');
+    const idx = s.toLowerCase().indexOf(highlight.toLowerCase());
+    if (idx < 0) return escH(s);
+    return escH(s.slice(0,idx)) + `<mark style="background:var(--gold);color:var(--blue);border-radius:2px;padding:0 2px">${escH(s.slice(idx,idx+highlight.length))}</mark>` + escH(s.slice(idx+highlight.length));
+  };
+
+  let html = `<div style="overflow-x:auto"><table class="sheets-table">
+    <thead><tr>
+      <th>Candidate ID</th><th>Full Name</th><th>Date of Birth</th>
+      <th>Gender</th><th>Nationality</th><th>Registered</th><th>Last Login</th>
+    </tr></thead><tbody>`;
+  rows.forEach(r => {
+    html += `<tr>
+      <td><b>${hl(r[0])}</b></td>
+      <td>${hl(r[1])}</td>
+      <td>${escH(r[2])}</td>
+      <td>${escH(r[3])}</td>
+      <td>${escH(r[4])}</td>
+      <td style="font-size:0.78rem;color:var(--ink3)">${formatDate(r[6])}</td>
+      <td style="font-size:0.78rem;color:var(--ink3)">${formatDate(r[7])}</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  wrap.innerHTML = html;
 }
 
 // ═══════════════════════════════════════
@@ -972,40 +1253,70 @@ async function loadScores() {
   try {
     const data = await callSheets({ action: 'getScores' });
     if (!data.success) throw new Error(data.message || 'Failed');
-    const rows = data.rows || [];
+    _scoreRows = data.rows || [];
     status.className = 'sheets-status ok';
-    status.textContent = `✅ ${rows.length} submissions`;
-    if (!rows.length) { wrap.innerHTML = '<div class="tbl-empty">No scores submitted yet.</div>'; return; }
-    let html = `<div style="overflow-x:auto"><table class="sheets-table" id="scores-tbl">
-      <thead><tr>
-        <th>Date</th><th>Candidate ID</th><th>Full Name</th>
-        <th>Listening</th><th>L Band</th>
-        <th>Reading</th><th>R Band</th>
-        <th>W1 WC</th><th>W2 WC</th>
-      </tr></thead><tbody>`;
-    rows.forEach(r => {
-      const lBand = parseFloat(r[4])||0;
-      const rBand = parseFloat(r[6])||0;
-      const bandClass = b => b>=7?'band-high':b>=5.5?'band-mid':'band-low';
-      html += `<tr>
-        <td style="font-size:0.78rem;white-space:nowrap">${formatDate(r[0])}</td>
-        <td><b>${escH(r[1])}</b></td>
-        <td>${escH(r[2])}</td>
-        <td style="text-align:center"><b>${escH(String(r[3]))}</b>/40</td>
-        <td><span class="band-badge ${bandClass(lBand)}">${lBand}</span></td>
-        <td style="text-align:center"><b>${escH(String(r[5]))}</b>/40</td>
-        <td><span class="band-badge ${bandClass(rBand)}">${rBand}</span></td>
-        <td style="text-align:center">${escH(String(r[7]))}</td>
-        <td style="text-align:center">${escH(String(r[8]))}</td>
-      </tr>`;
-    });
-    html += '</tbody></table></div>';
-    wrap.innerHTML = html;
+    status.textContent = `✅ ${_scoreRows.length} submissions`;
+    document.getElementById('scores-search').value = '';
+    renderScoresTable(_scoreRows);
   } catch(e) {
     status.className = 'sheets-status err';
     status.textContent = '❌ Error';
     wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}<br><br>Make sure Code.gs is updated and redeployed.</div>`;
   }
+}
+
+function filterScores() {
+  const q = document.getElementById('scores-search').value.trim().toLowerCase();
+  const filtered = q
+    ? _scoreRows.filter(r => String(r[1]||'').toLowerCase().includes(q) || String(r[2]||'').toLowerCase().includes(q))
+    : _scoreRows;
+  renderScoresTable(filtered, q);
+}
+
+function renderScoresTable(rows, highlight) {
+  const wrap = document.getElementById('scores-table-wrap');
+  const label = document.getElementById('scores-count-label');
+  label.textContent = _scoreRows.length ? `${rows.length} of ${_scoreRows.length} shown` : '';
+
+  if (!rows.length) {
+    wrap.innerHTML = `<div class="tbl-empty">${_scoreRows.length ? '🔍 No scores match your search.' : 'No scores submitted yet.'}</div>`;
+    return;
+  }
+
+  const hl = v => {
+    if (!highlight) return escH(v);
+    const s = String(v||'');
+    const idx = s.toLowerCase().indexOf(highlight.toLowerCase());
+    if (idx < 0) return escH(s);
+    return escH(s.slice(0,idx)) + `<mark style="background:var(--gold);color:var(--blue);border-radius:2px;padding:0 2px">${escH(s.slice(idx,idx+highlight.length))}</mark>` + escH(s.slice(idx+highlight.length));
+  };
+
+  const bandClass = b => b>=7?'band-high':b>=5.5?'band-mid':'band-low';
+
+  let html = `<div style="overflow-x:auto"><table class="sheets-table" id="scores-tbl">
+    <thead><tr>
+      <th>Date</th><th>Candidate ID</th><th>Full Name</th>
+      <th>Listening</th><th>L Band</th>
+      <th>Reading</th><th>R Band</th>
+      <th>W1 WC</th><th>W2 WC</th>
+    </tr></thead><tbody>`;
+  rows.forEach(r => {
+    const lBand = parseFloat(r[4])||0;
+    const rBand = parseFloat(r[6])||0;
+    html += `<tr>
+      <td style="font-size:0.78rem;white-space:nowrap">${formatDate(r[0])}</td>
+      <td><b>${hl(r[1])}</b></td>
+      <td>${hl(r[2])}</td>
+      <td style="text-align:center"><b>${escH(String(r[3]))}</b>/40</td>
+      <td><span class="band-badge ${bandClass(lBand)}">${lBand}</span></td>
+      <td style="text-align:center"><b>${escH(String(r[5]))}</b>/40</td>
+      <td><span class="band-badge ${bandClass(rBand)}">${rBand}</span></td>
+      <td style="text-align:center">${escH(String(r[7]))}</td>
+      <td style="text-align:center">${escH(String(r[8]))}</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  wrap.innerHTML = html;
 }
 
 function formatDate(val) {
@@ -1120,6 +1431,10 @@ function showPanel(id) {
     const n = activeBtn ? ([...document.querySelectorAll('#p-reading .sec-tab')].indexOf(activeBtn) + 1) : 1;
     qmRenderList('R', n);
   }
+  // Auto-load Question Bank when navigating to it
+  if (id === 'p-qbank') renderQBank();
+  // Auto-load monitor
+  if (id === 'p-monitor' && !document.querySelector('#monitor-wrap table')) loadMonitor();
 }
 // ═══════════════════════════════════════
 // BUILD LISTENING SECTION HTML
@@ -1324,6 +1639,9 @@ function qmClose() {
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('qm-overlay').addEventListener('click', function(e) {
     if (e.target === document.getElementById('qm-overlay')) qmClose();
+  });
+  document.getElementById('ai-gen-overlay').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('ai-gen-overlay')) closeAIGen();
   });
 });
 
@@ -2605,9 +2923,11 @@ function initDrivePanel() {
 // ═══════════════════════════════════════
 // LIVE MONITOR
 // ═══════════════════════════════════════
+let _monitorCands = [];
+let _monitorScores = [];
 let monitorInterval = null;
-let allCandidateScores = [];
 let allCandidatesList = [];
+let allCandidateScores = [];
 
 function toggleAutoRefresh(on) {
   if (on) { monitorInterval = setInterval(loadMonitor, 10000); }
@@ -2621,94 +2941,114 @@ async function loadMonitor() {
   status.textContent = 'Fetching...';
 
   try {
-    // Load candidates + scores in parallel
     const [candData, scoresData] = await Promise.all([
       callSheets({ action: 'getCandidates' }),
       callSheets({ action: 'getScores' })
     ]);
 
-    const cands = (candData.success && candData.rows) ? candData.rows : [];
-    const scores = (scoresData.success && scoresData.rows) ? scoresData.rows : [];
-    allCandidatesList = cands;
-    allCandidateScores = scores;
+    _monitorCands  = (candData.success  && candData.rows)   ? candData.rows   : [];
+    _monitorScores = (scoresData.success && scoresData.rows) ? scoresData.rows : [];
+    allCandidatesList  = _monitorCands;
+    allCandidateScores = _monitorScores;
 
     status.className = 'sheets-status ok';
-    status.textContent = `✅ ${cands.length} candidates`;
+    status.textContent = `✅ ${_monitorCands.length} candidates`;
 
-    if (!cands.length) {
-      wrap.innerHTML = '<div class="tbl-empty">No candidates registered yet.</div>';
-      return;
-    }
-
-    const now = Date.now();
-
-    // Build a map: candidateID → most recent score row
-    const latestScore = {};
-    scores.forEach(r => {
-      const cid = r[1];
-      if (!latestScore[cid] || new Date(r[0]) > new Date(latestScore[cid][0])) {
-        latestScore[cid] = r;
-      }
-    });
-
-    // Determine online status from lastLogin (column 7 in candidates)
-    function getStatus(lastLoginStr) {
-      if (!lastLoginStr) return 'offline';
-      const diff = (now - new Date(lastLoginStr).getTime()) / 60000;
-      if (diff < 5) return 'online';
-      if (diff < 30) return 'recent';
-      return 'offline';
-    }
-
-    let html = `<div style="overflow-x:auto"><table class="sheets-table">
-      <thead><tr>
-        <th style="width:34px"></th>
-        <th>Candidate</th>
-        <th>Last Active</th>
-        <th>Tests Taken</th>
-        <th>Best Band</th>
-        <th>Current Status</th>
-        <th></th>
-      </tr></thead><tbody>`;
-
-    // Sort: online first, then recent, then offline
-    const sorted = [...cands].sort((a,b) => {
-      const rank = {online:0,recent:1,offline:2};
-      return rank[getStatus(a[7])] - rank[getStatus(b[7])];
-    });
-
-    sorted.forEach(r => {
-      const cid = r[0];
-      const st = getStatus(r[7]);
-      const dotCls = st === 'online' ? 'dot-online' : st === 'recent' ? 'dot-recent' : 'dot-offline';
-      const stLabel = st === 'online' ? '<span style="color:var(--green);font-weight:700">● Online</span>'
-                    : st === 'recent' ? '<span style="color:var(--gold);font-weight:700">◑ Recent</span>'
-                    : '<span style="color:var(--ink3)">○ Offline</span>';
-      const candScores = scores.filter(s => s[1] === cid);
-      const bestBand = candScores.reduce((max, s) => {
-        const b = parseFloat(s[8]||0); return b > max ? b : max; }, 0);
-      const bandCls = bestBand >= 7 ? 'band-high' : bestBand >= 5.5 ? 'band-mid' : bestBand > 0 ? 'band-low' : '';
-      const lastScoreRow = latestScore[cid];
-      const inProgress = st !== 'offline' && (!lastScoreRow || (new Date(r[7]) > new Date(lastScoreRow[0])));
-
-      html += `<tr class="monitor-row" onclick="openMonitorDetail('${escH(cid)}')">
-        <td><span class="online-dot ${dotCls}"></span></td>
-        <td><b>${escH(r[1])}</b><br><span style="font-size:0.73rem;color:var(--ink3)">${escH(cid)}</span></td>
-        <td style="font-size:0.78rem;color:var(--ink3)">${r[7] ? new Date(r[7]).toLocaleString('en-PH',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'}</td>
-        <td style="text-align:center">${candScores.length}</td>
-        <td><span class="band-badge ${bandCls}">${bestBand > 0 ? bestBand : '—'}</span></td>
-        <td>${stLabel}${inProgress&&st!=='offline' ? ' <span style="font-size:0.7rem;background:#e8f5e9;color:var(--green);padding:1px 6px;border-radius:4px;margin-left:4px">In Test</span>' : ''}</td>
-        <td><button class="refresh-btn" style="padding:4px 10px;font-size:0.75rem" onclick="event.stopPropagation();openMonitorDetail('${escH(cid)}')">View →</button></td>
-      </tr>`;
-    });
-
-    html += '</tbody></table></div>';
-    wrap.innerHTML = html;
+    document.getElementById('monitor-search').value = '';
+    renderMonitorTable(_monitorCands);
   } catch(e) {
     status.className = 'sheets-status err';
     status.textContent = '❌ Error';
     wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}</div>`;
   }
+}
+
+function filterMonitor() {
+  const q = document.getElementById('monitor-search').value.trim().toLowerCase();
+  const filtered = q
+    ? _monitorCands.filter(r => String(r[0]||'').toLowerCase().includes(q) || String(r[1]||'').toLowerCase().includes(q))
+    : _monitorCands;
+  renderMonitorTable(filtered, q);
+}
+
+function renderMonitorTable(cands, highlight) {
+  const wrap = document.getElementById('monitor-wrap');
+  const label = document.getElementById('monitor-count-label');
+  label.textContent = _monitorCands.length ? `${cands.length} of ${_monitorCands.length} shown` : '';
+
+  if (!cands.length) {
+    wrap.innerHTML = `<div class="tbl-empty">${_monitorCands.length ? '🔍 No candidates match your search.' : 'No candidates registered yet.'}</div>`;
+    return;
+  }
+
+  const hl = v => {
+    if (!highlight) return escH(v);
+    const s = String(v||'');
+    const idx = s.toLowerCase().indexOf(highlight.toLowerCase());
+    if (idx < 0) return escH(s);
+    return escH(s.slice(0,idx)) + `<mark style="background:var(--gold);color:var(--blue);border-radius:2px;padding:0 2px">${escH(s.slice(idx,idx+highlight.length))}</mark>` + escH(s.slice(idx+highlight.length));
+  };
+
+  const now = Date.now();
+  const scores = _monitorScores;
+
+  const latestScore = {};
+  scores.forEach(r => {
+    const cid = r[1];
+    if (!latestScore[cid] || new Date(r[0]) > new Date(latestScore[cid][0])) latestScore[cid] = r;
+  });
+
+  function getStatus(lastLoginStr) {
+    if (!lastLoginStr) return 'offline';
+    const diff = (now - new Date(lastLoginStr).getTime()) / 60000;
+    if (diff < 5) return 'online';
+    if (diff < 30) return 'recent';
+    return 'offline';
+  }
+
+  const sorted = [...cands].sort((a,b) => {
+    const rank = {online:0,recent:1,offline:2};
+    return rank[getStatus(a[7])] - rank[getStatus(b[7])];
+  });
+
+  let html = `<div style="overflow-x:auto"><table class="sheets-table">
+    <thead><tr>
+      <th style="width:34px"></th>
+      <th>Candidate</th>
+      <th>Last Active</th>
+      <th>Tests Taken</th>
+      <th>Best Band</th>
+      <th>Current Status</th>
+      <th></th>
+    </tr></thead><tbody>`;
+
+  sorted.forEach(r => {
+    const cid = r[0];
+    const st = getStatus(r[7]);
+    const dotCls = st==='online'?'dot-online':st==='recent'?'dot-recent':'dot-offline';
+    const stLabel = st==='online'
+      ? '<span style="color:var(--green);font-weight:700">● Online</span>'
+      : st==='recent'
+        ? '<span style="color:var(--gold);font-weight:700">◑ Recent</span>'
+        : '<span style="color:var(--ink3)">○ Offline</span>';
+    const candScores = scores.filter(s => s[1] === cid);
+    const bestBand = candScores.reduce((max,s) => { const b=parseFloat(s[8]||0); return b>max?b:max; }, 0);
+    const bandCls = bestBand>=7?'band-high':bestBand>=5.5?'band-mid':bestBand>0?'band-low':'';
+    const inProgress = st!=='offline' && (!latestScore[cid] || (new Date(r[7]) > new Date(latestScore[cid][0])));
+
+    html += `<tr class="monitor-row" onclick="openMonitorDetail('${escH(cid)}')">
+      <td><span class="online-dot ${dotCls}"></span></td>
+      <td><b>${hl(r[1])}</b><br><span style="font-size:0.73rem;color:var(--ink3)">${hl(cid)}</span></td>
+      <td style="font-size:0.78rem;color:var(--ink3)">${r[7] ? new Date(r[7]).toLocaleString('en-PH',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'}</td>
+      <td style="text-align:center">${candScores.length}</td>
+      <td><span class="band-badge ${bandCls}">${bestBand>0?bestBand:'—'}</span></td>
+      <td>${stLabel}${inProgress&&st!=='offline'?'<span style="font-size:0.7rem;background:#e8f5e9;color:var(--green);padding:1px 6px;border-radius:4px;margin-left:4px">In Test</span>':''}</td>
+      <td><button class="refresh-btn" style="padding:4px 10px;font-size:0.75rem" onclick="event.stopPropagation();openMonitorDetail('${escH(cid)}')">View →</button></td>
+    </tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  wrap.innerHTML = html;
 }
 
 function openMonitorDetail(cid) {
@@ -2883,6 +3223,406 @@ function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════
+// AI QUESTION GENERATOR
+// ═══════════════════════════════════════
+let aiGenTarget = { section: null, part: null };
+let aiGeneratedQuestions = [];
+
+function openAIGen(section, part) {
+  aiGenTarget = { section, part };
+  if (section) document.getElementById('ai-gen-section').value = section;
+  resetAIGen();
+  document.getElementById('ai-gen-overlay').classList.add('open');
+}
+function closeAIGen() {
+  document.getElementById('ai-gen-overlay').classList.remove('open');
+}
+function resetAIGen() {
+  document.getElementById('ai-gen-step1').style.display = '';
+  document.getElementById('ai-gen-loading').style.display = 'none';
+  document.getElementById('ai-gen-results').style.display = 'none';
+  document.getElementById('ai-gen-error').style.display = 'none';
+  aiGeneratedQuestions = [];
+}
+
+async function runAIGenerate() {
+  const passage = document.getElementById('ai-gen-passage').value.trim();
+  if (!passage) { alert('Please paste a passage or topic first.'); return; }
+
+  const section  = document.getElementById('ai-gen-section').value;
+  const count    = document.getElementById('ai-gen-count').value;
+  const wantMC   = document.getElementById('ai-t-mc').checked;
+  const wantTF   = document.getElementById('ai-t-tfng').checked;
+  const wantSA   = document.getElementById('ai-t-short').checked;
+  const wantFC   = document.getElementById('ai-t-fc').checked;
+
+  const types = [];
+  if (wantMC) types.push('Multiple Choice (mc)');
+  if (wantTF) types.push('True/False/Not Given (tfng)');
+  if (wantSA) types.push('Short Answer (short)');
+  if (wantFC) types.push('Form Completion (fc)');
+  if (!types.length) { alert('Please select at least one question type.'); return; }
+
+  document.getElementById('ai-gen-step1').style.display = 'none';
+  document.getElementById('ai-gen-loading').style.display = '';
+  document.getElementById('ai-gen-error').style.display = 'none';
+
+  const loadingMsgs = [
+    'Reading the passage carefully...',
+    'Identifying key facts and ideas...',
+    'Crafting IELTS-style questions...',
+    'Preparing answer options...'
+  ];
+  let mi = 0;
+  const msgEl = document.getElementById('ai-gen-loading-msg');
+  const msgInterval = setInterval(() => {
+    msgEl.textContent = loadingMsgs[mi++ % loadingMsgs.length];
+  }, 1800);
+
+  const prompt = `You are an expert IELTS examiner. Given the following passage or topic, generate exactly ${count} IELTS Academic ${section === 'R' ? 'Reading' : 'Listening'} questions.
+
+Question types to use (mix them proportionally): ${types.join(', ')}.
+
+For each question, output a JSON object with these fields:
+- type: "mc" | "tfng" | "short" | "fc"
+- text: the question or instruction stem
+- options: array of strings (for mc: 4 options A-D; for tfng: ["TRUE","FALSE","NOT GIVEN"]; for short/fc: [])
+- answer: the correct answer (for mc: "A"/"B"/"C"/"D"; for tfng: "TRUE"/"FALSE"/"NOT GIVEN"; for short/fc: the exact word/phrase)
+- explanation: one-sentence rationale for the answer
+
+Return ONLY a valid JSON array of question objects. No preamble, no markdown, no extra text.
+
+PASSAGE / TOPIC:
+${passage}`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await response.json();
+    clearInterval(msgInterval);
+
+    const raw = (data.content || []).map(c => c.text || '').join('');
+    const clean = raw.replace(/```json|```/g,'').trim();
+    let questions;
+    try { questions = JSON.parse(clean); }
+    catch(e) {
+      // Try to extract JSON array from response
+      const match = clean.match(/\[[\s\S]*\]/);
+      if (match) questions = JSON.parse(match[0]);
+      else throw new Error('Could not parse AI response as JSON.');
+    }
+
+    aiGeneratedQuestions = questions;
+    renderAIResults(questions);
+
+  } catch(e) {
+    clearInterval(msgInterval);
+    document.getElementById('ai-gen-loading').style.display = 'none';
+    document.getElementById('ai-gen-step1').style.display = '';
+    const errEl = document.getElementById('ai-gen-error');
+    errEl.style.display = '';
+    errEl.textContent = '❌ ' + e.message;
+  }
+}
+
+function renderAIResults(questions) {
+  document.getElementById('ai-gen-loading').style.display = 'none';
+  document.getElementById('ai-gen-results').style.display = '';
+  document.getElementById('ai-res-count').textContent = questions.length;
+
+  const container = document.getElementById('ai-gen-cards');
+  const typeLabels = { mc:'Multiple Choice', tfng:'True/False/NG', short:'Short Answer', fc:'Form Completion' };
+
+  container.innerHTML = questions.map((q, i) => `
+    <div class="ai-q-card selected" id="ai-qcard-${i}">
+      <input type="checkbox" class="ai-q-chk" id="ai-chk-${i}" checked>
+      <div class="ai-q-card-hdr">
+        <span class="q-num-badge">${i+1}</span>
+        <span class="ai-q-type-badge">${typeLabels[q.type]||q.type}</span>
+      </div>
+      <div class="ai-q-text">${escH(q.text)}</div>
+      ${(q.options&&q.options.length) ? `<div class="ai-q-opts">${q.options.map((o,j)=>`<div class="ai-q-opt"><b>${String.fromCharCode(65+j)}.</b> ${escH(o)}</div>`).join('')}</div>` : ''}
+      <div><span class="ai-q-ans">✓ ${escH(String(q.answer))}</span></div>
+      ${q.explanation ? `<div style="font-size:0.76rem;color:var(--ink3);margin-top:6px;font-style:italic">${escH(q.explanation)}</div>` : ''}
+      <div class="ai-q-actions">
+        <button class="btn btn-green" style="padding:5px 12px;font-size:0.76rem" onclick="addSingleAIQuestion(${i})">+ Add to Test</button>
+        <button class="btn btn-blue" style="padding:5px 12px;font-size:0.76rem" onclick="saveSingleAIToBank(${i})">🗄️ To Bank</button>
+      </div>
+    </div>
+  `).join('');
+
+  // Toggle selection on card click
+  questions.forEach((_, i) => {
+    const chk = document.getElementById('ai-chk-' + i);
+    chk.addEventListener('change', () => {
+      document.getElementById('ai-qcard-' + i).classList.toggle('selected', chk.checked);
+    });
+  });
+}
+
+function getCheckedAIQuestions() {
+  return aiGeneratedQuestions.filter((_, i) => {
+    const chk = document.getElementById('ai-chk-' + i);
+    return chk && chk.checked;
+  });
+}
+
+function addSingleAIQuestion(idx) {
+  const q = aiGeneratedQuestions[idx];
+  if (!q) return;
+  insertAIQuestionToTest([q]);
+}
+
+function addAllAIQuestions() {
+  const selected = getCheckedAIQuestions();
+  if (!selected.length) { alert('No questions selected.'); return; }
+  insertAIQuestionToTest(selected);
+  closeAIGen();
+}
+
+function insertAIQuestionToTest(questions) {
+  const section = aiGenTarget.section || document.getElementById('ai-gen-section').value;
+  const part    = aiGenTarget.part || 1;
+  if (!section) { alert('No section target set.'); return; }
+
+  questions.forEach(q => {
+    // Build a compatible question object for qStore
+    const qObj = {
+      id: 'q_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+      type: q.type,
+      part: 'AI Generated',
+      instr: '',
+      text: q.text,
+      options: (q.options||[]).map((o,i) => ({ letter: String.fromCharCode(65+i), text: o })),
+      answer: q.answer
+    };
+
+    // Push into the appropriate store
+    const key = section === 'R' ? `qstore_R_${part}` : `qstore_L_${part}`;
+    let store = JSON.parse(localStorage.getItem(key) || '[]');
+    store.push(qObj);
+    localStorage.setItem(key, JSON.stringify(store));
+  });
+
+  toast(`✅ ${questions.length} question(s) added to ${section === 'R' ? 'Reading' : 'Listening'} section`);
+
+  // Refresh the relevant question list if visible
+  if (typeof renderQList === 'function') {
+    try { renderQList(section, part); } catch(e) {}
+  }
+}
+
+// ═══════════════════════════════════════
+// QUESTION BANK
+// ═══════════════════════════════════════
+function loadQBank() { renderQBank(); }
+
+function getQBank() {
+  return JSON.parse(localStorage.getItem('ielts_qbank') || '[]');
+}
+function saveQBank(bank) {
+  localStorage.setItem('ielts_qbank', JSON.stringify(bank));
+}
+
+function renderQBank() {
+  const wrap = document.getElementById('qbank-wrap');
+  if (!wrap) return;
+  const bank = getQBank();
+  const search = (document.getElementById('qbank-search')?.value||'').toLowerCase();
+  const typeF  = document.getElementById('qbank-filter-type')?.value||'';
+
+  const filtered = bank.filter(q => {
+    const matchType = !typeF || q.type === typeF;
+    const matchSearch = !search || q.text.toLowerCase().includes(search) || (q.tags||[]).some(t=>t.includes(search));
+    return matchType && matchSearch;
+  });
+
+  if (!filtered.length) {
+    wrap.innerHTML = '<div class="tbl-empty">No questions found. Try adjusting your search or add new ones.</div>';
+    return;
+  }
+
+  const typeLabels = { mc:'MC', tfng:'TF/NG', short:'Short', fc:'FC', match:'Match' };
+  wrap.innerHTML = filtered.map((q, i) => `
+    <div class="qbank-card">
+      <div class="qbank-body">
+        <div class="qbank-text">${escH(q.text)}</div>
+        <div class="qbank-meta">
+          <span class="q-type-badge">${typeLabels[q.type]||q.type}</span>
+          ${(q.tags||[]).map(t=>`<span class="qbank-tag">${escH(t)}</span>`).join('')}
+          <span style="font-size:0.72rem;color:var(--ink3)">Ans: <b>${escH(String(q.answer||'—'))}</b></span>
+        </div>
+      </div>
+      <div class="qbank-actions">
+        <button class="btn btn-blue" style="padding:4px 10px;font-size:0.75rem" onclick="insertBankQToTest(${bank.indexOf(q)})">+ Add to Test</button>
+        <button class="delete-btn" onclick="deleteFromBank(${bank.indexOf(q)})">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAddToBank() {
+  document.getElementById('qbank-add-card').style.display = '';
+}
+
+function saveToBank(qObj) {
+  const bank = getQBank();
+  if (qObj) {
+    bank.push(qObj);
+  } else {
+    const type = document.getElementById('qbank-type').value;
+    const text = document.getElementById('qbank-qtext').value.trim();
+    const opts = document.getElementById('qbank-opts').value.trim().split('\n').filter(Boolean);
+    const ans  = document.getElementById('qbank-ans').value.trim();
+    const tags = document.getElementById('qbank-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+    if (!text) { alert('Please enter a question.'); return; }
+    bank.push({ id: 'qb_'+Date.now(), type, text, options: opts.map((o,i)=>({letter:String.fromCharCode(65+i),text:o})), answer: ans, tags, addedAt: new Date().toISOString() });
+    document.getElementById('qbank-add-card').style.display = 'none';
+    document.getElementById('qbank-qtext').value = '';
+    document.getElementById('qbank-opts').value = '';
+    document.getElementById('qbank-ans').value = '';
+    document.getElementById('qbank-tags').value = '';
+  }
+  saveQBank(bank);
+  renderQBank();
+  toast('🗄️ Saved to Question Bank!');
+}
+
+function deleteFromBank(idx) {
+  if (!confirm('Remove this question from the bank?')) return;
+  const bank = getQBank();
+  bank.splice(idx, 1);
+  saveQBank(bank);
+  renderQBank();
+  toast('🗑 Removed from bank');
+}
+
+function insertBankQToTest(idx) {
+  const bank = getQBank();
+  const q = bank[idx];
+  if (!q) return;
+  const section = prompt('Add to which section? (R = Reading, L = Listening)', 'R');
+  if (!section) return;
+  const part = parseInt(prompt('Which part/passage? (1, 2, or 3)', '1'))||1;
+  aiGenTarget = { section: section.toUpperCase(), part };
+  insertAIQuestionToTest([{ type: q.type, text: q.text, options: (q.options||[]).map(o=>o.text||o), answer: q.answer }]);
+}
+
+function saveSingleAIToBank(idx) {
+  const q = aiGeneratedQuestions[idx];
+  if (!q) return;
+  saveToBank({ id:'qb_'+Date.now(), type:q.type, text:q.text, options:(q.options||[]).map((o,i)=>({letter:String.fromCharCode(65+i),text:o})), answer:q.answer, tags:['ai-generated'], addedAt:new Date().toISOString() });
+}
+
+function saveAllAIToBank() {
+  const selected = getCheckedAIQuestions();
+  if (!selected.length) { alert('No questions selected.'); return; }
+  selected.forEach(q => {
+    saveToBank({ id:'qb_'+Date.now()+'_'+Math.random().toString(36).slice(2,4), type:q.type, text:q.text, options:(q.options||[]).map((o,i)=>({letter:String.fromCharCode(65+i),text:o})), answer:q.answer, tags:['ai-generated'], addedAt:new Date().toISOString() });
+  });
+  toast(`🗄️ ${selected.length} question(s) saved to Bank`);
+}
+
+// ═══════════════════════════════════════
+// BULK CSV IMPORT
+// ═══════════════════════════════════════
+function openCSVImport() {
+  document.getElementById('csv-import-card').style.display = '';
+  document.getElementById('csv-import-card').scrollIntoView({ behavior:'smooth' });
+}
+
+function downloadCSVTemplate() {
+  const header = 'type,text,optionA,optionB,optionC,optionD,answer,section,part';
+  const rows = [
+    'mc,"The passage states that renewable energy is","cheap","expensive","dangerous","unreliable","A","R","1"',
+    'tfng,"The author believes solar power is the only solution","","","","","TRUE","R","1"',
+    'short,"What year was the experiment conducted?","","","","","2019","R","2"',
+    'fc,"The river flows ___ km per hour","","","","","42","L","1"'
+  ];
+  const csv = [header, ...rows].join('\n');
+  const blob = new Blob([csv], { type:'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ielts_questions_template.csv';
+  a.click();
+}
+
+let csvParsedQuestions = [];
+
+function handleCSVUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result;
+    csvParsedQuestions = parseCSV(text);
+    renderCSVPreview(csvParsedQuestions);
+  };
+  reader.readAsText(file);
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',');
+  return lines.slice(1).map(line => {
+    const vals = [];
+    let inQ = false, cur = '';
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; continue; }
+      if (c === ',' && !inQ) { vals.push(cur); cur = ''; continue; }
+      cur += c;
+    }
+    vals.push(cur);
+    const obj = {};
+    headers.forEach((h,i) => obj[h.trim()] = (vals[i]||'').trim());
+    return obj;
+  }).filter(r => r.type && r.text);
+}
+
+function renderCSVPreview(rows) {
+  document.getElementById('csv-count').textContent = rows.length;
+  document.getElementById('csv-preview-wrap').style.display = '';
+  const tbody = document.getElementById('csv-preview-body');
+  tbody.innerHTML = rows.map((r,i) => `<tr>
+    <td>${i+1}</td>
+    <td><span class="q-type-badge">${escH(r.type)}</span></td>
+    <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escH(r.text)}</td>
+    <td><b>${escH(r.answer)}</b></td>
+    <td>${escH(r.section||'?')}</td>
+    <td>${escH(r.part||'?')}</td>
+  </tr>`).join('');
+}
+
+function importCSVQuestions() {
+  if (!csvParsedQuestions.length) return;
+  let added = 0;
+  csvParsedQuestions.forEach(r => {
+    const section = (r.section||'R').toUpperCase();
+    const part = parseInt(r.part)||1;
+    const key = `qstore_${section}_${part}`;
+    let store = JSON.parse(localStorage.getItem(key)||'[]');
+    const opts = ['optionA','optionB','optionC','optionD'].map((k,i)=>({letter:String.fromCharCode(65+i),text:r[k]||''})).filter(o=>o.text);
+    store.push({ id:'csv_'+Date.now()+'_'+added, type:r.type, part:'', instr:'', text:r.text, options:opts, answer:r.answer });
+    localStorage.setItem(key, JSON.stringify(store));
+    added++;
+  });
+  const statusEl = document.getElementById('csv-import-status');
+  statusEl.style.display = '';
+  statusEl.style.color = 'var(--green)';
+  statusEl.textContent = `✅ ${added} question(s) imported successfully!`;
+  toast(`📥 ${added} questions imported`);
+  setTimeout(() => { document.getElementById('csv-import-card').style.display = 'none'; }, 2000);
 }
 </script>
 </body>
