@@ -759,7 +759,7 @@ function renderQBlocksHTML(sec, blocks, sectionLabel) {
         b.fcLines.forEach(line => {
           const segsHTML = line.segments.map(s => {
             if (s.stype === 'blank') {
-              return `<input type="text" id="fc-inp-${sec}-${s.num}" class="fc-inline-input" oninput="markFCQ('${sec}',${s.num},this)" style="display:inline-block;border:none;border-bottom:2px solid var(--blue);background:var(--input-focus,#fff9c4);width:100px;padding:1px 4px;font-family:inherit;font-size:inherit;text-align:center;outline:none;color:var(--ink);border-radius:0;vertical-align:middle">`;
+              return `<input type="text" id="fc-inp-${sec}-${s.num}" value="" class="fc-inline-input" oninput="markFCQ('${sec}',${s.num},this)" style="display:inline-block;border:none;border-bottom:2px solid var(--blue);background:var(--input-focus,#fff9c4);width:100px;padding:1px 4px;font-family:inherit;font-size:inherit;text-align:center;outline:none;color:var(--ink);border-radius:0;vertical-align:middle">`;
             }
             return `<span>${escH(s.text||'')}</span>`;
           }).join(' ');
@@ -776,7 +776,7 @@ function renderQBlocksHTML(sec, blocks, sectionLabel) {
       // fcHtml template mode (legacy)
       if (b.fcHtml) {
         const rendered = b.fcHtml.replace(/\{\{(\d+)\}\}/g, (_, n) =>
-          `<input type="text" class="fc-inline-input" id="fc-inp-${sec}-${n}" oninput="markFCQ('${sec}',${n},this)" style="display:inline-block;border:none;border-bottom:2px solid var(--blue);background:var(--input-focus,#fff9c4);width:100px;padding:1px 4px;font-family:inherit;font-size:inherit;text-align:center;outline:none;color:var(--ink);border-radius:0;vertical-align:middle">`
+          `<input type="text" value="" class="fc-inline-input" id="fc-inp-${sec}-${n}" oninput="markFCQ('${sec}',${n},this)" style="display:inline-block;border:none;border-bottom:2px solid var(--blue);background:var(--input-focus,#fff9c4);width:100px;padding:1px 4px;font-family:inherit;font-size:inherit;text-align:center;outline:none;color:var(--ink);border-radius:0;vertical-align:middle">`
         );
         html += `<div class="fc-render" style="font-family:'Source Serif 4',serif;font-size:0.92rem;line-height:2.2">${rendered}</div>`;
         return;
