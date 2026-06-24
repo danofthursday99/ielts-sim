@@ -490,20 +490,27 @@ function initTimer() {
   }
 
   timeLeft = Math.max(0, Math.round((endTime - Date.now()) / 1000));
+
+  // Render immediately so display isn't stale on first tick
+  const timerEl = document.getElementById('timer');
+  function renderTimer() {
+    let h=Math.floor(timeLeft/3600),m=Math.floor((timeLeft%3600)/60),s=timeLeft%60;
+    timerEl.innerText=`${h}:${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+    if(timeLeft<=600)timerEl.className='timer warn';
+  }
+  renderTimer();
+
+  setInterval(()=>{
+    if(timeLeft<=0){ timerEl.innerText='0:00:00'; autoSubmitOnTimeUp(); return; }
+    timeLeft--;
+    renderTimer();
+    if(timeLeft<=0){ timerEl.innerText='0:00:00'; autoSubmitOnTimeUp(); }
+  },1000);
 }
 
 function clearTimerStorage() {
   try { localStorage.removeItem(getTimerStorageKey()); } catch(e) {}
 }
-
-const timerEl = document.getElementById('timer');
-setInterval(()=>{
-  if(timeLeft<=0)return; timeLeft--;
-  let h=Math.floor(timeLeft/3600),m=Math.floor((timeLeft%3600)/60),s=timeLeft%60;
-  timerEl.innerText=`${h}:${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
-  if(timeLeft<=600)timerEl.className='timer warn';
-  if(timeLeft<=0){ timerEl.innerText='0:00:00'; autoSubmitOnTimeUp(); }
-},1000);
 
 function autoSubmitOnTimeUp() {
   if (window._timeUpHandled) return;
