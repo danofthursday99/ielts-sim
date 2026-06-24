@@ -194,6 +194,18 @@
   .hidden{display:none!important}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
+  /* LIVE MONITOR */
+  .online-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+  .dot-online{background:#2e7d4f}
+  .dot-recent{background:#c8a84b}
+  .dot-offline{background:#8888aa}
+  .monitor-row{cursor:pointer}
+  .monitor-row:hover td{background:rgba(0,47,95,0.04)!important}
+  .prog-bar-wrap{background:var(--paper3);border-radius:4px;height:16px;overflow:hidden;flex:1}
+  .prog-bar-fill{height:100%;border-radius:4px;transition:width 0.5s ease;display:flex;align-items:center;padding-left:6px;font-size:0.65rem;font-weight:700;color:#fff;min-width:0}
+  .prog-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:0.78rem}
+  .prog-label{width:70px;flex-shrink:0;font-weight:600;color:var(--ink2)}
+
   /* FORM COMPLETION (answer-row, used by HTML-template FC question type) */
   .fc-answer-row{display:flex;align-items:center;gap:8px}
   .fc-answer-row label{font-size:0.78rem;font-weight:700;color:var(--blue);width:28px;flex-shrink:0}
@@ -281,8 +293,13 @@
     <div class="sb-section">Grading</div>
     <button class="sb-btn" onclick="showPanel('p-grading')"   id="sb-p-grading"><span class="sb-icon">✏️</span> Grade Writing</button>
     <div class="sb-section">Candidates</div>
+    <button class="sb-btn" onclick="showPanel('p-monitor')"    id="sb-p-monitor"><span class="sb-icon">🟢</span> Live Monitor</button>
     <button class="sb-btn" onclick="showPanel('p-candidates')" id="sb-p-candidates"><span class="sb-icon">👥</span> Candidates</button>
     <button class="sb-btn" onclick="showPanel('p-scores')"    id="sb-p-scores"><span class="sb-icon">📊</span> Scores</button>
+    <button class="sb-btn" onclick="showPanel('p-trf')"       id="sb-p-trf"><span class="sb-icon">📄</span> TRF Viewer</button>
+    <div class="sb-section">Questionnaire</div>
+    <button class="sb-btn" onclick="showPanel('p-qmaker')"    id="sb-p-qmaker"><span class="sb-icon">🧠</span> Q Maker</button>
+    <button class="sb-btn" onclick="showPanel('p-qbank')"     id="sb-p-qbank"><span class="sb-icon">🗄️</span> Question Bank</button>
     <div class="sb-section">Publish</div>
     <button class="sb-btn" onclick="showPanel('p-testsets')"  id="sb-p-testsets"><span class="sb-icon">📚</span> Test Sets</button>
     <button class="sb-btn" onclick="showPanel('p-publish')"   id="sb-p-publish"><span class="sb-icon">🚀</span> Publish</button>
@@ -492,6 +509,84 @@
           <button class="btn btn-green" onclick="exportAnswerSheetPDF()">📄 Export Answer Sheet</button>
           <button class="btn btn-gold" onclick="exportAnswerKeyPDF()">🗝️ Export Answer Key</button>
         </div>
+      </div>
+    </div>
+
+    <!-- LIVE MONITOR PANEL -->
+    <div id="p-monitor" class="panel">
+      <div class="panel-title">🟢 Live Monitor</div>
+      <div class="panel-desc">See who is currently online or recently active, track their test progress, and view submitted answers in real time.</div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="card-title" style="margin:0">Active &amp; Recent Candidates</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="sheets-status" id="monitor-status"></span>
+            <label style="font-size:0.78rem;color:var(--ink2);display:flex;align-items:center;gap:5px">
+              <input type="checkbox" id="monitor-auto" onchange="toggleAutoRefresh(this.checked)" style="accent-color:var(--green)"> Auto-refresh (10s)
+            </label>
+            <button class="refresh-btn" onclick="loadMonitor()">🔄 Refresh</button>
+          </div>
+        </div>
+
+        <!-- Online Indicator Legend -->
+        <div style="display:flex;gap:14px;margin-bottom:14px;font-size:0.75rem;flex-wrap:wrap">
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:#2e7d4f;display:inline-block"></span>Online now (&lt;5 min)</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:#c8a84b;display:inline-block"></span>Recently active (&lt;30 min)</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:#8888aa;display:inline-block"></span>Offline</span>
+        </div>
+
+        <div id="monitor-wrap"><div class="tbl-empty">Click Refresh to load live candidate status.</div></div>
+      </div>
+
+      <!-- Candidate Detail Drawer -->
+      <div class="card" id="monitor-detail-card" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="card-title" style="margin:0" id="monitor-detail-name">Candidate Detail</div>
+          <button class="btn btn-ghost" style="padding:5px 12px;font-size:0.78rem" onclick="document.getElementById('monitor-detail-card').style.display='none'">✕ Close</button>
+        </div>
+
+        <div id="monitor-detail-meta" style="background:var(--paper2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:0.83rem;color:var(--ink2);display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px"></div>
+
+        <!-- Progress Bars -->
+        <div style="margin-bottom:16px">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Test Progress</div>
+          <div id="monitor-progress-bars"></div>
+        </div>
+
+        <!-- Answers Table -->
+        <div>
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Submitted Answers</div>
+          <div id="monitor-answers-wrap"><div class="tbl-empty" style="padding:20px">No answers submitted yet.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRF VIEWER PANEL -->
+    <div id="p-trf" class="panel">
+      <div class="panel-title">📄 Test Result Forms</div>
+      <div class="panel-desc">View and print official Test Result Forms for any candidate and attempt.</div>
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="card-title" style="margin:0">Select Candidate &amp; Attempt</div>
+          <button class="refresh-btn" onclick="loadTRFCandidates()">🔄 Load Candidates</button>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px">
+          <div style="flex:1;min-width:180px">
+            <label style="display:block;font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:5px">Candidate</label>
+            <select id="trf-cand-sel" style="width:100%;padding:8px 12px;border:1px solid var(--paper3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.88rem" onchange="loadTRFAttempts()">
+              <option value="">— Click Load first —</option>
+            </select>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <label style="display:block;font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:5px">Attempt</label>
+            <select id="trf-attempt-sel" style="width:100%;padding:8px 12px;border:1px solid var(--paper3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.88rem" onchange="renderAdminTRF()">
+              <option value="">— Select attempt —</option>
+            </select>
+          </div>
+          <button class="btn btn-gold" onclick="window.print()" style="padding:8px 16px;font-size:0.82rem">🖨 Print TRF</button>
+        </div>
+        <div id="admin-trf-wrap"><div class="tbl-empty">Select a candidate and attempt above to view their TRF.</div></div>
       </div>
     </div>
 
@@ -2505,6 +2600,276 @@ function initDrivePanel() {
   callSheets({action:'getActiveSet'}).then(d=>{
     if(d.success&&d.set) toast('Active test set: '+d.set.setName);
   }).catch(()=>{});
+}
+
+// ═══════════════════════════════════════
+// LIVE MONITOR
+// ═══════════════════════════════════════
+let monitorInterval = null;
+let allCandidateScores = [];
+let allCandidatesList = [];
+
+function toggleAutoRefresh(on) {
+  if (on) { monitorInterval = setInterval(loadMonitor, 10000); }
+  else { clearInterval(monitorInterval); monitorInterval = null; }
+}
+
+async function loadMonitor() {
+  const wrap = document.getElementById('monitor-wrap');
+  const status = document.getElementById('monitor-status');
+  status.className = 'sheets-status';
+  status.textContent = 'Fetching...';
+
+  try {
+    // Load candidates + scores in parallel
+    const [candData, scoresData] = await Promise.all([
+      callSheets({ action: 'getCandidates' }),
+      callSheets({ action: 'getScores' })
+    ]);
+
+    const cands = (candData.success && candData.rows) ? candData.rows : [];
+    const scores = (scoresData.success && scoresData.rows) ? scoresData.rows : [];
+    allCandidatesList = cands;
+    allCandidateScores = scores;
+
+    status.className = 'sheets-status ok';
+    status.textContent = `✅ ${cands.length} candidates`;
+
+    if (!cands.length) {
+      wrap.innerHTML = '<div class="tbl-empty">No candidates registered yet.</div>';
+      return;
+    }
+
+    const now = Date.now();
+
+    // Build a map: candidateID → most recent score row
+    const latestScore = {};
+    scores.forEach(r => {
+      const cid = r[1];
+      if (!latestScore[cid] || new Date(r[0]) > new Date(latestScore[cid][0])) {
+        latestScore[cid] = r;
+      }
+    });
+
+    // Determine online status from lastLogin (column 7 in candidates)
+    function getStatus(lastLoginStr) {
+      if (!lastLoginStr) return 'offline';
+      const diff = (now - new Date(lastLoginStr).getTime()) / 60000;
+      if (diff < 5) return 'online';
+      if (diff < 30) return 'recent';
+      return 'offline';
+    }
+
+    let html = `<div style="overflow-x:auto"><table class="sheets-table">
+      <thead><tr>
+        <th style="width:34px"></th>
+        <th>Candidate</th>
+        <th>Last Active</th>
+        <th>Tests Taken</th>
+        <th>Best Band</th>
+        <th>Current Status</th>
+        <th></th>
+      </tr></thead><tbody>`;
+
+    // Sort: online first, then recent, then offline
+    const sorted = [...cands].sort((a,b) => {
+      const rank = {online:0,recent:1,offline:2};
+      return rank[getStatus(a[7])] - rank[getStatus(b[7])];
+    });
+
+    sorted.forEach(r => {
+      const cid = r[0];
+      const st = getStatus(r[7]);
+      const dotCls = st === 'online' ? 'dot-online' : st === 'recent' ? 'dot-recent' : 'dot-offline';
+      const stLabel = st === 'online' ? '<span style="color:var(--green);font-weight:700">● Online</span>'
+                    : st === 'recent' ? '<span style="color:var(--gold);font-weight:700">◑ Recent</span>'
+                    : '<span style="color:var(--ink3)">○ Offline</span>';
+      const candScores = scores.filter(s => s[1] === cid);
+      const bestBand = candScores.reduce((max, s) => {
+        const b = parseFloat(s[8]||0); return b > max ? b : max; }, 0);
+      const bandCls = bestBand >= 7 ? 'band-high' : bestBand >= 5.5 ? 'band-mid' : bestBand > 0 ? 'band-low' : '';
+      const lastScoreRow = latestScore[cid];
+      const inProgress = st !== 'offline' && (!lastScoreRow || (new Date(r[7]) > new Date(lastScoreRow[0])));
+
+      html += `<tr class="monitor-row" onclick="openMonitorDetail('${escH(cid)}')">
+        <td><span class="online-dot ${dotCls}"></span></td>
+        <td><b>${escH(r[1])}</b><br><span style="font-size:0.73rem;color:var(--ink3)">${escH(cid)}</span></td>
+        <td style="font-size:0.78rem;color:var(--ink3)">${r[7] ? new Date(r[7]).toLocaleString('en-PH',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'}</td>
+        <td style="text-align:center">${candScores.length}</td>
+        <td><span class="band-badge ${bandCls}">${bestBand > 0 ? bestBand : '—'}</span></td>
+        <td>${stLabel}${inProgress&&st!=='offline' ? ' <span style="font-size:0.7rem;background:#e8f5e9;color:var(--green);padding:1px 6px;border-radius:4px;margin-left:4px">In Test</span>' : ''}</td>
+        <td><button class="refresh-btn" style="padding:4px 10px;font-size:0.75rem" onclick="event.stopPropagation();openMonitorDetail('${escH(cid)}')">View →</button></td>
+      </tr>`;
+    });
+
+    html += '</tbody></table></div>';
+    wrap.innerHTML = html;
+  } catch(e) {
+    status.className = 'sheets-status err';
+    status.textContent = '❌ Error';
+    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}</div>`;
+  }
+}
+
+function openMonitorDetail(cid) {
+  const card = document.getElementById('monitor-detail-card');
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const cand = allCandidatesList.find(r => r[0] === cid);
+  const candScores = allCandidateScores.filter(r => r[1] === cid);
+
+  document.getElementById('monitor-detail-name').textContent = cand ? cand[1] + ' — Detail' : cid;
+
+  // Meta info
+  const meta = document.getElementById('monitor-detail-meta');
+  if (cand) {
+    meta.innerHTML = [
+      ['Candidate ID', cand[0]], ['Full Name', cand[1]], ['DOB', cand[2]],
+      ['Gender', cand[3]], ['Nationality', cand[4]], ['Registered', formatDate(cand[6])],
+      ['Last Active', cand[7] ? new Date(cand[7]).toLocaleString('en-PH') : '—']
+    ].map(([l,v]) => `<div style="background:#fff;border-radius:6px;padding:8px 10px;border:1px solid var(--paper3)">
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px">${l}</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--ink)">${escH(String(v||'—'))}</div>
+    </div>`).join('');
+  }
+
+  // Progress bars per section from latest submission
+  const latest = candScores[candScores.length - 1];
+  const progWrap = document.getElementById('monitor-progress-bars');
+  if (latest) {
+    const lScore = parseInt(latest[3])||0;
+    const rScore = parseInt(latest[5])||0;
+    const w1wc = parseInt(latest[7])||0;
+    const w2wc = parseInt(latest[9])||0;
+    progWrap.innerHTML = `
+      <div class="prog-row"><span class="prog-label">Listening</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:${(lScore/40)*100}%;background:var(--blue2)">${lScore}/40</div></div></div>
+      <div class="prog-row"><span class="prog-label">Reading</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:${(rScore/40)*100}%;background:var(--green)">${rScore}/40</div></div></div>
+      <div class="prog-row"><span class="prog-label">Writing T1</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:${Math.min((w1wc/150)*100,100)}%;background:var(--gold)">${w1wc} words</div></div></div>
+      <div class="prog-row"><span class="prog-label">Writing T2</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:${Math.min((w2wc/250)*100,100)}%;background:var(--gold)">${w2wc} words</div></div></div>
+    `;
+  } else {
+    progWrap.innerHTML = '<div style="color:var(--ink3);font-size:0.83rem">No completed attempts yet.</div>';
+  }
+
+  // Answers table — all submissions
+  const ansWrap = document.getElementById('monitor-answers-wrap');
+  if (!candScores.length) {
+    ansWrap.innerHTML = '<div class="tbl-empty" style="padding:20px">No answers submitted yet.</div>';
+    return;
+  }
+  let html = `<div style="overflow-x:auto"><table class="sheets-table">
+    <thead><tr><th>Date</th><th>Test Set</th><th>L Score</th><th>L Band</th><th>R Score</th><th>R Band</th><th>W1 WC</th><th>W2 WC</th><th>Overall</th></tr></thead><tbody>`;
+  candScores.forEach(r => {
+    const ob = parseFloat(r[8]||0);
+    const obCls = ob>=7?'band-high':ob>=5.5?'band-mid':ob>0?'band-low':'';
+    html += `<tr>
+      <td style="font-size:0.75rem;white-space:nowrap">${formatDate(r[0])}</td>
+      <td style="font-size:0.78rem">${escH(r[4]||'—')}</td>
+      <td style="text-align:center">${escH(String(r[3]||'—'))}/40</td>
+      <td><span class="band-badge">${escH(String(r[4+1-1]||'—'))}</span></td>
+      <td style="text-align:center">${escH(String(r[5]||'—'))}/40</td>
+      <td><span class="band-badge">${escH(String(r[6]||'—'))}</span></td>
+      <td style="text-align:center">${escH(String(r[7]||'—'))}</td>
+      <td style="text-align:center">${escH(String(r[9]||'—'))}</td>
+      <td><span class="band-badge ${obCls}">${ob||'Pending'}</span></td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  ansWrap.innerHTML = html;
+}
+
+// ═══════════════════════════════════════
+// TRF VIEWER (Admin)
+// ═══════════════════════════════════════
+let trfScoresData = [];
+
+async function loadTRFCandidates() {
+  const sel = document.getElementById('trf-cand-sel');
+  sel.innerHTML = '<option value="">⏳ Loading...</option>';
+  try {
+    const data = await callSheets({ action: 'getCandidates' });
+    const rows = (data.success && data.rows) ? data.rows : [];
+    sel.innerHTML = '<option value="">— Select candidate —</option>' +
+      rows.map(r => `<option value="${escH(r[0])}">${escH(r[1])} (${escH(r[0])})</option>`).join('');
+    // Pre-load all scores
+    const sd = await callSheets({ action: 'getScores' });
+    trfScoresData = (sd.success && sd.rows) ? sd.rows : [];
+    toast('✅ Loaded ' + rows.length + ' candidates');
+  } catch(e) {
+    sel.innerHTML = '<option value="">❌ Error loading — check connection</option>';
+  }
+}
+
+function loadTRFAttempts() {
+  const cid = document.getElementById('trf-cand-sel').value;
+  const sel = document.getElementById('trf-attempt-sel');
+  sel.innerHTML = '<option value="">— Select attempt —</option>';
+  document.getElementById('admin-trf-wrap').innerHTML = '<div class="tbl-empty">Select an attempt to view the TRF.</div>';
+  if (!cid) return;
+  const candScores = trfScoresData.filter(r => r[1] === cid);
+  candScores.forEach((r, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `Attempt ${i+1} — ${formatDate(r[0])} — Band ${r[8]||'Pending'}`;
+    sel.appendChild(opt);
+  });
+}
+
+function renderAdminTRF() {
+  const cid = document.getElementById('trf-cand-sel').value;
+  const idx = document.getElementById('trf-attempt-sel').value;
+  const wrap = document.getElementById('admin-trf-wrap');
+  if (!cid || idx === '') { wrap.innerHTML = '<div class="tbl-empty">Select a candidate and attempt.</div>'; return; }
+  const candScores = trfScoresData.filter(r => r[1] === cid);
+  const row = candScores[parseInt(idx)];
+  if (!row) { wrap.innerHTML = '<div class="tbl-empty">Attempt not found.</div>'; return; }
+
+  const lBand = row[4]||'—', rBand = row[6]||'—', wBand = row[11]||'—', sBand = row[13]||'—';
+  const overall = row[8]||'Pending';
+  const lScore = row[3]||'—', rScore = row[5]||'—';
+
+  wrap.innerHTML = `
+  <div class="trf-doc" style="max-width:700px;margin:0 auto">
+    <div style="background:var(--blue);height:8px"></div>
+    <div style="padding:28px 32px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:18px;border-bottom:2px solid var(--blue);margin-bottom:20px">
+        <div>
+          <div style="font-family:'Source Serif 4',serif;font-size:1.8rem;font-weight:600;color:var(--blue);line-height:1;margin-bottom:3px">IELTS <span style="color:var(--gold)">Academic</span></div>
+          <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px">Simulation Result</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);border:1px solid var(--border);padding:3px 10px;border-radius:3px;margin-bottom:8px">Test Result Form</div>
+          <div style="font-size:0.75rem;color:var(--ink3)">Date: <b>${escH(formatDate(row[0]))}</b></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #ddd;border-radius:4px;overflow:hidden;margin-bottom:18px">
+        ${[['Candidate ID',row[1]],['Full Name',row[2]],['Test Set',row[4]||'—'],['Submitted',formatDate(row[0])]]
+          .map(([l,v],i)=>`<div style="padding:9px 14px;${i%2===1?'border-right:none;':'border-right:1px solid #ddd;'}border-bottom:1px solid #ddd">
+            <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px">${l}</div>
+            <div style="font-size:0.9rem;color:var(--ink);font-weight:500">${escH(String(v||'—'))}</div>
+          </div>`).join('')}
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid #ddd;border-radius:4px;overflow:hidden;margin-bottom:18px;text-align:center">
+        ${[['Listening',lBand,lScore+'/40'],['Reading',rBand,rScore+'/40'],['Writing',wBand,''],['Speaking',sBand,''],['Overall',overall,'']].map(([label,band,raw],i)=>`
+        <div style="padding:14px 8px;${i<4?'border-right:1px solid #ddd':'background:var(--blue);color:#fff'}">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;${i===4?'color:rgba(255,255,255,0.6)':'color:var(--ink3)'};margin-bottom:8px">${label}</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:${i===4?'2.6rem':'2.2rem'};font-weight:600;${i===4?'color:var(--gold)':'color:var(--blue)'};line-height:1">${escH(String(band))}</div>
+          ${raw?`<div style="font-size:0.72rem;color:${i===4?'rgba(255,255,255,0.5)':'var(--ink3)'};margin-top:4px">${escH(raw)}</div>`:''}
+        </div>`).join('')}
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:24px;margin-bottom:14px">
+        <div style="border-top:1px solid var(--ink);padding-top:6px;font-size:0.7rem;color:var(--ink3);text-align:center;letter-spacing:0.05em">Examiner's Signature</div>
+        <div style="border-top:1px solid var(--ink);padding-top:6px;font-size:0.7rem;color:var(--ink3);text-align:center;letter-spacing:0.05em">Candidate's Signature</div>
+      </div>
+      <div style="text-align:center;font-size:0.68rem;color:var(--ink3);border-top:1px solid var(--border);padding-top:12px">
+        This is a simulation result for preparation purposes only. Not an official IELTS certificate.
+      </div>
+    </div>
+  </div>`;
 }
 
 // ═══════════════════════════════════════
