@@ -25,7 +25,6 @@
     --input-focus:#3a3a1c;
   }
   body.dark-mode{background:#15161f}
-  body.dark-mode .panel-right{background:#1c1d2b}
   body.dark-mode .q-input,body.dark-mode .fc-inline-input,body.dark-mode .writing-textarea{background:#23243a;color:var(--ink)}
   body.dark-mode .mc-opt{background:#23243a}
   body.dark-mode .timer{background:#2a2a3a;color:#ff8080}
@@ -37,7 +36,11 @@
   .fs-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.5)}
   .fs-btn:first-child{border-radius:5px 0 0 5px}
   .fs-btn:last-child{border-radius:0 5px 5px 0;border-left:none}
-  body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);height:100dvh;overflow:hidden;display:flex;flex-direction:column}
+  @media (max-width:900px){
+    body{height:auto;min-height:100dvh;overflow:auto}
+    .main{min-height:0;height:calc(100dvh - 56px - 52px)}
+  }
   .hdr{background:var(--blue);color:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
   .hdr-logo{font-family:'Source Serif 4',serif;font-size:1.1rem;font-weight:600}.hdr-logo span{color:var(--gold)}
   .hdr-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:3px 10px;font-size:0.75rem;color:rgba(255,255,255,0.8)}
@@ -50,7 +53,7 @@
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.85}}
   .main{display:flex;flex:1;overflow:hidden}
   .panel-left{flex:1;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;background:var(--paper)}
-  .panel-right{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#fff}
+  .panel-right{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--paper)}
   .right-tab-bar{background:var(--blue);border-bottom:3px solid var(--gold);display:flex;flex-shrink:0}
   .rtab{padding:10px 24px;border:none;background:transparent;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;position:relative;transition:color 0.2s}
   .rtab:hover{color:rgba(255,255,255,0.9)}.rtab.active{color:#fff}
@@ -77,10 +80,10 @@
   .prompt-card p{font-size:0.88rem;line-height:1.7;color:var(--ink2)}
   .q-section-label{font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--paper3)}
   .q-block{margin-bottom:12px;padding:13px 15px;border-radius:8px;background:var(--paper);border:1px solid var(--border);transition:border-color 0.2s}
-  .q-block:focus-within{border-color:var(--blue2);background:#fdfcff}
+  .q-block:focus-within{border-color:var(--blue2);background:var(--paper2)}
   .q-num{display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:0.72rem;font-weight:700;text-align:center;line-height:22px;margin-right:8px;flex-shrink:0}
   .q-text{font-size:0.88rem;color:var(--ink);line-height:1.5;display:flex;align-items:flex-start;margin-bottom:8px}
-  .q-input{width:100%;padding:7px 12px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--ink);background:#fff;transition:all 0.15s}
+  .q-input{width:100%;padding:7px 12px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--ink);background:var(--paper);transition:all 0.15s}
   .q-input:focus{outline:none;border-color:var(--blue2);background:#f5f9ff}
   .q-input.filled{border-color:var(--green);background:#f5fbf7}
   .mc-opts{display:flex;flex-direction:column;gap:5px;margin-top:6px}
@@ -89,12 +92,12 @@
   .mc-opt.sel{background:#f0f5ff;border-color:var(--blue2);color:var(--blue)}
   .mc-opt input{accent-color:var(--blue)}
   .writing-wrap{display:flex;flex-direction:column;height:100%;padding:20px;gap:12px}
-  .writing-textarea{flex:1;resize:none;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'Source Serif 4',serif;font-size:0.98rem;line-height:1.8;color:var(--ink);background:#fff;transition:border-color 0.2s;width:100%}
+  .writing-textarea{flex:1;resize:none;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'Source Serif 4',serif;font-size:0.98rem;line-height:1.8;color:var(--ink);background:var(--paper);transition:border-color 0.2s;width:100%}
   .writing-textarea:focus{outline:none;border-color:var(--blue2)}
   .wc-badge{font-size:0.8rem;font-weight:600;color:var(--ink3)}.wc-badge b{color:var(--ink)}
   .wc-progress{width:140px;height:4px;background:var(--paper3);border-radius:2px;overflow:hidden}
   .wc-fill{height:100%;background:var(--blue2);transition:width 0.3s;border-radius:2px}
-  .nav-footer{background:var(--blue);padding:8px 16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0}
+  .nav-footer{background:var(--blue);padding:8px 16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0;position:sticky;bottom:0;z-index:10}
   .nav-lbl{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-right:4px}
   .nav-sq{width:26px;height:26px;border-radius:4px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:0.7rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s}
   .nav-sq.done{background:var(--green);border-color:var(--green);color:#fff}
@@ -105,7 +108,7 @@
   .fc-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
   .fc-input-row{display:flex;align-items:center;gap:8px}
   .fc-input-row .q-num{flex-shrink:0}
-  .fc-input-row input{flex:1;padding:7px 10px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--ink);background:#fff;transition:all 0.15s}
+  .fc-input-row input{flex:1;padding:7px 10px;border:1px solid var(--paper3);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--ink);background:var(--paper);transition:all 0.15s}
   .fc-input-row input:focus{outline:none;border-color:var(--blue2);background:#f5f9ff}
   .fc-input-row input.filled{border-color:var(--green);background:#f5fbf7}
   .matching-options-box{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;background:var(--paper2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:0.85rem;color:var(--ink2)}
@@ -163,14 +166,14 @@
         <button class="inner-tab" id="lp2" onclick="syncPassage(2)">Passage 2</button>
         <button class="inner-tab" id="lp3" onclick="syncPassage(3)">Passage 3</button>
       </div>
-      <div class="scroll" style="background:white;line-height:1.8">
+      <div class="scroll" style="background:var(--paper);line-height:1.8">
         <div id="pass1" class="passage">Loading...</div>
         <div id="pass2" class="passage hidden">Loading...</div>
         <div id="pass3" class="passage hidden">Loading...</div>
       </div>
     </div>
     <!-- WRITING -->
-    <div id="W-left" class="hidden scroll" style="background:white">
+    <div id="W-left" class="hidden scroll" style="background:var(--paper)">
       <div id="w-prompt-1" class="prompt-card">
         <h3>Writing Task 1</h3>
         <div id="prompt-text-1" class="content-pre" style="font-size:0.88rem;line-height:1.7;color:var(--ink2)">Loading...</div>
