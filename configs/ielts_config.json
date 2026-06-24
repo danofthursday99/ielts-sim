@@ -219,8 +219,8 @@
           "type": "ct2",
           "part": "Part 3",
           "instr": "Questions 23 and 24\nChoose TWO letters, A-E.",
-          "qFrom": 21,
-          "qTo": 22,
+          "qFrom": 23,
+          "qTo": 24,
           "qText": "In which TWO ways do both Jess and Tom decide to change their proposals?",
           "pick": 2,
           "options": [
