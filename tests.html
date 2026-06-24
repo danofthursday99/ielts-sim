@@ -29,7 +29,7 @@
   .fs-btn:hover{background:rgba(255,255,255,0.12)}
   .fs-btn:first-child{border-radius:5px 0 0 5px}
   .fs-btn:last-child{border-radius:0 5px 5px 0;border-left:none}
-  body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper2);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
 
   .hdr{background:var(--blue);color:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;border-bottom:3px solid var(--gold)}
   .hdr-left{display:flex;align-items:center;gap:14px}
@@ -70,6 +70,41 @@
 
   .section-label{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin:24px 0 12px}
   .section-label:first-of-type{margin-top:0}
+
+  /* TWO-COLUMN LAYOUT */
+  .tests-layout{display:grid;grid-template-columns:210px 1fr 260px;gap:20px;max-width:1100px;margin:0 auto;padding:28px 20px;width:100%;flex:1}
+  @media(max-width:900px){.tests-layout{grid-template-columns:180px 1fr}}
+  @media(max-width:640px){.tests-layout{grid-template-columns:1fr;gap:14px}}
+
+  /* LEFT SIDEBAR - TEST TYPES */
+  .type-sidebar{background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:16px;height:fit-content;position:sticky;top:20px}
+  .type-sidebar-title{font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--paper3)}
+  .type-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;border-radius:8px;background:transparent;color:var(--ink2);font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:500;cursor:pointer;text-align:left;transition:all 0.15s;border-left:3px solid transparent;margin-bottom:2px}
+  .type-btn:hover{background:var(--paper2);color:var(--ink)}
+  .type-btn.active{background:rgba(0,47,95,0.07);color:var(--blue);border-left-color:var(--gold);font-weight:700}
+  .type-btn .type-icon{font-size:1rem;width:22px;text-align:center;flex-shrink:0}
+  .type-count{margin-left:auto;background:var(--paper3);border-radius:10px;padding:1px 7px;font-size:0.68rem;font-weight:700;color:var(--ink3)}
+  .type-btn.active .type-count{background:rgba(0,47,95,0.1);color:var(--blue)}
+  .type-divider{height:1px;background:var(--paper3);margin:10px 0}
+
+  /* RIGHT PANEL - LATEST TEST */
+  .latest-panel{height:fit-content;position:sticky;top:20px}
+  @media(max-width:900px){.latest-panel{display:none}}
+  .latest-card{background:var(--paper);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  .latest-hdr{background:linear-gradient(135deg,var(--blue) 0%,var(--blue2) 100%);padding:16px;color:#fff}
+  .latest-hdr-label{font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+  .latest-hdr-title{font-family:'Source Serif 4',serif;font-size:1rem;font-weight:600;line-height:1.3}
+  .latest-hdr-desc{font-size:0.75rem;color:rgba(255,255,255,0.65);margin-top:4px}
+  .latest-body{padding:14px}
+  .latest-meta-row{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--ink3);margin-bottom:7px}
+  .latest-stat{background:var(--paper2);border-radius:6px;padding:8px 10px;text-align:center;margin-bottom:8px}
+  .latest-stat-val{font-family:'Source Serif 4',serif;font-size:1.3rem;font-weight:600;color:var(--blue)}
+  .latest-stat-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3)}
+  .latest-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+  .btn-latest-start{width:100%;padding:10px;background:var(--gold);color:var(--blue);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.15s}
+  .btn-latest-start:hover{opacity:0.88}
+  .latest-empty{padding:28px 16px;text-align:center;color:var(--ink3);font-size:0.82rem}
+  .latest-empty span{display:block;font-size:1.8rem;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -91,16 +126,67 @@
   </div>
 </div>
 
-<div class="page">
-  <div class="page-title">Available Tests</div>
-  <div class="page-desc">Select a test set to begin. Tests are listed by date.</div>
+<div class="tests-layout">
 
-  <div id="tests-wrap">
-    <div class="loading-state">
-      <div class="spinner"></div>
-      Loading available tests...
+  <!-- LEFT: Test Type Filter -->
+  <div class="type-sidebar">
+    <div class="type-sidebar-title">Test Type</div>
+    <button class="type-btn active" data-type="all" onclick="filterByType('all',this)">
+      <span class="type-icon">📋</span> All Tests
+      <span class="type-count" id="cnt-all">0</span>
+    </button>
+    <div class="type-divider"></div>
+    <button class="type-btn" data-type="IELTS" onclick="filterByType('IELTS',this)">
+      <span class="type-icon">🎓</span> IELTS Academic
+      <span class="type-count" id="cnt-IELTS">0</span>
+    </button>
+    <button class="type-btn" data-type="TOEIC" onclick="filterByType('TOEIC',this)">
+      <span class="type-icon">💼</span> TOEIC
+      <span class="type-count" id="cnt-TOEIC">0</span>
+    </button>
+    <button class="type-btn" data-type="TOEFL" onclick="filterByType('TOEFL',this)">
+      <span class="type-icon">🌐</span> TOEFL
+      <span class="type-count" id="cnt-TOEFL">0</span>
+    </button>
+    <div class="type-divider"></div>
+    <button class="type-btn" data-type="Placement" onclick="filterByType('Placement',this)">
+      <span class="type-icon">📍</span> Placement Test
+      <span class="type-count" id="cnt-Placement">0</span>
+    </button>
+    <button class="type-btn" data-type="Level-Up" onclick="filterByType('Level-Up',this)">
+      <span class="type-icon">⬆️</span> Level-Up Test
+      <span class="type-count" id="cnt-Level-Up">0</span>
+    </button>
+  </div>
+
+  <!-- CENTER: Test List -->
+  <div>
+    <div style="margin-bottom:20px">
+      <div class="page-title" id="filter-heading">Available Tests</div>
+      <div class="page-desc" id="filter-desc">Select a test set to begin. Tests are listed by date.</div>
+    </div>
+    <div id="tests-wrap">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        Loading available tests...
+      </div>
     </div>
   </div>
+
+  <!-- RIGHT: Latest Test -->
+  <div class="latest-panel">
+    <div class="latest-card">
+      <div class="latest-hdr">
+        <div class="latest-hdr-label">⚡ Latest Available</div>
+        <div class="latest-hdr-title" id="latest-name">—</div>
+        <div class="latest-hdr-desc" id="latest-desc"></div>
+      </div>
+      <div class="latest-body" id="latest-body">
+        <div class="latest-empty"><span>📋</span>Loading...</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -219,7 +305,95 @@ async function loadTests() {
     }
   } catch(e) { /* optional */ }
 
+  allActiveSets = activeSets;
+  updateCounts();
+  renderLatestPanel(activeSets);
   renderTests(activeSets);
+}
+
+let allActiveSets = [];
+let currentFilter = 'all';
+
+// Infer test type from set name/description
+function inferType(s) {
+  const text = ((s.setName||'') + ' ' + (s.description||'')).toLowerCase();
+  if (text.includes('toeic')) return 'TOEIC';
+  if (text.includes('toefl')) return 'TOEFL';
+  if (text.includes('placement')) return 'Placement';
+  if (text.includes('level-up') || text.includes('level up') || text.includes('levelup')) return 'Level-Up';
+  if (text.includes('ielts')) return 'IELTS';
+  return 'IELTS'; // default
+}
+
+function filterByType(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const typeLabels = {
+    'all': ['Available Tests', 'Select a test set to begin. Tests are listed by date.'],
+    'IELTS': ['IELTS Academic', 'Full simulation tests for IELTS Academic module.'],
+    'TOEIC': ['TOEIC Tests', 'Test of English for International Communication.'],
+    'TOEFL': ['TOEFL Tests', 'Test of English as a Foreign Language.'],
+    'Placement': ['Placement Tests', 'Determine your current English proficiency level.'],
+    'Level-Up': ['Level-Up Tests', 'Challenge tests to advance to a higher level.'],
+  };
+  const [heading, desc] = typeLabels[type] || ['Available Tests', ''];
+  document.getElementById('filter-heading').textContent = heading;
+  document.getElementById('filter-desc').textContent = desc;
+
+  const filtered = type === 'all' ? allActiveSets : allActiveSets.filter(s => inferType(s) === type);
+  renderTests(filtered);
+}
+
+function updateCounts() {
+  const types = ['IELTS','TOEIC','TOEFL','Placement','Level-Up'];
+  document.getElementById('cnt-all').textContent = allActiveSets.length;
+  types.forEach(t => {
+    const el = document.getElementById('cnt-' + t);
+    if (el) el.textContent = allActiveSets.filter(s => inferType(s) === t).length;
+  });
+}
+
+function renderLatestPanel(sets) {
+  const body = document.getElementById('latest-body');
+  const nameEl = document.getElementById('latest-name');
+  const descEl = document.getElementById('latest-desc');
+
+  const notTaken = sets.filter(s => !myTakenSets.includes(s.setID));
+  const latest = notTaken[0] || sets[0];
+
+  if (!latest) {
+    nameEl.textContent = 'No tests available';
+    descEl.textContent = '';
+    body.innerHTML = '<div class="latest-empty"><span>📋</span>No tests available right now.</div>';
+    return;
+  }
+
+  nameEl.textContent = latest.setName;
+  descEl.textContent = latest.description || '';
+
+  const taken = myTakenSets.includes(latest.setID);
+  const dateStr = formatDate(latest.createdAt);
+  const type = inferType(latest);
+
+  body.innerHTML = `
+    <div class="latest-meta-row">📅 ${dateStr}</div>
+    <div class="latest-stats-grid">
+      <div class="latest-stat">
+        <div class="latest-stat-val">${type}</div>
+        <div class="latest-stat-lbl">Test Type</div>
+      </div>
+      <div class="latest-stat">
+        <div class="latest-stat-val" style="font-size:0.9rem;color:${taken?'var(--gold)':'var(--green)'}">${taken?'Taken':'New'}</div>
+        <div class="latest-stat-lbl">Status</div>
+      </div>
+    </div>
+    <button class="btn-latest-start" onclick="startTest('${escH(latest.setID)}','${escH(latest.setName)}','${escH(latest.configURL)}')">
+      ${taken ? '🔄 Retake Test' : '▶ Start Now'}
+    </button>
+    <div style="font-size:0.72rem;color:var(--ink3);text-align:center;margin-top:8px">Most recently added test</div>
+  `;
 }
 
 function renderTests(sets) {
@@ -238,14 +412,17 @@ function renderTests(sets) {
   sets.forEach(s => {
     const taken = myTakenSets.includes(s.setID);
     const dateStr = formatDate(s.createdAt);
+    const type = inferType(s);
+    const typeIcons = {IELTS:'🎓',TOEIC:'💼',TOEFL:'🌐',Placement:'📍','Level-Up':'⬆️'};
     html += `<div class="test-card" data-setid="${escH(s.setID)}" data-setname="${escH(s.setName)}" data-configurl="${escH(s.configURL)}" data-taken="${taken?'1':'0'}" onclick="handleCardClick(this)">
-      <div class="test-icon">📝</div>
+      <div class="test-icon">${typeIcons[type]||'📝'}</div>
       <div class="test-info">
         <div class="test-name">${escH(s.setName)}</div>
         ${s.description?`<div class="test-desc">${escH(s.description)}</div>`:''}
         <div class="test-meta">
           <span class="test-date">📅 ${dateStr}</span>
           <span class="test-status ${taken?'status-taken':'status-active'}">${taken?'Already Taken':'Available'}</span>
+          <span style="font-size:0.68rem;background:rgba(0,47,95,0.07);color:var(--blue);padding:2px 7px;border-radius:4px;font-weight:700">${type}</span>
         </div>
       </div>
       <button class="btn-start ${taken?'taken':''}" onclick="event.stopPropagation();handleButtonClick(this.closest('.test-card'))">
