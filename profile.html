@@ -242,7 +242,6 @@
       <div class="card">
         <div class="tabs">
           <button class="tab-btn active" onclick="switchTab('progress',this)">📊 Progress</button>
-          <button class="tab-btn" onclick="switchTab('trf',this)">📄 Test Result Form</button>
           <button class="tab-btn" onclick="switchTab('settings',this)">⚙️ Settings</button>
         </div>
 
@@ -251,17 +250,6 @@
           <div id="progress-content">
             <div class="empty-state"><div class="empty-icon">📊</div>Loading your scores...</div>
           </div>
-        </div>
-
-        <!-- TRF -->
-        <div id="tab-trf" class="tab-content">
-          <div class="trf-sel no-print">
-            <label>Select attempt:</label>
-            <select id="trf-attempt-sel" onchange="renderTRF()"><option value="">— Select —</option></select>
-            <button class="btn btn-gold" onclick="downloadTRF()">⬇ Download</button>
-            <button class="btn btn-ghost" onclick="window.print()">🖨 Print</button>
-          </div>
-          <div id="trf-wrap"><div class="no-trf">Select an attempt to view the TRF.</div></div>
         </div>
 
         <!-- SETTINGS -->
