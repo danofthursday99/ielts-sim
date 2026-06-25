@@ -1,0 +1,754 @@
+{
+  "listening": {
+    "sections": [
+      {
+        "from": 1,
+        "to": 10,
+        "audioName": "",
+        "audioData": "",
+        "imgData": "",
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 1,
+        "fcTo": 10,
+        "audioURL": "https://d1z803pryv3vab.cloudfront.net/IELTS16/IELTS16_test2_audio1.mp3"
+      },
+      {
+        "from": 11,
+        "to": 20,
+        "audioName": "",
+        "audioData": "",
+        "imgData": "",
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 11,
+        "fcTo": 20,
+        "audioURL": "https://d1z803pryv3vab.cloudfront.net/IELTS16/IELTS16_test2_audio2.mp3",
+        "imgURL": ""
+      },
+      {
+        "from": 21,
+        "to": 30,
+        "audioName": "",
+        "audioData": "",
+        "imgData": "",
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 21,
+        "fcTo": 30,
+        "audioURL": "https://d1z803pryv3vab.cloudfront.net/IELTS16/IELTS16_test1_audio3.mp3"
+      },
+      {
+        "from": 31,
+        "to": 40,
+        "audioName": "",
+        "audioData": "",
+        "imgData": "",
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 31,
+        "fcTo": 40,
+        "audioURL": "https://d1z803pryv3vab.cloudfront.net/IELTS16/IELTS16_test1_audio4.mp3"
+      }
+    ],
+    "questions": {},
+    "qBlocks": {
+      "1": [
+        {
+          "type": "fc",
+          "part": "",
+          "instr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
+          "fcHtml": "<h2><center>Copying photos to digital format</center></h2><br><hr>\n<h4>Name of company: Picturerep </h4><hr>\n<h4>Requirements</h4>\n<p>• Maximum size of photos is 30 cm, minimum size 4 cm.</p>\n<p>• Photos must not be in a <strong>1</strong>{{1}}or an album.</p><br>\n<h4>Cost</h4>\n<p>• The cost for 360 photos is <strong>2</strong>{{2}}(including one disk).</p>\n<p>• Before the completed order is sent, <strong>3</strong>{{3}} is required</p><br>\n<h4>Services included in the price</h4>\n<p>• Photos can be placed in a folder, e.g. with the name  <strong>4</strong>{{4}}.</p>\n<p>• The <strong>5</strong>{{5}} and contrast can be improved if necessary. </p>\n<p>• Photos which are very fragile will be scanned by <strong>6</strong>{{6}}.</p><br>\n\n<h4>Special restore service (costs extra) </h4>\n<p>• It may be possible to remove an object from a photo, or change the <strong>7</strong>{{7}}.</p>\n<p>• A photo which is not correctly in <strong>8</strong>{{8}} cannot be fixed.</p><br>\n<h4>Other information</h4>\n<p>• Orders are completed within <strong>9</strong>{{9}}</p>\n<p>• Send the photos in a box (not <strong>10</strong>{{10}}).</p>\n",
+          "fcInstr": "Complete the notes below. Write ONE WORD/A NUMBER to each number below.",
+          "fcAnswers": {},
+          "blanks": [
+            {
+              "num": 1,
+              "answer": ""
+            },
+            {
+              "num": 2,
+              "answer": ""
+            },
+            {
+              "num": 3,
+              "answer": ""
+            },
+            {
+              "num": 4,
+              "answer": ""
+            },
+            {
+              "num": 5,
+              "answer": ""
+            },
+            {
+              "num": 6,
+              "answer": ""
+            },
+            {
+              "num": 7,
+              "answer": ""
+            },
+            {
+              "num": 8,
+              "answer": ""
+            },
+            {
+              "num": 9,
+              "answer": ""
+            },
+            {
+              "num": 10,
+              "answer": ""
+            }
+          ],
+          "fcFrom": 1,
+          "fcTo": 10
+        }
+      ],
+      "2": [
+        {
+          "type": "mc",
+          "part": "Part 2",
+          "instr": "Questions 11-15\nChoose the correct letter, A, B or C.",
+          "qNum": 11,
+          "qText": "Dartfield House school used to be",
+          "options": [
+            "a tourist information centre.",
+            "a private home",
+            "a local council building."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 2",
+          "instr": "Questions 11-14\nChoose the correct letter, A, B or C.",
+          "qNum": 12,
+          "qText": "What is planned with regard to the lower school?",
+          "options": [
+            "All buildings on the main site will be improved.",
+            "The lower school site will be used for new homes.",
+            "Additional school buildings will be constructed on the lower school site."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 2",
+          "instr": "Questions 11-14\nChoose the correct letter, A, B or C.",
+          "qNum": 13,
+          "qText": "The catering has been changed because of",
+          "options": [
+            "long queuing times.",
+            "changes to the school timetable.",
+            "dissatisfaction with the menus."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 2",
+          "instr": "Questions 11-14\nChoose the correct letter, A, B or C.",
+          "qNum": 14,
+          "qText": "Parents are asked to",
+          "options": [
+            "help their children to decide in advance which serving point to use.",
+            "make sure their children have enough money for food.",
+            "advise their children on healthy food to eat."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 2",
+          "instr": "Questions 11-14\nChoose the correct letter, A, B or C.",
+          "qNum": 15,
+          "qText": "What does the speaker say about the existing canteen?",
+          "options": [
+            "Food will still be served there.",
+            "Only staff will have access to it.",
+            "Pupils can take their food into it."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "match",
+          "part": "",
+          "instr": "What comment does the speaker make about each of the following serving points in the\nFood Hall?\nChoose THREE answers from the box, A-D, next to Questions 16-18.",
+          "matchPrompt": "Comments",
+          "matchChoices": [
+            "pupils help to plan menus",
+            "only vegetarian food",
+            "different food every week",
+            "daily change in menu"
+          ],
+          "matchItems": [
+            {
+              "num": "16",
+              "label": "World Adventures",
+              "answer": ""
+            },
+            {
+              "num": "17",
+              "label": "Street Life",
+              "answer": ""
+            },
+            {
+              "num": "18",
+              "label": "Speedy Italian",
+              "answer": ""
+            }
+          ]
+        },
+        {
+          "type": "ct2",
+          "part": "Part 2",
+          "instr": "Questions 19 and 20\nChoose TWO letters, A-E.",
+          "qFrom": 19,
+          "qTo": 20,
+          "qText": "Which TWO optional after-school lessons are new?",
+          "pick": 2,
+          "options": [
+            "swimming",
+            "piano",
+            "acting",
+            "cycling",
+            "theatre sound and lighting"
+          ],
+          "answers": []
+        }
+      ],
+      "3": [
+        {
+          "type": "ct2",
+          "part": "Part 3",
+          "instr": "Questions 21 and 22\nChoose TWO letters, A-E.",
+          "qFrom": 21,
+          "qTo": 22,
+          "qText": "Which TWO parts of the introductory stage to their art projects do Jess and Tom agree were useful?",
+          "pick": 2,
+          "options": [
+            "the Bird Park visit",
+            "the workshop sessions",
+            "the Natural History Museum visit",
+            "the projects done in previous years",
+            "the handouts with research sources"
+          ],
+          "answers": []
+        },
+        {
+          "type": "ct2",
+          "part": "Part 3",
+          "instr": "Questions 23 and 24\nChoose TWO letters, A-E.",
+          "qFrom": 23,
+          "qTo": 24,
+          "qText": "In which TWO ways do both Jess and Tom decide to change their proposals?",
+          "pick": 2,
+          "options": [
+            "by giving a rationale for their action plans",
+            "by being less specific about the outcome",
+            "by adding a video diary presentation",
+            "by providing a timeline and a mind map",
+            "by making their notes more evaluative"
+          ],
+          "answers": []
+        },
+        {
+          "type": "match",
+          "part": "Part 3",
+          "instr": "Questions 25-30",
+          "matchPrompt": "Choose SIX answers from the box and write the correct letter, A-H, next to\nQuestions 25-30.\n\n<h4><center>Personal meanings</center><h4>",
+          "matchChoices": [
+            "a childhood memory",
+            "hope for the future",
+            "fast movement",
+            "a potential threat",
+            "the power of colour",
+            "the continuity of life",
+            "protection of nature",
+            "a confused attitude to nature"
+          ],
+          "matchItems": [
+            {
+              "num": "25",
+              "label": "Falcon (Landseer)",
+              "answer": ""
+            },
+            {
+              "num": "26",
+              "label": "Fish hawk (Audubon)",
+              "answer": ""
+            },
+            {
+              "num": "27",
+              "label": "Kingfisher (van Gogh)",
+              "answer": ""
+            },
+            {
+              "num": "28",
+              "label": "Portrait of William Wells",
+              "answer": ""
+            },
+            {
+              "num": "29",
+              "label": "Vairumati (Gauguin)",
+              "answer": ""
+            },
+            {
+              "num": "30",
+              "label": "Portrait of Giovanni de Medici",
+              "answer": ""
+            }
+          ]
+        }
+      ],
+      "4": [
+        {
+          "type": "fc",
+          "part": "",
+          "instr": "",
+          "fcHtml": "<h2><center>Stoicism</center></h2>\n\n<p>Stoicism is still relevant today because of its <strong>31</strong>{{31}} appeal.</p>\n<h3>Ancient Stoics</h3>\n<p.• Stoicism was founded over 2,000 years ago in Greece.</p>\n</p>• The Stoics' ideas are surprisingly well known, despite not being intended for <strong>32</strong>{{32}}.</p><br>\n<h3>Stoic principles</h3>\n<p>• Happiness could be achieved by leading a virtuous life.</p>\n<p>• Controlling emotions was essential.</p>\n<p>• Epictetus said that external events cannot be controlled but the <strong>33</strong>{{33}} people make in response can be controlled.</p>\n<p>• A Stoic is someone who has a different view on experiences which others would consider as <strong>34</strong>{{34}} .</p><br>\n\n<h3>The influence of Stoicism</h3>\n<p>• George Washington organised a <strong>35</strong>{{35}} about Cato to motivate\nhis men.</p>\n<p>• The French artist Delacroix was a Stoic.</p>\n<p>• Adam Smith's ideas on <strong>36</strong>{{36}} were influenced by Stoicism.</p>\n<p>• Some of today's political leaders are inspired by the Stoics.</p>\n<p>• Cognitive Behaviour Therapy (CBT)</p>\n<p>- the treatment for {{37}} is based on ideas from Stoicism\n- people learn to base their thinking on <strong>38</strong>{{38}}.\n<p>• In business, people benefit from Stoicism by identifying obstacles as <strong>39</strong>{{39}}.</p><br>\n<h3>Relevance of Stoicism</h3>\n<p>• It requires a lot of <strong>40</strong>{{40}} but Stoicism can help people to lead a good life.</p>\n<p>• It teaches people that having a strong character is more important than anything else.</p>",
+          "fcInstr": "",
+          "fcAnswers": {},
+          "blanks": [
+            {
+              "num": 31,
+              "answer": ""
+            },
+            {
+              "num": 32,
+              "answer": ""
+            },
+            {
+              "num": 33,
+              "answer": ""
+            },
+            {
+              "num": 34,
+              "answer": ""
+            },
+            {
+              "num": 35,
+              "answer": ""
+            },
+            {
+              "num": 36,
+              "answer": ""
+            },
+            {
+              "num": 37,
+              "answer": ""
+            },
+            {
+              "num": 38,
+              "answer": ""
+            },
+            {
+              "num": 39,
+              "answer": ""
+            },
+            {
+              "num": 40,
+              "answer": ""
+            }
+          ],
+          "fcFrom": 31,
+          "fcTo": 40
+        }
+      ]
+    }
+  },
+  "reading": {
+    "passages": {
+      "1": "You should spend about 20 minutes on Questions 1-13, which are based on Reading Passage 1 below.\n\nWhy we need to protect polar bears\n\nPolar bears are being increasingly threatened by the effects of climate change, but their disappearance could have far-reaching consequences. They are uniquely adapted to the extreme conditions of the Arctic Circle, where temperatures can reach -40°C. One reason for this is that they have up to 11 centimetres of fat underneath their skin. Humans with comparative levels of adipose tissue would be considered obese and would be likely to suffer from diabetes and heart disease. Yet the polar bear experiences no such consequences.\n\nA 2014 study by Shi Ping Liu and colleagues sheds light on this mystery. They compared the genetics tructure of polar bears with that of their closest relatives from a warmer climate, the brown bears. This allowed them to determine the genes that have allowed polar bears to survive in one of the toughest environments on Earth. Liu and his colleagues found the polar bears had a gene known as APoB, which reduces levels of low density lipoproteins (LDLs) - a form of 'bad' cholesterol. In humans, mutations of this gene are associated with increased risk of heart disease. Polar bears may therefore be an important study model to understand heart disease in humans.\n\nThe genome of the polar bear may also provide the solution for another condition, one that particularly affects our older generation: osteoporosis. This is a disease where bones show reduced density, usually caused by insufficient exercise, reduced calcium intake or food starvation. Bone tissue is constantly being remodelled, meaning that bone is added or removed, depending on nutrient availability and the stress that the bone is under. Female polar bears, however, undergo extreme conditions during every pregnancy. Once autumn comes around, these females will dig maternity dens in the snow and will remain there throughout the winter, both before and after the birth of their cubs. This process results in about six months of fasting, where the female bears have to keep themselves and their cubs alive, depleting their own calcium and calorie reserves. Despite this, their bones remain strong and dense.\n\nPhysiologists Alanda Lennox and Allen Goodship found an explanation for this paradox in 2008. They discovered that pregnant bears were able to increase the density of their bones before they started to build their dens. In addition, six months later, when they finally emerged from the den with their cubs, there was no evidence of significant loss of bone density. Hibernating brown bears do not have this capacity and must therefore resort to major bone reformation in the following spring. If the mechanism of bone remodelling in polar bears can be understood, many bedridden humans, and even astronauts, could potentially benefit.\n\nThe medical benefits of the polar bear for humanity certainly have their importance in our conservation efforts, but these should not be the only factors taken into consideration. We tend to want to protect animals we think are intelligent and possess emotions, such as elephants and primates. Bears, on the other hand, seem to be perceived as stupid and in many cases violent. And yet anecdotal evidence from the field challenges those assumptions, suggesting for example that polar bears have good problem-solving abilities. A male bear called GoGo in Tennoji Zoo, Osaka, has even been observed making use of a tool to manipulate his environment. The bear used a tree branch on multiple occasions to dislodge a piece of meat hung out of his reach. Problem-solving ability has also been witnessed in wild polar bears, although not as obviously as with GoGo. A calculated move by a male bear involved running and jumping onto barrels in an attempt to get to a photographer standing on a platform four metres high.\n\nIn other studies, such as one by Alison Ames in 2008, polar bears showed deliberate and focussed manipulation. For example, Ames observed bears putting objects in piles and then knocking them over in what appeared to be a game. The study demonstrates that bears are capable of agile and thought-out behaviours. These examples suggest bears have greater creativity and problem-solving abilities than previously thought.\n\nAs for emotions, while the evidence is once again anecdotal, many bears have been seen to hit out at ice and snow - seemingly out of frustration - when they have just missed out on a kill. Moreover, polar bears can form unusual relationships with other species, including playing with the dogs used to pull sleds in the Arctic. Remarkably, one hand-raised polar bear called Agee has formed a close relationship with her owner Mark Dumas to the point where they even swim together. This is even more astonishing since polar bears are known to actively hunt humans in the wild.\n\nIf climate change were to lead to their extinction, this would mean the loss not only of potential breakthroughs in human medicine, but more importantly, the disappearance of an intelligent, majestic animal.",
+      "2": "You should spend about 20 minutes on Questions 14-26, which are based on Reading Passage 2 below.\n\nThe Step Pyramid of Djoser\n\nA - The pyramids are the most famous monuments of ancient Egypt and still hold enormous interest for people in the present day. These grand, impressive tributes to the memory of the Egyptian kings have become linked with the country even though other cultures, such as the Chinese and Mayan, also built pyramids. The evolution of the pyramid form has been written and argued about for centuries. However, there is no question that, as far as Egypt is concerned, it began with one monument to one king designed by one brilliant architect: the Step Pyramid of Djoser at Saqqara.\n\nB - Djoser was the first king of the Third Dynasty of Egypt and the first to build in stone. Prior to Djoser's reign, tombs were rectangular monuments made of dried clay brick, which covered underground passages where the deceased person was buried. For reasons which remain unclear, Djoser's main official, whose name was Imhotep, conceived of building a taller, more impressive tomb for his king by stacking stone slabs on top of one another, progressively making them smaller, to form the shape now known as the Step Pyramid. Djoser is thought to have reigned for 19 years, but some historians and scholars attribute a much longer time for his rule, owing to the number and size of the monuments he built.\n\nC - The Step Pyramid has been thoroughly examined and investigated over the last century, and it is now known that the building process went through many different stages. Historian Marc Van de Mieroop comments on this, writing 'Much experimentation was involved, which is especially clear in the construction of the pyramid in the center of the complex. It had several plans ... before it became the first Step Pyramid in history, piling six levels on top of one another ... The weight of the enormous mass was a challenge for the builders, who placed the stones at an inward incline in order to prevent the monument breaking up.'\n\nD - When finally completed, the Step Pyramid rose 62 meters high and was the tallest structure of its time. The complex in which it was built was the size of a city in ancient Egypt and included a temple, courtyards, shrines, and living quarters for the priests. It covered a region of 16 hectares and was surrounded by a wall 10.5 meters high. The wall had 13 false doors cut into it with only one true entrance cut into the south-east comer; the entire wall was then ringed by a trench 750 meters long and 40 meters wide. The false doors and the trench were incorporated into the complex to discourage unwanted visitors. If someone wished to enter, he or she would have needed to know in advance how to find the location of the true opening in the wall. Djoser was so proud of his accomplishment that he broke the tradition of having only his own name on the monument and had Imhotep 's name carved on it as well.\n\nE - The burial chamber of the tomb, where the king's body was laid to rest, was dug beneath the base of the pyramid, surrounded by a vast maze of long tunnels that had rooms off them to discourage robbers. One of the most mysterious discoveries found inside the pyramid was a large number of stone vessels. Over 40,000 of these vessels, of various forms and shapes, were discovered in storerooms off the pyramid's underground passages. They are inscribed with the names of rulers from the First and Second Dynasties of Egypt and made from different kinds of stone. There is no agreement among scholars and archaeologists on why the vessels\nwere placed in the tomb of Djoser or what they were supposed to represent. The archaeologist Jean-Philippe Lauer, who excavated most of the pyramid and complex, believes they were originally stored and then given a 'proper burial' by Djoser in his pyramid to honor his predecessors. There are other historians, however, who claim the vessels were dumped into the shafts as yet another attempt to prevent grave robbers from getting to the king's burial chamber.\n\nF - Unfortunately, all of the precautions and intricate design of the underground network did not prevent ancient robbers from finding a way in. Djoser's grave goods, and even his body, were stolen at some point in the past and all archaeologists found were a small number of his valuables overlooked by the thieves. There was enough left throughout the pyramid and its complex, however, to astonish and amaze the archaeologists who excavated it.\n\nG - Egyptologist Miroslav Verner writes, 'Few monuments hold a place in human history as significant as that of the Step Pyramid in Saqqara ... It can be said without exaggeration that this pyramid complex constitutes a milestone in the evolution of monumental stone architecture in Egypt and in the world as a whole.' The Step Pyramid was a revolutionary advance in architecture and became the archetype which all the other great pyramid builders of Egypt would follow.\n\n",
+      "3": "You should spend about 20 minutes on Questions 27-40, which are based on Reading Passage 3 below.\n\nThe future of work\n\nAccording to a leading business consultancy, 3-14% of the global workforce will need to switch to a different occupation within the next 10-15 years, and all workers will need to adapt as their occupations evolve alongside increasingly capable machines. Automation - or 'embodied artificial intelligence' (Al)-is one aspect of the disruptive effects of technology on the labour market. 'Disembodied Al', like. The algorithms running in our smartphones, is another.\n\nDr Stella Pachidi from Cambridge Judge Business School believes that some of the most fundamental changes are happening as a result of the 'algorithmication' of jobs that are dependent on data rather than on production - the so-called knowledge economy. Algorithms are capable of learning from data to undertake tasks that previously needed human judgement, such as reading legal contracts, analysing medical scans and gathering market intelligence.\n\n'In many cases, they can outperform humans,' says Pachidi. 'Organisations are attracted to using algorithms because they want to make choices based on what they consider is \"perfect information\", as well as to reduce costs and enhance productivity.'\n\n'But these enhancements are not without consequences,' says Pachidi. 'If routine cognitive tasks are taken over by AI, how do professions develop their future experts?' she asks. 'One way of learning about a job is \"legitimate peripheral participation\" - a novice stands next to experts and learns by observation. If this isn't happening, then you need to find new ways to learn.'\n\nAnother issue is the extent to which the technology influences or even controls the workforce. For over two years, Pachidi monitored a telecommunications company. 'The way telecoms salespeople work is through personal and frequent contact with clients, using the benefit of experience to assess a situation and reach a decision. However, the company had started using a[n] ... algorithm that defined when account managers should contact certain customers about which kinds of campaigns and what to offer them.'\n\nThe algorithm - usually built by external designers - often becomes the keeper of knowledge, she explains. In cases like this, Pachidi believes, a short-sighted view begins to creep into working practices whereby workers learn through the 'algorithm's eyes' and become dependent on its instructions. Alternative explorations - where experimentation and human instinct lead to progress and new ideas - are effectively discouraged.\n\nPachidi and colleagues even observed people developing strategies to make the algorithm work to their own advantage. 'We are seeing cases where workers feed the algorithm with false data to reach their targets,' she reports.\n\nIt's scenarios like these that many researchers are working to avoid. Their objective is to make AI technologies more trustworthy and transparent, so that organisations and individuals understand how AI decisions are made. In the meantime, says Pachidi, 'We need to make sure we fully understand the dilemmas that this new world raises regarding expertise, occupational boundaries and control.'\n\nEconomist Professor Hamish Low believes that the future of work will involve major transitions across the whole life course for everyone: 'The traditional trajectory of full-time education followed by full-time work followed by a pensioned retirement is a thing of the past,' says Low. Instead, he envisages a multistage employment life: one where retraining happens across the life\ncourse, and where multiple jobs and no job happen by choice at different stages.\n\nOn the subject of job losses, Low believes the predictions are founded on a fallacy: 'It assumes that the number of jobs is fixed. If in 30 years, half of 100 jobs are being carried out by robots, that doesn't mean we are left with just 50 jobs for humans. The number of jobs will increase: we would expect there to be 150 jobs.'\n\nDr Ewan. McGaughey, at Cambridge's Centre for Business Research and King's College London, agrees that 'apocalyptic' views about the future of work are misguided. 'It's the laws that restrict the supply of capital to the job market, not the advent of new technologies that causes unemployment.'\n\nHis recently published research answers the question of whether automation, AI and robotics will mean a 'jobless future' by looking at the causes of unemployment. 'History is clear that change can mean redundancies. But social policies can tackle this through retraining and redeployment.'\n\nHe adds: 'If there is going to be change to jobs as a result of AI and robotics then I'd like to see governments seizing the opportunity to improve policy to enforce good job security. We can \"reprogramme\"the law to prepare for a fairer future of work and leisure.' McGaughey's findings are a call to arms to leaders of organisations, governments and banks to pre-empt the coming changes with bold new policies that guarantee full employment, fair incomes and a thriving economic democracy.\n\n'The promises of these new technologies are astounding. They deliver humankind the capacity to live in a way that nobody could have once imagined,' he adds. 'Just as the industrial revolution brought people past subsistence agriculture, and the corporate revolution enabled mass production, a third revolution has been pronounced. But it will not only be one of technology. The next revolution will be social.'"
+    },
+    "passages_fc": {
+      "1": {
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 1,
+        "fcTo": 13
+      },
+      "2": {
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 14,
+        "fcTo": 26
+      },
+      "3": {
+        "formCompletion": false,
+        "fcImgData": "",
+        "fcFrom": 27,
+        "fcTo": 40
+      }
+    },
+    "questions": {},
+    "qBlocks": {
+      "1": [
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 1,
+          "qText": "Polar bears suffer from various health problems due to the build-up of fat under their skin.",
+          "answer": ""
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 2,
+          "qText": "The study done by Liu and his colleagues compared different groups of polar bears.",
+          "answer": ""
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 3,
+          "qText": "Liu and colleagues were the first researchers to compare polar bears and brown bears genetically.",
+          "answer": ""
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 4,
+          "qText": "Polar bears are able to control their levels of 'bad' cholesterol by genetic means.",
+          "answer": ""
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 5,
+          "qText": "Female polar bears are able to survive for about six months without food.",
+          "answer": ""
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 6,
+          "qText": "It was found that the bones ·of female polar bears were very weak when they came out of their dens in spring.",
+          "answer": ""
+        },
+        {
+          "type": "tfng",
+          "part": "",
+          "instr": "Questions 1-7\nDo the following statements agree with the information given in Reading Passage 1?\nIn boxes 1-7 on your answer sheet, write\nTRUE - if the statement agrees with the information\nFALSE - if the statement contradicts the information\nNOT GIVEN - if there is no information on this",
+          "qNum": 7,
+          "qText": "The polar bear's mechanism for increasing bone density could also be used by people one day.",
+          "answer": ""
+        },
+        {
+          "type": "fc",
+          "part": "",
+          "instr": "Complete the table below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.",
+          "fcHtml": "<h2><center>Reasons why polar bears should be protected</center></h2><br>\n<p>People think of bears as unintelligent and {{8}}</p>\n<p>However, this may not be correct. For example:</p>\n<p>• In Tennoji Zoo, a bear has been seen using a branch as a {{9}}</p>\n<p>This allowed him to knock down some {{10}}</p>\n<p>• A wild polar bear worked out a method of reaching a platform where a {{11}} was located.</p>\n<p>• Polar bears have displayed behaviour such as conscious manipulation of objects and activity similar to a {{12}}</p><br>\n<p>Bears may also display emotions. For example:</p>\n<p>• They may make movements suggesting {{13}} if disappointed\nwhen hunting.</p>\n<p>• They may form relationships with other species.</p>",
+          "fcInstr": "Complete the table below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.",
+          "fcAnswers": {},
+          "blanks": [
+            {
+              "num": 8,
+              "answer": ""
+            },
+            {
+              "num": 9,
+              "answer": ""
+            },
+            {
+              "num": 10,
+              "answer": ""
+            },
+            {
+              "num": 11,
+              "answer": ""
+            },
+            {
+              "num": 12,
+              "answer": ""
+            },
+            {
+              "num": 13,
+              "answer": ""
+            }
+          ],
+          "fcFrom": 8,
+          "fcTo": 13
+        }
+      ],
+      "2": [
+        {
+          "type": "match",
+          "part": "Part 2",
+          "instr": "",
+          "matchPrompt": "",
+          "matchChoices": [
+            "The areas and artefacts within the pyramid itself",
+            "A difficult task for those involved",
+            "A king who saved his people",
+            "A single certainty among other less definite facts",
+            "An overview of the external buildings and areas",
+            "A pyramid design that others copied",
+            "An idea for changing the design of burial structures",
+            "An incredible experience despite the few remains",
+            "The answers to some unexpected questions"
+          ],
+          "matchItems": [
+            {
+              "num": "14",
+              "label": "Paragraph A",
+              "answer": ""
+            },
+            {
+              "num": "15",
+              "label": "Paragraph B",
+              "answer": ""
+            },
+            {
+              "num": "16",
+              "label": "Paragraph C",
+              "answer": ""
+            },
+            {
+              "num": "17",
+              "label": "Paragraph D",
+              "answer": ""
+            },
+            {
+              "num": "18",
+              "label": "Paragraph E",
+              "answer": ""
+            },
+            {
+              "num": "19",
+              "label": "Paragraph F",
+              "answer": ""
+            },
+            {
+              "num": "20",
+              "label": "Paragraph G",
+              "answer": ""
+            }
+          ]
+        },
+        {
+          "type": "fc",
+          "part": "Part 2",
+          "instr": "Questions 21-24 Complete the notes below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 21-24 on your answer sheet.",
+          "fcHtml": "<h2><center>The Step Pyramid of Djoser</center></h2>\n\n<p>The complex that includes the Step Pyramid and its surroundings is considered to be as big as an Egyptian {{21}} of the past. The area outside the pyramid included accommodation that was occupied by {{22}} along with many other buildings and features. </p><br>\n\n<p>A wall ran around the outside of the complex and a number of false entrances were built into this. In addition, a long {{23}} encircled the wall. As a result, any visitors who had not been invited were cleverly prevented from entering the pyramid grounds unless they knew the {{24}}of the real entrance.</p>\n",
+          "fcInstr": "Questions 21-24 Complete the notes below. Choose ONE WORD ONLY from the passage for each answer. Write your answers in boxes 21-24 on your answer sheet.",
+          "fcAnswers": {},
+          "blanks": [
+            {
+              "num": 21,
+              "answer": ""
+            },
+            {
+              "num": 22,
+              "answer": ""
+            },
+            {
+              "num": 23,
+              "answer": ""
+            },
+            {
+              "num": 24,
+              "answer": ""
+            }
+          ],
+          "fcFrom": 21,
+          "fcTo": 24
+        },
+        {
+          "type": "ct2",
+          "part": "Part 2",
+          "instr": "Choose TWO letters, A-E.\nWrite the correct letters in boxes 25 and 26 on your answer sheet.",
+          "qFrom": 25,
+          "qTo": 26,
+          "qText": "Which TWO of the following points does the writer make about King Djoser?",
+          "pick": 2,
+          "options": [
+            "Initially he had to be persuaded to build in stone rather than clay.",
+            "There is disagreement concerning the length of his reign.",
+            "He failed to appreciate lmhotep's part in the design of the Step Pyramid.",
+            "A few of his possessions were still in his tomb when archaeologists found it.",
+            "He criticised the design and construction of other pyramids in Egypt."
+          ],
+          "answers": []
+        }
+      ],
+      "3": [
+        {
+          "type": "mc",
+          "part": "Part 3",
+          "instr": "Questions 27-30\nChoose the correct letter, A, B, C or D.\nWrite the correct letter in boxes 27-30 on your answer sheet.",
+          "qNum": 27,
+          "qText": "The first paragraph tells us about",
+          "options": [
+            "the kinds of jobs that will be most affected by the growth of Al.",
+            "the extent to which Al will alter the nature of the work that people do.",
+            "the proportion of the world's labour force who will have jobs in Al in the future.",
+            "the difference between ways that embodied and disembodied Al will impact on workers."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 3",
+          "instr": "",
+          "qNum": 28,
+          "qText": "According to the second paragraph, what is Stella Pachidi's view of the 'knowledge economy'?",
+          "options": [
+            "It is having an influence on the number of jobs available.",
+            "It is changing people's attitudes towards their occupations.",
+            "It is the main reason why the production sector is declining.",
+            "It is a key factor driving current developments in the workplace."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 3",
+          "instr": "",
+          "qNum": 29,
+          "qText": "What did Pachidi observe at the telecommunications company?",
+          "options": [
+            "staff disagreeing with the recommendations of Al",
+            "staff feeling resentful about the intrusion of Al in their work",
+            "staff making sure that Al produces the results that they want",
+            "staff allowing Arto carry out tasks they ought to do themselves"
+          ],
+          "answer": ""
+        },
+        {
+          "type": "mc",
+          "part": "Part 3",
+          "instr": "",
+          "qNum": 30,
+          "qText": "In his recently published research, Ewan McGaughey",
+          "options": [
+            "challenges the idea that redundancy is a negative thing.",
+            "shows the profound effect of mass unemployment on society.",
+            "highlights some differences between past and future job losses.",
+            "illustrates how changes in the job market can be successfully handled."
+          ],
+          "answer": ""
+        },
+        {
+          "type": "fc",
+          "part": "",
+          "instr": "Write the correct Jetter, A-G, in boxes 31-34 on your answer sheet.",
+          "fcHtml": "<h2><center>The 'algorithmication' of jobs</center></h2><br>\n\n<p>Stella Pachidi of Cambridge Judge Business School has been focusing on the 'algorithmication' of jobs which rely not on production but on {{31}}.</p><br>\n\n<p>While monitoring a telecommunications company, Pachidi observed a growing {{32}} on the recommendations made by Al, as workers begin to learn through the 'algorithm's eyes'. Meanwhile, staff are deterred from experimenting and using their own {{33}} and are therefore prevented from achieving innovation.</p><br>\n\n<p>To avoid the kind of situations which Pachidi observed, researchers are trying to make Al's decision-making process easier to comprehend, and to increase users'{{34}} with regard to the technology.</p><br><hr>\n<p><strong>A pressure </strong></p>\n<p><strong>B satisfaction </strong></p>\n<p><strong>C intuition </strong></p>\n<p><strong>D promotion </strong></p>\n<p><strong>E reliance </strong></p>\n<p><strong>F confidence </strong></p>\n<p><strong>G information</strong></p>",
+          "fcInstr": "Write the correct Jetter, A-G, in boxes 31-34 on your answer sheet.",
+          "fcAnswers": {},
+          "blanks": [
+            {
+              "num": 31,
+              "answer": ""
+            },
+            {
+              "num": 32,
+              "answer": ""
+            },
+            {
+              "num": 33,
+              "answer": ""
+            },
+            {
+              "num": 34,
+              "answer": ""
+            }
+          ],
+          "fcFrom": 31,
+          "fcTo": 34
+        },
+        {
+          "type": "match",
+          "part": "Part 3",
+          "instr": "Questions 35-40\nLook at the following statements (Questions 35-40) and the list of people below.\nMatch each statement with the correct person, A, B or C.\nWrite the correct letter, A, B or C, in boxes 35-40 on your answer sheet.\nNB You may use any letter more than once.",
+          "matchPrompt": "LIST OF PEOPLE",
+          "matchChoices": [
+            "Stella Pachidi",
+            "Hamish Low",
+            "Ewan McGaughey"
+          ],
+          "matchItems": [
+            {
+              "num": "35",
+              "label": "Greater levels of automation will not result in lower employment.",
+              "answer": ""
+            },
+            {
+              "num": "36",
+              "label": "There are several reasons why Al is appealing to businesses.",
+              "answer": ""
+            },
+            {
+              "num": "37",
+              "label": "Al's potential to transform people's lives has parallels with major cultural shifts which occurred in previous eras.",
+              "answer": ""
+            },
+            {
+              "num": "38",
+              "label": "It is important to be aware of the range of problems that Al causes.",
+              "answer": ""
+            },
+            {
+              "num": "39",
+              "label": "People are going to follow a less conventional career path than in the past.",
+              "answer": ""
+            },
+            {
+              "num": "40",
+              "label": "Authorities should take measures to ensure that there will be adequately paid work for everyone.",
+              "answer": ""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "writing": {
+    "tasks": {
+      "1": {
+        "prompt": "The charts below show the changes in ownership of electrical appliances and amount of time spent doing housework in households in one country between 1920 and 2019.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+        "imgData": "",
+        "minWords": 150,
+        "imgURL": "https://raw.githubusercontent.com/danofthursday99/ielts-sim/refs/heads/main/img/62126/ielts-w1t1.png"
+      },
+      "2": {
+        "prompt": "In some countries, more and more people are becoming interested in finding out about the history of the house or building they live in.\n\nWhat are the reasons for this?\nHow can people research this?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\nWrite at least 250 words.",
+        "imgData": "",
+        "minWords": 250
+      }
+    }
+  },
+  "answerKey": {
+    "L": {
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": "",
+      "10": ""
+    },
+    "R": {}
+  },
+  "_driveURL": "https://raw.githubusercontent.com/danofthursday99/ielts-sim/refs/heads/main/configs/ielts_config.json",
+  "_meta": {
+    "setID": "SET-1781316892576",
+    "setName": "asdasdasdasd",
+    "setDesc": "asdasdadasdasd",
+    "exportedAt": "2026-06-13T02:14:52.576Z"
+  }
+}
