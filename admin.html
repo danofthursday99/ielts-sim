@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel — IELTS Simulation</title>
+<title>Admin Panel � IELTS Simulation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -293,9 +293,9 @@
   </div>
   <div class="hdr-right">
     <input type="file" id="f-load-config" class="hidden" accept=".json" onchange="loadConfig(this)">
-    <button class="btn-hdr btn-load" onclick="document.getElementById('f-load-config').click()">📂 Load Config</button>
-    <button class="btn-hdr" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)" onclick="showPanel('p-drive')">☁️ Drive Link</button>
-    <button class="btn-hdr btn-save-all" onclick="saveAllConfig()">💾 Save Config</button>
+    <button class="btn-hdr btn-load" onclick="document.getElementById('f-load-config').click()">?? Load Config</button>
+    <button class="btn-hdr" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)" onclick="showPanel('p-drive')">?? Drive Link</button>
+    <button class="btn-hdr btn-save-all" onclick="saveAllConfig()">?? Save Config</button>
     <button class="btn-hdr btn-logout" onclick="if(confirm('Logout?')){window.location.href='index.html'}">Logout</button>
   </div>
 </div>
@@ -304,28 +304,28 @@
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-section">Test Content</div>
-    <button class="sb-btn active" onclick="showPanel('p-listening')" id="sb-p-listening"><span class="sb-icon">🎧</span> Listening</button>
-    <button class="sb-btn" onclick="showPanel('p-reading')"   id="sb-p-reading"><span class="sb-icon">📖</span> Reading</button>
-    <button class="sb-btn" onclick="showPanel('p-writing')"   id="sb-p-writing"><span class="sb-icon">✍️</span> Writing</button>
+    <button class="sb-btn active" onclick="showPanel('p-listening')" id="sb-p-listening"><span class="sb-icon">??</span> Listening</button>
+    <button class="sb-btn" onclick="showPanel('p-reading')"   id="sb-p-reading"><span class="sb-icon">??</span> Reading</button>
+    <button class="sb-btn" onclick="showPanel('p-writing')"   id="sb-p-writing"><span class="sb-icon">??</span> Writing</button>
     <div class="sb-section">Answers</div>
-    <button class="sb-btn" onclick="showPanel('p-answerkey')" id="sb-p-answerkey"><span class="sb-icon">🗝️</span> Answer Key</button>
-    <button class="sb-btn" onclick="showPanel('p-checker')"   id="sb-p-checker"><span class="sb-icon">✅</span> Checker</button>
+    <button class="sb-btn" onclick="showPanel('p-answerkey')" id="sb-p-answerkey"><span class="sb-icon">???</span> Answer Key</button>
+    <button class="sb-btn" onclick="showPanel('p-checker')"   id="sb-p-checker"><span class="sb-icon">?</span> Checker</button>
     <div class="sb-section">Grading</div>
-    <button class="sb-btn" onclick="showPanel('p-grading')"   id="sb-p-grading"><span class="sb-icon">✏️</span> Grade Writing</button>
+    <button class="sb-btn" onclick="showPanel('p-grading')"   id="sb-p-grading"><span class="sb-icon">??</span> Grade Writing</button>
     <div class="sb-section">Candidates</div>
-    <button class="sb-btn" onclick="showPanel('p-monitor')"    id="sb-p-monitor"><span class="sb-icon">🟢</span> Live Monitor</button>
-    <button class="sb-btn" onclick="showPanel('p-candidates')" id="sb-p-candidates"><span class="sb-icon">👥</span> Candidates</button>
-    <button class="sb-btn" onclick="showPanel('p-scores')"    id="sb-p-scores"><span class="sb-icon">📊</span> Scores</button>
-    <button class="sb-btn" onclick="showPanel('p-trf')"       id="sb-p-trf"><span class="sb-icon">📄</span> TRF Viewer</button>
+    <button class="sb-btn" onclick="showPanel('p-monitor')"    id="sb-p-monitor"><span class="sb-icon">??</span> Live Monitor</button>
+    <button class="sb-btn" onclick="showPanel('p-candidates')" id="sb-p-candidates"><span class="sb-icon">??</span> Candidates</button>
+    <button class="sb-btn" onclick="showPanel('p-scores')"    id="sb-p-scores"><span class="sb-icon">??</span> Scores</button>
+    <button class="sb-btn" onclick="showPanel('p-trf')"       id="sb-p-trf"><span class="sb-icon">??</span> TRF Viewer</button>
     <div class="sb-section">Questionnaire</div>
-    <button class="sb-btn" onclick="showPanel('p-qmaker')"    id="sb-p-qmaker"><span class="sb-icon">🧠</span> Q Maker</button>
-    <button class="sb-btn" onclick="showPanel('p-qbank')"     id="sb-p-qbank"><span class="sb-icon">🗄️</span> Question Bank</button>
+    <button class="sb-btn" onclick="showPanel('p-qmaker')"    id="sb-p-qmaker"><span class="sb-icon">??</span> Q Maker</button>
+    <button class="sb-btn" onclick="showPanel('p-qbank')"     id="sb-p-qbank"><span class="sb-icon">???</span> Question Bank</button>
     <div class="sb-section">Publish</div>
-    <button class="sb-btn" onclick="showPanel('p-testsets')"  id="sb-p-testsets"><span class="sb-icon">📚</span> Test Sets</button>
-    <button class="sb-btn" onclick="showPanel('p-publish')"   id="sb-p-publish"><span class="sb-icon">🚀</span> Publish</button>
+    <button class="sb-btn" onclick="showPanel('p-testsets')"  id="sb-p-testsets"><span class="sb-icon">??</span> Test Sets</button>
+    <button class="sb-btn" onclick="showPanel('p-publish')"   id="sb-p-publish"><span class="sb-icon">??</span> Publish</button>
     <div class="sb-section">Config</div>
-    <button class="sb-btn" onclick="showPanel('p-settings')"  id="sb-p-settings"><span class="sb-icon">⚙️</span> Settings</button>
-    <button class="sb-btn" onclick="showPanel('p-export')"    id="sb-p-export"><span class="sb-icon">📄</span> PDF Export</button>
+    <button class="sb-btn" onclick="showPanel('p-settings')"  id="sb-p-settings"><span class="sb-icon">??</span> Settings</button>
+    <button class="sb-btn" onclick="showPanel('p-export')"    id="sb-p-export"><span class="sb-icon">??</span> PDF Export</button>
   </div>
 
   <!-- CONTENT -->
@@ -336,14 +336,14 @@
       <div class="panel-title">Listening Section</div>
       <div class="panel-desc" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
         <span>Upload audio files and manage questions for each section.</span>
-        <button class="btn-add-q-modal" onclick="openAIGen('L',null)" style="margin:0;border-color:var(--gold);color:var(--gold);padding:7px 16px">✨ AI Generate Questions</button>
+        <button class="btn-add-q-modal" onclick="openAIGen('L',null)" style="margin:0;border-color:var(--gold);color:var(--gold);padding:7px 16px">? AI Generate Questions</button>
       </div>
 
       <div class="section-tabs">
-        <button class="sec-tab active" onclick="showLSec(1,this)">Section 1 (Q1–10)</button>
-        <button class="sec-tab" onclick="showLSec(2,this)">Section 2 (Q11–20)</button>
-        <button class="sec-tab" onclick="showLSec(3,this)">Section 3 (Q21–30)</button>
-        <button class="sec-tab" onclick="showLSec(4,this)">Section 4 (Q31–40)</button>
+        <button class="sec-tab active" onclick="showLSec(1,this)">Section 1 (Q1�10)</button>
+        <button class="sec-tab" onclick="showLSec(2,this)">Section 2 (Q11�20)</button>
+        <button class="sec-tab" onclick="showLSec(3,this)">Section 3 (Q21�30)</button>
+        <button class="sec-tab" onclick="showLSec(4,this)">Section 4 (Q31�40)</button>
       </div>
 
       <div id="L-sec-1" class="l-sec"></div>
@@ -357,18 +357,18 @@
       <div class="panel-title">Reading Section</div>
       <div class="panel-desc">Edit reading passages and their questions. You can also use Form/Note Completion layout per passage.</div>
       <div class="section-tabs">
-        <button class="sec-tab active" onclick="showRPass(1,this)">Passage 1 (Q1–13)</button>
-        <button class="sec-tab" onclick="showRPass(2,this)">Passage 2 (Q14–26)</button>
-        <button class="sec-tab" onclick="showRPass(3,this)">Passage 3 (Q27–40)</button>
+        <button class="sec-tab active" onclick="showRPass(1,this)">Passage 1 (Q1�13)</button>
+        <button class="sec-tab" onclick="showRPass(2,this)">Passage 2 (Q14�26)</button>
+        <button class="sec-tab" onclick="showRPass(3,this)">Passage 3 (Q27�40)</button>
       </div>
       <div id="R-pass-1" class="r-pass">
         <div class="card"><div class="card-title">Passage 1 Text</div><textarea class="passage-textarea" id="R-text-1" placeholder="Paste or type the reading passage here..."></textarea></div>
         <div class="card">
-          <div class="card-title">Questions 1–13</div>
+          <div class="card-title">Questions 1�13</div>
           <div id="R-qs-1">
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
               <button class="btn-add-q-modal" onclick="qmOpen('R',1)" style="margin:0">+ Add Question</button>
-              <button class="btn-add-q-modal" onclick="openAIGen('R',1)" style="margin:0;border-color:var(--gold);color:var(--gold)">✨ AI Generate</button>
+              <button class="btn-add-q-modal" onclick="openAIGen('R',1)" style="margin:0;border-color:var(--gold);color:var(--gold)">? AI Generate</button>
             </div>
             <div id="qlist-R-1" class="qlist"></div>
           </div>
@@ -377,11 +377,11 @@
       <div id="R-pass-2" class="r-pass hidden">
         <div class="card"><div class="card-title">Passage 2 Text</div><textarea class="passage-textarea" id="R-text-2" placeholder="Paste or type the reading passage here..."></textarea></div>
         <div class="card">
-          <div class="card-title">Questions 14–26</div>
+          <div class="card-title">Questions 14�26</div>
           <div id="R-qs-2">
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
               <button class="btn-add-q-modal" onclick="qmOpen('R',2)" style="margin:0">+ Add Question</button>
-              <button class="btn-add-q-modal" onclick="openAIGen('R',2)" style="margin:0;border-color:var(--gold);color:var(--gold)">✨ AI Generate</button>
+              <button class="btn-add-q-modal" onclick="openAIGen('R',2)" style="margin:0;border-color:var(--gold);color:var(--gold)">? AI Generate</button>
             </div>
             <div id="qlist-R-2" class="qlist"></div>
           </div>
@@ -390,11 +390,11 @@
       <div id="R-pass-3" class="r-pass hidden">
         <div class="card"><div class="card-title">Passage 3 Text</div><textarea class="passage-textarea" id="R-text-3" placeholder="Paste or type the reading passage here..."></textarea></div>
         <div class="card">
-          <div class="card-title">Questions 27–40</div>
+          <div class="card-title">Questions 27�40</div>
           <div id="R-qs-3">
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
               <button class="btn-add-q-modal" onclick="qmOpen('R',3)" style="margin:0">+ Add Question</button>
-              <button class="btn-add-q-modal" onclick="openAIGen('R',3)" style="margin:0;border-color:var(--gold);color:var(--gold)">✨ AI Generate</button>
+              <button class="btn-add-q-modal" onclick="openAIGen('R',3)" style="margin:0;border-color:var(--gold);color:var(--gold)">? AI Generate</button>
             </div>
             <div id="qlist-R-3" class="qlist"></div>
           </div>
@@ -407,23 +407,23 @@
       <div class="panel-title">Writing Section</div>
       <div class="panel-desc">Set task prompts and upload chart/diagram images.</div>
       <div class="card">
-        <div class="card-title">Task 1 — Report</div>
+        <div class="card-title">Task 1 � Report</div>
         <div class="field"><label>Task Prompt</label><textarea id="W-prompt-1" placeholder="The chart below shows..." style="min-height:80px"></textarea></div>
         <div class="field" style="margin-top:12px">
-          <label>Chart / Diagram Image URL <span style="font-weight:400;color:var(--ink3)">(optional — chart, graph, table or diagram)</span></label>
+          <label>Chart / Diagram Image URL <span style="font-weight:400;color:var(--ink3)">(optional � chart, graph, table or diagram)</span></label>
           <div style="display:flex;gap:8px;align-items:center">
             <input type="text" id="W-img-url-1"
               placeholder="https://raw.githubusercontent.com/username/ielts-sim/main/images/chart.jpg"
               oninput="saveWritingImgURL(1,this.value)"
               style="flex:1;font-family:monospace;font-size:0.82rem">
-            <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.78rem;white-space:nowrap" onclick="previewWritingImg(1)">👁 Preview</button>
+            <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.78rem;white-space:nowrap" onclick="previewWritingImg(1)">?? Preview</button>
           </div>
           <div id="W-img-preview-1" style="margin-top:6px"></div>
         </div>
         <div class="field"><label>Minimum Word Count</label><input type="text" id="W-min-1" value="150"></div>
       </div>
       <div class="card">
-        <div class="card-title">Task 2 — Essay</div>
+        <div class="card-title">Task 2 � Essay</div>
         <div class="field"><label>Task Prompt</label><textarea id="W-prompt-2" placeholder="Some people believe that..." style="min-height:80px"></textarea></div>
         <div class="field"><label>Minimum Word Count</label><input type="text" id="W-min-2" value="250"></div>
       </div>
@@ -434,8 +434,8 @@
       <div class="panel-title">Answer Key</div>
       <div class="panel-desc">Set correct answers for Listening and Reading. This is used by the auto-checker.</div>
       <div class="section-tabs">
-        <button class="sec-tab active" onclick="showAKTab('L',this)">Listening (1–40)</button>
-        <button class="sec-tab" onclick="showAKTab('R',this)">Reading (1–40)</button>
+        <button class="sec-tab active" onclick="showAKTab('L',this)">Listening (1�40)</button>
+        <button class="sec-tab" onclick="showAKTab('R',this)">Reading (1�40)</button>
       </div>
       <div id="AK-L" class="ak-tab">
         <div class="card"><div class="card-title">Listening Answer Key</div><div id="AK-L-grid" class="row2"></div></div>
@@ -466,7 +466,7 @@
           <div id="checker-details-R"></div>
         </div>
         <div class="btn-row">
-          <button class="btn btn-gold" onclick="exportCheckerPDF()">📄 Save Results as PDF</button>
+          <button class="btn btn-gold" onclick="exportCheckerPDF()">?? Save Results as PDF</button>
         </div>
       </div>
     </div>
@@ -474,16 +474,16 @@
     <!-- EXPORT PANEL -->
     <!-- GOOGLE DRIVE CONFIG PANEL -->
     <div id="p-drive" class="panel">
-      <div class="panel-title">☁️ Google Drive Config</div>
-      <div class="panel-desc">Upload your config to Google Drive so all candidates auto-load the latest questions, audio, and passages — no matter what device they use.</div>
+      <div class="panel-title">?? Google Drive Config</div>
+      <div class="panel-desc">Upload your config to Google Drive so all candidates auto-load the latest questions, audio, and passages � no matter what device they use.</div>
 
       <div class="card">
-        <div class="card-title">Step 1 — Save & Upload Config</div>
+        <div class="card-title">Step 1 � Save & Upload Config</div>
         <div style="background:var(--paper2);border-radius:8px;padding:14px;font-size:0.83rem;color:var(--ink2);line-height:1.9;margin-bottom:14px">
-          <b style="color:var(--blue)">1.</b> Click <b>💾 Save Config</b> (top right) — downloads <code>ielts_config.json</code><br>
-          <b style="color:var(--blue)">2.</b> Go to <a href="https://drive.google.com" target="_blank" style="color:var(--blue2)">drive.google.com</a> → Upload the file<br>
-          <b style="color:var(--blue)">3.</b> Right-click the file → <b>Share</b> → <b>Anyone with the link</b> → <b>Viewer</b><br>
-          <b style="color:var(--blue)">4.</b> Click <b>Copy link</b> — paste it below
+          <b style="color:var(--blue)">1.</b> Click <b>?? Save Config</b> (top right) � downloads <code>ielts_config.json</code><br>
+          <b style="color:var(--blue)">2.</b> Go to <a href="https://drive.google.com" target="_blank" style="color:var(--blue2)">drive.google.com</a> ? Upload the file<br>
+          <b style="color:var(--blue)">3.</b> Right-click the file ? <b>Share</b> ? <b>Anyone with the link</b> ? <b>Viewer</b><br>
+          <b style="color:var(--blue)">4.</b> Click <b>Copy link</b> � paste it below
         </div>
         <div class="field">
           <label>Google Drive Share Link</label>
@@ -493,14 +493,14 @@
             style="font-family:monospace;font-size:0.82rem">
         </div>
         <div class="btn-row">
-          <button class="btn btn-blue" onclick="convertAndSaveDriveURL()">🔗 Convert & Save URL</button>
-          <button class="btn btn-ghost" onclick="testDriveURL()">🧪 Test Connection</button>
+          <button class="btn btn-blue" onclick="convertAndSaveDriveURL()">?? Convert & Save URL</button>
+          <button class="btn btn-ghost" onclick="testDriveURL()">?? Test Connection</button>
         </div>
         <div id="drive-status" style="margin-top:10px;font-size:0.82rem;display:none;padding:10px 14px;border-radius:7px"></div>
       </div>
 
       <div class="card">
-        <div class="card-title">Step 2 — Active Config URL</div>
+        <div class="card-title">Step 2 � Active Config URL</div>
         <div style="font-size:0.82rem;color:var(--ink2);margin-bottom:10px;line-height:1.6">
           This is the URL that <b>simulation.html</b> and <b>profile.html</b> will fetch the config from. Copy this and set it in those files if needed, or it is saved automatically.
         </div>
@@ -508,17 +508,17 @@
           No Drive URL saved yet.
         </div>
         <div class="btn-row" style="margin-top:10px">
-          <button class="btn btn-gold" onclick="saveAllConfig()">💾 Save Config to Drive</button>
-          <button class="btn btn-ghost" onclick="copyDriveURL()">📋 Copy URL</button>
+          <button class="btn btn-gold" onclick="saveAllConfig()">?? Save Config to Drive</button>
+          <button class="btn btn-ghost" onclick="copyDriveURL()">?? Copy URL</button>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title">How It Works</div>
         <div style="font-size:0.82rem;color:var(--ink2);line-height:1.9">
-          <b style="color:var(--blue)">Without Drive:</b> Config stays in browser localStorage — only works on the admin's computer.<br>
-          <b style="color:var(--blue)">With Drive:</b> Config is fetched fresh from Google Drive every time a candidate opens the test — works on <b>any device, any browser</b>.<br><br>
-          <b>⚠️ Important:</b> Every time you change questions, audio URLs, or passages — re-save the config and re-upload to Google Drive (replace the old file). The URL stays the same.
+          <b style="color:var(--blue)">Without Drive:</b> Config stays in browser localStorage � only works on the admin's computer.<br>
+          <b style="color:var(--blue)">With Drive:</b> Config is fetched fresh from Google Drive every time a candidate opens the test � works on <b>any device, any browser</b>.<br><br>
+          <b>?? Important:</b> Every time you change questions, audio URLs, or passages � re-save the config and re-upload to Google Drive (replace the old file). The URL stays the same.
         </div>
       </div>
     </div>
@@ -537,16 +537,16 @@
           <input type="text" id="pdf-subtitle" value="">
         </div>
         <div class="btn-row">
-          <button class="btn btn-blue" onclick="exportQuestionPDF()">📄 Export Question Paper</button>
-          <button class="btn btn-green" onclick="exportAnswerSheetPDF()">📄 Export Answer Sheet</button>
-          <button class="btn btn-gold" onclick="exportAnswerKeyPDF()">🗝️ Export Answer Key</button>
+          <button class="btn btn-blue" onclick="exportQuestionPDF()">?? Export Question Paper</button>
+          <button class="btn btn-green" onclick="exportAnswerSheetPDF()">?? Export Answer Sheet</button>
+          <button class="btn btn-gold" onclick="exportAnswerKeyPDF()">??? Export Answer Key</button>
         </div>
       </div>
     </div>
 
     <!-- LIVE MONITOR PANEL -->
     <div id="p-monitor" class="panel">
-      <div class="panel-title">🟢 Live Monitor</div>
+      <div class="panel-title">?? Live Monitor</div>
       <div class="panel-desc">See who is currently online or recently active, track their test progress, and view submitted answers in real time.</div>
 
       <div class="card">
@@ -557,7 +557,7 @@
             <label style="font-size:0.78rem;color:var(--ink2);display:flex;align-items:center;gap:5px">
               <input type="checkbox" id="monitor-auto" onchange="toggleAutoRefresh(this.checked)" style="accent-color:var(--green)"> Auto-refresh (10s)
             </label>
-            <button class="refresh-btn" onclick="loadMonitor()">🔄 Refresh</button>
+            <button class="refresh-btn" onclick="loadMonitor()">?? Refresh</button>
           </div>
         </div>
 
@@ -570,8 +570,8 @@
 
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
           <div style="position:relative;flex:1;max-width:320px">
-            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.9rem;pointer-events:none">🔍</span>
-            <input type="text" id="monitor-search" placeholder="Search name or Candidate ID…"
+            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.9rem;pointer-events:none">??</span>
+            <input type="text" id="monitor-search" placeholder="Search name or Candidate ID�"
               oninput="filterMonitor()"
               style="width:100%;padding:8px 12px 8px 32px;border:1px solid var(--paper3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.84rem;background:var(--paper2)">
           </div>
@@ -585,7 +585,7 @@
       <div class="card" id="monitor-detail-card" style="display:none">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
           <div class="card-title" style="margin:0" id="monitor-detail-name">Candidate Detail</div>
-          <button class="btn btn-ghost" style="padding:5px 12px;font-size:0.78rem" onclick="document.getElementById('monitor-detail-card').style.display='none'">✕ Close</button>
+          <button class="btn btn-ghost" style="padding:5px 12px;font-size:0.78rem" onclick="document.getElementById('monitor-detail-card').style.display='none'">? Close</button>
         </div>
 
         <div id="monitor-detail-meta" style="background:var(--paper2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:0.83rem;color:var(--ink2);display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px"></div>
@@ -606,27 +606,27 @@
 
     <!-- TRF VIEWER PANEL -->
     <div id="p-trf" class="panel">
-      <div class="panel-title">📄 Test Result Forms</div>
+      <div class="panel-title">?? Test Result Forms</div>
       <div class="panel-desc">View and print official Test Result Forms for any candidate and attempt.</div>
       <div class="card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
           <div class="card-title" style="margin:0">Select Candidate &amp; Attempt</div>
-          <button class="refresh-btn" onclick="loadTRFCandidates()">🔄 Load Candidates</button>
+          <button class="refresh-btn" onclick="loadTRFCandidates()">?? Load Candidates</button>
         </div>
         <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px">
           <div style="flex:1;min-width:180px">
             <label style="display:block;font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:5px">Candidate</label>
             <select id="trf-cand-sel" style="width:100%;padding:8px 12px;border:1px solid var(--paper3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.88rem" onchange="loadTRFAttempts()">
-              <option value="">— Click Load first —</option>
+              <option value="">� Click Load first �</option>
             </select>
           </div>
           <div style="flex:1;min-width:160px">
             <label style="display:block;font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:5px">Attempt</label>
             <select id="trf-attempt-sel" style="width:100%;padding:8px 12px;border:1px solid var(--paper3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.88rem" onchange="renderAdminTRF()">
-              <option value="">— Select attempt —</option>
+              <option value="">� Select attempt �</option>
             </select>
           </div>
-          <button class="btn btn-gold" onclick="window.print()" style="padding:8px 16px;font-size:0.82rem">🖨 Print TRF</button>
+          <button class="btn btn-gold" onclick="printAdminTRF()" style="padding:8px 16px;font-size:0.82rem">🖨 Print / Save TRF</button>
         </div>
         <div id="admin-trf-wrap"><div class="tbl-empty">Select a candidate and attempt above to view their TRF.</div></div>
       </div>
@@ -641,13 +641,13 @@
           <div class="card-title" style="margin:0">Candidates List</div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             <span class="sheets-status" id="cand-status"></span>
-            <button class="refresh-btn" onclick="loadCandidates()">🔄 Refresh</button>
+            <button class="refresh-btn" onclick="loadCandidates()">?? Refresh</button>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
           <div style="position:relative;flex:1;max-width:340px">
-            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.9rem;pointer-events:none">🔍</span>
-            <input type="text" id="cand-search" placeholder="Search name or Candidate ID…"
+            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.9rem;pointer-events:none">??</span>
+            <input type="text" id="cand-search" placeholder="Search name or Candidate ID�"
               oninput="filterCandidates()"
               style="width:100%;padding:8px 12px 8px 32px;border:1px solid var(--paper3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.84rem;background:var(--paper2)">
           </div>
@@ -668,14 +668,14 @@
           <div class="card-title" style="margin:0">Scores List</div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             <span class="sheets-status" id="scores-status"></span>
-            <button class="refresh-btn" onclick="loadScores()">🔄 Refresh</button>
-            <button class="btn btn-gold" onclick="exportScoresPDF()" style="padding:6px 14px;font-size:0.8rem">📄 Export PDF</button>
+            <button class="refresh-btn" onclick="loadScores()">?? Refresh</button>
+            <button class="btn btn-gold" onclick="exportScoresPDF()" style="padding:6px 14px;font-size:0.8rem">?? Export PDF</button>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
           <div style="position:relative;flex:1;max-width:340px">
-            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.9rem;pointer-events:none">🔍</span>
-            <input type="text" id="scores-search" placeholder="Search name or Candidate ID…"
+            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.9rem;pointer-events:none">??</span>
+            <input type="text" id="scores-search" placeholder="Search name or Candidate ID�"
               oninput="filterScores()"
               style="width:100%;padding:8px 12px 8px 32px;border:1px solid var(--paper3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.84rem;background:var(--paper2)">
           </div>
@@ -694,7 +694,7 @@
       <div class="card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
           <div class="card-title" style="margin:0">Ungraded Submissions</div>
-          <button class="refresh-btn" onclick="loadUngraded()">🔄 Refresh</button>
+          <button class="refresh-btn" onclick="loadUngraded()">?? Refresh</button>
         </div>
         <div id="ungraded-wrap"><div class="tbl-empty">Click Refresh to load submissions.</div></div>
       </div>
@@ -705,14 +705,14 @@
         <div id="writing-texts-wrap" style="margin-bottom:16px"></div>
         <div class="row2">
           <div class="field">
-            <label>Writing Task 1 Band (1–9)</label>
+            <label>Writing Task 1 Band (1�9)</label>
             <select id="grade-w1">
               <option value="">Select...</option>
               ${[9,8.5,8,7.5,7,6.5,6,5.5,5,4.5,4,3.5,3,2.5,2,1.5,1].map(b=>`<option value="${b}">${b}</option>`).join('')}
             </select>
           </div>
           <div class="field">
-            <label>Writing Task 2 Band (1–9)</label>
+            <label>Writing Task 2 Band (1�9)</label>
             <select id="grade-w2">
               <option value="">Select...</option>
               ${[9,8.5,8,7.5,7,6.5,6,5.5,5,4.5,4,3.5,3,2.5,2,1.5,1].map(b=>`<option value="${b}">${b}</option>`).join('')}
@@ -738,7 +738,7 @@
           <b>Estimated Overall Band:</b> <span id="grade-overall" style="font-size:1.2rem;color:var(--blue);font-family:'Source Serif 4',serif;font-weight:600"></span>
         </div>
         <div class="btn-row">
-          <button class="btn btn-green" onclick="submitGrade()">✅ Save Grade</button>
+          <button class="btn btn-green" onclick="submitGrade()">? Save Grade</button>
           <button class="btn btn-ghost" onclick="document.getElementById('grade-form-card').style.display='none'">Cancel</button>
         </div>
         <input type="hidden" id="grade-sub-id">
@@ -753,7 +753,7 @@
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
           <div class="card-title" style="margin:0">All Test Sets</div>
           <div style="display:flex;gap:8px">
-            <button class="refresh-btn" onclick="loadTestSets()">🔄 Refresh</button>
+            <button class="refresh-btn" onclick="loadTestSets()">?? Refresh</button>
             <button class="btn btn-blue" style="padding:6px 14px;font-size:0.8rem" onclick="showNewSetForm()">+ New Set</button>
           </div>
         </div>
@@ -765,7 +765,7 @@
         <div class="row2">
           <div class="field">
             <label>Set Name</label>
-            <input type="text" id="set-name" placeholder="e.g. Mock Test 1 — January 2025">
+            <input type="text" id="set-name" placeholder="e.g. Mock Test 1 � January 2025">
           </div>
           <div class="field">
             <label>Description (optional)</label>
@@ -776,7 +776,7 @@
           <label>Config URL (GitHub raw URL)</label>
           <input type="text" id="set-url" placeholder="https://raw.githubusercontent.com/...">
           <div style="font-size:0.75rem;color:var(--ink3);margin-top:4px">
-            Get this from GitHub: open the JSON file → click "Raw" → copy URL
+            Get this from GitHub: open the JSON file ? click "Raw" ? copy URL
           </div>
         </div>
         <div class="field">
@@ -787,8 +787,8 @@
           </select>
         </div>
         <div class="btn-row">
-          <button class="btn btn-blue" onclick="saveTestSetForm()">💾 Save Set</button>
-          <button class="btn btn-green" onclick="activateSetForm()" id="activate-btn">⚡ Set as Active</button>
+          <button class="btn btn-blue" onclick="saveTestSetForm()">?? Save Set</button>
+          <button class="btn btn-green" onclick="activateSetForm()" id="activate-btn">? Set as Active</button>
           <button class="btn btn-ghost" onclick="document.getElementById('set-form-card').style.display='none'">Cancel</button>
         </div>
         <input type="hidden" id="set-id">
@@ -800,10 +800,10 @@
       <div class="panel-title">Publish to GitHub</div>
       <div class="panel-desc">Generate config JSON and upload to GitHub Pages for candidates to access.</div>
       <div class="card">
-        <div class="card-title">Step 1 — Set Test Set Name</div>
+        <div class="card-title">Step 1 � Set Test Set Name</div>
         <div class="field">
           <label>Test Set Name (will be shown to candidates)</label>
-          <input type="text" id="pub-set-name" placeholder="e.g. Mock Test 1 — January 2025">
+          <input type="text" id="pub-set-name" placeholder="e.g. Mock Test 1 � January 2025">
         </div>
         <div class="field">
           <label>Description</label>
@@ -811,33 +811,33 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-title">Step 2 — Download Config JSON</div>
+        <div class="card-title">Step 2 � Download Config JSON</div>
         <p style="font-size:0.85rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">
           This downloads a JSON file containing all questions, passages, answer key, and settings.
-          <b>Audio is NOT included</b> — YouTube URLs are stored in the config.
+          <b>Audio is NOT included</b> � YouTube URLs are stored in the config.
         </p>
-        <button class="btn btn-blue" onclick="downloadConfigForGitHub()">⬇ Download Config JSON</button>
+        <button class="btn btn-blue" onclick="downloadConfigForGitHub()">? Download Config JSON</button>
       </div>
       <div class="card">
-        <div class="card-title">Step 3 — Upload to GitHub</div>
+        <div class="card-title">Step 3 � Upload to GitHub</div>
         <ol style="font-size:0.85rem;color:var(--ink2);line-height:2;padding-left:20px">
           <li>Go to your GitHub repository</li>
           <li>Open <code>configs/</code> folder</li>
-          <li>Click <b>Add file → Upload files</b></li>
+          <li>Click <b>Add file ? Upload files</b></li>
           <li>Upload the downloaded JSON file</li>
           <li>Commit changes</li>
-          <li>Click the file → Click <b>Raw</b> → Copy the URL</li>
+          <li>Click the file ? Click <b>Raw</b> ? Copy the URL</li>
         </ol>
       </div>
       <div class="card">
-        <div class="card-title">Step 4 — Paste Raw URL & Save Test Set</div>
+        <div class="card-title">Step 4 � Paste Raw URL & Save Test Set</div>
         <div class="field">
           <label>GitHub Raw URL</label>
           <input type="text" id="pub-github-url" placeholder="https://raw.githubusercontent.com/username/ielts-sim/main/configs/...json">
         </div>
         <div class="btn-row">
-          <button class="btn btn-green" onclick="savePublishedSet()">💾 Save as Test Set & Activate</button>
-          <button class="btn btn-ghost" onclick="testConfigURL()">🧪 Test URL</button>
+          <button class="btn btn-green" onclick="savePublishedSet()">?? Save as Test Set & Activate</button>
+          <button class="btn btn-ghost" onclick="testConfigURL()">?? Test URL</button>
         </div>
         <div id="pub-test-result" style="margin-top:10px;font-size:0.82rem"></div>
       </div>
@@ -862,12 +862,12 @@
           <textarea id="trf-note" style="min-height:60px" placeholder="e.g. This is a simulation result for preparation purposes only."></textarea>
         </div>
         <div class="btn-row">
-          <button class="btn btn-blue" onclick="saveSettingsForm()">💾 Save Settings</button>
+          <button class="btn btn-blue" onclick="saveSettingsForm()">?? Save Settings</button>
         </div>
-        <div id="settings-status" style="margin-top:8px;font-size:0.82rem;color:var(--green);display:none">✅ Settings saved!</div>
+        <div id="settings-status" style="margin-top:8px;font-size:0.82rem;color:var(--green);display:none">? Settings saved!</div>
       </div>
       <div class="card">
-        <div class="card-title">🔐 Admin Password</div>
+        <div class="card-title">?? Admin Password</div>
         <p style="font-size:0.82rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">
           Your password is verified on the server and never appears in the page source. Changing it here updates it immediately for all future logins. An email alert is sent on every login attempt and password change.
         </p>
@@ -882,12 +882,12 @@
           </div>
         </div>
         <div class="btn-row">
-          <button class="btn btn-blue" onclick="changeAdminPasswordForm()">🔑 Change Password</button>
+          <button class="btn btn-blue" onclick="changeAdminPasswordForm()">?? Change Password</button>
         </div>
         <div id="pw-change-status" style="margin-top:8px;font-size:0.82rem;display:none"></div>
       </div>
       <div class="card">
-        <div class="card-title">📧 Login Notification Email</div>
+        <div class="card-title">?? Login Notification Email</div>
         <p style="font-size:0.82rem;color:var(--ink2);margin-bottom:14px;line-height:1.6">
           This email receives alerts whenever someone attempts to log into the admin panel (success or failure), and whenever the password is changed.
         </p>
@@ -896,7 +896,7 @@
           <input type="email" id="notify-email" placeholder="your@email.com">
         </div>
         <div class="btn-row">
-          <button class="btn btn-blue" onclick="saveNotifyEmail()">💾 Save Email</button>
+          <button class="btn btn-blue" onclick="saveNotifyEmail()">?? Save Email</button>
         </div>
         <div id="email-save-status" style="margin-top:8px;font-size:0.82rem;display:none"></div>
       </div>
@@ -907,7 +907,7 @@
           <input type="text" id="apps-script-url-input" value="https://script.google.com/macros/s/AKfycbwEcaHQwN-AXs31xAh46YCd1uw4HyxVZa6WF3DeBpCjzP8v7BkSjADQ838xDxFVtR2J/exec">
         </div>
         <div class="btn-row">
-          <button class="btn btn-ghost" onclick="testConnection()">🧪 Test Connection</button>
+          <button class="btn btn-ghost" onclick="testConnection()">?? Test Connection</button>
         </div>
         <div id="conn-status" style="margin-top:8px;font-size:0.82rem"></div>
       </div>
@@ -918,23 +918,23 @@
 
     <!-- QUESTIONNAIRE MAKER PANEL -->
     <div id="p-qmaker" class="panel">
-      <div class="panel-title">🧠 Questionnaire Maker</div>
-      <div class="panel-desc">AI-powered tools to build questions fast — generate from a passage, import via CSV, or browse the question bank.</div>
+      <div class="panel-title">?? Questionnaire Maker</div>
+      <div class="panel-desc">AI-powered tools to build questions fast � generate from a passage, import via CSV, or browse the question bank.</div>
 
       <!-- TOOL CARDS -->
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px">
         <div class="card" style="cursor:pointer;transition:all 0.2s;border:2px solid transparent" onclick="showPanel('p-qbank')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='transparent'">
-          <div style="font-size:2rem;margin-bottom:10px">🗄️</div>
+          <div style="font-size:2rem;margin-bottom:10px">???</div>
           <div style="font-weight:700;color:var(--blue);margin-bottom:4px">Question Bank</div>
           <div style="font-size:0.82rem;color:var(--ink3)">Save, search, and reuse questions across test sets.</div>
         </div>
         <div class="card" style="cursor:pointer;transition:all 0.2s;border:2px solid transparent" onclick="openAIGen(null,null)" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='transparent'">
-          <div style="font-size:2rem;margin-bottom:10px">✨</div>
+          <div style="font-size:2rem;margin-bottom:10px">?</div>
           <div style="font-weight:700;color:var(--blue);margin-bottom:4px">AI Generator</div>
-          <div style="font-size:0.82rem;color:var(--ink3)">Paste a passage → Claude generates IELTS-style questions automatically.</div>
+          <div style="font-size:0.82rem;color:var(--ink3)">Paste a passage ? Claude generates IELTS-style questions automatically.</div>
         </div>
         <div class="card" style="cursor:pointer;transition:all 0.2s;border:2px solid transparent" onclick="openCSVImport()" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='transparent'">
-          <div style="font-size:2rem;margin-bottom:10px">📥</div>
+          <div style="font-size:2rem;margin-bottom:10px">??</div>
           <div style="font-weight:700;color:var(--blue);margin-bottom:4px">Bulk CSV Import</div>
           <div style="font-size:0.82rem;color:var(--ink3)">Upload a spreadsheet of questions to add them all at once.</div>
         </div>
@@ -942,7 +942,7 @@
 
       <!-- CSV IMPORT SECTION -->
       <div class="card" id="csv-import-card" style="display:none">
-        <div class="card-title">📥 Bulk Import via CSV</div>
+        <div class="card-title">?? Bulk Import via CSV</div>
         <div style="background:var(--paper2);border-radius:8px;padding:14px;font-size:0.83rem;color:var(--ink2);line-height:1.9;margin-bottom:14px">
           <b style="color:var(--blue)">CSV Format:</b> Each row = one question.<br>
           Required columns: <code>type, text, optionA, optionB, optionC, optionD, answer, section, part</code><br>
@@ -951,7 +951,7 @@
         </div>
         <div class="field">
           <label>Download Template</label>
-          <button class="btn btn-ghost" onclick="downloadCSVTemplate()" style="padding:7px 14px;font-size:0.82rem">⬇ Download CSV Template</button>
+          <button class="btn btn-ghost" onclick="downloadCSVTemplate()" style="padding:7px 14px;font-size:0.82rem">? Download CSV Template</button>
         </div>
         <div class="field">
           <label>Upload CSV File</label>
@@ -966,18 +966,18 @@
             </table>
           </div>
           <div class="btn-row">
-            <button class="btn btn-green" onclick="importCSVQuestions()">✅ Import All Questions</button>
+            <button class="btn btn-green" onclick="importCSVQuestions()">? Import All Questions</button>
             <button class="btn btn-ghost" onclick="document.getElementById('csv-preview-wrap').style.display='none'">Cancel</button>
           </div>
           <div id="csv-import-status" style="margin-top:8px;font-size:0.83rem;display:none"></div>
         </div>
-        <button class="btn btn-ghost" onclick="document.getElementById('csv-import-card').style.display='none'" style="margin-top:12px">✕ Close</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('csv-import-card').style.display='none'" style="margin-top:12px">? Close</button>
       </div>
     </div>
 
     <!-- QUESTION BANK PANEL -->
     <div id="p-qbank" class="panel">
-      <div class="panel-title">🗄️ Question Bank</div>
+      <div class="panel-title">??? Question Bank</div>
       <div class="panel-desc">Your library of saved questions. Add any question here to reuse it across test sets.</div>
 
       <div class="card">
@@ -1025,7 +1025,7 @@
           <textarea id="qbank-qtext" placeholder="Enter the question..." style="min-height:70px"></textarea>
         </div>
         <div class="field">
-          <label>Options (one per line — for MC/TFNG)</label>
+          <label>Options (one per line � for MC/TFNG)</label>
           <textarea id="qbank-opts" placeholder="Option A&#10;Option B&#10;Option C&#10;Option D" style="min-height:80px"></textarea>
         </div>
         <div class="field">
@@ -1033,7 +1033,7 @@
           <input type="text" id="qbank-ans" placeholder="e.g. A or TRUE or the exact word">
         </div>
         <div class="btn-row">
-          <button class="btn btn-green" onclick="saveToBank()">💾 Save to Bank</button>
+          <button class="btn btn-green" onclick="saveToBank()">?? Save to Bank</button>
           <button class="btn btn-ghost" onclick="document.getElementById('qbank-add-card').style.display='none'">Cancel</button>
         </div>
       </div>
@@ -1042,7 +1042,7 @@
 <!-- QUESTION MODAL -->
 <div class="qm-overlay" id="qm-overlay">
   <div class="qm-box">
-    <button class="qm-close" onclick="qmClose()">×</button>
+    <button class="qm-close" onclick="qmClose()">�</button>
     <div class="qm-title" id="qm-title">Add Question</div>
 
     <div class="qm-field">
@@ -1059,7 +1059,7 @@
     <div class="qm-field">
       <label>Question Type</label>
       <select id="qm-type" onchange="qmTypeChange()">
-        <option value="">— select type —</option>
+        <option value="">� select type �</option>
         <option value="fc">Form Completion (fill in the blank)</option>
         <option value="mc">Multiple Choice (choose one)</option>
         <option value="ct2">Choose TWO (multi-select)</option>
@@ -1080,8 +1080,8 @@
 <!-- AI GENERATOR MODAL -->
 <div class="qm-overlay" id="ai-gen-overlay">
   <div class="qm-box" style="width:660px">
-    <button class="qm-close" onclick="closeAIGen()">×</button>
-    <div class="qm-title">✨ AI Question Generator</div>
+    <button class="qm-close" onclick="closeAIGen()">�</button>
+    <div class="qm-title">? AI Question Generator</div>
     <p style="font-size:0.82rem;color:var(--ink2);margin-bottom:16px;line-height:1.6">
       Paste a passage or topic below. Claude will generate IELTS-style questions. Review them, then add to your test or Question Bank.
     </p>
@@ -1116,7 +1116,7 @@
         <label>Passage / Context Text</label>
         <textarea id="ai-gen-passage" style="min-height:160px;resize:vertical;line-height:1.6" placeholder="Paste your reading passage or listening transcript here. The AI will base questions on this text.&#10;&#10;You can also type a topic (e.g. 'climate change and renewable energy') and the AI will create appropriate questions."></textarea>
       </div>
-      <button class="qm-save-btn" id="ai-gen-btn" onclick="runAIGenerate()" style="background:linear-gradient(135deg,var(--blue),var(--blue2))">✨ Generate Questions</button>
+      <button class="qm-save-btn" id="ai-gen-btn" onclick="runAIGenerate()" style="background:linear-gradient(135deg,var(--blue),var(--blue2))">? Generate Questions</button>
     </div>
 
     <!-- Loading state -->
@@ -1128,13 +1128,13 @@
     <!-- Results -->
     <div id="ai-gen-results" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <div style="font-size:0.82rem;font-weight:700;color:var(--green)">✅ <span id="ai-res-count">0</span> questions generated</div>
-        <button class="btn btn-ghost" onclick="resetAIGen()" style="padding:5px 12px;font-size:0.78rem">← Try Again</button>
+        <div style="font-size:0.82rem;font-weight:700;color:var(--green)">? <span id="ai-res-count">0</span> questions generated</div>
+        <button class="btn btn-ghost" onclick="resetAIGen()" style="padding:5px 12px;font-size:0.78rem">? Try Again</button>
       </div>
       <div id="ai-gen-cards"></div>
       <div class="btn-row" style="margin-top:16px">
-        <button class="btn btn-green" onclick="addAllAIQuestions()">✅ Add All to Test</button>
-        <button class="btn btn-blue" onclick="saveAllAIToBank()">🗄️ Save All to Question Bank</button>
+        <button class="btn btn-green" onclick="addAllAIQuestions()">? Add All to Test</button>
+        <button class="btn btn-blue" onclick="saveAllAIToBank()">??? Save All to Question Bank</button>
         <button class="btn btn-ghost" onclick="closeAIGen()">Cancel</button>
       </div>
     </div>
@@ -1144,14 +1144,14 @@
 </div>
 
 <script>
-// ═══════════════════════════════════════
+// ---------------------------------------
 // APPS SCRIPT
-// ═══════════════════════════════════════
+// ---------------------------------------
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOWjeZlhj3HWA9C7W8j7GVh9OlVunuMgp6cvGfCFAW_RSZlsjpHvL4Ihqpbo0huwfdSg/exec';
 
 // Must match API_SECRET in Code.gs. This is a speed bump against
 // random bot traffic, not real security (it's visible in page
-// source) — the admin password itself is verified server-side.
+// source) � the admin password itself is verified server-side.
 const API_KEY = 'ielts-sim-x7k2m9-change-me';
 
 function callSheets(payload) {
@@ -1168,16 +1168,16 @@ function callSheets(payload) {
   });
 }
 
-// ═══════════════════════════════════════
-// CANDIDATES — load from Sheets
-// ═══════════════════════════════════════
+// ---------------------------------------
+// CANDIDATES � load from Sheets
+// ---------------------------------------
 let _candidateRows = [];
 let _scoreRows = [];
 
 async function loadCandidates() {
   const wrap = document.getElementById('cand-table-wrap');
   const status = document.getElementById('cand-status');
-  wrap.innerHTML = '<div class="tbl-empty">⏳ Loading...</div>';
+  wrap.innerHTML = '<div class="tbl-empty">? Loading...</div>';
   status.className = 'sheets-status';
   status.textContent = 'Fetching...';
   try {
@@ -1185,13 +1185,13 @@ async function loadCandidates() {
     if (!data.success) throw new Error(data.message || 'Failed');
     _candidateRows = data.rows || [];
     status.className = 'sheets-status ok';
-    status.textContent = `✅ ${_candidateRows.length} candidates`;
+    status.textContent = `? ${_candidateRows.length} candidates`;
     document.getElementById('cand-search').value = '';
     renderCandidateTable(_candidateRows);
   } catch(e) {
     status.className = 'sheets-status err';
-    status.textContent = '❌ Error';
-    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}<br><br>Make sure Code.gs is updated and redeployed.</div>`;
+    status.textContent = '? Error';
+    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">? ${e.message}<br><br>Make sure Code.gs is updated and redeployed.</div>`;
   }
 }
 
@@ -1209,7 +1209,7 @@ function renderCandidateTable(rows, highlight) {
   label.textContent = _candidateRows.length ? `${rows.length} of ${_candidateRows.length} shown` : '';
 
   if (!rows.length) {
-    wrap.innerHTML = `<div class="tbl-empty">${_candidateRows.length ? '🔍 No candidates match your search.' : 'No candidates registered yet.'}</div>`;
+    wrap.innerHTML = `<div class="tbl-empty">${_candidateRows.length ? '?? No candidates match your search.' : 'No candidates registered yet.'}</div>`;
     return;
   }
 
@@ -1241,13 +1241,13 @@ function renderCandidateTable(rows, highlight) {
   wrap.innerHTML = html;
 }
 
-// ═══════════════════════════════════════
-// SCORES — load from Sheets
-// ═══════════════════════════════════════
+// ---------------------------------------
+// SCORES � load from Sheets
+// ---------------------------------------
 async function loadScores() {
   const wrap = document.getElementById('scores-table-wrap');
   const status = document.getElementById('scores-status');
-  wrap.innerHTML = '<div class="tbl-empty">⏳ Loading...</div>';
+  wrap.innerHTML = '<div class="tbl-empty">? Loading...</div>';
   status.className = 'sheets-status';
   status.textContent = 'Fetching...';
   try {
@@ -1255,13 +1255,13 @@ async function loadScores() {
     if (!data.success) throw new Error(data.message || 'Failed');
     _scoreRows = data.rows || [];
     status.className = 'sheets-status ok';
-    status.textContent = `✅ ${_scoreRows.length} submissions`;
+    status.textContent = `? ${_scoreRows.length} submissions`;
     document.getElementById('scores-search').value = '';
     renderScoresTable(_scoreRows);
   } catch(e) {
     status.className = 'sheets-status err';
-    status.textContent = '❌ Error';
-    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}<br><br>Make sure Code.gs is updated and redeployed.</div>`;
+    status.textContent = '? Error';
+    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">? ${e.message}<br><br>Make sure Code.gs is updated and redeployed.</div>`;
   }
 }
 
@@ -1279,7 +1279,7 @@ function renderScoresTable(rows, highlight) {
   label.textContent = _scoreRows.length ? `${rows.length} of ${_scoreRows.length} shown` : '';
 
   if (!rows.length) {
-    wrap.innerHTML = `<div class="tbl-empty">${_scoreRows.length ? '🔍 No scores match your search.' : 'No scores submitted yet.'}</div>`;
+    wrap.innerHTML = `<div class="tbl-empty">${_scoreRows.length ? '?? No scores match your search.' : 'No scores submitted yet.'}</div>`;
     return;
   }
 
@@ -1320,7 +1320,7 @@ function renderScoresTable(rows, highlight) {
 }
 
 function formatDate(val) {
-  if (!val) return '—';
+  if (!val) return '�';
   try { return new Date(val).toLocaleString('en-PH',{dateStyle:'medium',timeStyle:'short'}); }
   catch(e){ return String(val); }
 }
@@ -1329,12 +1329,12 @@ function exportScoresPDF() {
   const tbl = document.getElementById('scores-tbl');
   if (!tbl) { alert('Load scores first.'); return; }
   const title = document.getElementById('pdf-title')?.value || 'IELTS Simulation Scores';
-  openPrintWindow(`<h1>${escH(title)} — Scores</h1>${tbl.outerHTML}`);
+  openPrintWindow(`<h1>${escH(title)} � Scores</h1>${tbl.outerHTML}`);
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // STATE
-// ═══════════════════════════════════════
+// ---------------------------------------
 let config = {
   listening: {
     sections: [
@@ -1360,9 +1360,9 @@ let config = {
 
 let candidateResponses = null;
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // INIT
-// ═══════════════════════════════════════
+// ---------------------------------------
 window.onload = () => {
   if (sessionStorage.getItem('userRole') !== 'Admin') {
     window.location.href = 'index.html'; return;
@@ -1378,7 +1378,7 @@ window.onload = () => {
     sec1Container.innerHTML = buildLSecHTML(1);
     // Restore audio state
     if (sec.audioURL) { switchAudioSrc(1,'url'); document.getElementById('audio-url-input-1').value = sec.audioURL; document.getElementById('audio-url-preview-1').innerHTML = buildURLPreview(sec.audioURL); }
-    if (sec.audioName) { document.getElementById('L-audio-name-1').textContent='🎵 '+sec.audioName; document.getElementById('L-audio-slot-1').classList.add('loaded'); }
+    if (sec.audioName) { document.getElementById('L-audio-name-1').textContent='?? '+sec.audioName; document.getElementById('L-audio-slot-1').classList.add('loaded'); }
     if (sec.audioData) { const el=document.getElementById('L-audio-el-1'); el.src=sec.audioData; el.classList.remove('hidden'); }
     if (sec.imgURL) {
       const urlInp = document.getElementById('L-img-url-1');
@@ -1417,9 +1417,9 @@ function loadConfigToUI() {
   populateAnswerKey();
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // PANEL NAVIGATION
-// ═══════════════════════════════════════
+// ---------------------------------------
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
@@ -1436,20 +1436,20 @@ function showPanel(id) {
   // Auto-load monitor
   if (id === 'p-monitor' && !document.querySelector('#monitor-wrap table')) loadMonitor();
 }
-// ═══════════════════════════════════════
+// ---------------------------------------
 // BUILD LISTENING SECTION HTML
-// ═══════════════════════════════════════
+// ---------------------------------------
 function buildLSecHTML(n) {
-  const ranges = ['1–10','11–20','21–30','31–40'];
+  const ranges = ['1�10','11�20','21�30','31�40'];
   const sec    = config.listening.sections[n-1] || {};
   const urlVal = escH(sec.audioURL||'');
   const hasURL = !!sec.audioURL;
   return `
     <div class="card">
-      <div class="card-title">Audio — Section ${n}</div>
+      <div class="card-title">Audio � Section ${n}</div>
       <div style="display:flex;gap:8px;margin-bottom:12px">
-        <button class="sec-tab ${!hasURL?'active':''}" id="audio-src-file-${n}" onclick="switchAudioSrc(${n},'file')" style="font-size:0.78rem;padding:5px 12px">📁 Upload File</button>
-        <button class="sec-tab ${hasURL?'active':''}"  id="audio-src-url-${n}"  onclick="switchAudioSrc(${n},'url')"  style="font-size:0.78rem;padding:5px 12px">🔗 Paste URL</button>
+        <button class="sec-tab ${!hasURL?'active':''}" id="audio-src-file-${n}" onclick="switchAudioSrc(${n},'file')" style="font-size:0.78rem;padding:5px 12px">?? Upload File</button>
+        <button class="sec-tab ${hasURL?'active':''}"  id="audio-src-url-${n}"  onclick="switchAudioSrc(${n},'url')"  style="font-size:0.78rem;padding:5px 12px">?? Paste URL</button>
       </div>
 
       <!-- FILE UPLOAD -->
@@ -1472,24 +1472,24 @@ function buildLSecHTML(n) {
             style="font-family:monospace;font-size:0.82rem">
         </div>
         <div style="font-size:0.73rem;color:var(--ink3);margin-bottom:8px;padding:8px;background:var(--paper2);border-radius:6px;line-height:1.7">
-          💡 <b>YouTube (unlisted):</b> use <code>https://www.youtube.com/embed/VIDEO_ID</code><br>
-          💡 <b>Google Drive:</b> share → "Anyone with link" → copy link<br>
-          💡 <b>Direct MP3:</b> paste the direct .mp3 URL
+          ?? <b>YouTube (unlisted):</b> use <code>https://www.youtube.com/embed/VIDEO_ID</code><br>
+          ?? <b>Google Drive:</b> share ? "Anyone with link" ? copy link<br>
+          ?? <b>Direct MP3:</b> paste the direct .mp3 URL
         </div>
         <div id="audio-url-preview-${n}">${hasURL ? buildURLPreview(sec.audioURL) : ''}</div>
-        <button class="btn btn-ghost" style="font-size:0.78rem;margin-top:8px" onclick="previewAudioURL(${n})">▶ Preview URL</button>
+        <button class="btn btn-ghost" style="font-size:0.78rem;margin-top:8px" onclick="previewAudioURL(${n})">? Preview URL</button>
       </div>
 
-      <!-- SECTION IMAGE — paste URL -->
+      <!-- SECTION IMAGE � paste URL -->
       <div class="field" style="margin-top:12px">
-        <label>Section Image URL <span style="font-weight:400;color:var(--ink3)">(optional — map/diagram/floor plan)</span></label>
+        <label>Section Image URL <span style="font-weight:400;color:var(--ink3)">(optional � map/diagram/floor plan)</span></label>
         <div style="display:flex;gap:8px;align-items:center">
           <input type="text" id="L-img-url-${n}"
             placeholder="https://raw.githubusercontent.com/username/ielts-sim/main/images/map.jpg"
             value="${escH(sec.imgURL||'')}"
             oninput="saveSectionImgURL(${n},this.value)"
             style="flex:1;font-family:monospace;font-size:0.82rem">
-          <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.78rem;white-space:nowrap" onclick="previewSectionImg(${n})">👁 Preview</button>
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.78rem;white-space:nowrap" onclick="previewSectionImg(${n})">?? Preview</button>
         </div>
         <div id="L-img-preview-${n}" style="margin-top:6px">
           ${sec.imgURL?`<img src="${escH(sec.imgURL)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)">`:''}
@@ -1541,7 +1541,7 @@ function previewAudioURL(n) {
   toast('Preview updated');
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 function showLSec(n, btn) {
   document.querySelectorAll('.l-sec').forEach(s=>s.classList.add('hidden'));
   const container = document.getElementById('L-sec-'+n);
@@ -1560,7 +1560,7 @@ function showLSec(n, btn) {
     document.getElementById('audio-url-input-'+n).value = sec.audioURL;
     document.getElementById('audio-url-preview-'+n).innerHTML = buildURLPreview(sec.audioURL);
   }
-  if (sec.audioName) { document.getElementById('L-audio-name-'+n).textContent='🎵 '+sec.audioName; document.getElementById('L-audio-slot-'+n).classList.add('loaded'); }
+  if (sec.audioName) { document.getElementById('L-audio-name-'+n).textContent='?? '+sec.audioName; document.getElementById('L-audio-slot-'+n).classList.add('loaded'); }
   if (sec.audioData) { const el=document.getElementById('L-audio-el-'+n); el.src=sec.audioData; el.classList.remove('hidden'); }
   if (sec.imgURL) {
     const urlInp = document.getElementById('L-img-url-'+n);
@@ -1592,11 +1592,11 @@ function showAKTab(t, btn) {
 }
 
 
-// ═══════════════════════════════════════
-// QUESTION STORE — modal-based, per section/passage
+// ---------------------------------------
+// QUESTION STORE � modal-based, per section/passage
 // config.listening.qBlocks[n]  = [{type,part,instr,...}, ...]
 // config.reading.qBlocks[n]    = [{type,part,instr,...}, ...]
-// ═══════════════════════════════════════
+// ---------------------------------------
 const LTRS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 function getQBlocks(sec, n) {
@@ -1611,7 +1611,7 @@ function getQBlocks(sec, n) {
   }
 }
 
-// ── MODAL STATE ──
+// -- MODAL STATE --
 let _qmSec = 'L', _qmSecN = 1, _qmEditIdx = null;
 
 function qmOpen(sec, n, editIdx) {
@@ -1645,7 +1645,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// ── TYPE CHANGE ──
+// -- TYPE CHANGE --
 function qmTypeChange(existing) {
   existing = existing || null;
   const type = document.getElementById('qm-type').value;
@@ -1664,7 +1664,7 @@ function qmTypeChange(existing) {
       </div>
       <div class="qm-field">
         <label>HTML Template
-          <span style="font-weight:400;color:var(--ink3)"> — use <code style="background:var(--paper2);padding:1px 5px;border-radius:3px">{{1}}</code> for blanks</span>
+          <span style="font-weight:400;color:var(--ink3)"> � use <code style="background:var(--paper2);padding:1px 5px;border-radius:3px">{{1}}</code> for blanks</span>
         </label>
         <div style="background:var(--paper2);border-radius:6px;padding:10px 12px;font-size:0.78rem;color:var(--ink2);margin-bottom:8px;line-height:1.8;border:1px solid var(--border)">
           <b>How to use:</b> Type your form HTML below. Put <code>{{1}}</code>, <code>{{2}}</code>, etc. where the blanks should appear.<br>
@@ -1678,10 +1678,10 @@ function qmTypeChange(existing) {
       </div>
       <div class="qm-field">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-          <label>Answer Key <span style="font-weight:400;color:var(--ink3)">— one per blank</span></label>
+          <label>Answer Key <span style="font-weight:400;color:var(--ink3)">� one per blank</span></label>
           <div style="display:flex;gap:6px">
-            <button type="button" onclick="qmScanFCBlanks()" class="qm-add-opt" style="font-size:0.78rem">🔍 Scan blanks</button>
-            <button type="button" onclick="qmPreviewFC()" class="qm-add-opt" style="font-size:0.78rem">👁 Preview</button>
+            <button type="button" onclick="qmScanFCBlanks()" class="qm-add-opt" style="font-size:0.78rem">?? Scan blanks</button>
+            <button type="button" onclick="qmPreviewFC()" class="qm-add-opt" style="font-size:0.78rem">?? Preview</button>
           </div>
         </div>
         <div id="qm-fc-answers" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
@@ -1714,7 +1714,7 @@ function qmTypeChange(existing) {
         <label>Question text</label>
         <textarea id="qm-mc-qtext" placeholder="What does the speaker say about...?">${escH(q.qText||'')}</textarea>
       </div>
-      <div class="qm-section-label">Options — tick the correct one</div>
+      <div class="qm-section-label">Options � tick the correct one</div>
       <div id="qm-mc-opts">`;
     opts.forEach((o, i) => { html += qmMCOptRow(i, o, answer === LTRS[i]); });
     html += `</div><button class="qm-add-opt" onclick="qmAddMCOpt()">+ Add Option</button>`;
@@ -1741,7 +1741,7 @@ function qmTypeChange(existing) {
         <input type="number" id="qm-ct2-pick" min="1" max="10" value="${pick}">
         <span>answer(s)</span>
       </div>
-      <div class="qm-section-label">Options — tick all correct answers</div>
+      <div class="qm-section-label">Options � tick all correct answers</div>
       <div id="qm-ct2-opts">`;
     opts.forEach((o, i) => { html += qmCT2OptRow(i, o, answers.includes(LTRS[i])); });
     html += `</div><button class="qm-add-opt" onclick="qmAddCT2Opt()">+ Add Option</button>`;
@@ -1755,11 +1755,11 @@ function qmTypeChange(existing) {
         <label>Shared prompt / context (optional)</label>
         <textarea id="qm-match-prompt" placeholder="What does the speaker say about each of the following...">${escH(q.matchPrompt||'')}</textarea>
       </div>
-      <div class="qm-section-label">Choice Box (A, B, C… shown to candidates)</div>
+      <div class="qm-section-label">Choice Box (A, B, C� shown to candidates)</div>
       <div id="qm-match-choices">`;
     choices.forEach((c, i) => { html += qmMatchChoiceRow(i, c); });
     html += `</div><button class="qm-add-opt" onclick="qmAddMatchChoice()">+ Add Choice</button>
-      <div class="qm-section-label" style="margin-top:12px">Items to Match — Q number, label &amp; correct letter</div>
+      <div class="qm-section-label" style="margin-top:12px">Items to Match � Q number, label &amp; correct letter</div>
       <div id="qm-match-items">`;
     items.forEach((it, i) => { html += qmMatchItemRow(i, it); });
     html += `</div><button class="qm-add-opt" onclick="qmAddMatchItem()">+ Add Item</button>`;
@@ -1798,7 +1798,7 @@ function qmTypeChange(existing) {
   }
 }
 
-// ── ROW BUILDERS ──
+// -- ROW BUILDERS --
 function qmMCOptRow(i, val, correct) {
   return `<div class="qm-opt-row" id="qm-mc-opt-${i}">
     <span class="qm-opt-ltr">${LTRS[i]}</span>
@@ -1892,9 +1892,9 @@ function qmRemoveMatchItem(i) {
   if(rows.length<=1)return; rows[i]&&rows[i].remove();
 }
 
-// ══════════════════════════════════════════════
+// ----------------------------------------------
 // FC HTML TEMPLATE HELPERS
-// ══════════════════════════════════════════════
+// ----------------------------------------------
 function qmScanFCBlanks() {
   const tpl  = (document.getElementById('qm-fc-html')||{}).value || '';
   const nums = [...new Set([...tpl.matchAll(/\{\{(\d+)\}\}/g)].map(m=>parseInt(m[1])))].sort((a,b)=>a-b);
@@ -1909,7 +1909,7 @@ function qmScanFCBlanks() {
   });
   wrap.innerHTML = '';
   if (!nums.length) {
-    wrap.innerHTML = '<span style="color:var(--ink3);font-size:0.82rem">No {{n}} blanks found — type {{1}}, {{2}} etc. in your template.</span>';
+    wrap.innerHTML = '<span style="color:var(--ink3);font-size:0.82rem">No {{n}} blanks found � type {{1}}, {{2}} etc. in your template.</span>';
     return;
   }
   nums.forEach(n => {
@@ -1941,7 +1941,7 @@ function qmPreviewFCImg() {
   wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="color:var(--red);font-size:0.8rem;display:none">Cannot load image.</span>`;
 }
 
-// Stubs — no longer used but kept to avoid errors
+// Stubs � no longer used but kept to avoid errors
 function qmFCAddLine() {}
 function qmFCAddTextSeg() {}
 function qmFCAddBlankSeg() {}
@@ -1953,7 +1953,7 @@ function qmFCUpdatePreview() {}
 function qmFCGetLines() { return []; }
 function qmRebuildFCBlanks() { qmScanFCBlanks(); }
 
-// ── SAVE ──
+// -- SAVE --
 function qmSave() {
   const type  = document.getElementById('qm-type').value;
   const part  = document.getElementById('qm-part').value.trim();
@@ -2039,7 +2039,7 @@ function qmSave() {
   toast('Question saved!');
 }
 
-// ── RENDER CARDS ──
+// -- RENDER CARDS --
 function qmRenderList(sec, n) {
   const listId = 'qlist-'+sec+'-'+n;
   const wrap = document.getElementById(listId);
@@ -2048,7 +2048,7 @@ function qmRenderList(sec, n) {
   const typeLbl = {fc:'Form Completion',mc:'Multiple Choice',ct2:'Choose TWO',match:'Matching',short:'Short Answer',tfng:'T/F/NG'};
 
   if (!blocks.length) {
-    wrap.innerHTML = '<div class="q-card-empty"><span>📝</span>No questions yet. Click <b>+ Add Question</b> to get started.</div>';
+    wrap.innerHTML = '<div class="q-card-empty"><span>??</span>No questions yet. Click <b>+ Add Question</b> to get started.</div>';
     return;
   }
   wrap.innerHTML = '';
@@ -2126,9 +2126,9 @@ function populateQEditors() {
 }
 
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // ANSWER KEY
-// ═══════════════════════════════════════
+// ---------------------------------------
 function buildAnswerKeyGrids() {
   ['L','R'].forEach(sec => {
     const grid = document.getElementById('AK-'+sec+'-grid');
@@ -2150,9 +2150,9 @@ function populateAnswerKey() {
   });
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // AUDIO / IMAGE
-// ═══════════════════════════════════════
+// ---------------------------------------
 function loadSectionAudio(n, input) {
   if (!input.files[0]) return;
   const file = input.files[0];
@@ -2160,7 +2160,7 @@ function loadSectionAudio(n, input) {
   reader.onload = e => {
     config.listening.sections[n-1].audioData = e.target.result;
     config.listening.sections[n-1].audioName = file.name;
-    document.getElementById('L-audio-name-'+n).textContent = '🎵 ' + file.name;
+    document.getElementById('L-audio-name-'+n).textContent = '?? ' + file.name;
     document.getElementById('L-audio-slot-'+n).classList.add('loaded');
     const el = document.getElementById('L-audio-el-'+n);
     el.src = e.target.result; el.classList.remove('hidden');
@@ -2169,7 +2169,7 @@ function loadSectionAudio(n, input) {
   reader.readAsDataURL(file);
 }
 function loadSectionImg(n, input) {
-  // Legacy — kept for compat
+  // Legacy � kept for compat
   if (!input.files[0]) return;
   const reader = new FileReader();
   reader.onload = e => { config.listening.sections[n-1].imgData = e.target.result; toast('Image loaded'); };
@@ -2185,7 +2185,7 @@ function previewSectionImg(n) {
   const wrap = document.getElementById('L-img-preview-'+n);
   if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">No URL entered.</span>'; return; }
   config.listening.sections[n-1].imgURL = url;
-  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="color:var(--red);font-size:0.8rem;display:none">Cannot load — check URL.</span>`;
+  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="color:var(--red);font-size:0.8rem;display:none">Cannot load � check URL.</span>`;
   toast('Image preview updated');
 }
 function saveWritingImgURL(n, val) {
@@ -2198,13 +2198,13 @@ function previewWritingImg(n) {
   if (!wrap) return;
   if (!url) { wrap.innerHTML='<span style="color:var(--red);font-size:0.8rem">No URL entered.</span>'; return; }
   config.writing.tasks[n].imgURL = url;
-  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="color:var(--red);font-size:0.8rem;display:none">Cannot load — check URL.</span>`;
+  wrap.innerHTML = `<img src="${escH(url)}" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="color:var(--red);font-size:0.8rem;display:none">Cannot load � check URL.</span>`;
   toast('Image preview updated');
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // SAVE / LOAD CONFIG
-// ═══════════════════════════════════════
+// ---------------------------------------
 function collectConfig() {
   // Passages
   [1,2,3].forEach(i => {
@@ -2216,7 +2216,7 @@ function collectConfig() {
   config.writing.tasks[2].prompt   = document.getElementById('W-prompt-2').value;
   config.writing.tasks[1].minWords = parseInt(document.getElementById('W-min-1').value)||150;
   config.writing.tasks[2].minWords = parseInt(document.getElementById('W-min-2').value)||250;
-  // Writing image URL — sweep from DOM (was missing, causing image loss when loaded on other devices)
+  // Writing image URL � sweep from DOM (was missing, causing image loss when loaded on other devices)
   const wImgInput1 = document.getElementById('W-img-url-1');
   if (wImgInput1) config.writing.tasks[1].imgURL = wImgInput1.value.trim();
 
@@ -2238,7 +2238,7 @@ function collectConfig() {
     });
   });
 
-  // Audio URL — sweep from DOM inputs
+  // Audio URL � sweep from DOM inputs
   [1,2,3,4].forEach(n => {
     const urlInput = document.getElementById('audio-url-input-'+n);
     if (urlInput && urlInput.value.trim()) {
@@ -2257,12 +2257,12 @@ function saveAllConfig() {
   const blob = new Blob([JSON.stringify(config, null, 2)], {type:'application/json'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = 'ielts_config.json'; a.click();
-  toast('✅ Config saved! Now upload ielts_config.json to Google Drive.');
+  toast('? Config saved! Now upload ielts_config.json to Google Drive.');
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // GOOGLE DRIVE CONFIG
-// ═══════════════════════════════════════
+// ---------------------------------------
 function convertDriveURL(url) {
   // Convert any Google Drive share URL to direct download URL
   if (!url) return '';
@@ -2275,7 +2275,7 @@ function convertDriveURL(url) {
 }
 
 function saveDriveURL(val) {
-  // Just store raw input for now — convert on button click
+  // Just store raw input for now � convert on button click
 }
 
 function convertAndSaveDriveURL() {
@@ -2287,36 +2287,36 @@ function convertAndSaveDriveURL() {
   document.getElementById('drive-url-input').value = converted;
   config._driveURL = converted;
   localStorage.setItem('ielts_admin_config', JSON.stringify(config));
-  showDriveStatus('✅ URL converted and saved! Candidates will now fetch config from this URL.', 'ok');
-  toast('✅ Drive URL saved!');
+  showDriveStatus('? URL converted and saved! Candidates will now fetch config from this URL.', 'ok');
+  toast('? Drive URL saved!');
 }
 
 async function testDriveURL() {
   const url = localStorage.getItem('ielts_drive_url') || document.getElementById('drive-url-input').value.trim();
   if (!url) { showDriveStatus('No URL set. Paste a Drive link first.', 'err'); return; }
-  showDriveStatus('⏳ Testing connection...', 'info');
+  showDriveStatus('? Testing connection...', 'info');
   try {
     const res = await fetch(convertDriveURL(url));
     if (res.ok) {
       const text = await res.text();
       try {
         JSON.parse(text);
-        showDriveStatus('✅ Success! Config file is accessible and valid JSON. Candidates can now load questions.', 'ok');
+        showDriveStatus('? Success! Config file is accessible and valid JSON. Candidates can now load questions.', 'ok');
       } catch(e) {
-        showDriveStatus('⚠️ File is accessible but is not valid JSON. Make sure you uploaded the correct ielts_config.json file.', 'warn');
+        showDriveStatus('?? File is accessible but is not valid JSON. Make sure you uploaded the correct ielts_config.json file.', 'warn');
       }
     } else {
-      showDriveStatus(`❌ Could not access file (HTTP ${res.status}). Make sure sharing is set to "Anyone with the link".`, 'err');
+      showDriveStatus(`? Could not access file (HTTP ${res.status}). Make sure sharing is set to "Anyone with the link".`, 'err');
     }
   } catch(e) {
-    showDriveStatus('❌ Network error: ' + e.message + '\n\nTip: Google Drive direct download links may be blocked by CORS on some browsers. Try uploading to a CORS-friendly host like GitHub Pages or Cloudflare R2.', 'err');
+    showDriveStatus('? Network error: ' + e.message + '\n\nTip: Google Drive direct download links may be blocked by CORS on some browsers. Try uploading to a CORS-friendly host like GitHub Pages or Cloudflare R2.', 'err');
   }
 }
 
 function copyDriveURL() {
   const url = localStorage.getItem('ielts_drive_url') || '';
   if (!url) { toast('No Drive URL saved yet.'); return; }
-  navigator.clipboard.writeText(url).then(()=>toast('URL copied!')).catch(()=>toast('Could not copy — select manually'));
+  navigator.clipboard.writeText(url).then(()=>toast('URL copied!')).catch(()=>toast('Could not copy � select manually'));
 }
 
 function showDriveStatus(msg, type) {
@@ -2345,15 +2345,15 @@ function loadConfig(input) {
       localStorage.setItem('ielts_admin_config', JSON.stringify(config));
       buildAnswerKeyGrids();
       loadConfigToUI();
-      toast('✅ Config loaded successfully!');
+      toast('? Config loaded successfully!');
     } catch(err) { alert('Invalid config file.'); }
   };
   reader.readAsText(input.files[0]);
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // CHECKER
-// ═══════════════════════════════════════
+// ---------------------------------------
 function loadCandidateResponses(input) {
   if (!input.files[0]) return;
   const reader = new FileReader();
@@ -2388,7 +2388,7 @@ function runChecker() {
     const correct = key !== '' && given === key;
     if (correct) lScore++;
     lDetails.innerHTML += `<div class="checker-result ${correct?'checker-correct':'checker-wrong'}">
-      <b>Q${i}:</b> ${given||'<em>no answer</em>'} ${correct?'✓':'✗ Correct: '+escH(config.answerKey.L[i]||'—')}
+      <b>Q${i}:</b> ${given||'<em>no answer</em>'} ${correct?'?':'? Correct: '+escH(config.answerKey.L[i]||'�')}
     </div>`;
   }
   for (let i=1; i<=40; i++) {
@@ -2397,7 +2397,7 @@ function runChecker() {
     const correct = key !== '' && given === key;
     if (correct) rScore++;
     rDetails.innerHTML += `<div class="checker-result ${correct?'checker-correct':'checker-wrong'}">
-      <b>Q${i}:</b> ${given||'<em>no answer</em>'} ${correct?'✓':'✗ Correct: '+escH(config.answerKey.R[i]||'—')}
+      <b>Q${i}:</b> ${given||'<em>no answer</em>'} ${correct?'?':'? Correct: '+escH(config.answerKey.R[i]||'�')}
     </div>`;
   }
 
@@ -2436,9 +2436,9 @@ function scoreToBand(score) {
   return 3.5;
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // PDF EXPORT
-// ═══════════════════════════════════════
+// ---------------------------------------
 function openPrintWindow(html) {
   const w = window.open('','_blank');
   w.document.write(`<!DOCTYPE html><html><head><title>IELTS Export</title>
@@ -2486,7 +2486,7 @@ function exportQuestionPDF() {
 
 function exportAnswerSheetPDF() {
   const title = document.getElementById('pdf-title').value;
-  let html = `<h1>${escH(title)} — Answer Sheet</h1>`;
+  let html = `<h1>${escH(title)} � Answer Sheet</h1>`;
   html += `<h2>Listening</h2><table><tr><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th></tr>`;
   for (let i=1; i<=10; i++) html += `<tr><td>${i}</td><td style="min-width:100px">&nbsp;</td><td>${i+10}</td><td>&nbsp;</td><td>${i+20}</td><td>&nbsp;</td><td>${i+30}</td><td>&nbsp;</td></tr>`;
   html += `</table><h2>Reading</h2><table><tr><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th><th>Q</th><th>Answer</th></tr>`;
@@ -2498,7 +2498,7 @@ function exportAnswerSheetPDF() {
 function exportAnswerKeyPDF() {
   collectConfig();
   const title = document.getElementById('pdf-title').value;
-  let html = `<h1>${escH(title)} — Answer Key</h1><p style="color:#c0392b;font-size:0.8rem">CONFIDENTIAL — FOR ADMIN USE ONLY</p>`;
+  let html = `<h1>${escH(title)} � Answer Key</h1><p style="color:#c0392b;font-size:0.8rem">CONFIDENTIAL � FOR ADMIN USE ONLY</p>`;
   html += `<h2>Listening</h2><table><tr><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th></tr>`;
   for (let i=1; i<=10; i++) html += `<tr><td>${i}</td><td class="correct">${escH(config.answerKey.L[i]||'')}</td><td>${i+10}</td><td class="correct">${escH(config.answerKey.L[i+10]||'')}</td><td>${i+20}</td><td class="correct">${escH(config.answerKey.L[i+20]||'')}</td><td>${i+30}</td><td class="correct">${escH(config.answerKey.L[i+30]||'')}</td></tr>`;
   html += `</table><h2>Reading</h2><table><tr><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th><th>Q</th><th class="correct">Answer</th></tr>`;
@@ -2512,36 +2512,36 @@ function exportCheckerPDF() {
   openPrintWindow(`<h1>IELTS Checker Results</h1>${output}`);
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // GRADE WRITING
-// ═══════════════════════════════════════
+// ---------------------------------------
 let currentGradeRow = null;
 
 async function loadUngraded() {
   const wrap = document.getElementById('ungraded-wrap');
-  wrap.innerHTML = '<div class="tbl-empty">⏳ Loading...</div>';
+  wrap.innerHTML = '<div class="tbl-empty">? Loading...</div>';
   try {
     const data = await callSheets({ action:'getScores' });
     if (!data.success) throw new Error(data.message);
     const rows = (data.rows||[]).filter(r => !r[14] || r[14]===''); // no overall band = ungraded
-    if (!rows.length) { wrap.innerHTML='<div class="tbl-empty">✅ All submissions graded!</div>'; return; }
+    if (!rows.length) { wrap.innerHTML='<div class="tbl-empty">? All submissions graded!</div>'; return; }
     let html = '<div style="overflow-x:auto"><table class="sheets-table"><thead><tr><th>Date</th><th>Candidate</th><th>Test Set</th><th>L Band</th><th>R Band</th><th>W1 WC</th><th>W2 WC</th><th>Action</th></tr></thead><tbody>';
     rows.forEach((r,i) => {
       html += `<tr>
         <td style="font-size:0.78rem">${formatDate(r[1])}</td>
         <td><b>${escH(r[3])}</b><br><span style="font-size:0.75rem;color:var(--ink3)">${escH(r[2])}</span></td>
-        <td style="font-size:0.78rem">${escH(r[5]||'—')}</td>
-        <td><span class="band-badge ${bandClass(r[7])}">${r[7]||'—'}</span></td>
-        <td><span class="band-badge ${bandClass(r[9])}">${r[9]||'—'}</span></td>
+        <td style="font-size:0.78rem">${escH(r[5]||'�')}</td>
+        <td><span class="band-badge ${bandClass(r[7])}">${r[7]||'�'}</span></td>
+        <td><span class="band-badge ${bandClass(r[9])}">${r[9]||'�'}</span></td>
         <td style="text-align:center">${r[15]||0}</td>
         <td style="text-align:center">${r[16]||0}</td>
-        <td><button class="btn btn-blue" style="padding:4px 10px;font-size:0.78rem" onclick="openGradeForm(${JSON.stringify(r).replace(/"/g,'&quot;')})">✏️ Grade</button></td>
+        <td><button class="btn btn-blue" style="padding:4px 10px;font-size:0.78rem" onclick="openGradeForm(${JSON.stringify(r).replace(/"/g,'&quot;')})">?? Grade</button></td>
       </tr>`;
     });
     html += '</tbody></table></div>';
     wrap.innerHTML = html;
   } catch(e) {
-    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}</div>`;
+    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">? ${e.message}</div>`;
   }
 }
 
@@ -2550,8 +2550,8 @@ function openGradeForm(row) {
   document.getElementById('grade-sub-id').value = row[0];
   document.getElementById('grade-form-card').style.display = 'block';
   document.getElementById('grade-candidate-info').innerHTML =
-    `<b>${escH(row[3])}</b> &nbsp;|&nbsp; ID: ${escH(row[2])} &nbsp;|&nbsp; Test Set: ${escH(row[5]||'—')}<br>
-     Submitted: ${formatDate(row[1])} &nbsp;|&nbsp; L: ${row[7]||'—'} &nbsp;|&nbsp; R: ${row[9]||'—'}`;
+    `<b>${escH(row[3])}</b> &nbsp;|&nbsp; ID: ${escH(row[2])} &nbsp;|&nbsp; Test Set: ${escH(row[5]||'�')}<br>
+     Submitted: ${formatDate(row[1])} &nbsp;|&nbsp; L: ${row[7]||'�'} &nbsp;|&nbsp; R: ${row[9]||'�'}`;
   // Show writing texts
   const w1 = row[17]||''; const w2 = row[18]||'';
   document.getElementById('writing-texts-wrap').innerHTML = `
@@ -2597,7 +2597,7 @@ async function submitGrade() {
       examinerNotes:document.getElementById('grade-notes').value||''
     });
     if (data.success) {
-      toast(`✅ Graded! Overall Band: ${data.overallBand}`);
+      toast(`? Graded! Overall Band: ${data.overallBand}`);
       document.getElementById('grade-form-card').style.display='none';
       loadUngraded();
     } else { alert('Error: '+data.message); }
@@ -2609,14 +2609,14 @@ function bandClass(b) {
   return n>=7?'band-high':n>=5.5?'band-mid':'band-low';
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // TEST SETS
-// ═══════════════════════════════════════
+// ---------------------------------------
 let editingSetID = null;
 
 async function loadTestSets() {
   const wrap = document.getElementById('testsets-wrap');
-  wrap.innerHTML = '<div class="tbl-empty">⏳ Loading...</div>';
+  wrap.innerHTML = '<div class="tbl-empty">? Loading...</div>';
 
   // Get from localStorage first (always available)
   let sets = JSON.parse(localStorage.getItem('ielts_test_sets') || '[]');
@@ -2630,10 +2630,10 @@ async function loadTestSets() {
       new Promise((_,rej) => setTimeout(()=>rej(new Error('timeout')), 5000))
     ]);
     if (data.success && data.sets && data.sets.length) {
-      // Merge — Sheets is source of truth if available
+      // Merge � Sheets is source of truth if available
       sets = data.sets;
     }
-  } catch(e) { /* Sheets unavailable — use localStorage */ }
+  } catch(e) { /* Sheets unavailable � use localStorage */ }
 
   if (!sets.length) {
     wrap.innerHTML = '<div class="tbl-empty">No test sets yet. Create one in the Publish panel!</div>';
@@ -2645,13 +2645,13 @@ async function loadTestSets() {
     const isActive = s.setID === activeID || s.status === 'Active';
     html += `<tr>
       <td><b>${escH(s.setName)}</b>${s.description?`<br><span style="font-size:0.75rem;color:var(--ink3)">${escH(s.description)}</span>`:''}</td>
-      <td>${isActive?'<span class="band-badge band-high">⚡ ACTIVE</span>':`<span class="band-badge">${escH(s.status||'')}</span>`}</td>
-      <td style="font-size:0.75rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.configURL?`<a href="${escH(s.configURL)}" target="_blank" style="color:var(--blue2)">View ↗</a>`:'—'}</td>
+      <td>${isActive?'<span class="band-badge band-high">? ACTIVE</span>':`<span class="band-badge">${escH(s.status||'')}</span>`}</td>
+      <td style="font-size:0.75rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.configURL?`<a href="${escH(s.configURL)}" target="_blank" style="color:var(--blue2)">View ?</a>`:'�'}</td>
       <td style="font-size:0.78rem">${formatDate(s.createdAt)}</td>
       <td style="white-space:nowrap">
-        <button class="btn btn-ghost" style="padding:3px 8px;font-size:0.75rem" onclick="editSet(${JSON.stringify(s).replace(/"/g,'&quot;')})">✏️ Edit</button>
-        ${!isActive?`<button class="btn btn-green" style="padding:3px 8px;font-size:0.75rem;margin-left:4px" onclick="activateSet('${s.setID}')">⚡ Activate</button>`:''}
-        <button class="btn btn-red" style="padding:3px 8px;font-size:0.75rem;margin-left:4px" data-setid="${escH(s.setID)}" data-setname="${escH(s.setName)}" onclick="deleteSet(this.dataset.setid,this.dataset.setname)">🗑️ Delete</button>
+        <button class="btn btn-ghost" style="padding:3px 8px;font-size:0.75rem" onclick="editSet(${JSON.stringify(s).replace(/"/g,'&quot;')})">?? Edit</button>
+        ${!isActive?`<button class="btn btn-green" style="padding:3px 8px;font-size:0.75rem;margin-left:4px" onclick="activateSet('${s.setID}')">? Activate</button>`:''}
+        <button class="btn btn-red" style="padding:3px 8px;font-size:0.75rem;margin-left:4px" data-setid="${escH(s.setID)}" data-setname="${escH(s.setName)}" onclick="deleteSet(this.dataset.setid,this.dataset.setname)">??? Delete</button>
       </td>
     </tr>`;
   });
@@ -2677,7 +2677,7 @@ async function deleteSet(setID, setName) {
   // Try Sheets too (optional)
   try { await callSheets({ action:'deleteTestSet', setID }); } catch(e) { /* optional */ }
 
-  toast('🗑️ Test set deleted.');
+  toast('??? Test set deleted.');
   loadTestSets();
 }
 
@@ -2717,14 +2717,14 @@ async function activateSet(setID) {
   }
   // Try Sheets optionally
   try { await callSheets({ action:'setActiveSet', setID }); } catch(e) {}
-  toast('⚡ Test set activated!');
+  toast('? Test set activated!');
   loadTestSets();
 }
 async function activateSetForm() { await activateSet(document.getElementById('set-id').value); }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // PUBLISH
-// ═══════════════════════════════════════
+// ---------------------------------------
 function downloadConfigForGitHub() {
   collectConfig();
   const setName = document.getElementById('pub-set-name').value.trim() || 'Test Set';
@@ -2734,11 +2734,11 @@ function downloadConfigForGitHub() {
     ...config,
     _meta: { setID, setName, setDesc, exportedAt: new Date().toISOString() }
   };
-  // Remove large audio data — YouTube URLs only
+  // Remove large audio data � YouTube URLs only
   if (exportConfig.listening && exportConfig.listening.sections) {
     exportConfig.listening.sections = exportConfig.listening.sections.map(s => ({
       ...s,
-      audioData: '',  // Remove base64 audio — use audioURL instead
+      audioData: '',  // Remove base64 audio � use audioURL instead
     }));
   }
   const blob = new Blob([JSON.stringify(exportConfig, null, 2)], {type:'application/json'});
@@ -2747,23 +2747,23 @@ function downloadConfigForGitHub() {
   a.href     = URL.createObjectURL(blob);
   a.download = slug+'_'+new Date().toISOString().slice(0,10)+'.json';
   a.click();
-  toast('✅ Config downloaded! Upload to GitHub configs/ folder.');
+  toast('? Config downloaded! Upload to GitHub configs/ folder.');
 }
 
 async function testConfigURL() {
   const url  = document.getElementById('pub-github-url').value.trim();
   const wrap = document.getElementById('pub-test-result');
   if (!url) { wrap.innerHTML='<span style="color:var(--red)">Please enter a URL first.</span>'; return; }
-  wrap.innerHTML='⏳ Testing...';
+  wrap.innerHTML='? Testing...';
   try {
-    // GitHub raw URLs don't have CORS issues — fetch directly
+    // GitHub raw URLs don't have CORS issues � fetch directly
     const res = await fetch(url, { cache:'no-cache' });
-    if (!res.ok) { wrap.innerHTML=`<span style="color:var(--red)">❌ HTTP ${res.status} — Check the URL</span>`; return; }
+    if (!res.ok) { wrap.innerHTML=`<span style="color:var(--red)">? HTTP ${res.status} � Check the URL</span>`; return; }
     const cfg  = await res.json();
     const meta = cfg._meta || {};
-    wrap.innerHTML=`<span style="color:var(--green)">✅ Config OK! Set: <b>${escH(meta.setName||'(unnamed)')}</b>${meta.exportedAt?' — '+new Date(meta.exportedAt).toLocaleDateString():''}</span>`;
+    wrap.innerHTML=`<span style="color:var(--green)">? Config OK! Set: <b>${escH(meta.setName||'(unnamed)')}</b>${meta.exportedAt?' � '+new Date(meta.exportedAt).toLocaleDateString():''}</span>`;
   } catch(e) {
-    wrap.innerHTML=`<span style="color:var(--red)">❌ ${e.message}<br><small>Make sure the URL is a raw GitHub URL (starts with raw.githubusercontent.com)</small></span>`;
+    wrap.innerHTML=`<span style="color:var(--red)">? ${e.message}<br><small>Make sure the URL is a raw GitHub URL (starts with raw.githubusercontent.com)</small></span>`;
   }
 }
 
@@ -2782,15 +2782,15 @@ async function savePublishedSet() {
   localStorage.setItem('ielts_active_set', JSON.stringify({ setID, setName:name, configURL:url }));
   localStorage.setItem('ielts_drive_url', url);
 
-  // Try saving to Sheets too (optional — won't fail if not deployed yet)
+  // Try saving to Sheets too (optional � won't fail if not deployed yet)
   try {
     const data = await callSheets({ action:'saveTestSet', setID, setName:name, configURL:url, status:'Active', description:desc });
     if (data.success) {
       await callSheets({ action:'setActiveSet', setID: data.setID || setID });
     }
-  } catch(e) { /* Sheets optional — already saved locally */ }
+  } catch(e) { /* Sheets optional � already saved locally */ }
 
-  toast('✅ Test set saved & activated! Config URL stored.');
+  toast('? Test set saved & activated! Config URL stored.');
 }
 
 async function saveTestSetForm() {
@@ -2813,14 +2813,14 @@ async function saveTestSetForm() {
     await callSheets({ action:'saveTestSet', setID, setName:name, configURL:url, status, description:desc });
   } catch(e) { /* optional */ }
 
-  toast('✅ Test set saved!');
+  toast('? Test set saved!');
   document.getElementById('set-form-card').style.display='none';
   loadTestSets();
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // SETTINGS
-// ═══════════════════════════════════════
+// ---------------------------------------
 async function loadSettingsForm() {
   try {
     const data = await callSheets({ action:'getSettings' });
@@ -2846,7 +2846,7 @@ async function saveSettingsForm() {
       const el = document.getElementById('settings-status');
       el.style.display='block';
       setTimeout(()=>el.style.display='none', 3000);
-      toast('✅ Settings saved!');
+      toast('? Settings saved!');
     }
   } catch(e) { alert('Error: '+e.message); }
 }
@@ -2873,17 +2873,17 @@ async function changeAdminPasswordForm() {
     statusEl.style.display = 'block';
     if (data.success) {
       statusEl.style.color = 'var(--green)';
-      statusEl.textContent = '✅ Password changed! Use the new password next time you log in.';
+      statusEl.textContent = '? Password changed! Use the new password next time you log in.';
       document.getElementById('cur-admin-pass').value = '';
       document.getElementById('new-admin-pass').value = '';
-      toast('🔑 Admin password changed');
+      toast('?? Admin password changed');
     } else {
       statusEl.style.color = 'var(--red)';
-      statusEl.textContent = '❌ ' + (data.message || 'Could not change password.');
+      statusEl.textContent = '? ' + (data.message || 'Could not change password.');
     }
   } catch(e) {
     statusEl.style.display = 'block'; statusEl.style.color='var(--red)';
-    statusEl.textContent = '❌ ' + e.message;
+    statusEl.textContent = '? ' + e.message;
   }
 }
 
@@ -2894,22 +2894,22 @@ async function saveNotifyEmail() {
   try {
     await callSheets({ action:'saveSettings', notify_email: email });
     statusEl.style.display = 'block'; statusEl.style.color='var(--green)';
-    statusEl.textContent = '✅ Notification email saved.';
-    toast('📧 Notification email updated');
+    statusEl.textContent = '? Notification email saved.';
+    toast('?? Notification email updated');
   } catch(e) {
     statusEl.style.display = 'block'; statusEl.style.color='var(--red)';
-    statusEl.textContent = '❌ ' + e.message;
+    statusEl.textContent = '? ' + e.message;
   }
 }
 
 async function testConnection() {
   const wrap = document.getElementById('conn-status');
-  wrap.textContent='⏳ Testing...'; wrap.style.color='var(--ink3)';
+  wrap.textContent='? Testing...'; wrap.style.color='var(--ink3)';
   try {
     const data = await callSheets({ action:'ping' });
-    if (data.success) { wrap.textContent='✅ Connected! Server: '+data.time; wrap.style.color='var(--green)'; }
-    else { wrap.textContent='❌ '+data.message; wrap.style.color='var(--red)'; }
-  } catch(e) { wrap.textContent='❌ '+e.message; wrap.style.color='var(--red)'; }
+    if (data.success) { wrap.textContent='? Connected! Server: '+data.time; wrap.style.color='var(--green)'; }
+    else { wrap.textContent='? '+data.message; wrap.style.color='var(--red)'; }
+  } catch(e) { wrap.textContent='? '+e.message; wrap.style.color='var(--red)'; }
 }
 
 function initDrivePanel() {
@@ -2920,9 +2920,9 @@ function initDrivePanel() {
   }).catch(()=>{});
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // LIVE MONITOR
-// ═══════════════════════════════════════
+// ---------------------------------------
 let _monitorCands = [];
 let _monitorScores = [];
 let monitorInterval = null;
@@ -2952,14 +2952,14 @@ async function loadMonitor() {
     allCandidateScores = _monitorScores;
 
     status.className = 'sheets-status ok';
-    status.textContent = `✅ ${_monitorCands.length} candidates`;
+    status.textContent = `? ${_monitorCands.length} candidates`;
 
     document.getElementById('monitor-search').value = '';
     renderMonitorTable(_monitorCands);
   } catch(e) {
     status.className = 'sheets-status err';
-    status.textContent = '❌ Error';
-    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">❌ ${e.message}</div>`;
+    status.textContent = '? Error';
+    wrap.innerHTML = `<div class="tbl-empty" style="color:var(--red)">? ${e.message}</div>`;
   }
 }
 
@@ -2977,7 +2977,7 @@ function renderMonitorTable(cands, highlight) {
   label.textContent = _monitorCands.length ? `${cands.length} of ${_monitorCands.length} shown` : '';
 
   if (!cands.length) {
-    wrap.innerHTML = `<div class="tbl-empty">${_monitorCands.length ? '🔍 No candidates match your search.' : 'No candidates registered yet.'}</div>`;
+    wrap.innerHTML = `<div class="tbl-empty">${_monitorCands.length ? '?? No candidates match your search.' : 'No candidates registered yet.'}</div>`;
     return;
   }
 
@@ -3027,10 +3027,10 @@ function renderMonitorTable(cands, highlight) {
     const st = getStatus(r[7]);
     const dotCls = st==='online'?'dot-online':st==='recent'?'dot-recent':'dot-offline';
     const stLabel = st==='online'
-      ? '<span style="color:var(--green);font-weight:700">● Online</span>'
+      ? '<span style="color:var(--green);font-weight:700">? Online</span>'
       : st==='recent'
-        ? '<span style="color:var(--gold);font-weight:700">◑ Recent</span>'
-        : '<span style="color:var(--ink3)">○ Offline</span>';
+        ? '<span style="color:var(--gold);font-weight:700">? Recent</span>'
+        : '<span style="color:var(--ink3)">? Offline</span>';
     const candScores = scores.filter(s => s[1] === cid);
     const bestBand = candScores.reduce((max,s) => { const b=parseFloat(s[8]||0); return b>max?b:max; }, 0);
     const bandCls = bestBand>=7?'band-high':bestBand>=5.5?'band-mid':bestBand>0?'band-low':'';
@@ -3039,11 +3039,11 @@ function renderMonitorTable(cands, highlight) {
     html += `<tr class="monitor-row" onclick="openMonitorDetail('${escH(cid)}')">
       <td><span class="online-dot ${dotCls}"></span></td>
       <td><b>${hl(r[1])}</b><br><span style="font-size:0.73rem;color:var(--ink3)">${hl(cid)}</span></td>
-      <td style="font-size:0.78rem;color:var(--ink3)">${r[7] ? new Date(r[7]).toLocaleString('en-PH',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'}</td>
+      <td style="font-size:0.78rem;color:var(--ink3)">${r[7] ? new Date(r[7]).toLocaleString('en-PH',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '�'}</td>
       <td style="text-align:center">${candScores.length}</td>
-      <td><span class="band-badge ${bandCls}">${bestBand>0?bestBand:'—'}</span></td>
+      <td><span class="band-badge ${bandCls}">${bestBand>0?bestBand:'�'}</span></td>
       <td>${stLabel}${inProgress&&st!=='offline'?'<span style="font-size:0.7rem;background:#e8f5e9;color:var(--green);padding:1px 6px;border-radius:4px;margin-left:4px">In Test</span>':''}</td>
-      <td><button class="refresh-btn" style="padding:4px 10px;font-size:0.75rem" onclick="event.stopPropagation();openMonitorDetail('${escH(cid)}')">View →</button></td>
+      <td><button class="refresh-btn" style="padding:4px 10px;font-size:0.75rem" onclick="event.stopPropagation();openMonitorDetail('${escH(cid)}')">View ?</button></td>
     </tr>`;
   });
 
@@ -3059,7 +3059,7 @@ function openMonitorDetail(cid) {
   const cand = allCandidatesList.find(r => r[0] === cid);
   const candScores = allCandidateScores.filter(r => r[1] === cid);
 
-  document.getElementById('monitor-detail-name').textContent = cand ? cand[1] + ' — Detail' : cid;
+  document.getElementById('monitor-detail-name').textContent = cand ? cand[1] + ' � Detail' : cid;
 
   // Meta info
   const meta = document.getElementById('monitor-detail-meta');
@@ -3067,10 +3067,10 @@ function openMonitorDetail(cid) {
     meta.innerHTML = [
       ['Candidate ID', cand[0]], ['Full Name', cand[1]], ['DOB', cand[2]],
       ['Gender', cand[3]], ['Nationality', cand[4]], ['Registered', formatDate(cand[6])],
-      ['Last Active', cand[7] ? new Date(cand[7]).toLocaleString('en-PH') : '—']
+      ['Last Active', cand[7] ? new Date(cand[7]).toLocaleString('en-PH') : '�']
     ].map(([l,v]) => `<div style="background:#fff;border-radius:6px;padding:8px 10px;border:1px solid var(--paper3)">
       <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px">${l}</div>
-      <div style="font-size:0.85rem;font-weight:600;color:var(--ink)">${escH(String(v||'—'))}</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--ink)">${escH(String(v||'�'))}</div>
     </div>`).join('');
   }
 
@@ -3092,7 +3092,7 @@ function openMonitorDetail(cid) {
     progWrap.innerHTML = '<div style="color:var(--ink3);font-size:0.83rem">No completed attempts yet.</div>';
   }
 
-  // Answers table — all submissions
+  // Answers table � all submissions
   const ansWrap = document.getElementById('monitor-answers-wrap');
   if (!candScores.length) {
     ansWrap.innerHTML = '<div class="tbl-empty" style="padding:20px">No answers submitted yet.</div>';
@@ -3105,13 +3105,13 @@ function openMonitorDetail(cid) {
     const obCls = ob>=7?'band-high':ob>=5.5?'band-mid':ob>0?'band-low':'';
     html += `<tr>
       <td style="font-size:0.75rem;white-space:nowrap">${formatDate(r[0])}</td>
-      <td style="font-size:0.78rem">${escH(r[4]||'—')}</td>
-      <td style="text-align:center">${escH(String(r[3]||'—'))}/40</td>
-      <td><span class="band-badge">${escH(String(r[4+1-1]||'—'))}</span></td>
-      <td style="text-align:center">${escH(String(r[5]||'—'))}/40</td>
-      <td><span class="band-badge">${escH(String(r[6]||'—'))}</span></td>
-      <td style="text-align:center">${escH(String(r[7]||'—'))}</td>
-      <td style="text-align:center">${escH(String(r[9]||'—'))}</td>
+      <td style="font-size:0.78rem">${escH(r[4]||'�')}</td>
+      <td style="text-align:center">${escH(String(r[3]||'�'))}/40</td>
+      <td><span class="band-badge">${escH(String(r[4+1-1]||'�'))}</span></td>
+      <td style="text-align:center">${escH(String(r[5]||'�'))}/40</td>
+      <td><span class="band-badge">${escH(String(r[6]||'�'))}</span></td>
+      <td style="text-align:center">${escH(String(r[7]||'�'))}</td>
+      <td style="text-align:center">${escH(String(r[9]||'�'))}</td>
       <td><span class="band-badge ${obCls}">${ob||'Pending'}</span></td>
     </tr>`;
   });
@@ -3119,39 +3119,39 @@ function openMonitorDetail(cid) {
   ansWrap.innerHTML = html;
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // TRF VIEWER (Admin)
-// ═══════════════════════════════════════
+// ---------------------------------------
 let trfScoresData = [];
 
 async function loadTRFCandidates() {
   const sel = document.getElementById('trf-cand-sel');
-  sel.innerHTML = '<option value="">⏳ Loading...</option>';
+  sel.innerHTML = '<option value="">? Loading...</option>';
   try {
     const data = await callSheets({ action: 'getCandidates' });
     const rows = (data.success && data.rows) ? data.rows : [];
-    sel.innerHTML = '<option value="">— Select candidate —</option>' +
+    sel.innerHTML = '<option value="">� Select candidate �</option>' +
       rows.map(r => `<option value="${escH(r[0])}">${escH(r[1])} (${escH(r[0])})</option>`).join('');
     // Pre-load all scores
     const sd = await callSheets({ action: 'getScores' });
     trfScoresData = (sd.success && sd.rows) ? sd.rows : [];
-    toast('✅ Loaded ' + rows.length + ' candidates');
+    toast('? Loaded ' + rows.length + ' candidates');
   } catch(e) {
-    sel.innerHTML = '<option value="">❌ Error loading — check connection</option>';
+    sel.innerHTML = '<option value="">? Error loading � check connection</option>';
   }
 }
 
 function loadTRFAttempts() {
   const cid = document.getElementById('trf-cand-sel').value;
   const sel = document.getElementById('trf-attempt-sel');
-  sel.innerHTML = '<option value="">— Select attempt —</option>';
+  sel.innerHTML = '<option value="">� Select attempt �</option>';
   document.getElementById('admin-trf-wrap').innerHTML = '<div class="tbl-empty">Select an attempt to view the TRF.</div>';
   if (!cid) return;
   const candScores = trfScoresData.filter(r => r[1] === cid);
   candScores.forEach((r, i) => {
     const opt = document.createElement('option');
     opt.value = i;
-    opt.textContent = `Attempt ${i+1} — ${formatDate(r[0])} — Band ${r[8]||'Pending'}`;
+    opt.textContent = `Attempt ${i+1} � ${formatDate(r[0])} � Band ${r[8]||'Pending'}`;
     sel.appendChild(opt);
   });
 }
@@ -3165,56 +3165,178 @@ function renderAdminTRF() {
   const row = candScores[parseInt(idx)];
   if (!row) { wrap.innerHTML = '<div class="tbl-empty">Attempt not found.</div>'; return; }
 
-  const lBand = row[4]||'—', rBand = row[6]||'—', wBand = row[11]||'—', sBand = row[13]||'—';
-  const overall = row[8]||'Pending';
-  const lScore = row[3]||'—', rScore = row[5]||'—';
+  const candRow = (typeof allCandidatesList !== 'undefined' ? allCandidatesList : []).find(r => r[0] === cid) || [];
+  const fullName    = row[2]  || candRow[1] || '—';
+  const dob         = candRow[2] ? new Date(candRow[2]).toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}) : '—';
+  const gender      = candRow[3] || '—';
+  const nationality = candRow[4] || '—';
+  const lScore  = row[3]  || '—'; const lBand  = row[4]  || '';
+  const rScore  = row[5]  || '—'; const rBand  = row[6]  || '';
+  const w1Band  = row[7]  || '';  const w2Band = row[8]  || '';
+  const wBand   = row[9]  || '';  const sBand  = row[10] || '';
+  const overall = row[11] || '';
+  const w1wc    = row[12] || '0'; const w2wc   = row[13] || '0';
+  const testSet = row[4]  || '—';
+  const testDate= row[0]  ? new Date(row[0]).toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}) : '—';
+  const formNo  = cid + '-' + (parseInt(idx)+1);
+  const examiner= row[20] || ''; const gradedAt = row[21] ? new Date(row[21]).toLocaleDateString('en-PH') : '';
+  const notes   = row[19] || '';
+  const s = (typeof settings !== 'undefined') ? settings : {};
+  const instName   = s.institution_name    || 'IELTS Simulation Center';
+  const instAddr   = s.institution_address || '';
+  const footerNote = s.trf_footer_note     || 'This is a simulation test result for preparation purposes only.';
 
-  wrap.innerHTML = `
-  <div class="trf-doc" style="max-width:700px;margin:0 auto">
-    <div style="background:var(--blue);height:8px"></div>
-    <div style="padding:28px 32px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:18px;border-bottom:2px solid var(--blue);margin-bottom:20px">
+  const trfHTML = buildTRFHTML({ cid, fullName, dob, gender, nationality,
+    lScore, lBand, rScore, rBand, w1Band, w2Band, wBand, sBand, overall,
+    w1wc, w2wc, testSet, testDate, formNo, examiner, gradedAt, notes,
+    instName, instAddr, footerNote, attemptNum: parseInt(idx)+1 });
+
+  wrap.innerHTML = '<div id="trf-printable-wrap" style="max-width:720px;margin:0 auto">' + trfHTML + '</div>';
+}
+
+function buildTRFHTML(d) {
+  const he = escH;
+  return `
+  <div style="background:#fff;border:1px solid #ccc;border-radius:4px;overflow:hidden;font-family:'DM Sans',sans-serif;color:#1a1a2e">
+    <div style="background:#002f5f;height:10px"></div>
+    <div style="padding:32px 36px">
+
+      <!-- HEADER -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:20px;border-bottom:3px solid #002f5f;margin-bottom:22px">
         <div>
-          <div style="font-family:'Source Serif 4',serif;font-size:1.8rem;font-weight:600;color:var(--blue);line-height:1;margin-bottom:3px">IELTS <span style="color:var(--gold)">Academic</span></div>
-          <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px">Simulation Result</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:2rem;font-weight:600;color:#002f5f;line-height:1;margin-bottom:4px">IELTS <span style="color:#c8a84b">Academic</span></div>
+          <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:#8888aa;margin-bottom:10px">Simulation Test Platform</div>
+          <div style="font-size:0.82rem;font-weight:700;color:#4a4a6a">${he(d.instName)}</div>
+          ${d.instAddr ? `<div style="font-size:0.75rem;color:#8888aa">${he(d.instAddr)}</div>` : ''}
+          <div style="font-size:0.68rem;color:#8888aa;margin-top:8px;font-family:monospace;letter-spacing:0.03em">Form No. ${he(d.formNo)}</div>
         </div>
-        <div style="text-align:right">
-          <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);border:1px solid var(--border);padding:3px 10px;border-radius:3px;margin-bottom:8px">Test Result Form</div>
-          <div style="font-size:0.75rem;color:var(--ink3)">Date: <b>${escH(formatDate(row[0]))}</b></div>
+        <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+          <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#8888aa;border:1px solid #e8e5df;padding:4px 12px;border-radius:3px">TEST RESULT FORM</div>
+          <div style="width:90px;height:108px;border-radius:2px;overflow:hidden;border:2px solid #002f5f;background:#f2f0ec;display:flex;align-items:center;justify-content:center;font-size:2.2rem;box-shadow:0 1px 4px rgba(0,0,0,0.12)">&#128100;</div>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #ddd;border-radius:4px;overflow:hidden;margin-bottom:18px">
-        ${[['Candidate ID',row[1]],['Full Name',row[2]],['Test Set',row[4]||'—'],['Submitted',formatDate(row[0])]]
-          .map(([l,v],i)=>`<div style="padding:9px 14px;${i%2===1?'border-right:none;':'border-right:1px solid #ddd;'}border-bottom:1px solid #ddd">
-            <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px">${l}</div>
-            <div style="font-size:0.9rem;color:var(--ink);font-weight:500">${escH(String(v||'—'))}</div>
-          </div>`).join('')}
+      <!-- CANDIDATE DETAILS -->
+      <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#002f5f;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #f2f0ec">Candidate Details</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #ddd;border-radius:4px;overflow:hidden;margin-bottom:20px">
+        <div style="grid-column:1/-1;padding:9px 14px;border-bottom:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:3px">Candidate Name</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:1.05rem;font-weight:600;color:#002f5f">${he(d.fullName)}</div>
+        </div>
+        <div style="padding:9px 14px;border-right:1px solid #ddd;border-bottom:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:3px">Candidate No.</div>
+          <div style="font-family:monospace;letter-spacing:0.06em;font-size:0.95rem;font-weight:700;color:#002f5f">${he(d.cid)}</div>
+        </div>
+        <div style="padding:9px 14px;border-bottom:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:3px">Date of Birth</div>
+          <div style="font-size:0.88rem;color:#1a1a2e;font-weight:500">${he(d.dob)}</div>
+        </div>
+        <div style="padding:9px 14px;border-right:1px solid #ddd;border-bottom:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:3px">Gender</div>
+          <div style="font-size:0.88rem;color:#1a1a2e;font-weight:500">${he(d.gender)}</div>
+        </div>
+        <div style="padding:9px 14px;border-bottom:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:3px">Nationality</div>
+          <div style="font-size:0.88rem;color:#1a1a2e;font-weight:500">${he(d.nationality)}</div>
+        </div>
+        <div style="padding:9px 14px;border-right:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:3px">Test Date</div>
+          <div style="font-size:0.88rem;color:#1a1a2e;font-weight:500">${he(d.testDate)}</div>
+        </div>
+        <div style="padding:9px 14px">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:3px">Test Module</div>
+          <div style="font-size:0.88rem;color:#1a1a2e;font-weight:500">${he(d.testSet||'Academic')}</div>
+        </div>
       </div>
 
+      <!-- BAND SCORES -->
+      <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#002f5f;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #f2f0ec">Test Component Scores</div>
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid #ddd;border-radius:4px;overflow:hidden;margin-bottom:18px;text-align:center">
-        ${[['Listening',lBand,lScore+'/40'],['Reading',rBand,rScore+'/40'],['Writing',wBand,''],['Speaking',sBand,''],['Overall',overall,'']].map(([label,band,raw],i)=>`
-        <div style="padding:14px 8px;${i<4?'border-right:1px solid #ddd':'background:var(--blue);color:#fff'}">
-          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;${i===4?'color:rgba(255,255,255,0.6)':'color:var(--ink3)'};margin-bottom:8px">${label}</div>
-          <div style="font-family:'Source Serif 4',serif;font-size:${i===4?'2.6rem':'2.2rem'};font-weight:600;${i===4?'color:var(--gold)':'color:var(--blue)'};line-height:1">${escH(String(band))}</div>
-          ${raw?`<div style="font-size:0.72rem;color:${i===4?'rgba(255,255,255,0.5)':'var(--ink3)'};margin-top:4px">${escH(raw)}</div>`:''}
-        </div>`).join('')}
+        <div style="padding:16px 8px;border-right:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:10px">Listening</div>
+          ${d.lBand ? `<div style="font-family:'Source Serif 4',serif;font-size:2.2rem;font-weight:600;color:#002f5f;line-height:1">${he(String(d.lBand))}</div><div style="font-size:0.7rem;color:#8888aa;margin-top:6px">${he(String(d.lScore))}/40 correct</div>` : '<div style="font-style:italic;font-size:0.82rem;color:#aaa;margin-top:6px">Pending</div>'}
+        </div>
+        <div style="padding:16px 8px;border-right:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:10px">Reading</div>
+          ${d.rBand ? `<div style="font-family:'Source Serif 4',serif;font-size:2.2rem;font-weight:600;color:#002f5f;line-height:1">${he(String(d.rBand))}</div><div style="font-size:0.7rem;color:#8888aa;margin-top:6px">${he(String(d.rScore))}/40 correct</div>` : '<div style="font-style:italic;font-size:0.82rem;color:#aaa;margin-top:6px">Pending</div>'}
+        </div>
+        <div style="padding:16px 8px;border-right:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:10px">Writing</div>
+          ${d.wBand ? `<div style="font-family:'Source Serif 4',serif;font-size:2.2rem;font-weight:600;color:#002f5f;line-height:1">${he(String(d.wBand))}</div><div style="font-size:0.7rem;color:#8888aa;margin-top:6px">T1: ${he(String(d.w1Band||'—'))} &middot; T2: ${he(String(d.w2Band||'—'))}</div>` : '<div style="font-style:italic;font-size:0.82rem;color:#aaa;margin-top:6px">Pending</div>'}
+        </div>
+        <div style="padding:16px 8px;border-right:1px solid #ddd">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;margin-bottom:10px">Speaking</div>
+          ${d.sBand ? `<div style="font-family:'Source Serif 4',serif;font-size:2.2rem;font-weight:600;color:#002f5f;line-height:1">${he(String(d.sBand))}</div>` : '<div style="font-style:italic;font-size:0.82rem;color:#aaa;margin-top:6px">N/A</div>'}
+        </div>
+        <div style="padding:16px 8px;background:#002f5f">
+          <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:10px">Overall Band</div>
+          ${d.overall ? `<div style="font-family:'Source Serif 4',serif;font-size:2.8rem;font-weight:600;color:#c8a84b;line-height:1">${he(String(d.overall))}</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.45);margin-top:6px">Average</div>` : '<div style="font-style:italic;font-size:0.82rem;color:rgba(255,255,255,0.4);margin-top:6px">Pending</div>'}
+        </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:24px;margin-bottom:14px">
-        <div style="border-top:1px solid var(--ink);padding-top:6px;font-size:0.7rem;color:var(--ink3);text-align:center;letter-spacing:0.05em">Examiner's Signature</div>
-        <div style="border-top:1px solid var(--ink);padding-top:6px;font-size:0.7rem;color:var(--ink3);text-align:center;letter-spacing:0.05em">Candidate's Signature</div>
+      <!-- WRITING DETAILS -->
+      <div style="background:#f2f0ec;border-radius:4px;padding:10px 16px;margin-bottom:18px;font-size:0.82rem;color:#4a4a6a;display:flex;gap:20px;flex-wrap:wrap">
+        <div><span style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;display:block;margin-bottom:2px">Task 1 Word Count</span>${he(String(d.w1wc))} words</div>
+        <div><span style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;display:block;margin-bottom:2px">Task 2 Word Count</span>${he(String(d.w2wc))} words</div>
+        ${d.examiner ? `<div><span style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;display:block;margin-bottom:2px">Graded By</span>${he(d.examiner)}</div>` : ''}
+        ${d.gradedAt ? `<div><span style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;display:block;margin-bottom:2px">Grading Date</span>${he(d.gradedAt)}</div>` : ''}
       </div>
-      <div style="text-align:center;font-size:0.68rem;color:var(--ink3);border-top:1px solid var(--border);padding-top:12px">
-        This is a simulation result for preparation purposes only. Not an official IELTS certificate.
+
+      ${d.notes ? `<div style="padding:10px 14px;background:#fff9e6;border:1px solid #f5d87a;border-radius:4px;margin-bottom:18px;font-size:0.82rem;color:#4a4a6a"><span style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8888aa;display:block;margin-bottom:4px">Examiner Notes</span>${he(d.notes)}</div>` : ''}
+
+      <!-- SIGNATURES -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:28px;margin-bottom:16px">
+        <div style="border-top:1.5px solid #1a1a2e;padding-top:7px;font-size:0.7rem;color:#8888aa;text-align:center;letter-spacing:0.06em;text-transform:uppercase">Candidate Signature</div>
+        <div style="border-top:1.5px solid #1a1a2e;padding-top:7px;font-size:0.7rem;color:#8888aa;text-align:center;letter-spacing:0.06em;text-transform:uppercase">Authorized Examiner</div>
       </div>
+
+      <!-- FOOTER -->
+      <div style="text-align:center;font-size:0.68rem;color:#8888aa;border-top:1px solid #e8e5df;padding-top:14px;line-height:1.7">
+        <div style="font-size:2rem;opacity:0.15;margin-bottom:6px">&#127963;</div>
+        ${he(d.footerNote)}<br>
+        For official IELTS certification, visit <b>ielts.org</b>
+      </div>
+
     </div>
   </div>`;
 }
 
-// ═══════════════════════════════════════
+function printAdminTRF() {
+  const wrap = document.getElementById('trf-printable-wrap');
+  if (!wrap || !wrap.innerHTML.trim()) { alert('Please select a candidate and attempt first.'); return; }
+  const trfContent = wrap.innerHTML;
+  const candName = document.getElementById('trf-cand-sel').selectedOptions[0]?.text || 'TRF';
+  const attempt  = document.getElementById('trf-attempt-sel').selectedOptions[0]?.text || '';
+
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8">
+  <title>TRF \u2014 ${escH(candName)}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    @page{size:A4;margin:10mm}
+    html,body{background:#fff;font-family:'DM Sans',sans-serif}
+    .trf-wrapper{max-width:740px;margin:0 auto}
+    @media print{.no-print{display:none!important}body{padding:0}}
+  </style>
+</head><body>
+  <div class="no-print" style="background:#002f5f;color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;position:sticky;top:0;z-index:9">
+    <span style="font-weight:600">${escH(candName)} \u2014 ${escH(attempt)}</span>
+    <div style="display:flex;gap:8px">
+      <button onclick="window.print()" style="background:#c8a84b;color:#002f5f;border:none;padding:7px 18px;border-radius:6px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem">\uD83D\uDDA8 Print / Save PDF</button>
+      <button onclick="window.close()" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);padding:7px 14px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem">\u2715 Close</button>
+    </div>
+  </div>
+  <div class="trf-wrapper" style="padding:20px">${trfContent}</div>
+</body></html>`);
+  w.document.close();
+}
+
+// ---------------------------------------
 // UTILS
-// ═══════════════════════════════════════
+// ---------------------------------------
 function escH(str) {
   return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
@@ -3225,9 +3347,9 @@ function toast(msg) {
   setTimeout(()=>t.classList.remove('show'), 2800);
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // AI QUESTION GENERATOR
-// ═══════════════════════════════════════
+// ---------------------------------------
 let aiGenTarget = { section: null, part: null };
 let aiGeneratedQuestions = [];
 
@@ -3331,7 +3453,7 @@ ${passage}`;
     document.getElementById('ai-gen-step1').style.display = '';
     const errEl = document.getElementById('ai-gen-error');
     errEl.style.display = '';
-    errEl.textContent = '❌ ' + e.message;
+    errEl.textContent = '? ' + e.message;
   }
 }
 
@@ -3352,11 +3474,11 @@ function renderAIResults(questions) {
       </div>
       <div class="ai-q-text">${escH(q.text)}</div>
       ${(q.options&&q.options.length) ? `<div class="ai-q-opts">${q.options.map((o,j)=>`<div class="ai-q-opt"><b>${String.fromCharCode(65+j)}.</b> ${escH(o)}</div>`).join('')}</div>` : ''}
-      <div><span class="ai-q-ans">✓ ${escH(String(q.answer))}</span></div>
+      <div><span class="ai-q-ans">? ${escH(String(q.answer))}</span></div>
       ${q.explanation ? `<div style="font-size:0.76rem;color:var(--ink3);margin-top:6px;font-style:italic">${escH(q.explanation)}</div>` : ''}
       <div class="ai-q-actions">
         <button class="btn btn-green" style="padding:5px 12px;font-size:0.76rem" onclick="addSingleAIQuestion(${i})">+ Add to Test</button>
-        <button class="btn btn-blue" style="padding:5px 12px;font-size:0.76rem" onclick="saveSingleAIToBank(${i})">🗄️ To Bank</button>
+        <button class="btn btn-blue" style="padding:5px 12px;font-size:0.76rem" onclick="saveSingleAIToBank(${i})">??? To Bank</button>
       </div>
     </div>
   `).join('');
@@ -3414,7 +3536,7 @@ function insertAIQuestionToTest(questions) {
     localStorage.setItem(key, JSON.stringify(store));
   });
 
-  toast(`✅ ${questions.length} question(s) added to ${section === 'R' ? 'Reading' : 'Listening'} section`);
+  toast(`? ${questions.length} question(s) added to ${section === 'R' ? 'Reading' : 'Listening'} section`);
 
   // Refresh the relevant question list if visible
   if (typeof renderQList === 'function') {
@@ -3422,9 +3544,9 @@ function insertAIQuestionToTest(questions) {
   }
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // QUESTION BANK
-// ═══════════════════════════════════════
+// ---------------------------------------
 function loadQBank() { renderQBank(); }
 
 function getQBank() {
@@ -3460,12 +3582,12 @@ function renderQBank() {
         <div class="qbank-meta">
           <span class="q-type-badge">${typeLabels[q.type]||q.type}</span>
           ${(q.tags||[]).map(t=>`<span class="qbank-tag">${escH(t)}</span>`).join('')}
-          <span style="font-size:0.72rem;color:var(--ink3)">Ans: <b>${escH(String(q.answer||'—'))}</b></span>
+          <span style="font-size:0.72rem;color:var(--ink3)">Ans: <b>${escH(String(q.answer||'�'))}</b></span>
         </div>
       </div>
       <div class="qbank-actions">
         <button class="btn btn-blue" style="padding:4px 10px;font-size:0.75rem" onclick="insertBankQToTest(${bank.indexOf(q)})">+ Add to Test</button>
-        <button class="delete-btn" onclick="deleteFromBank(${bank.indexOf(q)})">🗑</button>
+        <button class="delete-btn" onclick="deleteFromBank(${bank.indexOf(q)})">??</button>
       </div>
     </div>
   `).join('');
@@ -3495,7 +3617,7 @@ function saveToBank(qObj) {
   }
   saveQBank(bank);
   renderQBank();
-  toast('🗄️ Saved to Question Bank!');
+  toast('??? Saved to Question Bank!');
 }
 
 function deleteFromBank(idx) {
@@ -3504,7 +3626,7 @@ function deleteFromBank(idx) {
   bank.splice(idx, 1);
   saveQBank(bank);
   renderQBank();
-  toast('🗑 Removed from bank');
+  toast('?? Removed from bank');
 }
 
 function insertBankQToTest(idx) {
@@ -3530,12 +3652,12 @@ function saveAllAIToBank() {
   selected.forEach(q => {
     saveToBank({ id:'qb_'+Date.now()+'_'+Math.random().toString(36).slice(2,4), type:q.type, text:q.text, options:(q.options||[]).map((o,i)=>({letter:String.fromCharCode(65+i),text:o})), answer:q.answer, tags:['ai-generated'], addedAt:new Date().toISOString() });
   });
-  toast(`🗄️ ${selected.length} question(s) saved to Bank`);
+  toast(`??? ${selected.length} question(s) saved to Bank`);
 }
 
-// ═══════════════════════════════════════
+// ---------------------------------------
 // BULK CSV IMPORT
-// ═══════════════════════════════════════
+// ---------------------------------------
 function openCSVImport() {
   document.getElementById('csv-import-card').style.display = '';
   document.getElementById('csv-import-card').scrollIntoView({ behavior:'smooth' });
@@ -3620,8 +3742,8 @@ function importCSVQuestions() {
   const statusEl = document.getElementById('csv-import-status');
   statusEl.style.display = '';
   statusEl.style.color = 'var(--green)';
-  statusEl.textContent = `✅ ${added} question(s) imported successfully!`;
-  toast(`📥 ${added} questions imported`);
+  statusEl.textContent = `? ${added} question(s) imported successfully!`;
+  toast(`?? ${added} questions imported`);
   setTimeout(() => { document.getElementById('csv-import-card').style.display = 'none'; }, 2000);
 }
 </script>
