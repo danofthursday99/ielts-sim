@@ -123,6 +123,26 @@
   .settings-field input,.settings-field select{width:100%;padding:9px 13px;border:1px solid var(--paper3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--ink);background:#fff;transition:all 0.15s}
   .settings-field input:focus,.settings-field select:focus{outline:none;border-color:var(--blue2);background:#f5f9ff;box-shadow:0 0 0 3px rgba(26,95,168,0.08)}
   .settings-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .settings-section-title{font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin:20px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+  .email-verify-row{display:flex;gap:8px;align-items:flex-end}
+  .email-verify-row .settings-field{flex:1;margin-bottom:0}
+  .btn-sm{padding:9px 14px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all 0.15s;white-space:nowrap}
+  .btn-sm-blue{background:var(--blue);color:#fff}.btn-sm-blue:hover{background:var(--blue2)}
+  .btn-sm-ghost{background:transparent;border:1px solid var(--border);color:var(--ink2)}.btn-sm-ghost:hover{background:var(--paper2)}
+  .otp-row{display:flex;gap:8px;align-items:flex-end;margin-top:10px}
+  .otp-row .settings-field{flex:1;margin-bottom:0}
+  .otp-row input{letter-spacing:0.18em;font-size:1rem;text-align:center}
+  .pw-wrap-s{position:relative}
+  .pw-wrap-s input{padding-right:52px}
+  .pw-toggle-s{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink3);font-size:0.8rem;padding:0}
+  .pw-toggle-s:hover{color:var(--blue)}
+  .pw-strength-s{height:3px;border-radius:2px;margin-top:5px;transition:all 0.3s;background:var(--paper3)}
+  .pw-strength-s.weak{background:var(--red);width:33%}
+  .pw-strength-s.fair{background:var(--gold);width:66%}
+  .pw-strength-s.strong{background:var(--green);width:100%}
+  .inline-msg{font-size:0.8rem;margin-top:8px;display:none;padding:7px 11px;border-radius:6px}
+  .inline-msg.ok{display:block;color:var(--green);background:#f5fbf7;border:1px solid #a8dbb8}
+  .inline-msg.err{display:block;color:var(--red);background:#fff5f5;border:1px solid #f5b8b8}
 
   /* OFFICIAL TRF STYLES */
   .trf-doc{background:#fff;border:1px solid #ccc;border-radius:4px;padding:0;overflow:hidden;font-family:'DM Sans',sans-serif}
@@ -254,7 +274,9 @@
 
         <!-- SETTINGS -->
         <div id="tab-settings" class="tab-content">
-          <div class="settings-desc">Update your personal details. Your test results cannot be edited here.</div>
+
+          <!-- SECTION 1: Personal Details -->
+          <div class="settings-section-title">Personal Details</div>
           <div class="settings-field">
             <label>Full Name</label>
             <input type="text" id="set-fullname" placeholder="e.g. Santos, Maria">
@@ -279,7 +301,74 @@
             <select id="set-nationality"><option value="">Select country...</option></select>
           </div>
           <button class="btn btn-blue" onclick="saveProfileSettings()">💾 Save Changes</button>
-          <div id="settings-save-status" style="margin-top:10px;font-size:0.85rem;display:none"></div>
+          <div id="settings-save-status" class="inline-msg"></div>
+
+          <!-- SECTION 2: Email Address -->
+          <div class="settings-section-title">Email Address</div>
+          <div style="font-size:0.82rem;color:var(--ink3);margin-bottom:12px;line-height:1.5">
+            Your email is used for password recovery. A verification code will be sent before any change takes effect.
+          </div>
+
+          <!-- Current email display -->
+          <div id="email-current-wrap">
+            <div class="settings-field" style="margin-bottom:10px">
+              <label>Current Email</label>
+              <input type="text" id="email-current-display" disabled style="background:var(--paper2);color:var(--ink3)">
+            </div>
+            <button class="btn-sm btn-sm-blue" onclick="startEmailChange()">✏️ Change Email</button>
+          </div>
+
+          <!-- Email change form (hidden initially) -->
+          <div id="email-change-wrap" style="display:none">
+            <div class="email-verify-row">
+              <div class="settings-field">
+                <label>New Email Address</label>
+                <input type="email" id="set-new-email" placeholder="e.g. maria@gmail.com">
+              </div>
+              <button class="btn-sm btn-sm-blue" id="btn-send-email-otp" onclick="sendEmailChangeOTP()">Send Code</button>
+            </div>
+            <div id="email-otp-wrap" style="display:none">
+              <div class="otp-row">
+                <div class="settings-field">
+                  <label>Verification Code (sent to new email)</label>
+                  <input type="text" id="set-email-otp" placeholder="6-digit code" maxlength="6" autocomplete="one-time-code">
+                </div>
+                <button class="btn-sm btn-sm-blue" onclick="verifyEmailChange()">Confirm</button>
+              </div>
+            </div>
+            <div style="margin-top:8px">
+              <button class="btn-sm btn-sm-ghost" onclick="cancelEmailChange()">Cancel</button>
+            </div>
+            <div id="email-change-status" class="inline-msg"></div>
+          </div>
+
+          <!-- SECTION 3: Change Password -->
+          <div class="settings-section-title">Change Password</div>
+          <div class="settings-field">
+            <label>Current Password</label>
+            <div class="pw-wrap-s">
+              <input type="password" id="set-cur-pass" placeholder="Enter current password">
+              <button class="pw-toggle-s" onclick="togglePwS('set-cur-pass',this)" type="button">Show</button>
+            </div>
+          </div>
+          <div class="settings-field">
+            <label>New Password</label>
+            <div class="pw-wrap-s">
+              <input type="password" id="set-new-pass" placeholder="At least 6 characters" oninput="checkPwStrengthS(this)">
+              <button class="pw-toggle-s" onclick="togglePwS('set-new-pass',this)" type="button">Show</button>
+            </div>
+            <div class="pw-strength-s" id="pw-strength-s"></div>
+          </div>
+          <div class="settings-field">
+            <label>Confirm New Password</label>
+            <div class="pw-wrap-s">
+              <input type="password" id="set-confirm-pass" placeholder="Re-enter new password">
+              <button class="pw-toggle-s" onclick="togglePwS('set-confirm-pass',this)" type="button">Show</button>
+            </div>
+          </div>
+          <button class="btn btn-blue" onclick="changePassword()">🔑 Change Password</button>
+          <div id="pw-change-status" class="inline-msg"></div>
+
         </div>
       </div>
     </div>
@@ -783,6 +872,15 @@ function populateSettingsForm() {
   document.getElementById('set-dob').value         = (candidateData.dob || '').split('T')[0];
   document.getElementById('set-gender').value      = candidateData.gender      || '';
   document.getElementById('set-nationality').value = candidateData.nationality || '';
+  // Email
+  document.getElementById('email-current-display').value = candidateData.email || '(no email set)';
+  // Reset email change + pw change sections to default state
+  cancelEmailChange();
+  document.getElementById('set-cur-pass').value    = '';
+  document.getElementById('set-new-pass').value    = '';
+  document.getElementById('set-confirm-pass').value= '';
+  document.getElementById('pw-strength-s').className = 'pw-strength-s';
+  hideInlineMsg('pw-change-status');
 }
 
 async function saveProfileSettings() {
@@ -790,11 +888,10 @@ async function saveProfileSettings() {
   const dob         = document.getElementById('set-dob').value;
   const gender      = document.getElementById('set-gender').value;
   const nationality = document.getElementById('set-nationality').value;
-  const statusEl     = document.getElementById('settings-save-status');
+  const statusEl    = document.getElementById('settings-save-status');
 
   if (!fullName) {
-    statusEl.style.display='block'; statusEl.style.color='var(--red)';
-    statusEl.textContent='Full name is required.';
+    showInlineMsg('settings-save-status', 'err', 'Full name is required.');
     return;
   }
 
@@ -804,7 +901,6 @@ async function saveProfileSettings() {
       candidateID: candidateData.candidateID,
       fullName, dob, gender, nationality
     });
-    statusEl.style.display = 'block';
     if (res.success) {
       candidateData.fullName    = fullName;
       candidateData.dob         = dob;
@@ -812,16 +908,13 @@ async function saveProfileSettings() {
       candidateData.nationality = nationality;
       sessionStorage.setItem('candidateData', JSON.stringify(candidateData));
       sessionStorage.setItem('candidateName', fullName);
-      statusEl.style.color = 'var(--green)';
-      statusEl.textContent = '✅ Profile updated!';
+      showInlineMsg('settings-save-status', 'ok', '✅ Profile updated!');
       renderProfile();
     } else {
-      statusEl.style.color = 'var(--red)';
-      statusEl.textContent = '❌ ' + (res.message || 'Could not save changes.');
+      showInlineMsg('settings-save-status', 'err', '❌ ' + (res.message || 'Could not save changes.'));
     }
   } catch(e) {
-    statusEl.style.display = 'block'; statusEl.style.color='var(--red)';
-    statusEl.textContent = '❌ ' + e.message;
+    showInlineMsg('settings-save-status', 'err', '❌ ' + e.message);
   }
 }
 
@@ -831,6 +924,169 @@ function formatDate(val) {
   catch(e){ return String(val); }
 }
 function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─── INLINE MSG HELPERS ───
+function showInlineMsg(id, type, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'inline-msg ' + type;
+}
+function hideInlineMsg(id) {
+  const el = document.getElementById(id);
+  el.className = 'inline-msg';
+  el.textContent = '';
+}
+
+// ─── PASSWORD HELPERS (Settings) ───
+function togglePwS(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? 'Hide' : 'Show';
+}
+function checkPwStrengthS(inp) {
+  const v = inp.value;
+  const bar = document.getElementById('pw-strength-s');
+  if (!v) { bar.className='pw-strength-s'; return; }
+  if (v.length < 6) bar.className='pw-strength-s weak';
+  else if (v.length < 10 || !/[0-9]/.test(v)) bar.className='pw-strength-s fair';
+  else bar.className='pw-strength-s strong';
+}
+
+// ─── CHANGE PASSWORD ───
+async function changePassword() {
+  const current = document.getElementById('set-cur-pass').value;
+  const newPass = document.getElementById('set-new-pass').value;
+  const confirm = document.getElementById('set-confirm-pass').value;
+  hideInlineMsg('pw-change-status');
+
+  if (!current)         { showInlineMsg('pw-change-status','err','Please enter your current password.'); return; }
+  if (newPass.length<6) { showInlineMsg('pw-change-status','err','New password must be at least 6 characters.'); return; }
+  if (newPass!==confirm){ showInlineMsg('pw-change-status','err','Passwords do not match.'); return; }
+
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  try {
+    // Verify current password by attempting login
+    const verify = await callSheets({
+      action: 'loginCandidate',
+      candidateID: candidateData.candidateID,
+      password: current
+    });
+    if (!verify.success) {
+      showInlineMsg('pw-change-status','err','❌ Current password is incorrect.');
+      return;
+    }
+    // Update password via updateProfile (re-use existing action, password field)
+    const res = await callSheets({
+      action: 'changePassword',
+      candidateID: candidateData.candidateID,
+      currentPassword: current,
+      newPassword: newPass
+    });
+    if (res.success) {
+      showInlineMsg('pw-change-status','ok','✅ Password changed successfully!');
+      document.getElementById('set-cur-pass').value = '';
+      document.getElementById('set-new-pass').value = '';
+      document.getElementById('set-confirm-pass').value = '';
+      document.getElementById('pw-strength-s').className = 'pw-strength-s';
+    } else {
+      showInlineMsg('pw-change-status','err','❌ ' + (res.message||'Could not change password.'));
+    }
+  } catch(e) {
+    showInlineMsg('pw-change-status','err','❌ Cannot connect to server.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔑 Change Password';
+  }
+}
+
+// ─── EMAIL CHANGE ───
+function startEmailChange() {
+  document.getElementById('email-current-wrap').style.display = 'none';
+  document.getElementById('email-change-wrap').style.display  = 'block';
+  document.getElementById('set-new-email').value = '';
+  document.getElementById('set-email-otp').value = '';
+  document.getElementById('email-otp-wrap').style.display = 'none';
+  hideInlineMsg('email-change-status');
+  setTimeout(()=>document.getElementById('set-new-email').focus(), 50);
+}
+
+function cancelEmailChange() {
+  document.getElementById('email-current-wrap').style.display = 'block';
+  document.getElementById('email-change-wrap').style.display  = 'none';
+  hideInlineMsg('email-change-status');
+}
+
+async function sendEmailChangeOTP() {
+  const newEmail = document.getElementById('set-new-email').value.trim();
+  hideInlineMsg('email-change-status');
+
+  if (!newEmail || !newEmail.includes('@')) {
+    showInlineMsg('email-change-status','err','Please enter a valid email address.');
+    return;
+  }
+  if (newEmail.toLowerCase() === (candidateData.email||'').toLowerCase()) {
+    showInlineMsg('email-change-status','err','That is already your current email address.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-send-email-otp');
+  btn.disabled = true; btn.textContent = 'Sending...';
+
+  try {
+    const res = await callSheets({
+      action: 'sendOTP',
+      email: newEmail,
+      purpose: 'emailchange',
+      candidateID: candidateData.candidateID
+    });
+    if (res.success) {
+      document.getElementById('email-otp-wrap').style.display = 'block';
+      showInlineMsg('email-change-status','ok','✅ Code sent to ' + newEmail + '. Check your inbox.');
+      setTimeout(()=>document.getElementById('set-email-otp').focus(), 50);
+    } else {
+      showInlineMsg('email-change-status','err','❌ ' + (res.message||'Could not send code.'));
+    }
+  } catch(e) {
+    showInlineMsg('email-change-status','err','❌ Cannot connect to server.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send Code';
+  }
+}
+
+async function verifyEmailChange() {
+  const newEmail = document.getElementById('set-new-email').value.trim();
+  const otp      = document.getElementById('set-email-otp').value.trim();
+  hideInlineMsg('email-change-status');
+
+  if (!otp || otp.length !== 6) {
+    showInlineMsg('email-change-status','err','Please enter the 6-digit code.');
+    return;
+  }
+
+  try {
+    const res = await callSheets({
+      action: 'verifyOTPAndUpdateEmail',
+      email: newEmail,
+      otp,
+      candidateID: candidateData.candidateID
+    });
+    if (res.success) {
+      candidateData.email = newEmail;
+      sessionStorage.setItem('candidateData', JSON.stringify(candidateData));
+      document.getElementById('email-current-display').value = newEmail;
+      showInlineMsg('email-change-status','ok','✅ Email updated successfully!');
+      setTimeout(()=>cancelEmailChange(), 1800);
+    } else {
+      showInlineMsg('email-change-status','err','❌ ' + (res.message||'Incorrect or expired code.'));
+    }
+  } catch(e) {
+    showInlineMsg('email-change-status','err','❌ Cannot connect to server.');
+  }
+}
 </script>
 </body>
 </html>
