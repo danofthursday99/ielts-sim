@@ -1295,23 +1295,28 @@ function renderScoresTable(rows, highlight) {
   let html = `<div style="overflow-x:auto"><table class="sheets-table" id="scores-tbl">
     <thead><tr>
       <th>Date</th><th>Candidate ID</th><th>Full Name</th>
-      <th>Listening</th><th>L Band</th>
-      <th>Reading</th><th>R Band</th>
-      <th>W1 WC</th><th>W2 WC</th>
+      <th>L Score</th><th>L Band</th>
+      <th>R Score</th><th>R Band</th>
+      <th>Writing</th><th>Speaking</th><th>Overall</th>
     </tr></thead><tbody>`;
   rows.forEach(r => {
-    const lBand = parseFloat(r[4])||0;
-    const rBand = parseFloat(r[6])||0;
+    // [1]=Timestamp [2]=CandidateID [3]=FullName
+    // [6]=LScore [7]=LBand [8]=RScore [9]=RBand
+    // [12]=WritingBand [13]=SpeakingBand [14]=OverallBand
+    const lBand   = parseFloat(r[7])||0;
+    const rBand   = parseFloat(r[9])||0;
+    const overall = parseFloat(r[14])||0;
     html += `<tr>
-      <td style="font-size:0.78rem;white-space:nowrap">${formatDate(r[0])}</td>
-      <td><b>${hl(r[1])}</b></td>
-      <td>${hl(r[2])}</td>
-      <td style="text-align:center"><b>${escH(String(r[3]))}</b>/40</td>
-      <td><span class="band-badge ${bandClass(lBand)}">${lBand}</span></td>
-      <td style="text-align:center"><b>${escH(String(r[5]))}</b>/40</td>
-      <td><span class="band-badge ${bandClass(rBand)}">${rBand}</span></td>
-      <td style="text-align:center">${escH(String(r[7]))}</td>
-      <td style="text-align:center">${escH(String(r[8]))}</td>
+      <td style="font-size:0.78rem;white-space:nowrap">${formatDate(r[1])}</td>
+      <td><b>${hl(r[2])}</b></td>
+      <td>${hl(r[3])}</td>
+      <td style="text-align:center"><b>${escH(String(r[6]||'—'))}</b></td>
+      <td><span class="band-badge ${bandClass(lBand)}">${lBand||'—'}</span></td>
+      <td style="text-align:center"><b>${escH(String(r[8]||'—'))}</b></td>
+      <td><span class="band-badge ${bandClass(rBand)}">${rBand||'—'}</span></td>
+      <td><span class="band-badge">${escH(String(r[12]||'—'))}</span></td>
+      <td><span class="band-badge">${escH(String(r[13]||'—'))}</span></td>
+      <td><span class="band-badge ${bandClass(overall)}">${overall||'—'}</span></td>
     </tr>`;
   });
   html += '</tbody></table></div>';
@@ -3030,8 +3035,8 @@ function renderMonitorTable(cands, highlight) {
       : st==='recent'
         ? '<span style="color:var(--gold);font-weight:700">◑ Recent</span>'
         : '<span style="color:var(--ink3)">○ Offline</span>';
-    const candScores = scores.filter(s => s[1] === cid);
-    const bestBand = candScores.reduce((max,s) => { const b=parseFloat(s[8]||0); return b>max?b:max; }, 0);
+    const candScores = scores.filter(s => s[2] === cid);  // [2] = CandidateID
+    const bestBand = candScores.reduce((max,s) => { const b=parseFloat(s[14]||0); return b>max?b:max; }, 0); // [14] = OverallBand
     const bandCls = bestBand>=7?'band-high':bestBand>=5.5?'band-mid':bestBand>0?'band-low':'';
     const inProgress = st!=='offline' && (!latestScore[cid] || (new Date(r[7]) > new Date(latestScore[cid][0])));
 
@@ -3056,7 +3061,7 @@ function openMonitorDetail(cid) {
   card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   const cand = allCandidatesList.find(r => r[0] === cid);
-  const candScores = allCandidateScores.filter(r => r[1] === cid);
+  const candScores = allCandidateScores.filter(r => r[2] === cid);  // [2] = CandidateID
 
   document.getElementById('monitor-detail-name').textContent = cand ? cand[1] + ' — Detail' : cid;
 
@@ -3073,14 +3078,14 @@ function openMonitorDetail(cid) {
     </div>`).join('');
   }
 
-  // Progress bars per section from latest submission
+  // Progress bars per section from latest submission — using correct Code.gs columns
   const latest = candScores[candScores.length - 1];
   const progWrap = document.getElementById('monitor-progress-bars');
   if (latest) {
-    const lScore = parseInt(latest[3])||0;
-    const rScore = parseInt(latest[5])||0;
-    const w1wc = parseInt(latest[7])||0;
-    const w2wc = parseInt(latest[9])||0;
+    const lScore = parseInt(latest[6])||0;   // [6] ListeningScore
+    const rScore = parseInt(latest[8])||0;   // [8] ReadingScore
+    const w1wc   = parseInt(latest[15])||0;  // [15] WritingTask1WC
+    const w2wc   = parseInt(latest[16])||0;  // [16] WritingTask2WC
     progWrap.innerHTML = `
       <div class="prog-row"><span class="prog-label">Listening</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:${(lScore/40)*100}%;background:var(--blue2)">${lScore}/40</div></div></div>
       <div class="prog-row"><span class="prog-label">Reading</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:${(rScore/40)*100}%;background:var(--green)">${rScore}/40</div></div></div>
@@ -3098,19 +3103,18 @@ function openMonitorDetail(cid) {
     return;
   }
   let html = `<div style="overflow-x:auto"><table class="sheets-table">
-    <thead><tr><th>Date</th><th>Test Set</th><th>L Score</th><th>L Band</th><th>R Score</th><th>R Band</th><th>W1 WC</th><th>W2 WC</th><th>Overall</th></tr></thead><tbody>`;
+    <thead><tr><th>Date</th><th>Test Set</th><th>L Score</th><th>L Band</th><th>R Score</th><th>R Band</th><th>Writing</th><th>Overall</th></tr></thead><tbody>`;
   candScores.forEach(r => {
-    const ob = parseFloat(r[8]||0);
+    const ob = parseFloat(r[14]||0);
     const obCls = ob>=7?'band-high':ob>=5.5?'band-mid':ob>0?'band-low':'';
     html += `<tr>
-      <td style="font-size:0.75rem;white-space:nowrap">${formatDate(r[0])}</td>
-      <td style="font-size:0.78rem">${escH(r[4]||'—')}</td>
-      <td style="text-align:center">${escH(String(r[3]||'—'))}/40</td>
-      <td><span class="band-badge">${escH(String(r[4+1-1]||'—'))}</span></td>
-      <td style="text-align:center">${escH(String(r[5]||'—'))}/40</td>
-      <td><span class="band-badge">${escH(String(r[6]||'—'))}</span></td>
-      <td style="text-align:center">${escH(String(r[7]||'—'))}</td>
-      <td style="text-align:center">${escH(String(r[9]||'—'))}</td>
+      <td style="font-size:0.75rem;white-space:nowrap">${formatDate(r[1])}</td>
+      <td style="font-size:0.78rem">${escH(r[5]||'—')}</td>
+      <td style="text-align:center">${escH(String(r[6]||'—'))}</td>
+      <td><span class="band-badge">${escH(String(r[7]||'—'))}</span></td>
+      <td style="text-align:center">${escH(String(r[8]||'—'))}</td>
+      <td><span class="band-badge">${escH(String(r[9]||'—'))}</span></td>
+      <td><span class="band-badge">${escH(String(r[12]||'—'))}</span></td>
       <td><span class="band-badge ${obCls}">${ob||'Pending'}</span></td>
     </tr>`;
   });
@@ -3159,69 +3163,59 @@ function loadTRFAttempts() {
   sel.innerHTML = '<option value="">— Select attempt —</option>';
   if (!cid) { wrap.innerHTML = '<div class="tbl-empty">Select a candidate first.</div>'; return; }
 
-  // Smart match — try every column (0–4) for candidate ID
-  // Also try full-string match and trimmed match
-  let candScores = trfScoresData.filter(r =>
-    r.some(cell => String(cell||'').trim() === cid.trim())
-  );
+  // Scores columns (0-based) per Code.gs:
+  // [0] SubmissionID  [1] Timestamp  [2] CandidateID  [3] FullName
+  // [4] TestSetID     [5] TestSetName
+  // [6] ListeningScore [7] ListeningBand
+  // [8] ReadingScore  [9] ReadingBand
+  // [10] W1Band [11] W2Band [12] WritingBand [13] SpeakingBand [14] OverallBand
+  // [15] W1WC  [16] W2WC   [17] W1Text      [18] W2Text
+  const candScores = trfScoresData.filter(r => String(r[2]||'').trim().toLowerCase() === cid.trim().toLowerCase());
 
-  // Debug output in the wrap
-  const debugInfo = `
-    <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:12px 16px;font-size:0.78rem;color:#5d4037;margin-bottom:12px">
-      <b>🔍 Debug Info</b><br>
-      Looking for Candidate ID: <code><b>${escH(cid)}</b></code><br>
-      Total score rows loaded: <b>${trfScoresData.length}</b><br>
-      Matching rows found: <b>${candScores.length}</b><br>
-      ${trfScoresData.length > 0 ? `First row sample: <code>${escH(JSON.stringify(trfScoresData[0]))}</code>` : '<span style="color:red">No score data loaded at all — check if getScores returns data.</span>'}
-      <br><br>
-      <button onclick="document.getElementById('debug-all-rows').classList.toggle('hidden')" style="font-size:0.75rem;padding:3px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:#fff">Toggle all rows</button>
-      <div id="debug-all-rows" class="hidden" style="margin-top:8px;max-height:200px;overflow-y:auto">
-        ${trfScoresData.map((r,i)=>`<div style="margin-bottom:4px;font-family:monospace;font-size:0.72rem">[${i}] ${escH(JSON.stringify(r))}</div>`).join('')}
-      </div>
-    </div>`;
-
-  wrap.innerHTML = debugInfo;
-
-  if (!candScores.length) {
-    wrap.innerHTML += `<div class="tbl-empty">No score records found for Candidate ID: <b>${escH(cid)}</b>.<br>
-      Check the debug info above — the candidate ID in the scores sheet may be spelled differently.</div>`;
-    return;
-  }
+  wrap.innerHTML = candScores.length === 0
+    ? `<div class="tbl-empty">No score records found for <b>${escH(cid)}</b>.<br>
+        Make sure the candidate has completed and submitted a test.</div>`
+    : '';
 
   candScores.forEach((r, i) => {
-    // Find which column holds the overall band — check cols 6–14
-    const bandVal = [r[8],r[7],r[6],r[9],r[10]].find(v => v && String(v).match(/^\d+\.?\d*$/)) || 'Pending';
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = `Attempt ${i+1} — ${formatDate(r[0])} — Band ${bandVal}`;
+    const overall = r[14] || 'Pending';
+    const date    = formatDate(r[1]); // [1] = Timestamp
+    const opt     = document.createElement('option');
+    opt.value     = i;
+    opt.textContent = `Attempt ${i+1} — ${date} — Overall: ${overall}`;
     sel.appendChild(opt);
   });
 
-  // Store which rows matched for this candidate
+  // Cache matched rows
   sel.dataset.matchedRows = JSON.stringify(candScores);
 }
 
 // Build the TRF HTML string (standalone, self-contained)
 function buildTRFHtml(row, candidateRows) {
-  const cid     = row[1]||'—';
-  const fname   = row[2]||'—';
-  const testSet = row[4]||'—';
-  const dateStr = formatDate(row[0]);
-  const lScore  = row[3]||'—';
-  const lBand   = row[4]||'—';
-  const rScore  = row[5]||'—';
-  const rBand   = row[6]||'—';
-  const w1wc    = row[7]||'—';
-  const wBand   = row[11]||'—';
-  const sBand   = row[13]||'—';
-  const overall = row[8]||'—';
+  // Scores columns per Code.gs:
+  // [0]=SubmissionID [1]=Timestamp  [2]=CandidateID [3]=FullName
+  // [4]=TestSetID    [5]=TestSetName
+  // [6]=ListeningScore [7]=ListeningBand
+  // [8]=ReadingScore   [9]=ReadingBand
+  // [10]=W1Band [11]=W2Band [12]=WritingBand [13]=SpeakingBand [14]=OverallBand
+  const cid      = row[2]  || '—';
+  const fname    = row[3]  || '—';
+  const testSet  = row[5]  || '—';
+  const dateStr  = formatDate(row[1]);
+  const lScore   = row[6]  || '—';
+  const lBand    = row[7]  || '—';
+  const rScore   = row[8]  || '—';
+  const rBand    = row[9]  || '—';
+  const wBand    = row[12] || '—';
+  const sBand    = row[13] || '—';
+  const overall  = row[14] || '—';
 
   // Pull extra candidate details from roster if available
-  const candRow  = (candidateRows||[]).find(r => r[0]===cid) || [];
-  const dob      = candRow[2]||'—';
-  const gender   = candRow[3]||'—';
+  const candRow     = (candidateRows||[]).find(r => r[0]===cid) || [];
+  const dob         = candRow[2]||'—';
+  const gender      = candRow[3]||'—';
   const nationality = candRow[4]||'—';
-  const trfNum   = `SIM-${cid}-${(row[0]||'').replace(/\D/g,'').slice(0,8)}`;
+  const trfNum      = row[0] || `SIM-${cid}-${(row[1]||'').replace(/\D/g,'').slice(0,8)}`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -3497,8 +3491,11 @@ function renderAdminTRF() {
   const row = candScores[parseInt(idx)];
   if (!row) { wrap.innerHTML += '<div class="tbl-empty">Attempt not found.</div>'; return; }
 
-  const lBand = row[4]||'—', rBand = row[6]||'—', wBand = row[11]||'—', sBand = row[13]||'—';
-  const overall = row[8]||'—';
+  const lBand  = row[7]  || '—';
+  const rBand  = row[9]  || '—';
+  const wBand  = row[12] || '—';
+  const sBand  = row[13] || '—';
+  const overall = row[14] || '—';
 
   const preview = document.createElement('div');
   preview.style.cssText = 'background:var(--paper2);border-radius:10px;padding:18px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:8px';
