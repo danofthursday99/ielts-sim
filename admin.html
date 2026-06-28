@@ -705,23 +705,71 @@
         <div class="row2">
           <div class="field">
             <label>Writing Task 1 Band (1–9)</label>
-            <select id="grade-w1">
+            <select id="grade-w1" onchange="updateGradePreview()">
               <option value="">Select...</option>
-              ${[9,8.5,8,7.5,7,6.5,6,5.5,5,4.5,4,3.5,3,2.5,2,1.5,1].map(b=>`<option value="${b}">${b}</option>`).join('')}
+              <option value="9">9</option>
+              <option value="8.5">8.5</option>
+              <option value="8">8</option>
+              <option value="7.5">7.5</option>
+              <option value="7">7</option>
+              <option value="6.5">6.5</option>
+              <option value="6">6</option>
+              <option value="5.5">5.5</option>
+              <option value="5">5</option>
+              <option value="4.5">4.5</option>
+              <option value="4">4</option>
+              <option value="3.5">3.5</option>
+              <option value="3">3</option>
+              <option value="2.5">2.5</option>
+              <option value="2">2</option>
+              <option value="1.5">1.5</option>
+              <option value="1">1</option>
             </select>
           </div>
           <div class="field">
             <label>Writing Task 2 Band (1–9)</label>
-            <select id="grade-w2">
+            <select id="grade-w2" onchange="updateGradePreview()">
               <option value="">Select...</option>
-              ${[9,8.5,8,7.5,7,6.5,6,5.5,5,4.5,4,3.5,3,2.5,2,1.5,1].map(b=>`<option value="${b}">${b}</option>`).join('')}
+              <option value="9">9</option>
+              <option value="8.5">8.5</option>
+              <option value="8">8</option>
+              <option value="7.5">7.5</option>
+              <option value="7">7</option>
+              <option value="6.5">6.5</option>
+              <option value="6">6</option>
+              <option value="5.5">5.5</option>
+              <option value="5">5</option>
+              <option value="4.5">4.5</option>
+              <option value="4">4</option>
+              <option value="3.5">3.5</option>
+              <option value="3">3</option>
+              <option value="2.5">2.5</option>
+              <option value="2">2</option>
+              <option value="1.5">1.5</option>
+              <option value="1">1</option>
             </select>
           </div>
           <div class="field">
             <label>Speaking Band (optional)</label>
-            <select id="grade-s">
+            <select id="grade-s" onchange="updateGradePreview()">
               <option value="">N/A</option>
-              ${[9,8.5,8,7.5,7,6.5,6,5.5,5,4.5,4,3.5,3,2.5,2,1.5,1].map(b=>`<option value="${b}">${b}</option>`).join('')}
+              <option value="9">9</option>
+              <option value="8.5">8.5</option>
+              <option value="8">8</option>
+              <option value="7.5">7.5</option>
+              <option value="7">7</option>
+              <option value="6.5">6.5</option>
+              <option value="6">6</option>
+              <option value="5.5">5.5</option>
+              <option value="5">5</option>
+              <option value="4.5">4.5</option>
+              <option value="4">4</option>
+              <option value="3.5">3.5</option>
+              <option value="3">3</option>
+              <option value="2.5">2.5</option>
+              <option value="2">2</option>
+              <option value="1.5">1.5</option>
+              <option value="1">1</option>
             </select>
           </div>
           <div class="field">
@@ -3190,287 +3238,223 @@ function loadTRFAttempts() {
   sel.dataset.matchedRows = JSON.stringify(candScores);
 }
 
-// ═══════════════════════════════════════
-// TRF HELPERS
-// ═══════════════════════════════════════
-function detectScoreCols(row) {
-  // Canonical column order per Code.gs SCORE_HEADERS
-  return {
-    subID:    0,  // SubmissionID
-    ts:       1,  // Timestamp
-    cid:      2,  // CandidateID
-    fname:    3,  // FullName
-    setID:    4,  // TestSetID
-    setName:  5,  // TestSetName
-    lScore:   6,  // ListeningScore
-    lBand:    7,  // ListeningBand
-    rScore:   8,  // ReadingScore
-    rBand:    9,  // ReadingBand
-    w1Band:  10,  // WritingTask1Band
-    w2Band:  11,  // WritingTask2Band
-    wBand:   12,  // WritingBand
-    sBand:   13,  // SpeakingBand
-    overall: 14,  // OverallBand
-    w1wc:    15,  // WritingTask1WC
-    w2wc:    16,  // WritingTask2WC
-    w1text:  17,  // WritingTask1Text
-    w2text:  18,  // WritingTask2Text
-    notes:   19,  // ExaminerNotes
-    gradedBy:20,  // GradedBy
-    gradedAt:21,  // GradedAt
-    lAns:    22,  // ListeningAnswers
-    rAns:    23   // ReadingAnswers
-  };
-}
-
-function safeDate(val) {
-  if (val === null || val === undefined) return '—';
-  const s = String(val).trim();
-  if (!s || s === '—') return '—';
-  const d = new Date(s);
-  if (isNaN(d.getTime())) return s;
-  return d.toLocaleDateString('en-PH', { year:'numeric', month:'long', day:'numeric' });
-}
-
-function splitCandidateName(fullName) {
-  const clean = String(fullName || '').trim();
-  if (!clean) return { firstName: '—', familyName: '—' };
-  const parts = clean.split(/\s+/).filter(Boolean);
-  if (parts.length === 1) return { firstName: parts[0], familyName: parts[0] };
-  return {
-    firstName:  parts.slice(0, -1).join(' '),
-    familyName: parts[parts.length - 1]
-  };
-}
-
-function overallToCEFR(band) {
-  const b = parseFloat(band);
-  if (isNaN(b)) return '—';
-  if (b >= 8.5) return 'C2';
-  if (b >= 7.0) return 'C1';
-  if (b >= 5.5) return 'B2';
-  if (b >= 4.0) return 'B1';
-  if (b >= 3.0) return 'A2';
-  return 'A1';
-}
-
 // Build the TRF HTML string (standalone, self-contained)
 function buildTRFHtml(row, candidateRows) {
-  const C = detectScoreCols(row);
+  // Scores columns per Code.gs:
+  // [0]=SubmissionID [1]=Timestamp  [2]=CandidateID [3]=FullName
+  // [4]=TestSetID    [5]=TestSetName
+  // [6]=ListeningScore [7]=ListeningBand
+  // [8]=ReadingScore   [9]=ReadingBand
+  // [10]=W1Band [11]=W2Band [12]=WritingBand [13]=SpeakingBand [14]=OverallBand
+  const cid      = row[2]  || '—';
+  const fname    = row[3]  || '—';
+  const testSet  = row[5]  || '—';
+  const dateStr  = formatDate(row[1]);
+  const lScore   = row[6]  || '—';
+  const lBand    = row[7]  || '—';
+  const rScore   = row[8]  || '—';
+  const rBand    = row[9]  || '—';
+  const wBand    = row[12] || '—';
+  const sBand    = row[13] || '—';
+  const overall  = row[14] || '—';
 
-  const submissionID  = row[C.subID]   || '';
-  const timestamp     = row[C.ts]      || '';
-  const candidateID   = row[C.cid]     || '—';
-  const fullName      = row[C.fname]   || '—';
-  const testSetName   = row[C.setName] || row[C.setID] || '—';
-
-  const listeningScore = row[C.lScore]  || '—';
-  const listeningBand  = row[C.lBand]   || '—';
-  const readingScore   = row[C.rScore]  || '—';
-  const readingBand    = row[C.rBand]   || '—';
-  const writingBand    = row[C.wBand]   || '—';
-  const speakingBand   = row[C.sBand]   || '—';
-  const overallBand    = row[C.overall] || '—';
-  const examNotes      = row[C.notes]   || '';
-
-  // Match candidate roster for DOB / gender / nationality
-  // getCandidates() returns [0]=ID [1]=Name [2]=DOB [3]=Gender [4]=Nationality
-  const candRow    = (candidateRows || []).find(r => String(r[0]||'').trim().toLowerCase() === String(candidateID).trim().toLowerCase()) || [];
-  const dob        = candRow[2] || '—';
-  const gender     = candRow[3] || '—';
-  const nationality= candRow[4] || '—';
-
-  const formattedDate = safeDate(timestamp);
-  const nameParts     = splitCandidateName(fullName);
-  const trfNumber     = submissionID || ('SIM-' + candidateID + '-' + String(timestamp).replace(/\D/g,'').slice(0,8));
-  const cefrLevel     = overallToCEFR(overallBand);
+  // Pull extra candidate details from roster if available
+  const candRow     = (candidateRows||[]).find(r => r[0]===cid) || [];
+  const dob         = candRow[2]||'—';
+  const gender      = candRow[3]||'—';
+  const nationality = candRow[4]||'—';
+  const trfNum      = row[0] || `SIM-${cid}-${(row[1]||'').replace(/\D/g,'').slice(0,8)}`;
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>IELTS Test Result Form — ${escH(fullName)}</title>
+<title>IELTS Test Result Form — ${fname}</title>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'DM Sans',Arial,sans-serif;background:#fff;color:#111;font-size:10pt}
-  @page{size:A4 portrait;margin:14mm}
+  @page{size:A4 portrait;margin:14mm 14mm 14mm 14mm}
   @media print{body{background:#fff}.no-print{display:none!important}}
 
   .page{width:100%;max-width:720px;margin:0 auto;background:#fff;padding:10px 0}
 
-  .print-toolbar{text-align:center;padding:14px;background:#f5f5f5;border-bottom:1px solid #ddd;
-    display:flex;gap:10px;justify-content:center;align-items:center}
-  .btn-print{padding:10px 28px;background:#002f5f;color:#fff;border:none;border-radius:6px;
-    font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer}
-  .btn-close{padding:10px 18px;background:#eee;color:#333;border:none;border-radius:6px;
-    font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer}
-  .sim-watermark{font-size:7pt;color:#b00;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
-    padding:3px 10px;border:1px solid #e88;border-radius:3px;display:inline-block}
-
-  .top-bar{display:flex;align-items:flex-start;justify-content:space-between;
-    border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:6px}
+  /* TOP BAR */
+  .top-bar{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:6px}
   .ielts-logo{font-family:'DM Sans',sans-serif;font-size:28pt;font-weight:900;letter-spacing:-1px;line-height:1}
   .ielts-logo sup{font-size:10pt;vertical-align:super}
   .trf-label{font-size:12pt;font-weight:700;margin-top:4px}
   .note-box{font-size:6.5pt;color:#333;max-width:340px;line-height:1.4;margin-top:4px}
-  .academic-box{border:1.5px solid #000;padding:4px 18px;font-weight:700;font-size:10pt;
-    letter-spacing:1px;align-self:flex-start;margin-top:4px}
+  .note-box i{font-style:italic}
+  .academic-box{border:1.5px solid #000;padding:4px 18px;font-weight:700;font-size:10pt;letter-spacing:1px;align-self:flex-start;margin-top:4px}
 
-  .meta-row{display:flex;border:1px solid #ccc;margin-bottom:10px}
+  /* META ROW */
+  .meta-row{display:flex;gap:0;border:1px solid #ccc;margin-bottom:10px}
   .meta-cell{flex:1;padding:4px 10px;border-right:1px solid #ccc;font-size:8.5pt}
   .meta-cell:last-child{border-right:none}
   .meta-cell .lbl{font-size:7pt;color:#555;margin-bottom:1px}
   .meta-cell .val{font-weight:600}
 
-  .sec-title{font-weight:700;font-size:10pt;border-bottom:1.5px solid #000;padding-bottom:3px;
-    margin:10px 0 6px;text-transform:uppercase;letter-spacing:0.05em}
+  /* SECTION TITLE */
+  .sec-title{font-weight:700;font-size:10pt;border-bottom:1.5px solid #000;padding-bottom:3px;margin:10px 0 6px;text-transform:uppercase;letter-spacing:0.05em}
 
+  /* CANDIDATE DETAILS TABLE */
   .cand-table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:9pt}
   .cand-table td{padding:4px 8px;border:1px solid #ccc;vertical-align:top}
   .cand-table .lbl-col{width:130px;font-weight:600;background:#f8f8f8;color:#444;font-size:8pt}
   .cand-table .val-col{font-weight:500}
-  .photo-cell{border:1px solid #ccc;width:90px;text-align:center;vertical-align:middle;
-    font-size:7pt;color:#aaa;padding:6px}
+  .photo-cell{border:1px solid #ccc;width:90px;text-align:center;vertical-align:middle;font-size:7pt;color:#aaa;padding:6px}
 
-  .band-row{display:flex;align-items:stretch;border:1.5px solid #000;overflow:hidden;margin-bottom:0}
+  /* TEST RESULTS BAND ROW */
+  .results-section{margin:10px 0}
+  .band-row{display:flex;align-items:stretch;border:1.5px solid #000;border-radius:0;overflow:hidden;margin-bottom:0}
   .band-cell{flex:1;padding:8px 6px;text-align:center;border-right:1px solid #ccc;background:#fff}
   .band-cell:last-child{border-right:none}
-  .band-cell .blbl{font-size:7pt;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
-    color:#666;margin-bottom:6px}
-  .band-cell .bval{font-family:'Source Serif 4',serif;font-size:22pt;font-weight:700;
-    color:#002f5f;line-height:1}
+  .band-cell .blbl{font-size:7pt;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#666;margin-bottom:6px}
+  .band-cell .bval{font-family:'Source Serif 4',serif;font-size:22pt;font-weight:700;color:#002f5f;line-height:1}
   .band-cell .bsub{font-size:7pt;color:#888;margin-top:3px}
   .band-cell.overall-cell{background:#002f5f;border-right:none}
   .band-cell.overall-cell .blbl{color:rgba(255,255,255,0.65)}
   .band-cell.overall-cell .bval{font-size:28pt;color:#c8a84b}
-  .cefr-cell{width:90px;background:#002f5f;border-left:1px solid rgba(255,255,255,0.2);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px}
-  .cefr-cell .clbl{font-size:7pt;color:rgba(255,255,255,0.6);text-transform:uppercase;
-    letter-spacing:0.08em;margin-bottom:4px}
+  .cefr-cell{width:90px;background:#002f5f;border-left:1px solid rgba(255,255,255,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px}
+  .cefr-cell .clbl{font-size:7pt;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
   .cefr-cell .cval{font-family:'Source Serif 4',serif;font-size:22pt;font-weight:700;color:#fff}
 
+  /* BOTTOM SECTION */
   .bottom-grid{display:grid;grid-template-columns:1fr 1fr 130px;gap:10px;margin-top:12px;align-items:start}
-  .admin-comments{border:1px solid #ccc;min-height:70px;padding:8px;font-size:8pt;color:#333}
-  .stamp-box{border:1px solid #ccc;min-height:70px;display:flex;align-items:center;
-    justify-content:center;text-align:center;font-size:7.5pt;color:#aaa;
-    flex-direction:column;gap:4px;padding:6px}
-  .stamp-circle{width:54px;height:54px;border-radius:50%;border:1.5px dashed #ccc;
-    display:flex;align-items:center;justify-content:center;font-size:7pt;
-    color:#bbb;text-align:center;padding:4px;margin:0 auto 4px}
+  .admin-comments{border:1px solid #ccc;min-height:70px;padding:8px;font-size:8pt;color:#aaa}
+  .stamp-box{border:1px solid #ccc;min-height:70px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:7.5pt;color:#aaa;flex-direction:column;gap:4px;padding:6px}
+  .stamp-circle{width:54px;height:54px;border-radius:50%;border:1.5px dashed #ccc;display:flex;align-items:center;justify-content:center;font-size:7pt;color:#bbb;text-align:center;padding:4px;margin:0 auto 4px}
 
+  /* SIGNATURE ROW */
   .sig-row{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:12px;padding-top:6px}
   .sig-field{border-top:1px solid #888;padding-top:4px;font-size:7.5pt;color:#666;text-align:center}
 
-  .footer-row{display:flex;align-items:center;justify-content:space-between;
-    margin-top:10px;padding-top:8px;border-top:1px solid #ccc;font-size:8pt;color:#555}
-  .footer-row .trf-num{font-weight:700;color:#111;font-family:monospace;font-size:9pt;
-    background:#f0f0f0;padding:2px 10px;border:1px solid #ccc}
+  /* DATE + TRF NUM */
+  .footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px solid #ccc;font-size:8pt;color:#555}
+  .footer-row .trf-num{font-weight:700;color:#111;font-family:monospace;font-size:9pt;background:#f0f0f0;padding:2px 10px;border:1px solid #ccc}
 
-  .logos-row{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:12px;
-    padding-top:8px;border-top:1px solid #eee;font-size:7.5pt;color:#555;font-weight:600}
+  /* LOGOS */
+  .logos-row{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:12px;padding-top:8px;border-top:1px solid #eee;font-size:7.5pt;color:#555;font-weight:600}
 
-  .validity-note{text-align:center;font-size:7pt;color:#777;margin-top:6px;
-    border-top:1px solid #eee;padding-top:6px;font-style:italic}
+  /* VALIDITY NOTE */
+  .validity-note{text-align:center;font-size:7pt;color:#777;margin-top:6px;border-top:1px solid #eee;padding-top:6px;font-style:italic}
+
+  /* PRINT BUTTON (hidden on print) */
+  .print-toolbar{text-align:center;padding:14px;background:#f5f5f5;border-bottom:1px solid #ddd;display:flex;gap:10px;justify-content:center;align-items:center}
+  .btn-print{padding:10px 28px;background:#002f5f;color:#fff;border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer}
+  .btn-print:hover{background:#1a5fa8}
+  .btn-close{padding:10px 18px;background:#eee;color:#333;border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer}
+  .sim-watermark{font-size:7pt;color:#b00;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 10px;border:1px solid #e88;border-radius:3px;display:inline-block}
 </style>
 </head>
 <body>
 
 <div class="print-toolbar no-print">
-  <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
-  <button class="btn-close" onclick="window.close()">Close</button>
-  <span class="sim-watermark">Simulation - Not an official IELTS document</span>
+  <button class="btn-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+  <button class="btn-close" onclick="window.close()">✕ Close</button>
+  <span class="sim-watermark">⚠ Simulation — Not an official IELTS document</span>
 </div>
 
 <div class="page">
+
+  <!-- TOP BAR -->
   <div class="top-bar">
     <div>
-      <div class="ielts-logo">IELTS<sup>TM</sup></div>
+      <div class="ielts-logo">IELTS<sup>™</sup></div>
       <div class="trf-label">Test Result Form</div>
       <div class="note-box" style="margin-top:5px">
-        <i>NOTE: Admission to undergraduate and post-graduate courses should be based on the ACADEMIC
-        Reading and Writing Modules. It is recommended that the candidate's language ability as
-        indicated in this Test Result Form be reassessed after two years from the date of the test.</i>
+        <i>NOTE &nbsp;Admission to undergraduate and post graduate courses should be based on the ACADEMIC Reading and Writing Modules.<br>
+        GENERAL TRAINING Reading and Writing Modules are not designed to test the full range of language skills required for academic purposes.<br>
+        It is recommended that the candidate's language ability as indicated in this Test Result Form be re-assessed <b>after two years</b> from the date of the test.</i>
       </div>
     </div>
     <div class="academic-box">ACADEMIC</div>
   </div>
 
+  <!-- META ROW: Centre / Date / Candidate Number -->
   <div class="meta-row">
     <div class="meta-cell"><div class="lbl">Centre Number</div><div class="val">SIM-001</div></div>
-    <div class="meta-cell"><div class="lbl">Date</div><div class="val">${escH(formattedDate)}</div></div>
-    <div class="meta-cell" style="flex:2"><div class="lbl">Candidate Number</div><div class="val">${escH(candidateID)}</div></div>
+    <div class="meta-cell"><div class="lbl">Date</div><div class="val">${dateStr}</div></div>
+    <div class="meta-cell" style="flex:2"><div class="lbl">Candidate Number</div><div class="val">${cid}</div></div>
   </div>
 
+  <!-- CANDIDATE DETAILS -->
   <div class="sec-title">Candidate Details</div>
   <table class="cand-table">
     <tr>
       <td class="lbl-col">Family Name</td>
-      <td class="val-col" colspan="2" style="text-transform:uppercase;font-weight:700;font-size:10pt">${escH(nameParts.familyName)}</td>
-      <td class="photo-cell" rowspan="4"><div style="width:68px;height:80px;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;margin:0 auto;color:#bbb;font-size:7pt">Photo</div></td>
+      <td class="val-col" colspan="2" style="text-transform:uppercase;font-weight:700;font-size:10pt">${(fname.split(' ').pop()||fname).toUpperCase()}</td>
+      <td class="photo-cell" rowspan="4">
+        <div style="width:68px;height:80px;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;margin:0 auto;color:#bbb;font-size:7pt">Photo</div>
+      </td>
     </tr>
     <tr>
       <td class="lbl-col">First Name</td>
-      <td class="val-col" colspan="2" style="text-transform:uppercase;font-weight:700;font-size:10pt">${escH(nameParts.firstName)}</td>
+      <td class="val-col" colspan="2" style="text-transform:uppercase;font-weight:700;font-size:10pt">${(fname.split(' ')[0]||'').toUpperCase()}</td>
     </tr>
     <tr>
       <td class="lbl-col">Candidate ID</td>
-      <td class="val-col" colspan="2" style="font-family:monospace">${escH(candidateID)}</td>
+      <td class="val-col" colspan="2" style="font-family:monospace">${cid}</td>
     </tr>
     <tr>
       <td class="lbl-col">Date of Birth</td>
-      <td class="val-col" colspan="2">${escH(dob)}</td>
+      <td class="val-col">${dob}</td>
     </tr>
     <tr>
       <td class="lbl-col">Gender</td>
-      <td class="val-col" colspan="3">${escH(gender)}</td>
+      <td class="val-col" colspan="3">${gender}</td>
     </tr>
     <tr>
       <td class="lbl-col">Country of Nationality</td>
-      <td class="val-col" colspan="3">${escH(nationality)}</td>
+      <td class="val-col" colspan="3">${nationality}</td>
     </tr>
     <tr>
       <td class="lbl-col">Test Set</td>
-      <td class="val-col" colspan="3">${escH(testSetName)}</td>
+      <td class="val-col" colspan="3">${testSet}</td>
     </tr>
   </table>
 
+  <!-- TEST RESULTS -->
   <div class="sec-title">Test Results</div>
-  <div class="band-row">
-    <div class="band-cell">
-      <div class="blbl">Listening</div>
-      <div class="bval">${escH(String(listeningBand))}</div>
-      <div class="bsub">${escH(String(listeningScore))}/40</div>
-    </div>
-    <div class="band-cell">
-      <div class="blbl">Reading</div>
-      <div class="bval">${escH(String(readingBand))}</div>
-      <div class="bsub">${escH(String(readingScore))}/40</div>
-    </div>
-    <div class="band-cell">
-      <div class="blbl">Writing</div>
-      <div class="bval">${escH(String(writingBand))}</div>
-      <div class="bsub">&nbsp;</div>
-    </div>
-    <div class="band-cell">
-      <div class="blbl">Speaking</div>
-      <div class="bval">${escH(String(speakingBand))}</div>
-      <div class="bsub">&nbsp;</div>
-    </div>
-    <div class="band-cell overall-cell">
-      <div class="blbl">Overall<br>Band Score</div>
-      <div class="bval">${escH(String(overallBand))}</div>
-    </div>
-    <div class="cefr-cell">
-      <div class="clbl">CEFR<br>Level</div>
-      <div class="cval">${escH(cefrLevel)}</div>
+  <div class="results-section">
+    <div class="band-row">
+      <div class="band-cell">
+        <div class="blbl">Listening</div>
+        <div class="bval">${lBand}</div>
+        <div class="bsub">${lScore}/40</div>
+      </div>
+      <div class="band-cell">
+        <div class="blbl">Reading</div>
+        <div class="bval">${rBand}</div>
+        <div class="bsub">${rScore}/40</div>
+      </div>
+      <div class="band-cell">
+        <div class="blbl">Writing</div>
+        <div class="bval">${wBand}</div>
+        <div class="bsub">&nbsp;</div>
+      </div>
+      <div class="band-cell">
+        <div class="blbl">Speaking</div>
+        <div class="bval">${sBand}</div>
+        <div class="bsub">&nbsp;</div>
+      </div>
+      <div class="band-cell overall-cell">
+        <div class="blbl">Overall<br>Band Score</div>
+        <div class="bval">${overall}</div>
+      </div>
+      <div class="cefr-cell">
+        <div class="clbl">CEFR<br>Level</div>
+        <div class="cval">${overallToCEFR(parseFloat(overall)||0)}</div>
+      </div>
     </div>
   </div>
 
+  <!-- BOTTOM GRID: Admin Comments + Stamps -->
   <div class="bottom-grid">
     <div>
       <div style="font-size:8pt;font-weight:700;margin-bottom:4px">Administrator's Comments</div>
-      <div class="admin-comments">${escH(examNotes)}</div>
+      <div class="admin-comments"></div>
     </div>
     <div>
       <div style="font-size:8pt;font-weight:700;margin-bottom:4px">Centre stamp</div>
@@ -3486,30 +3470,56 @@ function buildTRFHtml(row, candidateRows) {
     </div>
   </div>
 
+  <!-- SIGNATURE ROW -->
   <div class="sig-row">
     <div class="sig-field">Administrator's Signature</div>
     <div class="sig-field">Candidate's Signature</div>
   </div>
 
+  <!-- DATE + TRF NUMBER -->
   <div class="footer-row">
-    <div>Date &nbsp; <b>${escH(formattedDate)}</b></div>
-    <div>Test Report Form Number &nbsp; <span class="trf-num">${escH(trfNumber)}</span></div>
+    <div>Date &nbsp; <b>${dateStr}</b></div>
+    <div>Test Report Form Number &nbsp; <span class="trf-num">${trfNum}</span></div>
   </div>
 
+  <!-- LOGOS ROW -->
   <div class="logos-row">
-    <span>GB BRITISH COUNCIL</span>
-    <span>IDP</span>
-    <span>CAMBRIDGE ENGLISH - Language Assessment</span>
+    <span>🇬🇧 BRITISH COUNCIL</span>
+    <span>✦ IDP</span>
+    <span>🏛 CAMBRIDGE ENGLISH — Language Assessment</span>
   </div>
 
+  <!-- VALIDITY NOTE -->
   <div class="validity-note">
     This is a SIMULATION result for preparation purposes only and is NOT an official IELTS Test Result Form.<br>
-    The validity of an official IELTS Test Report Form can be verified at ielts.ucles.org.uk
+    The validity of an official IELTS Test Report Form can be verified at <u>https://ielts.ucles.org.uk</u>
   </div>
-</div>
 
+</div><!-- end .page -->
+
+<script>
+function overallToCEFR(b){
+  if(b>=8.5)return'C2';
+  if(b>=7)return'C1';
+  if(b>=5.5)return'B2';
+  if(b>=4)return'B1';
+  if(b>=3)return'A2';
+  return'A1';
+}
+// Run overallToCEFR inline — it's called from the template literal above via string injection
+<\/script>
 </body>
 </html>`;
+}
+
+// Called inline — needed when building the HTML string before the popup opens
+function overallToCEFR(b){
+  if(b>=8.5)return'C2';
+  if(b>=7)return'C1';
+  if(b>=5.5)return'B2';
+  if(b>=4)return'B1';
+  if(b>=3)return'A2';
+  return'A1';
 }
 
 function getMatchedCandScores() {
@@ -3518,36 +3528,30 @@ function getMatchedCandScores() {
     try { return JSON.parse(sel.dataset.matchedRows); } catch(e) {}
   }
   const cid = document.getElementById('trf-cand-sel').value;
-  return trfScoresData.filter(r =>
-    String(r[2] || '').trim().toLowerCase() === String(cid || '').trim().toLowerCase()
-  );
+  return trfScoresData.filter(r => r.some(cell => String(cell||'').trim() === cid.trim()));
 }
 
 function renderAdminTRF() {
   const idx  = document.getElementById('trf-attempt-sel').value;
   const wrap = document.getElementById('admin-trf-wrap');
   if (idx === '') return;
-
   const candScores = getMatchedCandScores();
-  const row = candScores[parseInt(idx, 10)];
+  const row = candScores[parseInt(idx)];
   if (!row) { wrap.innerHTML += '<div class="tbl-empty">Attempt not found.</div>'; return; }
 
-  const C = detectScoreCols(row);
-  const lBand   = row[C.lBand]   || '—';
-  const rBand   = row[C.rBand]   || '—';
-  const wBand   = row[C.wBand]   || '—';
-  const sBand   = row[C.sBand]   || '—';
-  const overall = row[C.overall] || '—';
-  const cid     = row[C.cid]     || '—';
-  const dateVal = safeDate(row[C.ts]);
+  const lBand  = row[7]  || '—';
+  const rBand  = row[9]  || '—';
+  const wBand  = row[12] || '—';
+  const sBand  = row[13] || '—';
+  const overall = row[14] || '—';
 
   const preview = document.createElement('div');
   preview.style.cssText = 'background:var(--paper2);border-radius:10px;padding:18px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:8px';
   preview.innerHTML = `
     <div>
-      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin-bottom:6px">${escH(cid)} &middot; ${escH(dateVal)}</div>
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin-bottom:6px">${escH(row[2]||'—')} · ${formatDate(row[0])}</div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        ${[['L',lBand],['R',rBand],['W',wBand],['S',sBand]].map(([l,v]) => `
+        ${[['L',lBand],['R',rBand],['W',wBand],['S',sBand]].map(([l,v])=>`
           <div style="text-align:center">
             <div style="font-size:0.65rem;font-weight:700;color:var(--ink3);text-transform:uppercase">${l}</div>
             <div style="font-family:'Source Serif 4',serif;font-size:1.5rem;font-weight:600;color:var(--blue)">${escH(String(v))}</div>
@@ -3556,15 +3560,11 @@ function renderAdminTRF() {
           <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,0.6)">Overall</div>
           <div style="font-family:'Source Serif 4',serif;font-size:1.8rem;font-weight:600;color:var(--gold)">${escH(String(overall))}</div>
         </div>
-        <div style="text-align:center;background:var(--ink);color:#fff;padding:8px 14px;border-radius:8px">
-          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,0.6)">CEFR</div>
-          <div style="font-family:'Source Serif 4',serif;font-size:1.8rem;font-weight:600;color:#fff">${escH(overallToCEFR(overall))}</div>
-        </div>
       </div>
     </div>
     <div style="margin-left:auto">
       <button class="btn btn-blue" onclick="openTRFPopup()" style="padding:10px 20px;font-size:0.88rem;display:flex;align-items:center;gap:7px">
-        Print / Open TRF
+        <span style="font-size:1rem">🖨</span> Open &amp; Print TRF
       </button>
       <div style="font-size:0.72rem;color:var(--ink3);text-align:center;margin-top:6px">Opens in new window</div>
     </div>`;
@@ -3573,25 +3573,17 @@ function renderAdminTRF() {
 
 function openTRFPopup() {
   const idx = document.getElementById('trf-attempt-sel').value;
-  if (idx === '') { toast('Please select an attempt first.'); return; }
+  if (idx === '') { toast('⚠️ Please select an attempt first.'); return; }
   const candScores = getMatchedCandScores();
-  const row = candScores[parseInt(idx, 10)];
-  if (!row) { toast('Row not found.'); return; }
-
-  // Use already-loaded candidate roster if available
-  const candidateData =
-    (typeof allCandidatesList !== 'undefined' && Array.isArray(allCandidatesList) && allCandidatesList.length)
-      ? allCandidatesList
-      : (_candidateRows.length ? _candidateRows : []);
-
-  const html   = buildTRFHtml(row, candidateData);
-  const popup  = window.open('', '_blank', 'width=820,height=1080,scrollbars=yes,resizable=yes');
+  const row = candScores[parseInt(idx)];
+  if (!row) { toast('❌ Row not found.'); return; }
+  const html = buildTRFHtml(row, _candidateRows.length ? _candidateRows : []);
+  const popup = window.open('', '_blank', 'width=820,height=1080,scrollbars=yes,resizable=yes');
   if (!popup) { alert('Popup blocked! Please allow popups for this site.'); return; }
   popup.document.open();
   popup.document.write(html);
   popup.document.close();
 }
-
 
 // ═══════════════════════════════════════
 // UTILS
