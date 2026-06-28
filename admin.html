@@ -3131,28 +3131,74 @@ async function loadTRFCandidates() {
     const rows = (data.success && data.rows) ? data.rows : [];
     sel.innerHTML = '<option value="">— Select candidate —</option>' +
       rows.map(r => `<option value="${escH(r[0])}">${escH(r[1])} (${escH(r[0])})</option>`).join('');
+
     // Pre-load all scores
     const sd = await callSheets({ action: 'getScores' });
     trfScoresData = (sd.success && sd.rows) ? sd.rows : [];
-    toast('✅ Loaded ' + rows.length + ' candidates');
+
+    // DEBUG: show raw column headers of first score row in console
+    if (trfScoresData.length) {
+      console.log('📊 First score row (raw):', trfScoresData[0]);
+      console.log('📊 All score rows:', trfScoresData);
+    } else {
+      console.warn('⚠️ trfScoresData is empty — getScores returned no rows');
+    }
+
+    toast('✅ Loaded ' + rows.length + ' candidates · ' + trfScoresData.length + ' score rows');
   } catch(e) {
+    console.error('❌ loadTRFCandidates error:', e);
     sel.innerHTML = '<option value="">❌ Error loading — check connection</option>';
+    toast('❌ Error: ' + e.message);
   }
 }
 
 function loadTRFAttempts() {
   const cid = document.getElementById('trf-cand-sel').value;
   const sel = document.getElementById('trf-attempt-sel');
+  const wrap = document.getElementById('admin-trf-wrap');
   sel.innerHTML = '<option value="">— Select attempt —</option>';
-  document.getElementById('admin-trf-wrap').innerHTML = '<div class="tbl-empty">Select an attempt to view the TRF.</div>';
-  if (!cid) return;
-  const candScores = trfScoresData.filter(r => r[1] === cid);
+  if (!cid) { wrap.innerHTML = '<div class="tbl-empty">Select a candidate first.</div>'; return; }
+
+  // Smart match — try every column (0–4) for candidate ID
+  // Also try full-string match and trimmed match
+  let candScores = trfScoresData.filter(r =>
+    r.some(cell => String(cell||'').trim() === cid.trim())
+  );
+
+  // Debug output in the wrap
+  const debugInfo = `
+    <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:12px 16px;font-size:0.78rem;color:#5d4037;margin-bottom:12px">
+      <b>🔍 Debug Info</b><br>
+      Looking for Candidate ID: <code><b>${escH(cid)}</b></code><br>
+      Total score rows loaded: <b>${trfScoresData.length}</b><br>
+      Matching rows found: <b>${candScores.length}</b><br>
+      ${trfScoresData.length > 0 ? `First row sample: <code>${escH(JSON.stringify(trfScoresData[0]))}</code>` : '<span style="color:red">No score data loaded at all — check if getScores returns data.</span>'}
+      <br><br>
+      <button onclick="document.getElementById('debug-all-rows').classList.toggle('hidden')" style="font-size:0.75rem;padding:3px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:#fff">Toggle all rows</button>
+      <div id="debug-all-rows" class="hidden" style="margin-top:8px;max-height:200px;overflow-y:auto">
+        ${trfScoresData.map((r,i)=>`<div style="margin-bottom:4px;font-family:monospace;font-size:0.72rem">[${i}] ${escH(JSON.stringify(r))}</div>`).join('')}
+      </div>
+    </div>`;
+
+  wrap.innerHTML = debugInfo;
+
+  if (!candScores.length) {
+    wrap.innerHTML += `<div class="tbl-empty">No score records found for Candidate ID: <b>${escH(cid)}</b>.<br>
+      Check the debug info above — the candidate ID in the scores sheet may be spelled differently.</div>`;
+    return;
+  }
+
   candScores.forEach((r, i) => {
+    // Find which column holds the overall band — check cols 6–14
+    const bandVal = [r[8],r[7],r[6],r[9],r[10]].find(v => v && String(v).match(/^\d+\.?\d*$/)) || 'Pending';
     const opt = document.createElement('option');
     opt.value = i;
-    opt.textContent = `Attempt ${i+1} — ${formatDate(r[0])} — Band ${r[8]||'Pending'}`;
+    opt.textContent = `Attempt ${i+1} — ${formatDate(r[0])} — Band ${bandVal}`;
     sel.appendChild(opt);
   });
+
+  // Store which rows matched for this candidate
+  sel.dataset.matchedRows = JSON.stringify(candScores);
 }
 
 // Build the TRF HTML string (standalone, self-contained)
@@ -3434,53 +3480,60 @@ function overallToCEFR(b){
   return'A1';
 }
 
-function renderAdminTRF() {
+function getMatchedCandScores() {
+  const sel = document.getElementById('trf-attempt-sel');
+  if (sel.dataset.matchedRows) {
+    try { return JSON.parse(sel.dataset.matchedRows); } catch(e) {}
+  }
   const cid = document.getElementById('trf-cand-sel').value;
-  const idx = document.getElementById('trf-attempt-sel').value;
-  const wrap = document.getElementById('admin-trf-wrap');
-  if (!cid || idx === '') { wrap.innerHTML = '<div class="tbl-empty">Select a candidate and attempt.</div>'; return; }
-  const candScores = trfScoresData.filter(r => r[1] === cid);
-  const row = candScores[parseInt(idx)];
-  if (!row) { wrap.innerHTML = '<div class="tbl-empty">Attempt not found.</div>'; return; }
-
-  // Show a small preview card in admin + the Print button
-  const lBand = row[4]||'—', rBand = row[6]||'—', wBand = row[11]||'—', sBand = row[13]||'—';
-  const overall = row[8]||'—';
-  const obCls = parseFloat(overall)>=7?'band-high':parseFloat(overall)>=5.5?'band-mid':'band-low';
-
-  wrap.innerHTML = `
-    <div style="background:var(--paper2);border-radius:10px;padding:18px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
-      <div>
-        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin-bottom:6px">${escH(row[2]||'—')} · ${escH(cid)} · ${formatDate(row[0])}</div>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          ${[['L',lBand],['R',rBand],['W',wBand],['S',sBand]].map(([l,v])=>`
-            <div style="text-align:center">
-              <div style="font-size:0.65rem;font-weight:700;color:var(--ink3);text-transform:uppercase">${l}</div>
-              <div style="font-family:'Source Serif 4',serif;font-size:1.5rem;font-weight:600;color:var(--blue)">${escH(String(v))}</div>
-            </div>`).join('')}
-          <div style="text-align:center;background:var(--blue);color:#fff;padding:8px 14px;border-radius:8px">
-            <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,0.6)">Overall</div>
-            <div style="font-family:'Source Serif 4',serif;font-size:1.8rem;font-weight:600;color:var(--gold)">${escH(String(overall))}</div>
-          </div>
-        </div>
-      </div>
-      <div style="margin-left:auto">
-        <button class="btn btn-blue" onclick="openTRFPopup()" style="padding:10px 20px;font-size:0.88rem;display:flex;align-items:center;gap:7px"><span style="font-size:1rem">🖨</span> Open & Print TRF</button>
-        <div style="font-size:0.72rem;color:var(--ink3);text-align:center;margin-top:6px">Opens in a new window</div>
-      </div>
-    </div>`;
+  return trfScoresData.filter(r => r.some(cell => String(cell||'').trim() === cid.trim()));
 }
 
-// Opens the full official-style TRF in a popup window for clean printing
-function openTRFPopup() {
-  const cid = document.getElementById('trf-cand-sel').value;
-  const idx = document.getElementById('trf-attempt-sel').value;
-  const candScores = trfScoresData.filter(r => r[1] === cid);
+function renderAdminTRF() {
+  const idx  = document.getElementById('trf-attempt-sel').value;
+  const wrap = document.getElementById('admin-trf-wrap');
+  if (idx === '') return;
+  const candScores = getMatchedCandScores();
   const row = candScores[parseInt(idx)];
-  if (!row) return;
+  if (!row) { wrap.innerHTML += '<div class="tbl-empty">Attempt not found.</div>'; return; }
 
+  const lBand = row[4]||'—', rBand = row[6]||'—', wBand = row[11]||'—', sBand = row[13]||'—';
+  const overall = row[8]||'—';
+
+  const preview = document.createElement('div');
+  preview.style.cssText = 'background:var(--paper2);border-radius:10px;padding:18px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:8px';
+  preview.innerHTML = `
+    <div>
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin-bottom:6px">${escH(row[2]||'—')} · ${formatDate(row[0])}</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        ${[['L',lBand],['R',rBand],['W',wBand],['S',sBand]].map(([l,v])=>`
+          <div style="text-align:center">
+            <div style="font-size:0.65rem;font-weight:700;color:var(--ink3);text-transform:uppercase">${l}</div>
+            <div style="font-family:'Source Serif 4',serif;font-size:1.5rem;font-weight:600;color:var(--blue)">${escH(String(v))}</div>
+          </div>`).join('')}
+        <div style="text-align:center;background:var(--blue);color:#fff;padding:8px 14px;border-radius:8px">
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,0.6)">Overall</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:1.8rem;font-weight:600;color:var(--gold)">${escH(String(overall))}</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-left:auto">
+      <button class="btn btn-blue" onclick="openTRFPopup()" style="padding:10px 20px;font-size:0.88rem;display:flex;align-items:center;gap:7px">
+        <span style="font-size:1rem">🖨</span> Open &amp; Print TRF
+      </button>
+      <div style="font-size:0.72rem;color:var(--ink3);text-align:center;margin-top:6px">Opens in new window</div>
+    </div>`;
+  wrap.appendChild(preview);
+}
+
+function openTRFPopup() {
+  const idx = document.getElementById('trf-attempt-sel').value;
+  if (idx === '') { toast('⚠️ Please select an attempt first.'); return; }
+  const candScores = getMatchedCandScores();
+  const row = candScores[parseInt(idx)];
+  if (!row) { toast('❌ Row not found.'); return; }
   const html = buildTRFHtml(row, _candidateRows.length ? _candidateRows : []);
-  const popup = window.open('', '_blank', 'width=800,height=1050,scrollbars=yes,resizable=yes');
+  const popup = window.open('', '_blank', 'width=820,height=1080,scrollbars=yes,resizable=yes');
   if (!popup) { alert('Popup blocked! Please allow popups for this site.'); return; }
   popup.document.open();
   popup.document.write(html);
